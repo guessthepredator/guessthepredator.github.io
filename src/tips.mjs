@@ -1,0 +1,33 @@
+/** Character ability advice only; no exploits, cheats or unverified game tricks. */
+export const TIPS=Object.freeze({
+ alter:'Look for routes your squad can use after a portal rotation, not just a flashy solo entry.',
+ ash:'When you open a phase route, agree with teammates on the destination first.',
+ axle:'Choose lines that let teammates follow your movement rather than separating the squad.',
+ ballistic:'Call out your push timing when you activate team-wide combat utility.',
+ bangalore:'Use smoke as a rotation and reset tool, not just a way to start fights.',
+ bloodhound:'Share your scan information immediately so teammates can act on the same intel.',
+ catalyst:'Defensive walls work best when teammates know which sightlines you are blocking.',
+ caustic:'Place defensive gas utility where it can protect a retreat or recovery route.',
+ conduit:'Watch your teammates’ shield pressure and communicate before committing to a push.',
+ crypto:'Treat drone intel as a squad cue; position safely before switching to scouting.',
+ fuse:'Communicate when your area-denial utility is active so the squad can reposition.',
+ gibraltar:'Coordinate protection timing with your team instead of using it independently.',
+ horizon:'Vertical movement has more value when your squad knows the intended landing area.',
+ lifeline:'Prioritize safe revive angles; positioning matters as much as the ability itself.',
+ loba:'Place your loot support where teammates can access it without losing safe positioning.',
+ 'mad-maggie':'Use movement pressure to create openings for your team, not isolated duels.',
+ mirage:'Your decoys are strongest when they give opponents multiple believable choices.',
+ newcastle:'When shielding an ally, plan the path to cover before beginning the recovery.',
+ octane:'Check that teammates can follow before using a fast reposition.',
+ pathfinder:'A shared reposition route is often stronger than a solo mobility play.',
+ rampart:'Cover important angles that your teammates can also benefit from.',
+ revenant:'Coordinate timing before committing to an aggressive entry.',
+ seer:'Information tools work best when your squad uses a common callout.',
+ sparrow:'Use mobility and scouting to help the squad control the next position.',
+ valkyrie:'Agree on a safe landing area before an aerial squad rotation.',
+ vantage:'Call out what you spot at range and avoid losing touch with the squad.',
+ wattson:'Build a safe recovery space with your defensive tools before the fight escalates.',
+ wraith:'Keep exit routes in mind when placing a portal for teammates.',
+});
+export const unlockedIntel = (rounds,modes)=>modes.every(mode=>rounds?.[mode]?.finished===true);
+export function tipFor(legend){return TIPS[legend.slug]||'Call out your ability timing so the whole squad can play around it.';}

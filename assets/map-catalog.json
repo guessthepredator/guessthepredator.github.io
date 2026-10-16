@@ -1,0 +1,290 @@
+[
+  {
+    "id": "kc-caustic-exterior",
+    "map": "Kings Canyon",
+    "poi": "Caustic Treatment · Exterior",
+    "kind": "Exterior",
+    "file": "CausticTreatment 01.jpg",
+    "clue": "Yellow industrial processing towers surrounded by canyon rock."
+  },
+  {
+    "id": "kc-caustic-interior",
+    "map": "Kings Canyon",
+    "poi": "Caustic Treatment · Interior",
+    "kind": "Interior",
+    "file": "CausticTreatment 02.jpg",
+    "clue": "A multilevel industrial room with bright containment chambers."
+  },
+  {
+    "id": "kc-crypto-interior",
+    "map": "Kings Canyon",
+    "poi": "Crypto’s Map Room · Interior",
+    "kind": "Interior",
+    "file": "MapRoom 01.png",
+    "clue": "A high-tech surveillance space filled with giant screens."
+  },
+  {
+    "id": "kc-bunker",
+    "map": "Kings Canyon",
+    "poi": "Bunker · Corridor",
+    "kind": "Interior",
+    "file": "",
+    "clue": "A long protected concrete corridor cutting through the mountain."
+  },
+  {
+    "id": "kc-gauntlet",
+    "map": "Kings Canyon",
+    "poi": "Octane’s Gauntlet",
+    "kind": "Exterior",
+    "file": "Gauntlet 01.jpg",
+    "clue": "An arena-like course with ramps and distinctive obstacle structures."
+  },
+  {
+    "id": "kc-cage",
+    "map": "Kings Canyon",
+    "poi": "The Cage",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "Tall open structures and scaffolds loom over rocky land."
+  },
+  {
+    "id": "we-big-maude",
+    "map": "World’s Edge",
+    "poi": "Big Maude",
+    "kind": "Exterior",
+    "file": "Big Maude 1.png",
+    "clue": "A heavily customized ship set into a volcanic landscape."
+  },
+  {
+    "id": "we-big-maude-interior",
+    "map": "World’s Edge",
+    "poi": "Big Maude · Workshop",
+    "kind": "Interior",
+    "file": "",
+    "clue": "A dense industrial shop with customized machinery inside a ship."
+  },
+  {
+    "id": "we-lava",
+    "map": "World’s Edge",
+    "poi": "Lava Siphon",
+    "kind": "Exterior",
+    "file": "S10 lavasiphon after.jpg",
+    "clue": "Raised platforms cut across glowing magma and volcanic rock."
+  },
+  {
+    "id": "we-climatizer",
+    "map": "World’s Edge",
+    "poi": "Climatizer",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "An enormous ice and science facility with bright blue machinery."
+  },
+  {
+    "id": "we-countdown",
+    "map": "World’s Edge",
+    "poi": "Countdown",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "A large circular industrial launch-style structure."
+  },
+  {
+    "id": "we-trials",
+    "map": "World’s Edge",
+    "poi": "Bloodhound’s Trials · Arena",
+    "kind": "Interior",
+    "file": "",
+    "clue": "An enclosed trial arena surrounded by icy stone."
+  },
+  {
+    "id": "ol-bonsai",
+    "map": "Olympus",
+    "poi": "Bonsai Plaza",
+    "kind": "Exterior",
+    "file": "S7 Olympus bonsaiplaza1.jpg",
+    "clue": "Elegant elevated towers and plazas above the clouds."
+  },
+  {
+    "id": "ol-estates",
+    "map": "Olympus",
+    "poi": "Autumn Estates",
+    "kind": "Exterior",
+    "file": "S7 Olympus autumnestates.jpg",
+    "clue": "Villas and lawns set among graceful landscaped paths."
+  },
+  {
+    "id": "ol-estates-interior",
+    "map": "Olympus",
+    "poi": "Autumn Estates · Villa",
+    "kind": "Interior",
+    "file": "",
+    "clue": "A modern residential interior with clean angles and wide windows."
+  },
+  {
+    "id": "ol-hammond",
+    "map": "Olympus",
+    "poi": "Hammond Labs · Interior",
+    "kind": "Interior",
+    "file": "",
+    "clue": "A large technological research building beneath sleek glass."
+  },
+  {
+    "id": "ol-rift",
+    "map": "Olympus",
+    "poi": "Rift",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "An unstable vortex dominates broad futuristic platforms."
+  },
+  {
+    "id": "ol-oasis",
+    "map": "Olympus",
+    "poi": "Oasis",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "Twin tower buildings and gardens over a floating city."
+  },
+  {
+    "id": "sp-barometer",
+    "map": "Storm Point",
+    "poi": "Barometer",
+    "kind": "Exterior",
+    "file": "S11 stormpoint barometer.png",
+    "clue": "A monumental weather research platform against a tropical coast."
+  },
+  {
+    "id": "sp-command",
+    "map": "Storm Point",
+    "poi": "Command Center",
+    "kind": "Exterior",
+    "file": "S11 stormpoint commandcenter.jpg",
+    "clue": "A huge mountain fortification overlooking jungle terrain."
+  },
+  {
+    "id": "sp-command-interior",
+    "map": "Storm Point",
+    "poi": "Command Center · Interior",
+    "kind": "Interior",
+    "file": "",
+    "clue": "A towering internal vertical complex built into the mountain."
+  },
+  {
+    "id": "sp-catcher",
+    "map": "Storm Point",
+    "poi": "Storm Catcher",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "A massive circular facility rises across steep tropical hills."
+  },
+  {
+    "id": "sp-mill",
+    "map": "Storm Point",
+    "poi": "The Mill",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "Coastal round buildings topped by striking wind turbines."
+  },
+  {
+    "id": "sp-lightning",
+    "map": "Storm Point",
+    "poi": "Lightning Rod",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "High-altitude engineering towers rise above the island."
+  },
+  {
+    "id": "bm-terraformer",
+    "map": "Broken Moon",
+    "poi": "Terraformer",
+    "kind": "Exterior",
+    "file": "S15 brokenmoon terraformer.png",
+    "clue": "A colossal terraforming installation on the lunar horizon."
+  },
+  {
+    "id": "bm-production",
+    "map": "Broken Moon",
+    "poi": "Production Yard",
+    "kind": "Exterior",
+    "file": "S15 brokenmoon productionyard.png",
+    "clue": "A long symmetrical factory stretches toward a cliff."
+  },
+  {
+    "id": "bm-production-interior",
+    "map": "Broken Moon",
+    "poi": "Production Yard · Interior",
+    "kind": "Interior",
+    "file": "",
+    "clue": "An enclosed industrial factory with a wide central entry."
+  },
+  {
+    "id": "bm-core",
+    "map": "Broken Moon",
+    "poi": "Perpetual Core · Turbine",
+    "kind": "Interior",
+    "file": "S15 brokenmoon perpetualcore.png",
+    "clue": "A huge central rotating turbine surrounded by a circular chamber."
+  },
+  {
+    "id": "bm-stasis",
+    "map": "Broken Moon",
+    "poi": "Stasis Array",
+    "kind": "Exterior",
+    "file": "S15 brokenmoon stasisnetarray.png",
+    "clue": "Arrays of technological structures stand under a damaged moon."
+  },
+  {
+    "id": "bm-alpha",
+    "map": "Broken Moon",
+    "poi": "Alpha Base",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "A lunar outpost extends across a field of exposed rock."
+  },
+  {
+    "id": "ed-city-hall",
+    "map": "E-District",
+    "poi": "City Hall",
+    "kind": "Exterior",
+    "file": "S22 cityhall.png",
+    "clue": "A cluster of monumental civic buildings surrounding a fountain."
+  },
+  {
+    "id": "ed-city-hall-interior",
+    "map": "E-District",
+    "poi": "City Hall · Lobby",
+    "kind": "Interior",
+    "file": "",
+    "clue": "A towering two-storey civic lobby inside modern buildings."
+  },
+  {
+    "id": "ed-boardwalk",
+    "map": "E-District",
+    "poi": "Boardwalk",
+    "kind": "Exterior",
+    "file": "S22 boardwalk.png",
+    "clue": "Nightlife buildings and a coastal street illuminated by neon."
+  },
+  {
+    "id": "ed-boardwalk-interior",
+    "map": "E-District",
+    "poi": "Boardwalk · Nightclub",
+    "kind": "Interior",
+    "file": "",
+    "clue": "A moody nightclub overlooking the waterfront."
+  },
+  {
+    "id": "ed-galleria",
+    "map": "E-District",
+    "poi": "Galleria · Shopping Arcade",
+    "kind": "Interior",
+    "file": "",
+    "clue": "Glass domes above a multi-level enclosed shopping center."
+  },
+  {
+    "id": "ed-neon",
+    "map": "E-District",
+    "poi": "Neon Square",
+    "kind": "Exterior",
+    "file": "",
+    "clue": "Bright signs and dense city streets beneath futuristic towers."
+  }
+]

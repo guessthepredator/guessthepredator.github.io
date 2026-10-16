@@ -1,0 +1,7 @@
+dist/
+.DS_Store
+Thumbs.db
+tests/browser_harness.html
+tests/bundled.js
+__pycache__/
+*.pyc

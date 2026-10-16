@@ -1,0 +1,233 @@
+{
+  "version": "2.3.0",
+  "assets": [
+    {
+      "path": "assets/map-recon/bm-alpha.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/bm-core.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/bm-production-interior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/bm-production.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/bm-stasis.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/bm-terraformer.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ed-boardwalk-interior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ed-boardwalk.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ed-city-hall-interior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ed-city-hall.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ed-galleria.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ed-neon.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/kc-bunker.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/kc-cage.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/kc-caustic-exterior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/kc-caustic-interior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/kc-crypto-interior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/kc-gauntlet.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ol-bonsai.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ol-estates-interior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ol-estates.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ol-hammond.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ol-oasis.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/ol-rift.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/sp-barometer.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/sp-catcher.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/sp-command-interior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/sp-command.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/sp-lightning.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/sp-mill.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/we-big-maude-interior.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/we-big-maude.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/we-climatizer.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/we-countdown.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/we-lava.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/map-recon/we-trials.svg",
+      "provenance": "Original procedurally generated POI-specific vector schematic; not Apex gameplay footage"
+    },
+    {
+      "path": "assets/game-bg/ability.svg",
+      "provenance": "Original decorative vector scene"
+    },
+    {
+      "path": "assets/game-bg/classic.svg",
+      "provenance": "Original decorative vector scene"
+    },
+    {
+      "path": "assets/game-bg/emoji.svg",
+      "provenance": "Original decorative vector scene"
+    },
+    {
+      "path": "assets/game-bg/map.svg",
+      "provenance": "Original decorative vector scene"
+    },
+    {
+      "path": "assets/game-bg/pixel.svg",
+      "provenance": "Original decorative vector scene"
+    },
+    {
+      "path": "assets/game-bg/quote.svg",
+      "provenance": "Original decorative vector scene"
+    },
+    {
+      "path": "assets/sfx/clue.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/correct.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/hover-ability.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/hover-classic.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/hover-emoji.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/hover-map.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/hover-pixel.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/hover-quote.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/lose.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/nav.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/pick.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/reveal.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/win.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "assets/sfx/wrong.wav",
+      "provenance": "Original generated non-vocal soft sound effect"
+    },
+    {
+      "path": "Kenney Voiceover Pack (not in ZIP)",
+      "provenance": "Optional CC0 human-spoken game announcer via script, source kenney.nl/assets/voiceover-pack"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Real gameplay screenshots go here, one file per catalog ID, e.g. kc-caustic-exterior.webp or ed-galleria.webp. Run MEDIA_STUDIO.html to package approved captures. No synthetic or unlabeled screenshots are distributed.
