@@ -22,11 +22,11 @@ test('browse portraits use verified local full-body sources where available',()=
  assert.ok(css.includes('#app .gtp2-picker .picker-legend .portrait-holder'));
  assert.ok(css.includes('object-fit:contain!important'));
  assert.ok(app.includes('localPortraitFiles[slug]'));
- const manifest=read('src/portrait_media_manifest.mjs'); for(const slug of ['alter','ballistic','catalyst','conduit','sparrow'])assert.ok(manifest.includes('original-'+slug+'.png'));
+ const manifest=read('src/portrait_media_manifest.mjs'); for(const slug of ['alter','ballistic','catalyst','conduit','sparrow'])assert.ok(manifest.includes('cutout-'+slug+'.png'));
 });
 test('mode accents and stable release cache versions',()=>{
  for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(css.includes(`[data-mode="${m}"]`));
- assert.ok(html.includes('styles.css?v=2.27.0'));
- assert.ok(html.includes('app.mjs?v=2.27.0'));
+ assert.ok(html.includes('styles.css?v=2.28.0'));
+ assert.ok(html.includes('app.mjs?v=2.28.0'));
  assert.ok(app.includes("app.dataset.mode=screen==='game'?active:''"));
 });

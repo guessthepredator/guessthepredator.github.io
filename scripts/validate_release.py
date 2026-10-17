@@ -33,16 +33,22 @@ for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs',
 assert 'cp index.html styles.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
 assert 'src/leaderboard_config.mjs' in workflow or 'cp -r src assets dist/' in workflow
 assert not any((P/'tests'/name).exists() for name in ['v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs','gtp2.test.mjs','v26.test.mjs'])
-# V2.27: the five previously head-only portraits must be real local
-# full-body renders in the artifact. Reject 256x256 icon substitutes.
+# V2.28: cutout masks must have real, meaningfully transparent backgrounds.
+# No face-only square icons and no full red showcase rectangles in the release.
 for slug in ('alter','ballistic','catalyst','conduit','sparrow'):
- file=P/'assets'/'portraits'/('original-'+slug+'.png')
- assert file.is_file(),f'Missing original full-body portrait: {slug}'
+ file=P/'assets'/'portraits'/('cutout-'+slug+'.png')
+ assert file.is_file(),f'Missing processed full-body portrait: {slug}'
  with Image.open(file) as im:
   width,height=im.size
   assert width>=280 and height>=600 and height/width>=1.27,(slug,width,height)
-  assert im.format=='PNG',f'{slug} source must be PNG'
-print('V2.27 portrait validation PASS: 5/5 original full-body renders bundled in release artifact')
+  assert im.format=='PNG' and im.mode=='RGBA',(slug,im.format,im.mode)
+  alpha=im.getchannel('A')
+  hist=alpha.histogram()
+  clear=sum(hist[:16])/(width*height)
+  solid=sum(hist[220:])/(width*height)
+  assert clear>=.30 and solid>=.04,(slug,clear,solid)
+  assert all(alpha.getpixel(c)<=15 for c in [(0,0),(width-1,0),(0,height-1),(width-1,height-1)]),(slug,'opaque corners')
+print('V2.28 portrait cutout validation PASS: 5/5 tall character RGBA files with clear backgrounds')
 print(f'Guess The Predator V{style_match.group(1)} FINAL VISUAL LOCK validation PASS: 5 play modes, 2 Daily challenges, 3 rewards, 14 SFX, 6 traits, 2 scoreboards')
 print('Supabase project settings are preserved; live submission origin changes are deployed separately.')
 

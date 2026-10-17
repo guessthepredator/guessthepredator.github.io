@@ -27,9 +27,14 @@ jobs:
           node-version: '22'
       - name: Remove obsolete files and legacy test suites
         run: python3 scripts/clean_old_release.py
+      - name: Cache background removal model
+        uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: gtp-u2net-v1
       - name: Download and validate five original full-body portraits
         run: |
-          python3 -m pip install --quiet Pillow requests
+          python3 -m pip install --quiet Pillow requests 'rembg[cpu]==2.0.67'
           OUTPUT_DIR=assets/portraits python3 scripts/probe_fullbody.py --strict
       - name: Check JavaScript modules
         run: for f in src/*.mjs; do node --check "$f"; done

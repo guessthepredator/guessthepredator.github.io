@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.27.0')&&html.includes('app.mjs?v=2.27.0'));
+ assert.ok(html.includes('styles.css?v=2.28.0')&&html.includes('app.mjs?v=2.28.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -156,13 +156,13 @@ test('V2.26 audio supports distinct modes, visible homepage hover and valid loss
  assert.ok(app.includes("if(next.finished)sound('lose');"));
 });
 
-test('V2.27 local full-body build is preferred for five Legends, not head-only fallback',()=>{
+test('V2.28 transparent full-body build is preferred for five Legends, not head-only fallback',()=>{
  const manifest=read('src/portrait_media_manifest.mjs');
  const probe=read('scripts/probe_fullbody.py');
  const workflow=read('.github/workflows/pages.yml');
  const qa=read('.github/workflows/pr-qa.yml');
  for(const slug of ['alter','ballistic','catalyst','conduit','sparrow']){
-  assert.ok(manifest.includes("original-"+slug+".png"));
+  assert.ok(manifest.includes("cutout-"+slug+".png"));
  }
  assert.ok(app.includes('...(localFile?[\x60./assets/portraits/'));
  assert.ok(probe.includes('raise SystemExit('));
@@ -178,4 +178,23 @@ test('V2.27 active Trivia centers its question and supports typed answers in vie
  assert.ok(css.includes('V2.27 — Focused Trivia gameplay'));
  assert.ok(css.includes('.trivia-page-active .trivia-type'));
  assert.ok(css.includes('.trivia-page-active .trivia-main'));
+});
+
+test('V2.28 builds real transparent cutouts and prevents original scene backgrounds',()=>{
+ const pipeline=read('scripts/probe_fullbody.py');
+ const release=read('scripts/validate_release.py');
+ const manifest=read('src/portrait_media_manifest.mjs');
+ const workflow=read('.github/workflows/pages.yml');
+ const qa=read('.github/workflows/pr-qa.yml');
+ assert.ok(pipeline.includes('from rembg import new_session'));
+ assert.ok(pipeline.includes('remove(studio, session=session'));
+ assert.ok(pipeline.includes('ImageChops.multiply('));
+ assert.ok(pipeline.includes('transparent_ratio < 0.30'));
+ assert.ok(pipeline.includes('cutout-'));
+ assert.ok(release.includes("alpha.getpixel(c)<=15"));
+ assert.ok(workflow.includes("'rembg[cpu]==2.0.67'"));
+ assert.ok(qa.includes("'rembg[cpu]==2.0.67'"));
+ for(const slug of ['alter','ballistic','catalyst','conduit','sparrow'])
+  assert.ok(manifest.includes("cutout-"+slug+".png"));
+ assert.ok(!manifest.includes("original-alter.png"));
 });
