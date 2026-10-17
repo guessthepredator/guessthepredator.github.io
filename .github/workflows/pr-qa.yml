@@ -1,0 +1,28 @@
+name: V2.23 Pull Request QA
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Remove obsolete files and tests from worktree
+        run: python3 scripts/clean_old_release.py
+      - name: Check JavaScript module syntax
+        run: for f in src/*.mjs; do node --check "$f"; done
+      - name: Run regression suites
+        run: node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs tests/v210.test.mjs tests/v212.test.mjs tests/v213.test.mjs tests/v214.test.mjs tests/v215.test.mjs tests/v216.test.mjs tests/v217.test.mjs tests/v218.test.mjs tests/v219.test.mjs tests/v220.test.mjs tests/v222.test.mjs
+      - name: Validate release assets
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 scripts/validate_release.py
