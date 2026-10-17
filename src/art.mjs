@@ -35,6 +35,40 @@ export const verifiedSkinPortraits=Object.freeze({
   "conduit":"Clearwater Conduit.png",
   "sparrow":"Char Sparrow.png"
 });
+// Existing square Legend icon files verified in a public GitHub asset manifest.
+// Source attribution: moeneri/astrbot_plugin_apexrankwatch (Fandom portraits).
+// These are a LAST RESORT fallback, not replacements for tall original renders.
+export const reliableIconFallbacks=Object.freeze({
+  "alter":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/alter.png",
+  "ash":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/ash.png",
+  "axle":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/axle.png",
+  "ballistic":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/ballistic.png",
+  "bangalore":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/bangalore.png",
+  "bloodhound":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/bloodhound.png",
+  "catalyst":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/catalyst.png",
+  "caustic":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/caustic.png",
+  "conduit":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/conduit.png",
+  "crypto":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/crypto.png",
+  "fuse":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/fuse.png",
+  "gibraltar":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/gibraltar.png",
+  "horizon":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/horizon.png",
+  "lifeline":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/lifeline.png",
+  "loba":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/loba.png",
+  "mad-maggie":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/mad_maggie.png",
+  "mirage":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/mirage.png",
+  "newcastle":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/newcastle.png",
+  "octane":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/octane.png",
+  "pathfinder":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/pathfinder.png",
+  "rampart":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/rampart.png",
+  "revenant":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/revenant.png",
+  "seer":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/seer.png",
+  "sparrow":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/sparrow.png",
+  "valkyrie":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/valkyrie.png",
+  "vantage":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/vantage.png",
+  "wattson":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/wattson.png",
+  "wraith":"https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/wraith.png"
+});
+
 export const portraitOriginalNames=Object.freeze({
   "alter":"Alter",
   "ash":"Ash",
@@ -80,7 +114,7 @@ export function portraitSourcesFor(slug,{pixel=false}={}){
  ]:[];
  const previous=artCatalog[slug]||[];
  const alternate=pixel?previous.filter(url=>!url.includes('dexerto.com')&&!url.includes('portrait.jpg')):previous;
- return [...new Set([...(direct?[direct]:[]),...knownSkin,...originals,...alternate])];
+ return [...new Set([...(direct?[direct]:[]),...knownSkin,...originals,...alternate,...(reliableIconFallbacks[slug]?[reliableIconFallbacks[slug]]:[])])];
 }
 
 // Public artwork source catalog. Host permission and availability may change.
