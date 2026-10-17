@@ -122,6 +122,15 @@ export function scannerState(round,target,roster){
     const last=signals.filter(s=>s.field===field).at(-1);
     const green=signals.find(s=>s.field===field&&s.kind==='correct');
     if(target[field]==null){output[field]=round.guesses.length?{field,kind:'unknown',value:'UNKNOWN',direction:0}:{field,kind:'hidden',value:'—',direction:0};continue;}
+    // Full Scan is a comparison of the LATEST guess, never a composite of
+    // earlier attempts. A red result must stay red even if an older guess
+    // matched this field; only a genuinely matching latest guess is green.
+    if(round.mode==='full'){
+      if(round.hints.includes(field)){output[field]={field,kind:'hint',value:formatValue(target[field],field),direction:0};continue;}
+      output[field]=last||{field,kind:'hidden',value:'—',direction:0};
+      continue;
+    }
+    // One Signal keeps confirmed intel between guesses.
     if(green){output[field]={...green,kind:'correct',value:formatValue(target[field],field)};continue;}
     if(round.hints.includes(field)){output[field]={field,kind:'hint',value:formatValue(target[field],field),direction:0};continue;}
     output[field]=last||{field,kind:'hidden',value:'—',direction:0};
