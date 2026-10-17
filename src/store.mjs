@@ -3,9 +3,9 @@ export function freshStore(){return {version:3,days:{},practice:{},settings:{aud
 export function loadStore(storage=null){
   try {
     const raw=(storage??globalThis.localStorage).getItem(KEY);const data=raw?JSON.parse(raw):null;
-    if(!data?.days||!data?.practice)return freshStore();
+    if(!data||typeof data!=='object'||Array.isArray(data))return freshStore();
     const base=freshStore();
-    return {...base,...data,settings:{...base.settings,...data.settings},history:{...base.history,...data.history},submittedDays:{...base.submittedDays,...data.submittedDays},profile:{...base.profile,...data.profile}};
+    return {...base,...data,days:data.days&&typeof data.days==='object'&&!Array.isArray(data.days)?data.days:{},practice:data.practice&&typeof data.practice==='object'&&!Array.isArray(data.practice)?data.practice:{},settings:{...base.settings,...data.settings},history:{...base.history,...data.history},submittedDays:{...base.submittedDays,...data.submittedDays},profile:{...base.profile,...data.profile}};
   } catch {return freshStore();}
 }
 export function saveStore(state,storage=null){try{(storage??globalThis.localStorage).setItem(KEY,JSON.stringify(state));}catch{/* private mode still plays */}}
