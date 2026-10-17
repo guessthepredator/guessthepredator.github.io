@@ -8,8 +8,8 @@ locs=json.loads((P/'assets/map-catalog.json').read_text())
 assert len(locs)==36 and len({l['id'] for l in locs})==36 and len({l['map'] for l in locs})==6
 assert Image.open(P/'assets/decor/haunted-hero.webp').size[0]>=1200
 html=(P/'index.html').read_text();app=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
-assert html.count('rel="stylesheet"')==1 and 'styles.css?v=2.6.0' in html
-assert 'app.mjs?v=2.6.0' in html and 'NOVA' in html
+assert html.count('rel="stylesheet"')==1 and 'styles.css?v=2.6.1' in html
+assert 'app.mjs?v=2.6.1' in html and 'NOVA' in html
 assert 'paintPixelScene' in app and 'scenePalette' in (P/'src/pixel_scene.mjs').read_text()
 assert 'id="mirage-gaze"' not in app and 'MEDIA_STUDIO' not in app
 for word in ['announcerAvailable','stopAnnouncer','voiceCue(\'ready\')','say(\'ready\')','data-action="announcer"']:
@@ -28,5 +28,10 @@ assert 'cp index.html styles.css dist/' in workflow and 'install_cc0_announcer' 
 assert 'styles.css' in workflow
 for path in (P/'src').glob('*.mjs'):
  assert '?v=2.5.1' not in path.read_text(),path
-print('NOVA V2.6 release audit PASS: 36 POIs, 1 stylesheet, 14 nonverbal SFX, no announcer, no simulated Map assets')
+print('NOVA V2.6.1 release audit PASS: 36 POIs, 1 stylesheet, 14 nonverbal SFX, no announcer, no simulated Map assets')
 print('Map/portraits remain third-party: live availability and usage permissions not certified.')
+
+# Guard against accidental reintroduction of incompatible legacy tests / wildcard CI runs.
+assert 'node --test tests/gtp2.test.mjs tests/v26.test.mjs' in workflow
+assert 'tests/*.test.mjs' not in workflow
+assert not any((P/'tests'/name).is_file() for name in ('v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs'))

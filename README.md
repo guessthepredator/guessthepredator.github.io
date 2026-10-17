@@ -1,4 +1,4 @@
-# GUESS THE PREDATOR 2 — NOVA V2.6
+# GUESS THE PREDATOR 2 — NOVA V2.6.1
 
 Fan-made static game. Open using a local static server (`python3 -m http.server 8000`) or GitHub Pages.
 
@@ -11,3 +11,5 @@ Fan-made static game. Open using a local static server (`python3 -m http.server 
 - 28 Legend entries still rely on third-party portrait URLs; some may fail depending on the user's connection. Presentation is consistent, poses are not 3D-matched.
 
 See `RIGHTS_AND_GITHUB_AUDIT.md`. Not affiliated with or endorsed by EA or Respawn.
+
+- CI hotfix: stale V2.1–V2.5 tests are removed by cleanup; GitHub Actions runs the current test suites explicitly.

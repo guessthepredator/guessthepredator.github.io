@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Remove known stale GTP2 concept / duplicate media assets only.
+"""Remove obsolete GTP2 resources and incompatible tests from older releases.
 Will NEVER delete .git, real maps, or other user-provided files.
 """
 from pathlib import Path
@@ -39,3 +39,11 @@ for name in ['announcer.mjs','voice.mjs','voice_manifest.mjs']:
 for name in ['announcer','voices']:
     stale=R/'assets'/name
     if stale.is_dir():shutil.rmtree(stale);print('REMOVED voice directory:',name)
+
+# These are tests for CSS/audio/modules that intentionally no longer exist.
+# GitHub Desktop must track their DELETIONS; just extracting a ZIP never removes them.
+for name in ('v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs'):
+    stale=R/'tests'/name
+    if stale.is_file():
+        stale.unlink()
+        print('REMOVED legacy test:',stale.relative_to(R))

@@ -1,3 +1,11 @@
+# NOVA V2.6.1 — GitHub Actions hotfix
+
+- Fixed CI failing because obsolete V2.1–V2.5 tests were retained from a previous repository.
+- GitHub Actions runs the current test suites explicitly rather than wildcarding old ones.
+- Cleanup script removes only known obsolete tests/assets, preserving `.git`, current tests, and user Map files.
+- Cache-busted CSS and JS together with `v=2.6.1`.
+- No change to gameplay, Map, pixel rendering, or SFX.
+
 # NOVA v2.6 — Code / UX audit
 
 **Removed:** extra four CSS requests and mixed-version cache states, CC0 announcer auto-play and the repeated `Ready` clips, voice scripts and voice toggles, legacy tests tied to superseded release CSS, AI substitute Legend figures, schematic Map fallbacks.
