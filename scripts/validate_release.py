@@ -15,7 +15,22 @@ assert app_match is not None, 'Versioned app.mjs script missing'
 assert style_match.group(1)==app_match.group(1), 'CSS and JavaScript cache versions differ'
 assert f"leaderboard.mjs?v={app_match.group(1)}" in js, 'Core app import uses stale version'
 assert 'function leaderboard()' in js and 'function howTo()' in js and 'function faq()' in js
-assert 'gtp27-mode-grid' in css and 'gtp27-classic-banner' in js
+assert 'gtp27-mode-grid' in css, 'Legacy home asset styles must remain for page compatibility'
+# V2.30 uses a cinematic round layout instead of the deprecated Classic banner.
+for required_ui in (
+ 'function cinematicIdentityBoard(round,target)',
+ 'function cinematicStageAside(round,target)',
+ 'function cinematicControls(round,target)',
+ 'gtp230-titlebar',
+ 'gtp230-arena',
+ 'gtp230-trait-list',
+ 'gtp230-control-row',
+ 'data-action="surrender"',
+):
+ assert required_ui in js, f'Missing cinematic gameplay UI: {required_ui}'
+for required_style in ('.gtp230-game', '.gtp230-titlebar', '.gtp230-arena',
+ '.gtp230-btn-main', '.gtp230-trait-different', '.trivia-page-active'):
+ assert required_style in css, f'Missing cinematic game theme: {required_style}'
 assert "['classic', 'pixel', 'quote', 'ability', 'emoji']" in (P/'src/engine.mjs').read_text()
 assert 'mapGame(' not in js and 'data-mode="map"' not in js
 assert not any((P/name).exists() for name in ['MEDIA_STUDIO.html','src/maps.mjs','src/map_runtime.mjs','src/announcer.mjs','assets/game-bg/map.svg'])

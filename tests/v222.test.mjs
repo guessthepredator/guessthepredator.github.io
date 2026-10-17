@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.29.0')&&html.includes('app.mjs?v=2.29.0'));
+ assert.ok(html.includes('styles.css?v=2.30.0')&&html.includes('app.mjs?v=2.30.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -95,7 +95,7 @@ test('home cards leave space for character art; game sidebars match every mode',
 
 test('V2.24 orbit, full dock art, game sessions and Trivia timeout are wired',()=>{
  assert.ok(app.includes('gtp224-orbit-'));
- assert.ok(app.includes('gtp224-session-banner'));
+ assert.ok(app.includes('gtp230-session'));
  assert.ok(css.includes('V2.24 — true orbit'));
  assert.ok(css.includes('.gtp222-home-dock .gtp222-wheel-illustration'));
  assert.ok(css.includes('.gtp222-home-dock .gtp222-spotlight-art'));
@@ -199,23 +199,32 @@ test('V2.28 builds real transparent cutouts and prevents original scene backgrou
  assert.ok(!manifest.includes("original-alter.png"));
 });
 
-test('V2.29 game clarity: clue, answer, scanner and readable filled buttons',()=>{
+test('V2.30 cinematic game matches supplied seven-panel UI reference while retaining functionality',()=>{
  const unknown=read('assets/decor/unknown-legend.svg');
- assert.ok(unknown.includes('<svg')&&unknown.includes('Unknown Legend')&&unknown.includes('id="visor"'));
+ assert.ok(unknown.includes('<svg')&&unknown.includes('Unknown Legend'));
  assert.ok(app.includes('unknown-legend.svg'));
- assert.ok(app.includes('gtp229-game-layout'));
- assert.ok(app.includes('gtp229-answer-zone'));
- assert.ok(app.includes('gtp229-scan-preview'));
- assert.ok(app.includes('gtp229-scan-settings'));
- assert.ok(app.includes('gtp229-submit'));
- assert.ok(app.includes('gtp229-browse'));
- assert.ok(app.includes('gtp229-hint'));
- assert.ok(app.includes('details class="gtp229-scan-settings"'));
- assert.ok(!app.includes('<section class="game-bottom">'));
- assert.ok(!app.includes('<div class="tried-list"'));
- assert.ok(css.includes('V2.29 · GAMEPLAY CLARITY PASS'));
+ assert.ok(app.includes('function cinematicIdentityBoard(round,target)'));
+ assert.ok(app.includes('function cinematicStageAside(round,target)'));
+ assert.ok(app.includes('function cinematicControls(round,target)'));
+ assert.ok(app.includes('gtp230-titlebar'));
+ assert.ok(app.includes('gtp230-arena'));
+ assert.ok(app.includes('gtp230-trait-list'));
+ assert.ok(app.includes('gtp230-control-row'));
+ assert.ok(app.includes('gtp230-side-stages'));
+ assert.ok(app.includes('gtp230-side-ability'));
+ assert.ok(app.includes('gtp230-side-quote'));
+ assert.ok(app.includes('gtp230-btn-main'));
+ assert.ok(app.includes('data-action="picker"'));
+ assert.ok(app.includes('data-action="hint"'));
+ assert.ok(app.includes('data-action="submit-search"'));
+ assert.ok(app.includes('data-action="surrender"'));
+ assert.ok(app.includes("else if(action==='surrender')"));
+ assert.ok(app.includes('window.confirm('));
+ assert.ok(css.includes('V2.30 — CINEMATIC NEON MODES'));
  for(const mode of ['classic','pixel','quote','ability','emoji'])
-  assert.ok(css.includes('[data-mode="'+mode+'"] .gtp229-game'));
- assert.ok(css.includes('background:var(--gtp229-accent)!important'));
- assert.ok(css.includes('.gtp229-mystery-visual'));
+  assert.ok(css.includes('[data-mode="'+mode+'"]{--gtp230-accent:'));
+ assert.ok(css.includes('.gtp230-board'));
+ assert.ok(css.includes('.gtp230-trait-different'));
+ assert.ok(css.includes('.gtp230-btn-danger'));
+ assert.ok(css.includes('.trivia-page-active .trivia-main'));
 });
