@@ -417,7 +417,7 @@ function getVisual(round,target){
       <div class="gtp210-clue-bottom"><strong>${shown===all.length?'ALL FIVE CLUES REVEALED':'DECRYPT THE REMAINING CLUES.'}</strong><span>${shown===all.length?'You have every symbol — make your final guess.':'More symbols unlock as you make guesses.'}</span></div>
     </div>`;
   }
-  return `<div class="clue-visual gtp27-mystery gtp29-classic-visual"><div class="gtp29-question-emblem" aria-hidden="true">?</div><div class="mystery-wording"><small>LEGEND UNKNOWN</small><strong>WHO’S THAT LEGEND?</strong><span>Use each guess to reveal the right identity.</span></div></div>`;
+  return `<div class="clue-visual gtp27-mystery gtp29-classic-visual gtp229-mystery-visual"><div class="gtp229-mystery-stage"><img class="gtp229-unknown-portrait" src="./assets/decor/unknown-legend.svg" alt="Unknown Legend: an armored silhouette with a glowing question mark" width="680" height="760" loading="eager" decoding="async"/><span class="gtp229-classified-stamp" aria-hidden="true">IDENTITY CLASSIFIED</span></div><div class="mystery-wording"><small>01 · UNKNOWN LEGEND</small><strong>WHO'S THAT LEGEND?</strong><span>Compare clues to uncover the identity.</span></div></div>`;
 }
 function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&Object.values(currentDailyRounds(store.days,today())).some(r=>r?.won&&r.answer===answers()[mode])?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" ><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
 function styleStrip(round){
@@ -436,6 +436,7 @@ function latestSignal(round,target){
   return `<div class="flash intel-neutral" role="status"><span class="signal-mark">⌁</span><span><strong>${esc(s.guess)} · ${LABELS[s.field]} ${correct?'TRAIT MATCH':'TRAIT DIFFERENCE'}${s.direction?s.direction>0?' ↑':' ↓':''}</strong><small>${esc(s.value)} ${s.direction?(s.direction>0?'· Target has a higher value':'· Target has a lower value'):correct?'· Only this trait matches — target not found':'· Keep investigating'} · NOT A WIN</small></span></div>`;
 }
 function scannerMarkup(round,target){
+  if(!round.guesses.length)return `<section class="gtp229-scan-preview" aria-label="Identity scanner waiting for guesses"><span class="gtp229-step">03 · IDENTITY SCANNER</span><strong>SCAN READY · AWAITING GUESS</strong><small>Make a guess to compare traits. Green = MATCH, red = DIFFERENT.</small></section>`;
   const scanner=scannerState(round,target,legends);
   const lastField=round.signals.at(-1)?.field;
   const verified=FIELDS.filter(field=>scanner[field]?.kind==='correct'||scanner[field]?.kind==='hint');
@@ -452,7 +453,7 @@ function scannerMarkup(round,target){
   const disabled=round.finished||round.guesses.length===0||round.hints.length>=MAX_HINTS||remaining.length===0;
   return `<div class="scanner-head gtp226-scanner-head"><div><strong>◈ IDENTITY SIGNAL BOARD</strong><small>${round.mode==='full'?'FULL SCAN · COMPARES THE LATEST GUESS ONLY':'ONE SIGNAL · CONFIRMED MATCHES STAY GREEN'}</small></div><div class="gtp226-scan-metrics" aria-label="${matches} matching and ${misses} different traits"><span class="matching">✓ ${matches} MATCH</span><span class="different">✕ ${misses} DIFFERENT</span></div></div>
   ${round.mode==='signal'?`<div class="gtp222-locked-intel" role="status" aria-label="Previously confirmed traits"><strong>CONFIRMED INTEL</strong><div>${chips||'<small>Correct traits will stay locked here after every new guess.</small>'}</div></div>`:''}<div class="scanner" role="group" aria-label="Legend scanner">${cells}</div>
-  <div class="hint-row"><button class="btn lilac small" data-action="hint" ${disabled?'disabled':''}>✧ SMART HINT · ${MAX_HINTS-round.hints.length} LEFT</button><small>Reveals a correct trait in green</small></div>`;
+  `;
 }
 function fullScanHistoryMarkup(round,target){
   if(round.mode!=='full'||!round.guesses.length)return '';
@@ -476,11 +477,16 @@ function guessBody(round,target){
     return `<div class="end-panel ${round.won?'gtp212-victory':''}"><span class="rank">${round.won?rank:'—'}</span><h2>${round.won?'TARGET FOUND!':round.loss==='time'?'TIME’S UP.':'NICE TRY.'}</h2><p>${round.won?`You identified ${esc(target.name)} in ${round.guesses.length} guesses. ${score} points earned.`:`Your mystery Legend was ${esc(target.name)}. Every guess counts. Try another round!`}</p>${badges.length?`<div class="medal-row">${badges.map(tag=>`<span class="medal">${esc(tag)}</span>`).join('')}</div>`:''}<div class="answer-tag">${portrait(target.slug,{alt:target.name,cls:'balanced'})}<strong>${esc(target.name)}</strong></div>
       <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?(dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'):'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
   }
-  return `<div class="guess-top"><div><small>YOUR NEXT MOVE</small><h2>WHO’S THAT <span style="color:var(--tile)">LEGEND?</span></h2></div><span class="pill">${round.guesses.length}/${maxGuesses(round)} GUESSES · ${maxGuesses(round)-round.guesses.length} LEFT</span></div>
-  <div class="search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button class="btn pink small" data-action="submit-search" title="Guess first matching Legend">↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
-  <div class="guess-tools"><button class="btn mint small" data-action="picker">◫ BROWSE LEGENDS</button><small>Filter by class · Guess faster · Press G</small></div>
-  ${latestSignal(round,target)}${round.guesses.length?`<div class="gtp28-instant-history" aria-label="Previous attempts"><b>GUESS HISTORY</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}${scannerMarkup(round,target)}
-  <div class="tried-list" aria-label="Eliminated guesses">${round.guesses.length?round.guesses.map(name=>`<span class="used">${esc(name)}</span>`).join(''):'<span style="color:#875d91;font-size:10px;font-weight:800">No Legends eliminated yet · open Browse for faster reads</span>'}</div>`;
+  const hintUnavailable=round.guesses.length===0||round.hints.length>=MAX_HINTS||availableHintFields(round,target,legends).length===0;
+  return `<div class="gtp229-stepbar"><div><span class="gtp229-step">02 · YOUR GUESS</span><h2>IDENTIFY THE <em>LEGEND</em></h2></div><strong class="gtp229-remaining">${maxGuesses(round)-round.guesses.length}<small> GUESSES LEFT</small></strong></div>
+  <div class="gtp229-answer-zone">
+    <div class="search-wrap gtp229-search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button type="button" class="btn pink gtp229-submit" data-action="submit-search" title="Guess the first matching Legend">GUESS ↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
+    <div class="guess-tools gtp229-guess-actions"><button type="button" class="btn mint gtp229-browse" data-action="picker">▦ BROWSE LEGENDS</button><button type="button" class="btn lilac gtp229-hint" data-action="hint" ${hintUnavailable?'disabled':''}>✧ GET HINT <small>${MAX_HINTS-round.hints.length} LEFT</small></button></div>
+    <p class="gtp229-action-help">${round.guesses.length===0?'Start with any Legend · hints unlock after your first guess':'Choose another Legend, or request a hint if you are stuck.'}</p>
+  </div>
+  ${round.guesses.length?latestSignal(round,target):''}
+  ${round.guesses.length?`<div class="gtp28-instant-history gtp229-history" aria-label="Previous attempts"><b>PREVIOUS GUESSES</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}
+  ${scannerMarkup(round,target)}`;
 }
 function game(){
   const round=ensureRound();const target=legendByName(legends,round.answer);
