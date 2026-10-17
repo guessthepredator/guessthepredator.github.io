@@ -18,15 +18,15 @@ test('both daily checkpoints and all main interactive surfaces wired',()=>{
  for(const action of ['home-daily','session','intel-open','wheel'])assert.ok(home.includes(`data-action="${action}"`));
  assert.ok(home.includes('gtp219-rewards'));assert.ok(home.includes('gtp222-spotlight-art'));assert.ok(app.includes('data-action="leaderboard"'));assert.ok(app.includes('data-action="profile"'));
 });
-test('browse portraits consistently rendered without false full-body files',()=>{
+test('browse portraits use verified local full-body sources where available',()=>{
  assert.ok(css.includes('#app .gtp2-picker .picker-legend .portrait-holder'));
  assert.ok(css.includes('object-fit:contain!important'));
  assert.ok(app.includes('localPortraitFiles[slug]'));
- const manifest=read('src/portrait_media_manifest.mjs'); assert.ok(manifest.includes('localPortraitFiles=Object.freeze({})'));
+ const manifest=read('src/portrait_media_manifest.mjs'); for(const slug of ['alter','ballistic','catalyst','conduit','sparrow'])assert.ok(manifest.includes('original-'+slug+'.png'));
 });
 test('mode accents and stable release cache versions',()=>{
  for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(css.includes(`[data-mode="${m}"]`));
- assert.ok(html.includes('styles.css?v=2.26.0'));
- assert.ok(html.includes('app.mjs?v=2.26.0'));
+ assert.ok(html.includes('styles.css?v=2.27.0'));
+ assert.ok(html.includes('app.mjs?v=2.27.0'));
  assert.ok(app.includes("app.dataset.mode=screen==='game'?active:''"));
 });

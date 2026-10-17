@@ -18,6 +18,10 @@ jobs:
           node-version: '22'
       - name: Remove obsolete files and tests from worktree
         run: python3 scripts/clean_old_release.py
+      - name: Fetch and verify full-body portrait assets
+        run: |
+          python3 -m pip install --quiet Pillow requests
+          OUTPUT_DIR=assets/portraits python3 scripts/probe_fullbody.py --strict
       - name: Check JavaScript module syntax
         run: for f in src/*.mjs; do node --check "$f"; done
       - name: Run regression suites
