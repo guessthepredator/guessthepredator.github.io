@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="760" viewBox="0 0 680 760" role="img" aria-labelledby="u-title u-desc">
+<title id="u-title">Unknown Legend</title>
+<desc id="u-desc">An original mysterious armored figure with a softly illuminated question mark. No existing game character is depicted.</desc>
+<defs>
+ <radialGradient id="aura"><stop stop-color="#52dfff" stop-opacity=".32"/><stop offset=".45" stop-color="#2f55c9" stop-opacity=".12"/><stop offset="1" stop-color="#151a42" stop-opacity="0"/></radialGradient>
+ <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#27465f"/><stop offset=".3" stop-color="#111e32"/><stop offset=".68" stop-color="#060f24"/><stop offset="1" stop-color="#23304f"/></linearGradient>
+ <linearGradient id="edges" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#60e8ee"/><stop offset=".53" stop-color="#71a4ff"/><stop offset="1" stop-color="#ce79ff"/></linearGradient>
+ <linearGradient id="visor" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#3cc8d6"/><stop offset=".54" stop-color="#153660"/><stop offset="1" stop-color="#a17ff2"/></linearGradient>
+ <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="24"/></filter>
+</defs>
+<ellipse cx="340" cy="402" rx="291" ry="365" fill="url(#aura)"/>
+<g opacity=".48" stroke="url(#edges)" fill="none">
+ <path d="M148 240Q339 64 532 240" stroke-width="2" stroke-dasharray="8 16"/>
+ <path d="M117 401Q339 114 563 402" stroke-width="1.4" stroke-dasharray="4 16"/>
+ <circle cx="340" cy="354" r="210" stroke-width="1" stroke-dasharray="8 20" opacity=".45"/>
+</g>
+<ellipse cx="341" cy="727" rx="158" ry="13" fill="#52d6ff" opacity=".25" filter="url(#soft)"/>
+<!-- Back-armored silhouette -->
+<path d="M226 265L174 279 132 332 114 489 127 538 171 544 188 478 204 398 214 511 231 578 251 731 320 736 332 568 350 561 359 738 427 735 455 575 470 508 481 399 499 479 512 542 557 537 570 493 545 333 504 280 454 261 423 238 258 236Z" fill="url(#metal)" stroke="#5faecc" stroke-opacity=".68" stroke-width="6" stroke-linejoin="round"/>
+<!-- Feet/leg joint regions -->
+<path d="M230 576L245 696 257 728 314 727 324 576Z M357 580L360 730 422 733 439 693 456 577Z" fill="#0c1b30" stroke="#7f9cd0" stroke-opacity=".6" stroke-width="5"/>
+<path d="M242 625L318 624 M243 681L310 678 M364 625L445 627 M370 681L439 682" stroke="#65d9ef" stroke-opacity=".32" stroke-width="8"/>
+<!-- Breast armor -->
+<path d="M205 311L259 270 326 286 341 311 358 286 416 270 475 309 443 487 371 539 308 539 231 487Z" fill="#0d1d31" stroke="#64d7ef" stroke-opacity=".78" stroke-width="5" stroke-linejoin="round"/>
+<path d="M218 329L264 301 311 318 323 408 286 452 234 413Z M461 330L417 301 371 320 359 408 395 451 446 416Z" fill="#172c45" stroke="#6c93ca" stroke-opacity=".65" stroke-width="3"/>
+<path d="M272 491L406 491 387 525 292 525Z" fill="#0a182d" stroke="#77b4d5" stroke-width="3"/>
+<!-- Reinforced shoulders -->
+<path d="M205 277L154 305 119 350 132 377 200 382 241 332Z M476 278L522 304 562 350 547 378 475 382 435 329Z" fill="#172e42" stroke="#80deee" stroke-width="5" stroke-linejoin="round"/>
+<path d="M144 352L199 347 M480 349L535 352" stroke="#dc9dff" stroke-width="6" stroke-linecap="round" opacity=".72"/>
+<!-- Gauntlets -->
+<path d="M123 462L183 472 179 526 160 555 128 546 112 510Z M496 470L558 461 572 510 555 546 522 556 501 521Z" fill="#0a192b" stroke="#8ca5e9" stroke-width="4"/>
+<path d="M132 489L176 496 M502 496L558 489" stroke="#73e4de" stroke-width="7" opacity=".7"/>
+<!-- Helmet and shadowed unknown face -->
+<path d="M265 239L253 180 270 112 305 88 367 83 406 113 423 184 412 240 379 277 299 277Z" fill="#0a172a" stroke="#90b5dc" stroke-width="6" stroke-linejoin="round"/>
+<path d="M276 175L295 135 384 130 402 169 391 225 354 247 314 245 286 223Z" fill="#030f20" stroke="#5ae6eb" stroke-width="3"/>
+<path d="M281 162L312 149 367 151 396 164 383 198 299 198Z" fill="url(#visor)" opacity=".85"/>
+<path d="M295 190L380 192" stroke="#a6f4f2" stroke-opacity=".7" stroke-width="3"/>
+<path d="M272 117L315 95 367 97 402 128" stroke="url(#edges)" stroke-width="7" stroke-linecap="round" fill="none"/>
+<path d="M308 224L366 225 351 242 326 243Z" fill="#1e354e" stroke="#6095c9" stroke-width="2"/>
+<path d="M320 271L361 271 367 304 316 304Z" fill="#0a1629" stroke="#657e9d" stroke-width="4"/>
+<!-- Glowing question mark centerpiece -->
+<g filter="url(#glow)">
+ <path d="M309 376C310 338 334 325 363 327 394 329 415 350 405 376 397 398 364 402 359 423" fill="none" stroke="#70fbff" stroke-width="15" stroke-linecap="round"/>
+ <circle cx="359" cy="448" r="9" fill="#aefbff"/>
+</g>
+<path d="M196 425L188 457 M489 423L496 456 M271 555L305 555 M378 555L413 555" stroke="url(#edges)" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+<g fill="#8cddf0" opacity=".66"><circle cx="155" cy="406" r="4"/><circle cx="525" cy="405" r="4"/><circle cx="330" cy="559" r="3"/><circle cx="349" cy="558" r="3"/></g>
+</svg>
