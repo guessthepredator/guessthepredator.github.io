@@ -9,9 +9,13 @@ const read=p=>readFileSync(resolve(root,p),'utf8');
 test('Eclipse CSS linked and deployed',()=>{
  assert.ok(read('index.html').includes('eclipse-v24.css'));assert.ok(read('.github/workflows/pages.yml').includes('eclipse-v24.css'));
 });
-test('external source corresponds to its POI and meaningful local fallback',()=>{
+test('POI source references do not silently fall back to non-game illustrations',()=>{
  assert.equal(LOCATIONS.length,36);
- for(const loc of LOCATIONS){const sources=mapShots(loc);assert.ok(sources.at(-1).endsWith(`${loc.id}.svg`));assert.ok(sourceForLocation(loc).startsWith('https://apexlegends.wiki.gg/'));}
+ for(const loc of LOCATIONS){
+  const sources=mapShots(loc);
+  assert.ok(sources.every(url=>url.startsWith('https://apexlegends.wiki.gg/')||url.startsWith('./assets/maps/')));
+  assert.ok(sourceForLocation(loc).startsWith('https://apexlegends.wiki.gg/'));
+ }
 });
 test('user upload studio deleted from publish and from source',()=>{
  assert.ok(!existsSync(resolve(root,'MEDIA_STUDIO.html')));assert.ok(!read('src/app.mjs').includes('MEDIA_STUDIO'));

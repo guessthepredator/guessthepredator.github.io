@@ -1,35 +1,21 @@
-# Sources, rights, and map image provenance (V2.4)
+# Source / Rights Audit — V2.5 Test Build
 
-## Critical publication caution
+**Not an authorized EA fan game.** EA's content policy allows some personal uses and fan sites, but **specifically disallows fan games, spin-offs and knock-offs**. Merely making small cosmetic modifications to copyrighted images, quoting the source, linking to a wiki, or adding a disclaimer does not guarantee that use is permissible. Public GitHub hosting could be subject to a copyright complaint.
 
-This is an **independent Apex-related fan trivia project**. **EA's current content policy explicitly says it does not allow fan games, remakes, or spin-offs.** Merely presenting disclaimers or linking to a page instead of copying screenshots does **not** guarantee immunity from a copyright/DMCA complaint. We cannot certify that public GitHub Pages hosting is authorized. For a clearly compliant public product, obtain permission from the rightsholders or replace EA-specific names, designs, and gameplay identifiers with original IP.
+EA policy: https://help.ea.com/en/articles/security-and-rules/ea-content-policy/
 
-Policy: https://help.ea.com/en/articles/security-and-rules/ea-content-policy/
+## Map images
 
-## What was researched
+The prototype references file redirect URLs published in `src/external_map_sources.mjs`. Wiki locations: https://apexlegends.wiki.gg/wiki/Category:Map_images and https://apexlegends.wiki.gg/wiki/Category:Kings_Canyon_images . The app **does not redistribute** those original screenshots inside the ZIP. They are external image URLs, not confirmed reproduction licenses. At runtime only successfully loaded external location references can enter the playable pool. The corresponding POI name comes from the catalog; unknown or mismatched images must be reviewed before release.
 
-- [Apex Legends Wiki — Kings Canyon screenshots](https://apexlegends.wiki.gg/wiki/Category:Kings_Canyon_images) includes Caustic Treatment, Crypto's Map Room, Bunker, and Octane's Gauntlet.
-- [Apex Legends Wiki — official screenshots](https://apexlegends.wiki.gg/wiki/Category:Official_screenshot_images) contains Storm Point and other location captures.
-- [EA official Maps — Kings Canyon](https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub/game-object/kings-canyon) provides a map page, not a redistribution license.
-- [EA official content policy](https://help.ea.com/en/articles/security-and-rules/ea-content-policy/) is controlling for authorized uses.
+**Zero authentic Apex POI screenshots bundled.** **No fabricated Map image fallback.** If the external hosts block direct image embedding, Map cannot be played on that device. Our offline browser tests do not establish internet image availability.
 
-`src/external_map_sources.mjs` holds documented filename references. The app tries a remote Wiki file redirect for a matched POI, then a local hand-built schematic. **A screenshot publicly accessible on a wiki or news article is NOT confirmed to be licensed for display inside this game.** No official Apex screenshots are physically bundled in this ZIP. The linked wiki may reject hotlinks or change file URLs. Do not claim these URLs are 'approved' or guaranteed.
+## Other assets
 
-Portrait art is also externally linked in `src/art.mjs`; that does not grant distribution or display permission. Eight legacy Ability icons have unverified rights. Local backgrounds, schematic clues, new CSS and UI SFX are project-created assets. Quote only displays text clues, and the optional Kenney announcer uses CC0 voice clips only if installation succeeds and source attribution/license are confirmed by source.
+28 Legend roster names are present, but official matching local 3D artwork is not. `src/art.mjs` uses external image URLs subject to third-party restrictions; it is not an image license. Eight old ability icon PNGs have unresolved permissions.
 
-## What was removed
+Original code, locally generated decorative background, CSS, and locally synthesized UI SFX are included. Quote text clues are written and are not voice impersonations. Human announcement playback is integrated with the optional Kenney Voiceover Pack released under CC0; the actual speech clips are **not included** in the ZIP and the deployment download can fail.
 
-The previous Media Studio user upload workflow, fake/generated replacements for Apex Legends in the roster, arbitrary POI imagery, the extra mode-entry sound files, duplicated announcement installs, and artificial Mirage eye canvases.
+Kenney Voiceover Pack: https://kenney.nl/assets/voiceover-pack
 
-## Shipping status
-
-| Resource | In ZIP | Reliability |
-| --- | --- | --- |
-| 36 POI-specific fallback sketches | Yes | Local, all available |
-| Apex POI in-game screenshots | No | Remote Wiki reference, permission unverified, availability unverified |
-| 28 real Legend render files | No | Externally linked, no guaranteed availability |
-| 14 original sound cues | Yes | Local WAV |
-| Actual recorded human announcer voice clips | No | Optional Kenney CC0 deploy integration, network-dependent |
-| Original project interface artwork | Yes | Local |
-
-No guarantee of GitHub / EA compliance can be made. Test in a private preview before publication.
+This source list is informational, **not** certification of copyright or GitHub account safety.

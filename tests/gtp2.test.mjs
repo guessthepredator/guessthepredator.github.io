@@ -29,8 +29,14 @@ test('map stage correctly works for interior location',()=>{
  let round=mapRound(location);round=mapGuess(round,location.map,location,100);assert.equal(round.stage,2);
  round=mapGuess(round,location.poi,location,200);assert.equal(round.finished,true);assert.equal(round.won,true);
 });
-test('map screenshot sources use documented remote redirect with a local fallback',()=>{
- for(const location of LOCATIONS){const sources=mapShots(location);assert.ok(sources.length>=1);assert.ok(sources.at(-1).endsWith(location.id+'.svg'));for(const src of sources)assert.ok(src.startsWith('./assets/map-recon/')||src.startsWith('https://apexlegends.wiki.gg/'))}
+test('Map permits documented images only, never an unrelated sketch',()=>{
+ let count=0;
+ for(const location of LOCATIONS){
+  const sources=mapShots(location);
+  for(const src of sources){assert.ok(src.startsWith('https://apexlegends.wiki.gg/')||src.startsWith('./assets/maps/'));assert.ok(!src.includes('map-recon'));}
+  count+=sources.length>0?1:0;
+ }
+ assert.ok(count>=15&&count<LOCATIONS.length,`Expected source-backed subset, found ${count}`);
 });
 test('game rules preserved',()=>{
  assert.equal(MAX_GUESSES,6);assert.equal(FULL_SCAN_GUESSES,5);

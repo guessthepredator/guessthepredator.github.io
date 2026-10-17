@@ -1,0 +1,63 @@
+/* GTP2 V2.5: gameplay is light and readable. The homepage remains dark Mirage pink. */
+:root{--lightshift-canvas:#fbeaf6;--lightshift-ink:#271736;--lightshift-line:#d8afd3;--lightshift-accent:#ef5da9}
+.gtp2-mode-card:disabled,.mode-tab:disabled,.topnav .nav-item:disabled{filter:grayscale(.75)!important;opacity:.48!important;cursor:not-allowed!important;transform:none!important;box-shadow:none!important}
+.gtp2-game-scene{color:var(--lightshift-ink)!important}
+.gtp2-game-scene:before,.gtp2-scene-classic:before,.gtp2-scene-pixel:before,.gtp2-scene-quote:before,.gtp2-scene-ability:before,.gtp2-scene-emoji:before,.gtp2-scene-map:before{
+ background:radial-gradient(ellipse at 84% 18%,#f6a6d066 0,transparent 40%),radial-gradient(ellipse at 8% 77%,#a5dcec8c 0,transparent 35%),linear-gradient(145deg,#fff4fa,#f4e3f6 55%,#e7eefa)!important;
+ opacity:1!important;position:fixed!important;inset:76px 0 0!important;z-index:-2!important
+}
+.gtp2-game-scene:after{content:""!important;position:fixed!important;inset:76px 0 0!important;background:radial-gradient(#95489a20 .9px,transparent 1px);background-size:25px 25px;pointer-events:none;z-index:-1!important;transform:none!important}
+.gtp2-game-scene .game-titlebar h1{color:#311a41!important;font-size:clamp(49px,5vw,77px)!important;line-height:.95;text-shadow:none!important}
+.gtp2-game-scene .game-titlebar p,.gtp2-game-scene .game-topline,.gtp2-game-scene .lead{color:#644978!important}
+.gtp2-game-scene .game-titlebar .kicker{color:#b43383!important}
+.gtp2-game-scene .game-topline .pill{background:#fff0f8!important;color:#522e64!important;border:1px solid #d4a2c8!important}
+.gtp2-game-scene .tiny-link{color:#4a265c!important}
+.gtp2-game-scene .game-attempts{background:#fff2fa!important;border:1px solid #bc91bd!important;color:#3c2254!important}
+.gtp2-game-scene .game-attempts small{color:#90538f!important}
+.gtp2-game-scene .clue-card,.gtp2-game-scene .guess-card,.gtp2-game-scene .map-frame,.gtp2-game-scene .map-terminal,.gtp2-game-scene .bottom-card{
+ background:#fffafedb!important;border:1.5px solid #d4a7ca!important;box-shadow:0 7px 28px #7849771b!important;border-radius:18px!important;color:#352142!important
+}
+.gtp2-game-scene .panel-top{background:linear-gradient(95deg,#ffb6d8,#e1b6ed)!important;border-bottom:1px solid #d5a4cf!important;color:#381f4a!important}
+.gtp2-game-scene .panel-top small{color:#704d7b!important}
+.gtp2-game-scene .guess-body,.gtp2-game-scene .clue-foot{background:#fffaff!important;color:#4c335f!important}
+.gtp2-game-scene .clue-visual:not(.visual-pixel):not(.gtp2-quote-rework){background:radial-gradient(circle at 50% 50%,#fff4fa,#e9cbf1 80%)!important}
+.gtp2-game-scene .mode-tab{background:#fff9fe!important;color:#5b3974!important;border:1px solid #d5a8d8!important;box-shadow:0 2px 8px #8b6c9a1a!important}
+.gtp2-game-scene .mode-tab.active{background:linear-gradient(135deg,#ffd2eb,#edbcf5)!important;color:#38234f!important;box-shadow:0 2px 14px #e67ac340!important;border-color:#e46bb5!important}
+.gtp2-game-scene .mode-rail{gap:7px!important}
+.gtp2-game-scene .search-wrap input{background:#fff!important;color:#40274f!important;border:1.5px solid #d6acd0!important}
+.gtp2-game-scene .search-wrap input:focus{outline:3px solid #f3a6d166!important}
+.gtp2-game-scene .scan-cell,.gtp2-game-scene .scanner,.gtp2-game-scene .log-item{color:#3d264e!important}
+.gtp2-game-scene .guess-top h2,.gtp2-game-scene h3{color:#361d47!important}
+.gtp2-game-scene .visual-pixel{background:radial-gradient(circle at 52% 36%,#eadcf9,#c9aedc 72%,#9a8dc3)!important}
+.gtp2-game-scene .visual-pixel .pixel-art{background:radial-gradient(circle at 50% 48%,#ffffffc9,#d2b7e97a 65%,#bea7d6)!important}
+.gtp2-game-scene .pixel-canvas.loaded{filter:none!important;transform:none!important;width:100%!important;height:100%!important;object-fit:contain!important}
+.gtp2-game-scene .px-effect-mosaic .pixel-canvas.loaded{image-rendering:pixelated!important;filter:blur(calc(var(--px-blur,0px) * .5))!important}
+.gtp2-game-scene .px-effect-soft .pixel-canvas.loaded{image-rendering:auto!important;filter:blur(var(--px-blur,0px))!important}
+.gtp2-game-scene .px-effect-holo .pixel-canvas.loaded{image-rendering:auto!important;filter:contrast(1.03) saturate(.78) blur(calc(var(--px-blur,0px) * .35))!important}
+.gtp2-game-scene .pixel-scratch,.gtp2-game-scene .pixel-vignette,.gtp2-game-scene .pixel-scan{opacity:.07!important;animation:none!important}
+.gtp2-game-scene .pixel-caption{background:#fff4fc!important;color:#4a2855!important;border:1px solid #e3add0!important;box-shadow:none!important}
+.gtp2-game-scene .pixel-preset button{background:#fff5fc!important;color:#5d3670!important;border:1px solid #d6a4d0!important;box-shadow:none!important}
+.gtp2-game-scene .pixel-preset button.active{background:#fb87bd!important;color:#29183b!important}
+.gtp2-game-scene .pixel-fallback{background:linear-gradient(160deg,#edd3f3,#d6b8e7)!important;color:#352347!important}
+.gtp2-game-scene .pixel-fallback strong,.gtp2-game-scene .pixel-fallback p,.gtp2-game-scene .pixel-fallback small{color:#4b285c!important}
+.gtp2-game-scene .map-photo{background:#1b203b!important}
+.gtp2-game-scene .map-choice{background:#fff7fc!important;color:#492653!important;border:1px solid #ce9dc4!important;box-shadow:none!important}
+.gtp2-game-scene .map-choice:hover:not(:disabled){background:#ffd0e9!important}
+.gtp2-game-scene .map-structural-intel{background:#f6e9f8!important;color:#56375f!important}
+.gtp2-hero-footer:has(.gtp2-primary) .gtp2-primary{min-width:158px}
+.gtp2-legend-card .portrait-holder{height:195px!important;min-height:195px!important;display:grid!important;place-items:end center!important;padding:6px!important;background:radial-gradient(ellipse at 50% 35%,#fff3fb,#edc6eb 80%)!important}
+.gtp2-legend-card .portrait-holder img{height:100%!important;width:100%!important;object-fit:contain!important;object-position:center bottom!important;transform:none!important;filter:drop-shadow(0 3px 5px #4e2b561f)!important}
+.gtp2-legend-card strong{font-size:14px!important}
+.gtp2-legend-card small{font-size:10px!important}
+.gtp2-picker .picker-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important}
+.gtp2-picker .picker-legend{min-height:245px!important}
+@media(max-width:900px){.gtp2-picker .picker-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:560px){.gtp2-picker .picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.gtp2-legend-card .portrait-holder{height:175px!important;min-height:175px!important}.gtp2-picker .picker-legend{min-height:220px!important}.gtp2-game-scene:before,.gtp2-game-scene:after{top:64px!important}}
+@media(prefers-reduced-motion:reduce){.gtp2-game-scene .game-layout{animation:none!important}}
+
+/* Body-level light canvas: background must not disappear behind a dark parent stacking context. */
+body.lightshift-playing{background:radial-gradient(ellipse at 80% 17%,#f4cde9 0,transparent 39%),radial-gradient(ellipse at 10% 70%,#c3e7f1b0 0,transparent 39%),linear-gradient(150deg,#fff6fa,#f4e6f6 58%,#e9edfc)!important;color:#352044!important}
+body.lightshift-playing:before{background:radial-gradient(circle at 24% 21%,#ffffff8a,transparent 44%),radial-gradient(circle at 81% 75%,#ddc8f092,transparent 39%)!important}
+body.lightshift-playing .gtp2-game-scene:after{opacity:.4!important}
+html:has(body.lightshift-playing){background:#faedf7!important}
+body.lightshift-playing #app{background:radial-gradient(circle at 84% 18%,#f3d0ed,transparent 39%),radial-gradient(circle at 5% 72%,#c8eaf2ad,transparent 37%),linear-gradient(130deg,#fff6fa,#f6e8f8 55%,#ecf1fd)!important}

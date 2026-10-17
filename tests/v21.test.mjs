@@ -14,11 +14,11 @@ test('Pinkshift theme is deployed as a real CSS file',()=>{
  assert.ok(content('.github/workflows/pages.yml').includes('styles.css pinkshift.css'));
  assert.ok(content('pinkshift.css').includes('.gtp2-hero{width:100%;border:0!important'));
 });
-test('Map external references have POI-specific names and local fallbacks',()=>{
+test('Map rejects unsupported POIs and never substitutes a generated sketch',()=>{
  assert.equal(LOCATIONS.length,36);
  for(const entry of LOCATIONS){
-  assert.ok(mapShots(entry).at(-1).endsWith(entry.id+'.svg'));
-  for(const url of mapShots(entry))assert.ok(url.startsWith('https://apexlegends.wiki.gg/')||url.startsWith('./assets/map-recon/'));
+  for(const url of mapShots(entry))assert.ok(url.startsWith('https://apexlegends.wiki.gg/')||url.startsWith('./assets/maps/'));
+  assert.ok(!mapShots(entry).some(src=>src.includes('map-recon')));
  }
  assert.ok(content('src/maps.mjs').includes('mapMediaManifest'));
 });
@@ -32,7 +32,7 @@ test('no Media Studio UI, no dead links, and revised release sources note',()=>{
  assert.ok(!existsSync(resolve(root,'MEDIA_STUDIO.html')));
  assert.ok(!content('src/app.mjs').includes('MEDIA_STUDIO.html'));
  assert.ok(content('.github/workflows/pages.yml').includes('SOURCES_AND_RIGHTS.md'));
- assert.ok(content('SOURCES_AND_RIGHTS.md').includes('NOT confirmed'));
+ assert.ok(content('SOURCES_AND_RIGHTS.md').toLowerCase().includes('not confirmed'));
 });
 test('disclaimer and publication risk disclosure are present',()=>{
  assert.ok(content('RIGHTS_AND_GITHUB_AUDIT.md').includes('HIGH RISK'));

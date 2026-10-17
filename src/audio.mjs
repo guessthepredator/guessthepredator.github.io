@@ -27,7 +27,7 @@ export function playSound(name,enabled=true){
  try{
    const original=sample(name);
    const a=original.paused?original:original.cloneNode();
-   a.volume=name.startsWith('hover-')?.26:.42;
+   a.volume=name.startsWith('hover-')?.15:.27;
    a.currentTime=0;
    const result=a.play();
    if(result?.catch)result.catch(()=>{/* Browser requires a user click to unlock audio. */});

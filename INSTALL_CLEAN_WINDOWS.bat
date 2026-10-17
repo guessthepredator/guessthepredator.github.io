@@ -1,6 +1,6 @@
 @echo off
 cd /d "%~dp0"
-echo GTP2 V2.4 - removing old Media Studio and obsolete assets (keeps .git).
+echo GTP2 V2.5 - removing old Media Studio and obsolete assets (keeps .git).
 where py >nul 2>nul
 if %errorlevel%==0 (
  py -3 scripts\clean_old_release.py

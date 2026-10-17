@@ -1,0 +1,12 @@
+{
+  "build": "V2.5 Lightshift Test",
+  "map_catalog_entries": 36,
+  "real_map_images_bundled": 0,
+  "map_gameplay_rule": "only POIs whose actual external screenshot loads successfully in-browser",
+  "generated_map_recon_files": 0,
+  "complete_local_legend_renders": 0,
+  "local_ability_pngs": 8,
+  "original_ui_wav_cues": 14,
+  "human_voice_clips_bundled": 0,
+  "media_rights": "EA-specific rights not verified; public fan-game use restricted by EA policy"
+}

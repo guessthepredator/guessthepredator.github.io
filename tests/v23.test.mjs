@@ -8,15 +8,11 @@ import {freshStore} from '../src/store.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=(path)=>readFileSync(resolve(root,path),'utf8');
 
-test('all 36 POIs have unique, relevant local recon illustrations',()=>{
+test('Catalog holds 36 POIs but map mode only considers source-backed ones',()=>{
  assert.equal(LOCATIONS.length,36);
- for(const poi of LOCATIONS){
-  const asset=resolve(root,`assets/map-recon/${poi.id}.svg`);
-  assert.ok(existsSync(asset),poi.id);
-  const xml=readFileSync(asset,'utf8');
-  assert.ok(xml.includes('SCHEMATIC CLUE')&&xml.includes('<svg'),poi.id);
-  assert.ok(mapShots(poi).includes(`./assets/map-recon/${poi.id}.svg`));
- }
+ const sources=LOCATIONS.filter(poi=>mapShots(poi).length);
+ assert.ok(sources.length>=15);
+ for(const poi of LOCATIONS){assert.ok(mapShots(poi).every(src=>!src.includes('/map-recon/')));}
 });
 test('six gameplay modes have distinct local backgrounds',()=>{
  for(const mode of ['classic','pixel','quote','ability','emoji','map']){

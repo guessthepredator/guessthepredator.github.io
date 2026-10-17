@@ -1,5 +1,5 @@
 /** Third-party screenshots (wiki mirrors). Display does not imply permission to redistribute.
- * Fallback is honest text-and-geometry intel, never random sci-fi art. See SOURCES_AND_RIGHTS.md.
+ * No generic local art is used for Map rounds. See SOURCES_AND_RIGHTS.md.
  */
 export const externalMapSources = Object.freeze({
   "kc-caustic-exterior": "CausticTreatment 01.jpg",
@@ -21,5 +21,4 @@ export const externalMapSources = Object.freeze({
   "kc-bunker": "S1 bunker 1.jpg",
   "sp-catcher": "S11 stormpoint stormcatcher.jpg",
   "sp-mill": "S11 stormpoint themill.jpg",
-  "sp-command-interior": "S11 stormpoint commandcenter.jpg"
 });

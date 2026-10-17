@@ -40,7 +40,7 @@ jobs:
       - name: Create GitHub Pages artifact
         run: |
           mkdir -p dist
-          cp index.html styles.css pinkshift.css dark-pink-v23.css eclipse-v24.css dist/
+          cp index.html styles.css pinkshift.css dark-pink-v23.css eclipse-v24.css lightshift-v25.css dist/
           cp -r src assets dist/
           cp SOURCES_AND_RIGHTS.md dist/
           touch dist/.nojekyll

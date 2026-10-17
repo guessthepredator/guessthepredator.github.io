@@ -1,1 +1,2 @@
-Real gameplay screenshots go here, one file per catalog ID, e.g. kc-caustic-exterior.webp or ed-galleria.webp. Run MEDIA_STUDIO.html to package approved captures. No synthetic or unlabeled screenshots are distributed.
+Map game images are loaded from source-backed external links and verified at runtime.
+This ZIP does not bundle real Apex map screenshots; if external sources fail, the mode disables itself.

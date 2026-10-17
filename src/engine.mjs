@@ -135,9 +135,9 @@ export function filteredRoster(roster,{search='',role='All',sort='az',excluded=[
     (!term||legend.name.toLocaleLowerCase().includes(term)||legend.role.toLocaleLowerCase().includes(term)));
   return result.sort((a,b)=>sort==='za'?b.name.localeCompare(a.name):a.name.localeCompare(b.name));
 }
-export function dayCount(dayRounds={}){return MODES.filter(mode=>dayRounds[mode]?.won).length;}
-export function streak(days,today){
-  const cleared=Object.keys(days).filter(day=>dayCount(days[day])===MODES.length).sort();
+export function dayCount(dayRounds={},modes=MODES){return modes.filter(mode=>dayRounds[mode]?.won).length;}
+export function streak(days,today,modes=MODES){
+  const cleared=Object.keys(days).filter(day=>dayCount(days[day],modes)===modes.length).sort();
   let best=0,run=0,prev=-2;for(const day of cleared){const n=Math.floor(Date.parse(day+'T00:00:00Z')/86400000);run=n===prev+1?run+1:1;best=Math.max(best,run);prev=n;}
   const toDay=n=>new Date(n*86400000).toISOString().slice(0,10);
   const n=Math.floor(Date.parse(today+'T00:00:00Z')/86400000);const set=new Set(cleared);

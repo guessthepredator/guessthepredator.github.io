@@ -1,11 +1,11 @@
-# START HERE — V2.4 Pinkshift Eclipse
+# GTP2 V2.5 · Clean-install checklist
 
-1. Make a backup of your current repo. Extract this ZIP *into the existing repository root*, preserving `.git`.
-2. On Windows **double-click `INSTALL_CLEAN_WINDOWS.bat`**, or run `python3 scripts/clean_old_release.py` in the repository root to remove Media Studio, old concept pictures, leftover fake legend art, and old extra sounds. This is vital: extracting ZIPs over a repo does not delete obsolete files.
-3. Run `python3 scripts/validate_release.py` and `node --test tests/*.test.mjs`.
-4. Preview with `python3 -m http.server 8000`, open `http://localhost:8000/` in a browser. `file://` won't load module imports correctly.
-5. In GitHub Desktop, inspect the changed files. Commit and Push. Under repo Settings → Pages, select **GitHub Actions**.
+1. Back up your existing project. Unzip this file directly into the repository root while keeping the hidden `.git` folder intact.
+2. Run `INSTALL_CLEAN_WINDOWS.bat` on Windows or `python3 scripts/clean_old_release.py` in the repository root. This deletes obsolete fake Map renders, Media Studio, generic figure files, and old entry SFX, not your `.git` folder.
+3. Test with `python3 scripts/validate_release.py` and `node --test tests/*.test.mjs` (requires Python Pillow and Node).
+4. Local preview: `python3 -m http.server 8000`; open `http://localhost:8000/`. Do not double-click `index.html` using `file://`.
+5. GitHub Desktop: confirm obsolete files are actually shown as **deleted**, Commit all changes, Push to `main`. Under repository Settings → Pages, select **GitHub Actions**.
 
-**Map sources:** external wiki screenshots are attempted for some locations with fallback to a labeled schematic. Their rights are not verified for a public fan game; consult `SOURCES_AND_RIGHTS.md` before publishing.
+**Map is not guaranteed online.** The launcher checks real POI image URLs. If none load, the Map card is disabled instead of showing made-up pictures, and five core daily missions remain. The ZIP contains no official Map screenshots and no reliable full set of 28 locally stored portraits.
 
-**Do not assume zero missing external character art.** Our graceful fallback is not the same thing as a real 3D render. The optional human announcer uses Kenney CC0 materials and remains silent if unavailable. This build contains no imitated voices.
+If you intend to publish this publicly, read `SOURCES_AND_RIGHTS.md` first; these sources have **not** been cleared by EA for a fan game.

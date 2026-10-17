@@ -1,4 +1,5 @@
 import {MAPS,LOCATIONS,LEGACY_LOCATIONS,mapShots,mapRound,mapGuess,dailyMap,resolveLocation,sourceForLocation} from './maps.mjs';
+import {findVerifiedMapImages,dayMapSelection} from './map_runtime.mjs';
 import {TIPS,unlockedIntel,tipFor} from './tips.mjs';
 import {playVoice,stopVoice,hasVoiceClip} from './voice.mjs';
 import {legends} from './data.mjs';
@@ -13,6 +14,25 @@ import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGues
 
 const app=document.getElementById('app');
 let store=loadStore();
+let mapAvailability='checking', verifiedMapPool=[], mapCheckPromise=null;
+let humanAnnouncerInstalled=null;
+const dailyModes=()=>mapAvailability==='ready'?MODES:MODES.filter(mode=>mode!=='map');
+const mapEntry=()=>dayMapSelection(today(),verifiedMapPool.map(item=>item.entry));
+const availableMapEntry=(id)=>verifiedMapPool.some(item=>item.entry.id===id);
+async function startMapPreflight(){
+ if(mapCheckPromise)return mapCheckPromise;
+ // Probe a small cross-map sample before downloading every full-size screenshot.
+ const featured=['kc-caustic-exterior','kc-crypto-interior','we-lava','ol-bonsai','sp-barometer','bm-terraformer','ed-city-hall','kc-bunker'];
+ const quick=featured.map(id=>LOCATIONS.find(x=>x.id===id)).filter(Boolean);
+ const remaining=LOCATIONS.filter(e=>!featured.includes(e.id)&&mapShots(e).length);
+ mapCheckPromise=findVerifiedMapImages(quick).then(async items=>items.length?items:findVerifiedMapImages(remaining)).then(items=>{
+   verifiedMapPool=items;mapAvailability=items.length?'ready':'offline';
+   if(screen==='home'||screen==='records')render({scroll:false});
+   return mapAvailability;
+ }).catch(()=>{mapAvailability='offline';if(screen==='home')render({scroll:false});return 'offline';});
+ return mapCheckPromise;
+}
+
 let screen='home';
 let session='daily';
 let active='classic';
@@ -71,8 +91,10 @@ function ensureRound(mode=active,playSession=session){
         sync();
       }
     }
-    if(mode==='map'&&!round.finished&&!round.mapGuesses?.length&&!round.poiGuesses?.length&&!LOCATIONS.some(loc=>loc.id===round.answer)){
-      round=mapRound(LOCATIONS[playSession==='daily'?answers().map:Math.floor(Math.random()*LOCATIONS.length)]);
+    if(mode==='map'&&!availableMapEntry(round.answer)){
+      const candidate=playSession==='daily'?mapEntry():verifiedMapPool[Math.floor(Math.random()*verifiedMapPool.length)]?.entry;
+      if(!candidate)return round;
+      round=mapRound(candidate);
       if(playSession==='daily')store.days[today()][mode]=round;else store.practice[mode]=round;
       sync();
     }
@@ -85,7 +107,9 @@ function ensureRound(mode=active,playSession=session){
     return round;
   }
   if(mode==='map'){
-    round=mapRound(LOCATIONS[playSession==='daily'?answers().map:Math.floor(Math.random()*LOCATIONS.length)]);
+    const candidate=playSession==='daily'?mapEntry():verifiedMapPool[Math.floor(Math.random()*verifiedMapPool.length)]?.entry;
+    if(!candidate)throw Error('Map photos have not been verified');
+    round=mapRound(candidate);
     if(playSession==='daily')store.days[today()]={...store.days[today()],[mode]:round};else store.practice[mode]=round;
     sync();return round;
   }
@@ -98,7 +122,7 @@ function ensureRound(mode=active,playSession=session){
   return round;
 }
 function randomPractice(mode=active){
-  if(mode==='map'){store.practice.map=mapRound(LOCATIONS[Math.floor(Math.random()*LOCATIONS.length)]);sync();session='unlimited';active=mode;screen='game';pickerOpen=false;render();return;}
+  if(mode==='map'){if(mapAvailability!=='ready'){showToast('MAP IS OFFLINE · NO VERIFIED LOCATION PHOTO');return;}store.practice.map=mapRound(verifiedMapPool[Math.floor(Math.random()*verifiedMapPool.length)].entry);sync();session='unlimited';active=mode;screen='game';pickerOpen=false;render();return;}
   const last=store.practice[mode]?.answer;
   const pool=legends.filter(l=>l.name!==last&&(mode!=='ability'||localAbilitySlugs.includes(l.slug)));
   store.practice[mode]=newRound(pool[Math.floor(Math.random()*pool.length)].name,store.settings.playStyle,store.settings.rush?180:0);
@@ -138,15 +162,15 @@ function loadPortraitImages(parent=app){
 function paintPixel(canvas,image){
   // Drawing cross-origin images is permitted for visual display even if canvas
   // becomes tainted. We never call toDataURL/getImageData/readback.
-  const size=Math.max(12,Math.min(220,Number(canvas.dataset.resolution)||24));
+  const size=Math.max(12,Math.min(720,Number(canvas.dataset.resolution)||24));
   canvas.width=size;canvas.height=size;
   const ctx=canvas.getContext('2d');if(!ctx)return;
   ctx.imageSmoothingEnabled=true;
   const w=image.naturalWidth||image.width,h=image.naturalHeight||image.height;
   if(!w||!h)return;
-  // Central portrait crop, progressive rasterization without cropping a body at the top.
-  const side=Math.min(w,h),sx=(w-side)/2,sy=(h-side)/2;
-  try{ctx.drawImage(image,sx,sy,side,side,0,0,size,size);canvas.classList.add('loaded');}
+  // Show the complete subject instead of chopping off the pose.
+  const fit=Math.min(size/w,size/h),dw=w*fit,dh=h*fit;
+  try{ctx.clearRect(0,0,size,size);ctx.drawImage(image,0,0,w,h,(size-dw)/2,(size-dh)/2,dw,dh);canvas.classList.add('loaded');}
   catch{canvas.classList.remove('loaded');}
 }
 function loadAbilityImages(parent=app){
@@ -178,19 +202,22 @@ function loadMapImages(parent=app){
     const entry=LOCATIONS.find(loc=>loc.id===img.dataset.mapPhoto);
     if(!entry)return;
     const frame=img.closest('.map-photo');
-    const sources=mapShots(entry,Number(img.dataset.mapAngle||0));
+    const certified=verifiedMapPool.find(item=>item.entry.id===entry.id);
+    const sources=certified?[certified.url]:[];
     let nextIndex=0;
     const next=()=>{
       if(!img.isConnected)return;
       frame?.classList.remove('has-map-art');
-      if(nextIndex>=sources.length){frame?.classList.add('map-unavailable');return;}
+      if(nextIndex>=sources.length){frame?.classList.add('map-unavailable');
+        document.querySelectorAll('.map-choice').forEach(button=>button.disabled=true);
+        showToast('MAP IMAGE COULD NOT LOAD. ROUND PAUSED · GO BACK TO MODES.');return;}
       // The first candidate is a real file that can be placed in the repository.
       img.src=sources[nextIndex++];
     };
     img.addEventListener('load',()=>{
       if(img.naturalWidth<180||img.naturalHeight<100){next();return;}
       frame?.classList.add('has-map-art');
-      frame?.classList.toggle('recon-art',img.currentSrc.includes('/map-recon/'));
+      frame?.classList.remove('recon-art');
       frame?.classList.toggle('external-reference',img.currentSrc.startsWith('https://'));
     });
     img.addEventListener('error',next);
@@ -202,14 +229,14 @@ function edgeArenaDecor(){
 }
 // The character is painted only once inside the backdrop art. No artificial gaze overlay.
 function nav(){return `<header class="top gtp2-top"><div class="gtp2-top-inner">
-  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator 2 home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>PINKSHIFT · ECLIPSE V2.4</small></span></button>
-  <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item" data-action="open" data-mode="map">⌖ MAP HUNT</button></nav>
-  <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle original sound effects" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ SOUND ON':'♪ SOUND OFF'}</button><button class="gtp2-audio-preview" data-action="sound-test" title="Preview original UI sound">◖)) TEST</button><button class="gtp2-voice-toggle" data-action="announcer" title="CC0 human voice announcer" aria-pressed="${store.settings.announcer}">${store.settings.announcer?'🎙 HUMAN ON':'🎙 HUMAN OFF'}</button></div>
+  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator 2 home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>LIGHTSHIFT · V2.5 TEST</small></span></button>
+  <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item" data-action="open" data-mode="map" ${mapAvailability!=='ready'?'disabled title="Map unlocks only when a real screenshot loads"':''}>⌖ MAP HUNT</button></nav>
+  <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle original sound effects" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ SOUND ON':'♪ SOUND OFF'}</button><button class="gtp2-audio-preview" data-action="sound-test" title="Preview original UI sound">◖)) TEST</button><button class="gtp2-voice-toggle" data-action="announcer" title="CC0 human voice announcer" aria-pressed="${humanAnnouncerInstalled===true&&store.settings.announcer}" ${humanAnnouncerInstalled===false?'disabled data-pack="missing"':''}>${humanAnnouncerInstalled===false?'🎙 NO PACK':humanAnnouncerInstalled===null?'🎙 CHECKING':store.settings.announcer?'🎙 HUMAN ON':'🎙 HUMAN OFF'}</button></div>
  </div></header>`;}
 function statCards(){
-  const day=store.days[today()]||{};const stats=streak(store.days,utcDay());
+  const day=store.days[today()]||{};const stats=streak(store.days,utcDay(),dailyModes());
   return `<section class="dash" aria-label="Player statistics">
-    <div class="stat"><label>DAILY SIGNALS</label><strong>${dayCount(day)}<small> / 6</small></strong><small>Six unique puzzles</small></div>
+    <div class="stat"><label>DAILY SIGNALS</label><strong>${dayCount(day,dailyModes())}<small> / ${dailyModes().length}</small></strong><small>Playable puzzles</small></div>
     <div class="stat"><label>CURRENT STREAK</label><strong>${stats.current}</strong><small>Full Daily clears</small></div>
     <div class="stat"><label>PERSONAL BEST</label><strong>${store.history.bestScore||0}</strong><small>Highest round score</small></div>
     <div class="stat"><label>TOTAL WINS</label><strong>${store.history.wins||0}</strong><small>Across both sessions</small></div>
@@ -218,12 +245,13 @@ function statCards(){
 function forbiddenPanel(){
   const spot=dailySpotlight(utcDay(),legends);
   const finished=store.days[today()]||{};
-  const completed=MODES.filter(m=>finished[m]?.finished).length;
-  const unlocked=unlockedIntel(finished,MODES);
+  const completed=dailyModes().filter(m=>finished[m]?.finished).length;
+  const total=dailyModes().length;
+  const unlocked=unlockedIntel(finished,dailyModes());
   const claimed=!!store.intelOpenedDays?.[today()];
   return `<section class="vault-showcase" aria-label="Forbidden Apex Tip">
-    <div class="vault-intro"><span class="kicker">✦ REWARD TRANSMISSION</span><h2>FORBIDDEN <em>INTEL.</em></h2><p>A daily reward for every player who completes six missions. Wins AND losses count.</p>
-      <div class="vault-track"><span style="width:${completed/6*100}%"></span></div><strong>${completed}/6 MISSIONS COMPLETED</strong>
+    <div class="vault-intro"><span class="kicker">✦ REWARD TRANSMISSION</span><h2>FORBIDDEN <em>INTEL.</em></h2><p>A daily reward for every player who completes the available missions. Wins AND losses count.</p>
+      <div class="vault-track"><span style="width:${completed/total*100}%"></span></div><strong>${completed}/${total} MISSIONS COMPLETED</strong>
       <button class="btn vault-activate" data-action="intel-open" ${unlocked?'':'disabled'}>${unlocked?(claimed?"✦ VIEW TODAY'S TIP":'✦ OPEN THE MYSTERY CHEST'):'◆ COMPLETE THE DAILY TO UNLOCK'}</button>
     </div>
     <div class="vault-display ${unlocked?'ready':''}" aria-hidden="true"><div class="vault-aurora"></div><div class="vault-sparkle sp1">✧</div><div class="vault-sparkle sp2">✦</div><div class="vault-chest"><div class="vault-lid"><span>◆</span></div><div class="vault-box"><span>✦</span></div></div><span class="vault-caption">${unlocked?'CHEST READY // CLICK TO CLAIM':'CLASSIFIED // ENCRYPTED'}</span></div>
@@ -264,24 +292,24 @@ function dailyExtras(){
 }
 function modeTile(mode,i){
  const round=store.days[today()]?.[mode];
- const status=session==='daily'&&round?.finished?(round.won?'✓ CLEARED':'✓ COMPLETED'):'PLAY NOW ↗';
- return `<button class="arena-mode gtp2-mode-card gtp2-card-${mode} ${round?.finished&&session==='daily'?'finished':''}" data-action="open" data-mode="${mode}" style="--tile:${classOf(mode)}" aria-label="Play ${MODE_NAMES[mode]}">
+ const status=mode==='map'&&mapAvailability!=='ready'?(mapAvailability==='checking'?'CHECKING REAL IMAGES…':'OFFLINE · REAL IMAGES REQUIRED'):session==='daily'&&round?.finished?(round.won?'✓ CLEARED':'✓ COMPLETED'):'PLAY NOW ↗';
+ return `<button class="arena-mode gtp2-mode-card gtp2-card-${mode} ${round?.finished&&session==='daily'?'finished':''}" data-action="open" data-mode="${mode}" ${mode==='map'&&mapAvailability!=='ready'?'disabled aria-disabled="true"':''} style="--tile:${classOf(mode)}" aria-label="Play ${MODE_NAMES[mode]}">
    <span class="gtp2-mode-number">0${i+1}</span><span class="gtp2-mode-glyph" aria-hidden="true">${ICONS[mode]}</span>
    <span class="gtp2-mode-copy"><strong>${MODE_NAMES[mode]}</strong><small>${TAGLINES[mode]}</small><em>${status}</em></span><span class="gtp2-mode-arrow">❯</span>
  </button>`;
 }
 function home(){
- const unfinished=MODES.filter(mode=>!store.days[today()]?.[mode]?.finished);
- const done=6-unfinished.length;
+ const unfinished=dailyModes().filter(mode=>!store.days[today()]?.[mode]?.finished);
+ const done=dailyModes().length-unfinished.length;
  return `<main class="gtp2-home">
   <section class="gtp2-hero" aria-label="Guess the Predator 2 — six game modes">
    <img id="gtp2-backdrop" class="gtp2-backdrop" src="./assets/decor/haunted-hero.webp" alt="" aria-hidden="true" fetchpriority="high" />
    <div class="gtp2-vignette" aria-hidden="true"></div>
    <div class="gtp2-hero-content">
-    <div class="gtp2-heading"><div><span class="gtp2-kicker">✦ ECLIPSE / HAUNTED OUTLANDS</span><h1>GUESS THE <span>PREDATOR.</span></h1><p>Find the legend. Crack the location. Rule the daily hunt.</p></div><div class="gtp2-progress"><small>DAILY PROGRESS · ${esc(today())}</small><strong>${done}<em>/6</em></strong><span>${done===6?'ALL CHALLENGES COMPLETED':'MISSIONS COMPLETED'}</span></div></div>
+    <div class="gtp2-heading"><div><span class="gtp2-kicker">✦ PINK MIRAGE / LIGHTSHIFT</span><h1>GUESS THE <span>PREDATOR.</span></h1><p>Find the legend. Crack the location. Rule the daily hunt.</p></div><div class="gtp2-progress"><small>DAILY PROGRESS · ${esc(today())}</small><strong>${done}<em>/${dailyModes().length}</em></strong><span>${done===dailyModes().length?'ALL CHALLENGES COMPLETED':'MISSIONS COMPLETED'}</span></div></div>
     <div class="gtp2-switchline"><div class="gtp2-session" role="group" aria-label="Daily or Free Play"><button data-action="session" data-session="daily" class="${session==='daily'?'active':''}" aria-pressed="${session==='daily'}">◈ DAILY</button><button data-action="session" data-session="unlimited" class="${session==='unlimited'?'active':''}" aria-pressed="${session==='unlimited'}">∞ FREE PLAY</button></div><span>SELECT YOUR CHALLENGE ✦</span></div>
     <div class="gtp2-mode-layout"><div class="gtp2-mode-column">${MODES.slice(0,3).map((mode,i)=>modeTile(mode,i)).join('')}</div><div class="gtp2-hero-space" aria-hidden="true"></div><div class="gtp2-mode-column">${MODES.slice(3).map((mode,i)=>modeTile(mode,i+3)).join('')}</div></div>
-    <div class="gtp2-hero-footer"><span>${session==='daily'?'ONE DAILY RUN PER MODE':'UNLIMITED PRACTICE · NO STREAK RISK'}</span><button data-action="home-daily" class="gtp2-primary">${unfinished.length?'CONTINUE DAILY':'VIEW RESULTS'} <b>↗</b></button><span>6 ARENAS · 36 LOCATION SIGNALS · CC0 HUMAN ANNOUNCER</span></div>
+    <div class="gtp2-hero-footer"><span>${session==='daily'?'DAILY MISSIONS · ONE ROUND EACH':'UNLIMITED PRACTICE · NO STREAK RISK'}</span>${session==='daily'?`<button data-action="home-daily" class="gtp2-primary">${unfinished.length?'CONTINUE DAILY':'VIEW RESULTS'} <b>↗</b></button>`:`<button data-action="open" data-mode="classic" class="gtp2-primary">START FREE PLAY <b>↗</b></button>`}<span>${mapAvailability==='ready'?'MAP ONLINE · VERIFIED SCREENSHOTS':mapAvailability==='checking'?'MAP: CHECKING SOURCE IMAGES':'MAP OFFLINE · NO FAKE SCREENSHOTS'}</span></div>
    </div>
   </section>
   <div class="gtp2-bottom"><div class="gtp2-side-label"><span>BEYOND THE ARENA</span><small>CHOOSE · COLLECT · DISCOVER</small></div>
@@ -294,10 +322,10 @@ function getVisual(round,target){
   if(mode==='pixel'){
     const effect=['mosaic','holo','soft'].includes(store.settings.pixelStyle)?store.settings.pixelStyle:'mosaic';
     const step=Math.min(round.guesses.length,6);
-    const sizes=[15,22,33,49,73,110,180];
-    const blur=[5,4,3,2,1,0,0];
+    const sizes=[19,27,39,60,88,135,220];
+    const blur=effect==='soft'?[15,12,9,6,3,1,0]:[2.5,2,1.5,1,.5,0,0];
     const pct=[12,24,39,55,73,91,100];
-    const size=sizes[step];
+    const size=effect==='soft'?620:sizes[step];
     return `<div class="clue-visual visual-pixel px-effect-${effect}"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
       <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted Legend portrait"></canvas>
       ${portrait(target.slug,{alt:'',cls:'pixel-source',concealed:!round.finished,eager:true})}
@@ -313,7 +341,7 @@ function getVisual(round,target){
   }
   return `<div class="clue-visual"><div class="classified-mark"><small>IDENTITY / 00</small><strong>LEGEND<br>UNKNOWN</strong><small>THE SCANNER KNOWS MORE</small></div></div>`;
 }
-function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&store.days[today()]?.[mode]?.won?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" title="Play ${MODE_NAMES[mode]}"><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
+function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&store.days[today()]?.[mode]?.won?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" ${mode==='map'&&mapAvailability!=='ready'?'disabled title="Requires verified real location images"':''}><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
 function styleStrip(round){
   const locked=round.guesses.length>0||round.finished;
   return `<div class="style-strip" aria-label="Round rules">
@@ -364,16 +392,17 @@ function mapGame(){
  const used=new Set(attempted);
  const options=choices.map(choice=>`<button class="map-choice ${used.has(choice)?'eliminated':''}" data-action="map-guess" data-name="${esc(choice)}" ${round.finished||used.has(choice)?'disabled':''}>${esc(choice)}${used.has(choice)?' ×':''}</button>`).join('');
  const state=round.finished?(round.won?'✓ SECTOR CONFIRMED':'✕ SIGNAL LOST'):`STAGE ${stage} / 2 · ${stage===1?'IDENTIFY MAP':'IDENTIFY POI'}`;
- const img=`<img class="map-img-candidate" data-map-photo="${esc(entry.id)}" data-map-angle="${Number(round.mediaAngle)||0}" alt="External location reference screenshot" loading="eager" decoding="async" />`;
+ const img=`<img class="map-img-candidate" data-map-photo="${esc(entry.id)}" data-map-angle="${Number(round.mediaAngle)||0}" alt="Real screenshot of an Apex location, source verified to load before round" loading="eager" decoding="async" />`;
  return `<main class="wrap game map-game gtp2-game-scene gtp2-scene-map"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${session==='daily'?'DAILY':'FREE PLAY'} / MAP RECON</span></div>
- <div class="game-titlebar"><div><span class="kicker">OUTLANDS CARTOGRAPHY / 06</span><h1>GUESS THE MAP<span style="color:#ff6ebf">.</span></h1><p>Identify the location using authentic external reference images when available and honest location intel.</p></div><span class="game-attempts">${round.finished?'DONE':stage===1?3-attempted.length:2-attempted.length}<small> LEFT</small></span></div>
- ${modeRail()}<section class="map-challenge"><div class="map-frame"><div class="panel-top"><span>⌖ UNKNOWN LOCATION / TRANSMISSION</span><small>${state}</small></div><div class="map-photo">${img}<div class="map-offline"><b>IMAGE SIGNAL OFFLINE</b><p>Image source unavailable. Use the location intelligence below.</p><span>${esc(entry.clue)}</span></div></div><div class="map-credit"><span class="recon-credit">VISUAL INTEL · LANDMARK SKETCH</span><span class="capture-credit">EXTERNAL APEX REFERENCE · OWNERS RETAIN RIGHTS</span><a class="map-source-link" href="${esc(sourceForLocation(entry))}" target="_blank" rel="noopener noreferrer">VIEW SOURCE ↗</a></div></div>
+ <div class="game-titlebar"><div><span class="kicker">OUTLANDS CARTOGRAPHY / 06</span><h1>GUESS THE MAP<span style="color:#ff6ebf">.</span></h1><p>Identify the POI using a loaded screenshot from a documented external source.</p></div><span class="game-attempts">${round.finished?'DONE':stage===1?3-attempted.length:2-attempted.length}<small> LEFT</small></span></div>
+ ${modeRail()}<section class="map-challenge"><div class="map-frame"><div class="panel-top"><span>⌖ UNKNOWN LOCATION / TRANSMISSION</span><small>${state}</small></div><div class="map-photo">${img}<div class="map-offline"><b>REAL IMAGE UNAVAILABLE</b><p>The round is paused until its source works. No unrelated artwork is substituted.</p><span>${esc(entry.clue)}</span></div></div><div class="map-credit"><span class="recon-credit">MAP INTEL · VERIFIED SOURCE</span><span class="capture-credit">EXTERNAL SCREENSHOT · FAN PROTOTYPE</span><a class="map-source-link" href="${esc(sourceForLocation(entry))}" target="_blank" rel="noopener noreferrer">VIEW SOURCE ↗</a></div></div>
  <div class="map-terminal"><span class="kicker">${round.finished?'MISSION REPORT':state}</span><h2>${round.finished?(round.won?'TARGET LOCATED!':'TRY ANOTHER SECTOR'):(stage===1?'WHICH MAP?':'WHICH POI?')}</h2><p>${round.finished?`Answer: ${esc(entry.map)} / ${esc(entry.poi)}.`:stage===1?'You have three map attempts. Each wrong map is eliminated.':'Map confirmed. Find the exact location in two attempts.'}</p><div class="map-structural-intel"><small>⌖ LANDMARK READOUT</small><p>${esc(entry.clue)}</p></div>
  <div class="map-choices">${round.finished?'':options}</div>${round.finished?`<div class="end-actions"><button class="btn pink" data-action="next">NEXT CHALLENGE ↗</button><button class="btn mint" data-action="again">∞ FREE PLAY</button></div>`:''}
  ${attempted.length?`<div class="map-trail">Eliminated: ${attempted.filter(n=>n!==(stage===1?entry.map:entry.poi)).map(esc).join(', ')||'None'}</div>`:''}</div></section></main>`;
 }
 function game(){
-  if(active==='map')return mapGame();
+  if(active==='map'&&mapAvailability==='ready')return mapGame();
+  if(active==='map'){screen='home';return home();}
   const round=ensureRound();const target=legendByName(legends,round.answer);
   const timeLeft=remainingTime(round);const urgent=timeLeft!=null&&timeLeft<=25&&!round.finished;
   return `<main class="wrap game gtp2-game-scene gtp2-scene-${active}" style="--tile:${classOf(active)}"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${sharedDay?'◇ SHARED DAILY · '+today():session==='daily'?'◉ DAILY / '+today():'∞ FREE PLAY'}</span></div>
@@ -385,8 +414,8 @@ function game(){
   ${round.signals.length?`<section class="game-bottom"><div class="bottom-card"><h3>SIGNAL HISTORY</h3><div class="signal-log">${round.signals.slice(-8).map((s,i)=>`<span class="log-item ${s.kind==='correct'?'match':'mismatch'}">${i+1}. ${esc(s.guess)} · ${LABELS[s.field]} ${s.kind==='correct'?'✓':'×'}</span>`).join('')}</div></div></section>`:''}</main>`;
 }
 function records(){
-  const stats=streak(store.days,utcDay());const days=Object.keys(store.days).sort().reverse().slice(0,14);
-  return `<main class="wrap records"><span class="pill">PERSONAL ARCHIVE</span><h1>YOUR <span style="color:#ec4a95">SIGNAL.</span></h1><p class="lead">Records are stored in your browser. No account or public leaderboard required.</p>${statCards()}${forbiddenPanel()}<h2 class="caps" style="font-size:38px">RECENT DAYS</h2><div class="record-rows">${days.map(day=>`<div class="record-row"><span>${day}</span><span>${dayCount(store.days[day])}/6 ${dayCount(store.days[day])===6?'✦ CLEARED':''}</span></div>`).join('')||'<p>No Daily results yet. Go start a hunt!</p>'}</div><div class="record-settings"><div><strong>ACCESSIBILITY / VISUAL EFFECTS</strong><small>Reduce background and reward animation intensity on slower devices.</small></div><button class="btn lilac small" data-action="motion">FX ${store.settings.motion?'ON':'OFF'} · CHANGE</button></div><button class="btn pink" data-action="home">BACK TO CHALLENGES ↗</button></main>`;
+  const stats=streak(store.days,utcDay(),dailyModes());const days=Object.keys(store.days).sort().reverse().slice(0,14);
+  return `<main class="wrap records"><span class="pill">PERSONAL ARCHIVE</span><h1>YOUR <span style="color:#ec4a95">SIGNAL.</span></h1><p class="lead">Records are stored in your browser. No account or public leaderboard required.</p>${statCards()}${forbiddenPanel()}<h2 class="caps" style="font-size:38px">RECENT DAYS</h2><div class="record-rows">${days.map(day=>`<div class="record-row"><span>${day}</span><span>${dayCount(store.days[day],dailyModes())}/${dailyModes().length} ${dayCount(store.days[day],dailyModes())===dailyModes().length?'✦ CLEARED':''}</span></div>`).join('')||'<p>No Daily results yet. Go start a hunt!</p>'}</div><div class="record-settings"><div><strong>ACCESSIBILITY / VISUAL EFFECTS</strong><small>Reduce background and reward animation intensity on slower devices.</small></div><button class="btn lilac small" data-action="motion">FX ${store.settings.motion?'ON':'OFF'} · CHANGE</button></div><button class="btn pink" data-action="home">BACK TO CHALLENGES ↗</button></main>`;
 }
 function wheelPool(){
  return wheelChoices(legends).filter(l=>(wheelRole==='All'||l.role===wheelRole)&&!wheelExcluded.has(l.name)&&(!wheelNoRepeat||!wheelChosen||l.name!==wheelChosen.name));
@@ -505,6 +534,7 @@ async function copyWheelPick(){
 function render({scroll=true}={}) {
   if(intelModalOpen)closeIntelDialog();
   if(wheelOpen)closeWheel();
+  document.body.classList.toggle('lightshift-playing',screen==='game');
   app.className=`app ${store.settings.motion?'':'no-motion'}`;
   app.dataset.screen=screen;app.dataset.session=session;
   app.innerHTML=nav()+(screen==='home'?home():screen==='game'?game():records());
@@ -517,6 +547,7 @@ function render({scroll=true}={}) {
 }
 function openMode(mode,playSession=session){
   if(!MODES.includes(mode))return;
+  if(mode==='map'&&mapAvailability!=='ready'){showToast('MAP STAYS DISABLED UNTIL A REAL LOCATION SCREENSHOT LOADS.');return;}
   stopVoice();stopAnnouncer();voiceClipStatus='';active=mode;session=playSession;screen='game';pickerOpen=false;quickSearch='';ensureRound();render();sound('nav');voiceCue('ready');
 }
 function submitGuess(name){
@@ -562,9 +593,9 @@ function nextMode(){
   // Skip the current challenge even when it was lost: the old implementation
   // selected the same incomplete round, which made NEXT appear broken.
   const rounds=store.days[today()]||{};
-  const currentIndex=MODES.indexOf(active);
-  const next=MODES.slice(currentIndex+1).find(mode=>!rounds[mode]?.finished)
-     ||MODES.slice(0,currentIndex).find(mode=>!rounds[mode]?.finished);
+  const available=dailyModes(),currentIndex=available.indexOf(active);
+  const next=available.slice(currentIndex+1).find(mode=>!rounds[mode]?.finished)
+     ||available.slice(0,currentIndex).find(mode=>!rounds[mode]?.finished);
   if(next){openMode(next,'daily');return;}
   screen='records';pickerOpen=false;render();sound('nav');
 }
@@ -585,9 +616,9 @@ app.addEventListener('pointerover',event=>{
 app.addEventListener('click',event=>{
   const button=event.target.closest('[data-action]');if(!button||button.disabled)return;
   const action=button.dataset.action;
-  if(action==='intel-open'){const day=store.days[today()]||{};if(!unlockedIntel(day,MODES)){showToast('Complete all six daily missions first.');return;}store.intelOpenedDays??={};intelFirstRevealPending=!store.intelOpenedDays[today()];store.intelOpenedDays[today()]=true;sync();intelDialog();}
+  if(action==='intel-open'){const day=store.days[today()]||{};if(!unlockedIntel(day,dailyModes())){showToast('Complete all available daily missions first.');return;}store.intelOpenedDays??={};intelFirstRevealPending=!store.intelOpenedDays[today()];store.intelOpenedDays[today()]=true;sync();intelDialog();}
   else if(action==='intel-close')closeIntelDialog();
-  else if(action==='pixel-style'){if(!['mosaic','holo','fragments'].includes(button.dataset.style))return;store.settings.pixelStyle=button.dataset.style;sync();render({scroll:false});sound('pick');}
+  else if(action==='pixel-style'){if(!['mosaic','soft','holo'].includes(button.dataset.style))return;store.settings.pixelStyle=button.dataset.style;sync();render({scroll:false});sound('pick');}
   else if(action==='wheel')showWheel();
   else if(action==='close-wheel')closeWheel();
   else if(action==='spin')spinWheel();
@@ -598,7 +629,7 @@ app.addEventListener('click',event=>{
   else if(action==='records'){stopVoice();screen='records';pickerOpen=false;render();sound('nav');}
   else if(action==='open'){openMode(button.dataset.mode);}
   else if(action==='home-daily'){
-    session='daily';const next=MODES.find(mode=>!store.days[today()]?.[mode]?.finished);
+    session='daily';const next=dailyModes().find(mode=>!store.days[today()]?.[mode]?.finished);
     if(next)openMode(next,'daily');else{screen='records';render();}
   }
   else if(action==='session'){session=button.dataset.session;render({scroll:false});sound('nav');}
@@ -685,3 +716,5 @@ setInterval(()=>{
   const timer=document.getElementById('round-timer');if(timer){const time=remainingTime(round);timer.querySelector('span').textContent=`${time}s`;timer.classList.toggle('urgent',time<=25&&!round.finished);}
 },500);
 render();
+void startMapPreflight();
+void announcerAvailable().then(result=>{humanAnnouncerInstalled=result;if(screen==='home')render({scroll:false});});

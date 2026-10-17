@@ -1,29 +1,36 @@
-# Guess the Predator 2 — Pinkshift Eclipse V2.4
+# Guess The Predator 2 · Lightshift V2.5 (Test Build)
 
-Independent, unofficial six-mode browser trivia. English UI, no player account required.
+An independent, unofficial browser quiz project with dark-pink Mirage-inspired home screen, lighter pink-lilac in-game screens, Daily / Free Play, 28 Legend roster records, five standard modes, and **Map as a conditional bonus mode**.
 
 ## Installation
 
-Extract all files into the repository root (where `index.html` lives), **not** into a subfolder. Keep `.git`. Run `python3 scripts/clean_old_release.py` once in the repo root to delete old Media Studio pages, concept renders, and legacy SFX. `git add -A`, commit, push to `main`, then enable GitHub Pages via Actions.
+Extract the ZIP at the **root of your existing repository** (same level as `index.html`) while preserving `.git`. Run `INSTALL_CLEAN_WINDOWS.bat`, or `python3 scripts/clean_old_release.py` from the repo root. Review changed/deleted files in GitHub Desktop; Commit then Push. GitHub Pages must be configured for GitHub Actions. Preview locally using `python3 -m http.server 8000`, then browse `http://localhost:8000`.
 
-Run checks locally:
+## Map quality gate (important)
+
+**There are zero bundled Apex POI screenshots.** Map Mode uses documented external Apex Wiki file addresses but will **only open after at least one real location image loads successfully in the player's browser**. The game never silently replaces that image with unrelated concept art, an invented building, or a schematic. If every external image fails, Map is disabled. The other five game modes remain playable and the daily mission denominator becomes 5. If at least one Map screenshot loads, Map is available and the denominator becomes 6. Availability can differ per device / network.
+
+This is intentionally a **test build**, not a guarantee that remote Wiki links are permanently accessible, legally approved, or visually perfect. Rights remain unverified for public fan-game display. See `SOURCES_AND_RIGHTS.md`.
+
+## Other changes
+
+- Free Play has **START FREE PLAY**, not the misleading CONTINUE DAILY button.
+- The whole gameplay background uses a pastel pink/lilac/cyan palette. Homepage stays dark.
+- Pixel Mode's **SOFT BLUR** button works; blur strength progresses smoothly, Mosaic uses raster pixels, Signal is softer. Complete pose is fitted without forced face cropping.
+- Browse Legends has consistent panel geometry and `object-fit: contain`. **The source artwork itself still has different poses**, because official matching 3D renders are not included. Remote images may fail; a neutral text fallback is shown.
+- 14 locally bundled replacement WAV effects: gentle taps instead of harsh sweeps. UI sound and optional CC0 human announcer can be toggled. Real announcer clips are **not bundled in this ZIP**; automatic download at deploy is optional and may fail.
+- Quote is written text; there are no synthesized Legend imitations.
+
+## Tests
 
 ```bash
+python3 -m pip install Pillow
 python3 scripts/validate_release.py
 node --test tests/*.test.mjs
-python3 -m http.server 8000
+python3 tests/make_browser_harness.py
+python3 tests/e2e_lightshift.py
 ```
 
-## What you receive
+The two browser harness scenarios are **offline** and **simulated image success**; the success image is labeled QA-only, and is never part of the release. No test in this environment verifies public-network Wiki loading or grants any image rights.
 
-Six interactive modes, Daily and Free Play, 28 Legend roster records, Pixel with Mosaic / Soft Blur / Signal, text Quote, 36 Map POIs, eight locally bundled Ability icons, original 14-file short SFX deck, original local background artwork, accessibility motion toggle, Daily streaks and reward.
-
-**Map screenshots:** For POIs with documented screenshots, `src/external_map_sources.mjs` points to third-party-hosted Apex Wiki file URLs. These are not downloaded or bundled. If a link fails, the playable mode falls back to an *explicitly labeled* local schematic clue. No copyright permission is claimed for wiki files; see `SOURCES_AND_RIGHTS.md` before publishing.
-
-**Legends:** Portraits are requested from external hosts and may be blocked; the project does **not** claim to bundle 28 full official renders. Failed requests display a clean 'visual unavailable' state instead of a broken-image icon. CSS scales available art without stretching.
-
-**Voice:** Quote uses written original fan clues. The optional Kenney CC0 human announcer integration only plays existing licensed recordings; no synthetic/robotic dialogue or impersonations. When files are not available, the UI stays quiet and playable.
-
-## Policy warning
-
-EA's present content policy restricts fan games and warns against implying endorsement. A repo can still receive an IP complaint. See `SOURCES_AND_RIGHTS.md` for citations and issues. "Not endorsed by EA" is a disclosure, not a license. Do not represent these materials as officially approved for use in a fan game.
+This project is **not endorsed by or affiliated with EA or its licensors**. EA's content policy restricts fan games. Review the risk notice before public deployment.
