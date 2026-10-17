@@ -8,11 +8,12 @@ import {PIXEL_SIZES,scenePalette} from '../src/pixel_scene.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=(path)=>readFileSync(resolve(root,path),'utf8');
 const app=read('src/app.mjs'),style=read('styles.css');
-test('home has exactly one primary CTA and separate rankings control',()=>{
- assert.ok(app.includes('gtp28-hero-footer'));
- assert.ok(app.includes('gtp28-primary-row'));
- assert.ok(app.includes('gtp28-rank-btn'));
- assert.ok(app.includes("session==='daily'"));
+test('home removed redundant primary and rankings controls while retaining session toggle',()=>{
+ const home=app.slice(app.indexOf('function home(){'),app.indexOf('function getVisual('));
+ assert.ok(!home.includes('gtp28-hero-footer'));
+ assert.ok(!home.includes('gtp28-primary-row'));
+ assert.ok(!home.includes('gtp28-rank-btn'));
+ assert.ok(home.includes('gtp2-session'));
 });
 test('session switches no longer rebuild entire page',()=>{
  const start=app.indexOf("else if(action==='session')"),end=app.indexOf("else if(action==='audio')",start);

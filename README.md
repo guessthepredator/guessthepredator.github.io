@@ -1,3 +1,7 @@
+Guess The Predator V2.14 — LOW GLOW
+
+See CHANGELOG_V214.md for the new look and optional full-body artwork setup.
+
 # Guess The Predator 2 — V2.8 TWILIGHT
 
 Static GitHub Pages Apex fan-trivia game with 5 modes: Classic, Pixel, Quote, Ability, Emoji. Map permanently removed.

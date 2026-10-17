@@ -5,8 +5,8 @@ P=Path(__file__).resolve().parents[1]
 required=['index.html','styles.css','src/app.mjs','src/engine.mjs','src/scoring.mjs','src/leaderboard.mjs','src/leaderboard_config.mjs','src/pixel_scene.mjs','src/audio.mjs','src/data.mjs','LEADERBOARD_SETUP.md','supabase/migrations/202610170001_leaderboards.sql','supabase/functions/submit-score/index.ts','assets/decor/haunted-hero.webp','.github/workflows/pages.yml']
 for name in required: assert (P/name).is_file(),name
 html=(P/'index.html').read_text();js=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
-assert html.count('rel="stylesheet"')==1 and 'styles.css?v=2.13.0' in html
-assert 'app.mjs?v=2.13.0' in html
+assert html.count('rel="stylesheet"')==1 and 'styles.css?v=2.15.0' in html
+assert 'app.mjs?v=2.15.0' in html
 assert 'function leaderboard()' in js and 'function howTo()' in js and 'function faq()' in js
 assert 'gtp27-mode-grid' in css and 'gtp27-classic-banner' in js
 assert "['classic', 'pixel', 'quote', 'ability', 'emoji']" in (P/'src/engine.mjs').read_text()

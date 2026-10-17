@@ -1,15 +1,16 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.13.0';
-import {legends} from './data.mjs?v=2.13.0';
-import {artCatalog} from './art.mjs?v=2.13.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.13.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.13.0';
-import {playSound} from './audio.mjs?v=2.13.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.13.0';
-import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.13.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.13.0';
-import {loadStore,saveStore} from './store.mjs?v=2.13.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.14.0';
+import {legends} from './data.mjs?v=2.14.0';
+import {artCatalog} from './art.mjs?v=2.14.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.14.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.14.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.14.0';
+import {playSound} from './audio.mjs?v=2.14.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.14.0';
+import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.14.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.14.0';
+import {loadStore,saveStore} from './store.mjs?v=2.14.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.13.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.14.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -35,7 +36,7 @@ let wheelSpinning=false;
 let wheelChosen=null;
 let wheelDisplayList=null;
 let identityPromptOpen=false;
-const COLORS={classic:'#f879bd',pixel:'#81e9e9',quote:'#ed87bc',ability:'#83e5de',emoji:'#cf7bb9'};
+const COLORS={classic:'#71c8bb',pixel:'#91a9d5',quote:'#c1a27a',ability:'#79b7cf',emoji:'#a69acb'};
 const ICONS={classic:'❔',pixel:'▦',quote:'❞',ability:'⌁',emoji:'✧'};
 const TAGLINES={classic:'Deduce the target with every signal.',pixel:'Reveal the legend, not the background.',quote:'Who wrote this intercepted line?',ability:'Identify the passive ability icon.',emoji:'Five symbols. One legend.'};
 const params=new URLSearchParams(location.search);
@@ -103,7 +104,7 @@ function portrait(slug,{alt='',cls='',concealed=false,eager=false}={}) {
 function loadPortraitImages(parent=app){
   parent.querySelectorAll('img[data-portrait]:not([data-art-ready])').forEach(image=>{
     image.dataset.artReady='yes';
-    const candidates=artCatalog[image.dataset.portrait]||[];let index=0;
+    const slug=image.dataset.portrait;const localFile=localPortraitFiles[slug];const candidates=[...(localFile?[`./assets/portraits/${localFile}`]:[]),...(artCatalog[slug]||[])];let index=0;
     const next=()=>{
       if(index>=candidates.length){
         const box=image.closest('.portrait-holder');
@@ -112,7 +113,7 @@ function loadPortraitImages(parent=app){
         if(box){const name=image.dataset.portrait||'?';const initial=(name[0]||'?').toUpperCase();box.innerHTML='<span class="portrait-unavailable" aria-label="Image unavailable"><b>'+initial+'</b><small>VISUAL SIGNAL<br>UNAVAILABLE</small></span>';}
         return;
       }
-      image.src=candidates[index++];
+      image.dataset.portraitSource=candidates[index].startsWith('./assets/portraits/')?'local':'remote';image.src=candidates[index++];
     };
     image.addEventListener('error',next);
     image.addEventListener('load',()=>{
@@ -251,16 +252,27 @@ function dailyExtras(){
     <article class="wheel-teaser"><div class="teaser-bubbles"><span>W</span><span>✦</span><span>28</span></div><div class="wheel-teaser-copy"><span class="kicker">FREE PLAY / OUTLANDS PICKER</span><h3>SPIN THE <em>WHEEL.</em></h3><p>28 Legends. One random pick. Zero excuses.</p><button class="btn dark" data-action="wheel" type="button">🎡 SPIN A LEGEND ↗</button></div></article>
   </section>`;
 }
-function homeFeatureDock(){
- const legend=dailySpotlight(utcDay(),legends);
+function homeIntelPanel(){
  const rounds=store.days[today()]||{};
  const complete=dailyModes().filter(mode=>rounds[mode]?.finished).length;
  const total=dailyModes().length;
  const unlocked=unlockedIntel(rounds,dailyModes());
  const claimed=Boolean(store.intelOpenedDays?.[today()]);
- return `<section class="gtp213-dock" aria-label="Next game, daily progress and legend of the day">
+ return `<article class="gtp214-intel-center gtp215-intel-feature" aria-label="Forbidden Intel daily reward">
+   <div class="gtp215-intel-art" aria-hidden="true"><div class="vault-chest"><div class="vault-lid"><span>◆</span></div><div class="vault-box"><span>✦</span></div></div></div>
+   <div class="gtp215-intel-details">
+     <span class="gtp214-intel-kicker">✧ DAILY REWARD / ${complete} OF ${total}</span>
+     <h2>FORBIDDEN <em>INTEL.</em></h2>
+     <div class="gtp214-intel-track" role="progressbar" aria-valuenow="${complete}" aria-valuemin="0" aria-valuemax="${total}" aria-label="Daily challenges completed"><span style="width:${complete/total*100}%"></span></div>
+     <p>${complete}/${total} MISSIONS COMPLETE</p>
+     <button type="button" data-action="intel-open" ${unlocked?'':'disabled'}>${unlocked?(claimed?'✦ VIEW TODAY’S INTEL':'✦ REVEAL YOUR INTEL'):'◆ COMPLETE ALL FIVE TO UNLOCK'}</button>
+   </div>
+ </article>`;
+}
+function homeFeatureDock(){
+ const legend=dailySpotlight(utcDay(),legends);
+ return `<section class="gtp213-dock gtp214-dock" aria-label="Next game and Legend of the day">
   <article class="gtp213-dock-card gtp213-dock-wheel"><span class="gtp213-dock-kicker">◈ PLAY SOMETHING DIFFERENT</span><div class="gtp213-dock-main"><span class="gtp213-dock-icon" aria-hidden="true">✺</span><div><h3>NEXT GAME <em>LEGEND.</em></h3><p>Spin for a random Legend to play next.</p></div></div><button type="button" data-action="wheel">✦ SPIN THE WHEEL <span aria-hidden="true">↗</span></button></article>
-  <article class="gtp213-dock-card gtp213-dock-intel"><span class="gtp213-dock-kicker">✧ DAILY REWARD / ${complete} OF ${total}</span><h3>FORBIDDEN <em>INTEL.</em></h3><div class="gtp213-dock-progress" role="progressbar" aria-label="Daily missions completed" aria-valuenow="${complete}" aria-valuemin="0" aria-valuemax="${total}"><span style="width:${complete/total*100}%"></span></div><button type="button" data-action="intel-open" ${unlocked?'':'disabled'}>${unlocked?(claimed?'✦ VIEW TODAY’S INTEL':'✦ UNLOCK YOUR INTEL'):`◆ ${complete}/${total} DAILY CHALLENGES`}</button></article>
   <article class="gtp213-dock-card gtp213-dock-legend"><div class="gtp213-dock-portrait">${portrait(legend.slug,{alt:'',cls:'balanced'})}</div><div class="gtp213-dock-legend-copy"><span class="gtp213-dock-kicker">✳ LEGEND OF THE DAY</span><h3>${esc(legend.name)}</h3><p>${esc(legend.role)} · ${esc(legend.signature)}</p><small>NEW PICK EVERY DAY</small></div></article>
  </section>`;
 }
@@ -273,20 +285,17 @@ function modeTile(mode,i){
  </button>`;
 }
 function home(){
- const unfinished=dailyModes().filter(mode=>!store.days[today()]?.[mode]?.finished);
- const done=dailyModes().length-unfinished.length;
  return `<main class="gtp2-home">
   <section class="gtp2-hero nova27-home" aria-label="Guess the Predator — five game modes">
    <img id="gtp2-backdrop" class="gtp2-backdrop" src="./assets/decor/haunted-hero.webp" alt="" aria-hidden="true" fetchpriority="high"/>
    <div class="gtp2-vignette" aria-hidden="true"></div>
    <div class="gtp2-hero-content">
-     <div class="gtp2-heading"><div><span class="gtp2-kicker">✦ FIVE MISSIONS · ONE MYSTERY</span><h1>GUESS THE <span>PREDATOR.</span></h1><p>Five puzzles. A new target every day.</p></div><div class="gtp2-progress"><small>DAILY · ${esc(today())}</small><strong>${done}<em>/5</em></strong><span>MISSIONS CLEARED</span></div></div>
-     <div class="gtp2-switchline gtp27-session-picker"><div class="gtp2-session" role="group" aria-label="Play type"><button data-action="session" data-session="daily" class="${session==='daily'?'active':''}" aria-pressed="${session==='daily'}">◈ DAILY CHALLENGE</button><button data-action="session" data-session="unlimited" class="${session==='unlimited'?'active':''}" aria-pressed="${session==='unlimited'}">∞ FREE PLAY</button></div><span>${session==='daily'?'ONE SCORE PER DAY':'UNLIMITED PRACTICE'}</span></div>
+     <div class="gtp214-hero-intro"><span>✦ FIVE MISSIONS · ONE MYSTERY</span><p>Pick your challenge. Follow the clues.</p></div>
+     ${homeIntelPanel()}
+     <div class="gtp2-switchline gtp27-session-picker"><div class="gtp2-session" role="group" aria-label="Play type"><button data-action="session" data-session="daily" class="${session==='daily'?'active':''}" aria-pressed="${session==='daily'}">◈ DAILY CHALLENGE</button><button data-action="session" data-session="unlimited" class="${session==='unlimited'?'active':''}" aria-pressed="${session==='unlimited'}">∞ FREE PLAY</button></div></div>
      <div class="gtp212-cascade" aria-label="Five playable daily modes">
        ${['classic','pixel','quote','ability','emoji'].map((mode,i)=>`<div class="gtp212-step gtp212-step-${mode}">${modeTile(mode,i)}</div>`).join('')}
-       <div class="gtp212-cascade-label" aria-hidden="true"><small>SELECT YOUR SIGNAL</small><strong>FIVE MODES<span>.</span></strong><span>ONE MYSTERY EVERY DAY</span></div>
      </div>
-     <div class="gtp2-hero-footer gtp28-hero-footer"><div class="gtp28-daily-progress"><span class="gtp28-live-dot"></span><span>FIVE MODES · ${session==='daily'?`${done}/5 DAILY CLEARED`:'PRACTICE MODE'}</span></div><div class="gtp28-primary-row">${session==='daily'?`<button data-action="home-daily" class="gtp2-primary gtp28-play-btn">${unfinished.length?'◈ CONTINUE DAILY':'✦ VIEW YOUR DAILY SCORE'} <span>↗</span></button>`:`<button data-action="open" data-mode="classic" class="gtp2-primary gtp28-play-btn">∞ START FREE PLAY <span>↗</span></button>`}</div><button class="gtp27-rank-link gtp28-rank-btn" data-action="leaderboard">♛ GLOBAL RANKINGS <span>↗</span></button></div>
      ${homeFeatureDock()}
      <footer class="gtp213-credit"><strong>Made by Sebyby</strong><span>Independent fan trivia · Not affiliated with EA or Respawn · Artwork subject to third-party rights</span></footer>
    </div>
@@ -338,7 +347,7 @@ function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode"
 function styleStrip(round){
   const locked=round.guesses.length>0||round.finished;
   return `<div class="style-strip" aria-label="Round rules">
-    <div><strong>HOW MUCH INTEL PER GUESS?</strong><div class="style-description">${round.mode==='signal'?'MYSTERY: one trait comparison per guess':'FULL SCAN: reveal all six traits'}</div></div>
+    <div><strong>CHOOSE YOUR SCAN</strong><div class="style-description">${round.mode==='signal'?'MYSTERY: one trait comparison per guess':'FULL SCAN: reveal all six traits'}</div></div>
     <div class="style-options" role="group" aria-label="Choose feedback"><button class="segment ${round.mode==='signal'?'active':''}" data-action="style" data-style="signal" ${locked?'disabled':''}>✦ ONE SIGNAL</button><button class="segment ${round.mode==='full'?'active':''}" data-action="style" data-style="full" ${locked?'disabled':''}>▦ FULL SCAN</button><button class="segment rush-btn ${round.timeLimit?'active':''}" data-action="rush" ${locked?'disabled':''}>⌛ RUSH ${round.timeLimit?round.timeLimit+'s':'OFF'}</button></div>
   </div>`;
 }

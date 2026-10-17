@@ -1,3 +1,7 @@
+Guess The Predator V2.14 — LOW GLOW
+
+See CHANGELOG_V214.md for the new look and optional full-body artwork setup.
+
 # Guess The Predator — install
 
 1. Extract this archive. Copy all the extracted files/folders into your EXISTING `guessthepredator.github.io` repository root (alongside `.git`, which should be retained).

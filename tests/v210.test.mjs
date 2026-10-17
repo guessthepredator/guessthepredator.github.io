@@ -28,8 +28,8 @@ test('Both modes have explicit dark gradients and isolated pseudo-elements',()=>
   assert.ok(css.includes('.gtp210-emoji-tile.is-visible'));
 });
 test('V2.12 cache busters and saved nickname are preserved',()=>{
-  assert.ok(html.includes('styles.css?v=2.13.0'));
-  assert.ok(html.includes('app.mjs?v=2.13.0'));
+  assert.ok(html.includes('styles.css?v=2.15.0'));
+  assert.ok(html.includes('app.mjs?v=2.15.0'));
   assert.ok(app.includes('function identityPrompt()'));
   assert.ok(app.includes('function submitScores()'));
   assert.ok(read('src/leaderboard_config.mjs').includes('pupdfltjeyzhnyrxutvt'));

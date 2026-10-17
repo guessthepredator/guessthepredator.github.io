@@ -1771,3 +1771,207 @@ body:has(#app[data-screen="howto"]),body:has(#app[data-screen="faq"]),body:has(#
 }
 /* Desktop viewport has a 78px navigation bar; avoid a stray 2px scrollbar. */
 @media(min-width:951px){.gtp2-home .nova27-home{min-height:calc(100svh - 78px)!important}.nova27-home .gtp2-hero-content{min-height:calc(100svh - 78px)!important}}
+
+
+/* ===== V2.14 LOW GLOW / COOL SIGNAL ===== */
+/* Homepage title: the brand in the navigation is the one and only large title. */
+.nova27-home .gtp2-hero-content{background:transparent!important;gap:0!important;justify-content:space-between!important;padding:12px clamp(14px,2.8vw,46px) 9px!important}
+.nova27-home .gtp214-hero-intro{order:1!important;display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:900;color:#b8e4d9;text-shadow:0 1px 3px #03071077;padding:6px 4px 1px}
+.nova27-home .gtp214-hero-intro p{margin:0;font-size:10px;letter-spacing:.04em;text-transform:none;color:#dedbe4}
+.nova27-home .gtp27-session-picker{order:2!important;flex:none!important;width:max-content!important;max-width:100%;margin:7px auto 5px!important;justify-content:center!important;text-shadow:none!important}
+/* Neutral segmented control that does not obscure the illustration */
+.nova27-home .gtp2-session{background:rgba(12,23,31,.72)!important;border:1px solid #9db9c3a0!important;box-shadow:0 6px 17px #060d164c!important;padding:4px!important;backdrop-filter:blur(6px)}
+.nova27-home .gtp2-session button{background:transparent!important;color:#d6e4e8!important;padding:10px 19px!important;min-width:160px;border:1px solid transparent!important;box-shadow:none!important;text-shadow:none!important;letter-spacing:.06em}
+.nova27-home .gtp2-session button.active{background:linear-gradient(130deg,#c1d7da,#90bac0)!important;color:#12262e!important;border:1px solid #e0e8e4!important;box-shadow:inset 0 1px 0 #effaff78!important}
+.nova27-home .gtp2-session button:hover:not(.active){background:#283e49b8!important;color:#ecf8f6!important}
+/* Keep the local Halloween artwork, but suppress its flame glare and animated flares. */
+.nova27-home .gtp2-backdrop,.gtp2-hero .gtp2-backdrop{filter:brightness(.71) saturate(.67) contrast(.95)!important;transform:none!important;transition:none!important;object-fit:cover}
+.nova27-home:hover .gtp2-backdrop,.gtp2-hero:hover .gtp2-backdrop{transform:none!important;filter:brightness(.71) saturate(.67) contrast(.95)!important}
+.nova27-home .gtp2-vignette,.gtp2-hero .gtp2-vignette{background:linear-gradient(180deg,#080e1b86 0%,#09131b1a 38%,#0b11247a 78%,#0b1020db 100%),linear-gradient(90deg,#070b17a8 0%,#10152443 28%,transparent 45%,transparent 58%,#10152443 77%,#070b17a8 100%)!important}
+.nova27-home:before,.gtp2-hero:before{background:linear-gradient(180deg,transparent 0%,#08131c10 56%,#09121b62 100%)!important}
+.nova27-home .gtp2-hero-content:before{animation:none!important;opacity:.06!important}
+.nova27-home .gtp2-mode-card{background:linear-gradient(110deg,#111f2de8,#152137d7 65%,#161e30e5)!important;border:1px solid color-mix(in srgb,var(--tile) 60%,#64717f)!important;box-shadow:0 4px 14px #05091069,inset 2px 0 0 var(--tile)!important;backdrop-filter:blur(5px)!important;animation:none!important;transition:background .16s,border-color .16s,transform .16s!important;transform:none!important}
+.nova27-home .gtp2-mode-card:hover,.nova27-home .gtp2-mode-card:focus-visible{transform:translateY(-2px)!important;background:linear-gradient(115deg,#1a3342f1,#223248ee)!important;border-color:#bdded6!important;box-shadow:0 6px 14px #061017a3,inset 2px 0 0 var(--tile)!important}
+.nova27-home .gtp2-mode-copy strong{color:#f3f7f6!important;text-shadow:0 2px 8px #03091166!important}
+.nova27-home .gtp2-mode-copy em{color:#bedbd9!important}
+.nova27-home .gtp2-mode-arrow{color:#0d1e26!important;border:1px solid #d5e5e266!important;box-shadow:none!important;background:var(--tile)!important}
+.nova27-home .gtp212-cascade{order:3!important;margin:3px auto 0!important;min-height:315px!important;max-height:360px!important;row-gap:7px!important;padding:4px 0 5px!important}
+/* Place Forbidden Intel exactly where Select Your Signal used to be. */
+.nova27-home .gtp214-intel-center{grid-column:2;grid-row:1/3;z-index:5;position:relative;align-self:center;justify-self:center;display:flex;flex-direction:column;justify-content:center;gap:10px;text-align:center;width:min(100%,342px);min-width:0;min-height:172px;padding:19px 20px;border-radius:18px;background:linear-gradient(145deg,#0e2734dd,#1b2636e8)!important;border:1px solid #82a9b6a8;box-shadow:0 8px 22px #0307108c,inset 0 0 0 1px #cfedf414;backdrop-filter:blur(6px);color:#e7f4f2;text-shadow:0 1px 3px #060913}
+.nova27-home .gtp214-intel-center h2{margin:0!important;color:#f1f6f4!important;font-family:'Barlow Condensed',Impact,sans-serif;font-size:clamp(22px,2.3vw,32px)!important;line-height:1!important;letter-spacing:.03em}
+.nova27-home .gtp214-intel-center em{font-style:normal;color:#9fc9c7!important}
+.nova27-home .gtp214-intel-kicker{font-size:9px;letter-spacing:.11em;color:#a7d4d6;font-weight:900}
+.nova27-home .gtp214-intel-track{height:10px;width:100%;border:1px solid #4c8293;border-radius:99px;overflow:hidden;background:#0b1723}
+.nova27-home .gtp214-intel-track>span{display:block;height:100%;background:linear-gradient(90deg,#5baca2,#aad5c9);border-radius:inherit;transition:width .25s ease}
+.nova27-home .gtp214-intel-center p{margin:0;color:#cadbdc;font-size:9px;font-weight:900;letter-spacing:.09em}
+.nova27-home .gtp214-intel-center button{display:block;min-height:34px;width:100%;border:1px solid #91c4ba;border-radius:9px;background:#33656d;color:#f3faf8;font-weight:900;font-size:10px;letter-spacing:.02em;box-shadow:none;cursor:pointer}
+.nova27-home .gtp214-intel-center button:disabled{cursor:default;opacity:1;background:#283d4c;color:#bfcccf;border-color:#718a91}
+.nova27-home .gtp214-intel-center button:hover:not(:disabled){background:#3e7d82}
+/* Wheel left + spotlight right only. No duplicate Daily CTAs or rankings footer. */
+.nova27-home .gtp214-dock{order:4!important;width:min(100%,1300px)!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:clamp(13px,5vw,94px)!important;margin:5px auto 0!important;align-items:stretch}
+.nova27-home .gtp214-dock .gtp213-dock-card{min-height:112px!important;max-height:130px!important;background:linear-gradient(130deg,#101e2cd9,#182337df)!important;border:1px solid #6b8f9c99!important;box-shadow:0 5px 16px #070b13a0!important;backdrop-filter:blur(5px)!important}
+.nova27-home .gtp213-dock-wheel .gtp213-dock-icon{border-color:#83b6bc;color:#bce0df;background:#23404a5c}
+.nova27-home .gtp213-dock-wheel button{background:#335a64!important;color:#e5f4f1!important;border-color:#7aaab1!important;box-shadow:none!important}
+.nova27-home .gtp213-dock-wheel button:hover{background:#427580!important}
+.nova27-home .gtp213-dock-card h3 em{color:#a6d1ca!important}
+.nova27-home .gtp213-dock-kicker{color:#b0d9cf!important}
+.nova27-home .gtp213-credit{order:5!important;opacity:.76;color:#b3c4c7!important;text-shadow:none!important}
+.nova27-home .gtp213-credit strong{color:#c0ded8!important}
+/* The five modes have distinct low-glare accents: sea glass, steel, sand, blue, lavender. */
+.gtp2-game-scene{--calm-primary:#82c3c4}
+body:has(.gtp2-game-scene) #app[data-screen="game"]{background:radial-gradient(ellipse at 5% 9%,#3e536329,transparent 46%),radial-gradient(ellipse at 85% 67%,#467d7d24,transparent 46%),linear-gradient(135deg,#101c2a 0%,#202837 46%,#172331 100%)!important}
+.gtp2-game-scene .game-titlebar h1 span{color:#a4d2cc!important}
+.gtp2-game-scene .game-titlebar .kicker,.gtp2-game-scene .guess-top h2 span{color:#a3d3cb!important}
+.gtp2-game-scene .mode-tab,.gtp2-game-scene .mode-rail .mode-tab{background:linear-gradient(140deg,#243244,#192636)!important;color:#dbe6eb!important;border:1px solid #5e7d8b!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp2-game-scene .mode-rail .mode-tab.active{background:linear-gradient(145deg,#2f6775,#356476)!important;color:#fff!important;border:1px solid #a9d5cd!important;box-shadow:inset 0 2px 0 #c5fff61c!important}
+.gtp2-game-scene .mode-tab b{color:#a5d9d3!important}
+#app[data-screen="game"] .gtp2-game-scene .style-strip{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:12px 30px!important;border:1px solid #759da9!important;border-radius:16px!important;background:linear-gradient(120deg,#172b3c,#182c3d)!important;box-shadow:inset 0 1px 0 #d9ffff10,0 6px 22px #0710198c!important;padding:14px 20px!important;margin:15px auto!important;width:100%!important;text-align:center!important}
+#app[data-screen="game"] .gtp2-game-scene .style-strip strong{color:#c2efeb!important;font-size:11px!important;letter-spacing:.11em!important}
+#app[data-screen="game"] .gtp2-game-scene .style-description{color:#b6c5d2!important;font-size:11px!important}
+#app[data-screen="game"] .gtp2-game-scene .style-options{display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;flex-wrap:wrap!important}
+#app[data-screen="game"] .gtp2-game-scene .style-options .segment{min-width:125px!important;min-height:42px!important;padding:10px 17px!important;background:#283d50!important;border:1px solid #83a7b5!important;border-radius:10px!important;color:#eff8fa!important;box-shadow:0 3px 9px #00000038!important;font-size:11px!important;font-weight:900!important;letter-spacing:.04em!important}
+#app[data-screen="game"] .gtp2-game-scene .style-options .segment.active{background:linear-gradient(135deg,#79b9ac,#90ccd0)!important;border-color:#d4f1e9!important;color:#10282e!important;box-shadow:0 0 0 2px #98d5d029!important}
+#app[data-screen="game"] .gtp2-game-scene .style-options .rush-btn.active{background:linear-gradient(135deg,#56728c,#97b8c7)!important;border-color:#c5ddea!important;color:#10232f!important}
+#app[data-screen="game"] .gtp2-game-scene .style-options .segment:disabled{opacity:.75!important;cursor:not-allowed!important}
+/* Calm down the game panel accent pink — retain accessibility and successful hint green. */
+.gtp2-game-scene .panel-top{background:linear-gradient(100deg,#294456,#263f51)!important;color:#f4f8f8!important;border-color:#648c9b!important}
+.gtp2-game-scene .clue-card,.gtp2-game-scene .guess-card{border-color:#58798d!important;background:#192939!important}
+.gtp2-game-scene .btn.pink{background:linear-gradient(120deg,#397887,#365b74)!important;border-color:#a5d9d7!important}
+.gtp2-game-scene .btn.lilac{background:linear-gradient(120deg,#4d6388,#405772)!important;border-color:#9facce!important}
+.gtp2-game-scene .scan-cell.bad{background:#54414a!important;color:#eee1e4!important;border-color:#a18792!important}
+.gtp2-game-scene .gtp27-classic-banner{background:linear-gradient(110deg,#1c3745,#2c3a4b)!important;border-color:#6c91a2!important}
+.gtp2-game-scene .gtp27-question-symbol{background:linear-gradient(135deg,#285366,#3c5671)!important;border-color:#8bb8c4!important}
+/* Artwork consistency: identical transparent frames, fit and padding across picker, win, wheel, compact search and spotlight. */
+.gtp2-picker .picker-legend .portrait-holder,
+.gtp2-game-scene .answer-tag .portrait-holder,
+.gtp213-dock-portrait .portrait-holder,
+.search-result .portrait-holder,
+.wheel-result .portrait-holder{display:flex!important;align-items:flex-end!important;justify-content:center!important;background:transparent!important;border:0!important;box-shadow:none!important;filter:none!important;overflow:hidden!important;padding:4px!important}
+.gtp2-picker .picker-legend .portrait-holder img,
+.gtp2-game-scene .answer-tag .portrait-holder img,
+.gtp213-dock-portrait .portrait-holder img,
+.search-result .portrait-holder img,
+.wheel-result .portrait-holder img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;transform:none!important;filter:drop-shadow(0 3px 6px #050c1860)!important}
+.gtp2-picker .picker-legend .portrait-holder{background:transparent!important}
+.gtp2-picker .picker-legend{background:linear-gradient(180deg,#192938,#101c2b)!important;border-color:#567c8e!important;color:#eff9f7!important}
+.gtp2-picker .picker-legend strong{color:#f1f8f6!important}
+.gtp2-picker .picker-legend small{color:#b6c7d1!important}
+.gtp213-dock-portrait{background:transparent!important;border:none!important}
+/* Ability centering: icon and scan tag form one balanced column, regardless of viewport. */
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-ability-stage{display:grid!important;grid-template-rows:auto minmax(0,1fr) auto!important;place-items:stretch!important;height:398px!important;padding:0!important;overflow:hidden!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-core{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;align-content:center!important;gap:12px!important;inset:auto!important;width:100%!important;padding:0!important;margin:0 auto!important;transform:none!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{position:relative!important;z-index:2!important;width:min(248px,70%)!important;height:auto!important;aspect-ratio:1!important;margin:0 auto!important;align-self:center!important;transform:none!important;flex:0 0 auto!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon img{inset:0!important;width:100%!important;height:100%!important;object-position:center!important;padding:8px!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-scan-tag{margin:0 auto!important;flex:0 0 auto!important;align-self:center!important;position:relative!important;left:auto!important;top:auto!important;transform:none!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-orbit-detail{inset:0!important;left:0!important;top:0!important;transform:none!important}
+/* Motion sensitivity: disable gratuitous pulsing, shine and over-bright hover reactions. */
+.nova27-home .gtp2-primary,.nova27-home .gtp214-intel-center button{transition:background .15s ease!important}
+.nova27-home .gtp2-mode-card:after{display:none!important}
+@media (prefers-reduced-motion:reduce){.nova27-home *{transition:none!important;animation:none!important}.gtp2-hero .gtp2-backdrop{transform:none!important}}
+@media(min-width:951px){.nova27-home .gtp2-hero-content{min-height:calc(100svh - 78px)!important;max-height:none!important}.nova27-home .gtp214-dock{margin-top:5px!important}}
+@media(max-width:1020px) and (min-width:741px){.nova27-home .gtp214-intel-center{width:min(225px,142%)!important;padding:11px 10px!important;min-height:150px}.nova27-home .gtp214-intel-center h2{font-size:21px!important}.nova27-home .gtp214-intel-center button{font-size:9px}.nova27-home .gtp212-cascade{min-height:360px!important}}
+@media(max-width:740px){.nova27-home .gtp214-hero-intro{gap:10px!important;font-size:9px!important}.nova27-home .gtp214-hero-intro p{font-size:9px!important;text-align:right}.nova27-home .gtp2-session button{min-width:0!important;font-size:10px!important;padding:10px 13px!important}.nova27-home .gtp212-cascade{max-height:none!important;min-height:0!important;grid-template-rows:repeat(3,auto) auto!important;flex:none!important;padding:8px 0!important}.nova27-home .gtp214-intel-center{grid-column:1/-1;grid-row:4;width:min(100%,390px)!important;min-height:126px;padding:13px 16px;justify-self:center;gap:8px}.nova27-home .gtp214-dock{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;margin:12px auto!important}.nova27-home .gtp214-dock .gtp213-dock-wheel{grid-column:1;grid-row:1}.nova27-home .gtp214-dock .gtp213-dock-legend{grid-column:2;grid-row:1}.nova27-home .gtp214-dock .gtp213-dock-card{max-height:none!important;min-height:150px!important}.nova27-home .gtp213-dock-wheel .gtp213-dock-main{gap:6px!important}.nova27-home .gtp213-dock-wheel .gtp213-dock-icon{min-width:31px;width:31px;height:31px;font-size:18px}.nova27-home .gtp213-dock-legend{gap:5px!important;padding:7px!important}.nova27-home .gtp213-dock-portrait{width:45px!important;height:85px!important;min-width:45px!important}.nova27-home .gtp213-dock-card h3{font-size:clamp(18px,4vw,23px)!important}.nova27-home .gtp213-dock-card p{font-size:9px!important}.nova27-home .gtp213-dock-wheel button{font-size:9px!important}.gtp2-game-scene .style-options .segment{min-width:95px!important}.gtp2-game-scene .clue-visual.gtp210-ability-stage{height:330px!important}#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{width:min(200px,67%)!important}}
+@media(max-width:420px){.nova27-home .gtp214-hero-intro{display:flex;flex-direction:column;align-items:center;text-align:center}.nova27-home .gtp214-hero-intro p{display:none}.nova27-home .gtp214-dock{display:grid!important;grid-template-columns:1fr!important}.nova27-home .gtp214-dock .gtp213-dock-wheel{grid-column:1;grid-row:1}.nova27-home .gtp214-dock .gtp213-dock-legend{grid-column:1;grid-row:2}.nova27-home .gtp214-dock .gtp213-dock-card{min-height:108px!important}.nova27-home .gtp213-dock-portrait{width:75px!important;min-width:75px!important;height:85px!important}.nova27-home .gtp214-intel-center{max-width:100%;width:100%!important}.gtp2-game-scene .style-options .segment{min-width:84px!important;padding:8px 7px!important;font-size:9px!important}}
+
+/* V2.14 final correction: legacy card-specific --tile overrides were still neon. */
+.nova27-home .gtp2-card-classic{--tile:#79b6aa!important}
+.nova27-home .gtp2-card-pixel{--tile:#9aaed1!important}
+.nova27-home .gtp2-card-quote{--tile:#d0b78c!important}
+.nova27-home .gtp2-card-ability{--tile:#83b6cc!important}
+.nova27-home .gtp2-card-emoji{--tile:#b4a8c8!important}
+.nova27-home .gtp2-mode-arrow{background:var(--tile)!important;border:1px solid #dee4e180!important;color:#132630!important;box-shadow:none!important}
+.gtp2-top .topnav .nav-item.active{background:linear-gradient(120deg,#3f7079,#345766)!important;border-color:#89babc!important;color:#eff7f4!important;box-shadow:inset 0 1px 0 #f4ffff1d!important}
+.nova27-home .gtp2-mode-number,.nova27-home .gtp2-mode-glyph{color:var(--tile)!important;text-shadow:none!important}
+/* Compact, vertically centered Ability art on phones. */
+@media(max-width:740px){#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-ability-stage{height:330px!important;max-height:330px!important}#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{width:min(196px,64%)!important;height:auto!important;aspect-ratio:1!important}}
+
+
+/* V2.15 / FEATURE FIRST — restore original Forbidden Intel chest to the first homepage row.
+   Keep the V2.14 cool palette and the five-mode cascade, but reveal Mirage again. */
+.nova27-home .gtp215-intel-feature{
+  order:2!important;position:relative!important;display:grid!important;
+  grid-template-columns:205px minmax(0,1fr)!important;align-items:center!important;
+  justify-content:stretch!important;gap:13px!important;
+  width:min(675px,100%)!important;min-width:0!important;
+  max-width:675px!important;min-height:148px!important;max-height:152px!important;
+  padding:6px 19px 6px 7px!important;margin:8px auto 5px!important;
+  text-align:left!important;border-radius:19px!important;
+  border:1px solid #87b5b1a8!important;
+  background:linear-gradient(125deg,#0c1b2cdd,#182535ee 54%,#122433dc)!important;
+  box-shadow:0 8px 27px #050b17a0,inset 0 1px 0 #d6fcf315!important;
+  backdrop-filter:blur(7px)!important;
+}
+.nova27-home .gtp215-intel-art{
+  position:relative;display:grid;place-items:center;align-self:center;
+  width:205px;height:130px;min-height:0;overflow:visible;
+  background:radial-gradient(ellipse at center,#769ca235,transparent 67%);
+}
+.nova27-home .gtp215-intel-art::before{
+  content:"";width:168px;height:110px;border:1px dashed #84aaae4d;
+  border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-13deg);
+}
+.nova27-home .gtp215-intel-art .vault-chest{
+  width:185px;height:132px;transform:scale(.91)!important;
+  transform-origin:center!important;filter:drop-shadow(0 9px 9px #02050f6e) saturate(.81) brightness(.9)!important;
+}
+.nova27-home .gtp215-intel-details{min-width:0;display:flex;flex-direction:column;gap:7px;align-items:stretch}
+.nova27-home .gtp215-intel-details h2{font-size:clamp(25px,2.6vw,36px)!important;white-space:normal;text-align:left}
+.nova27-home .gtp215-intel-details .gtp214-intel-kicker{letter-spacing:.14em;font-size:9px}
+.nova27-home .gtp215-intel-details .gtp214-intel-track{margin:0!important;height:9px!important}
+.nova27-home .gtp215-intel-details p{font-size:9px!important;text-align:left}
+.nova27-home .gtp215-intel-details button{width:100%!important;max-width:none!important;min-height:30px!important;font-size:9px!important}
+.nova27-home .gtp27-session-picker{order:3!important;margin:3px auto!important}
+.nova27-home .gtp212-cascade{order:4!important;flex:1 1 250px!important;min-height:245px!important;max-height:290px!important;margin:1px auto 0!important;row-gap:5px!important;padding:2px 0 3px!important}
+.nova27-home .gtp214-dock{order:5!important;margin:5px auto 0!important}
+.nova27-home .gtp213-credit{order:6!important}
+@media (max-height:760px) and (min-width:951px){
+ .nova27-home .gtp215-intel-feature{min-height:125px!important;max-height:133px!important;margin:3px auto!important;padding:4px 16px 4px 4px!important;grid-template-columns:170px minmax(0,1fr)!important}
+ .nova27-home .gtp215-intel-art{width:170px;height:119px}
+ .nova27-home .gtp215-intel-art .vault-chest{transform:scale(.77)!important}
+ .nova27-home .gtp215-intel-details{gap:4px}
+ .nova27-home .gtp215-intel-details h2{font-size:26px!important}
+ .nova27-home .gtp215-intel-details button{min-height:25px!important}
+ .nova27-home .gtp212-cascade{min-height:225px!important;max-height:245px!important;row-gap:3px!important}
+ .nova27-home .gtp212-step .gtp2-mode-card{min-height:71px!important}
+ .nova27-home .gtp214-dock .gtp213-dock-card{min-height:99px!important;max-height:107px!important}
+}
+@media (min-width:741px) and (max-width:1020px){
+ .nova27-home .gtp215-intel-feature{width:min(580px,96%)!important;grid-template-columns:160px minmax(0,1fr)!important;min-height:135px!important;max-height:145px!important;padding:6px 15px 6px 3px!important}
+ .nova27-home .gtp215-intel-art{width:160px;height:124px}
+ .nova27-home .gtp215-intel-art .vault-chest{transform:scale(.75)!important}
+ .nova27-home .gtp215-intel-details h2{font-size:27px!important}
+ .nova27-home .gtp212-cascade{min-height:270px!important;max-height:335px!important}
+}
+@media (max-width:740px){
+ .nova27-home .gtp215-intel-feature{order:2!important;grid-column:auto!important;grid-row:auto!important;width:min(100%,490px)!important;max-width:490px!important;min-height:145px!important;max-height:none!important;grid-template-columns:145px minmax(0,1fr)!important;gap:5px!important;margin:10px auto 6px!important;padding:8px 10px 8px 2px!important}
+ .nova27-home .gtp215-intel-art{width:145px;height:127px}
+ .nova27-home .gtp215-intel-art .vault-chest{transform:scale(.68)!important}
+ .nova27-home .gtp215-intel-details{gap:6px!important}
+ .nova27-home .gtp215-intel-details h2{font-size:clamp(21px,5.2vw,28px)!important}
+ .nova27-home .gtp215-intel-details .gtp214-intel-kicker{font-size:8px}
+ .nova27-home .gtp215-intel-details button{font-size:8px!important;min-height:34px!important}
+ .nova27-home .gtp27-session-picker{order:3!important}
+ .nova27-home .gtp212-cascade{order:4!important;max-height:none!important;min-height:0!important;flex:none!important}
+ .nova27-home .gtp214-dock{order:5!important}
+}
+@media(max-width:375px){
+ .nova27-home .gtp215-intel-feature{grid-template-columns:119px minmax(0,1fr)!important;gap:1px!important;padding:7px 7px 7px 0!important}
+ .nova27-home .gtp215-intel-art{width:119px;height:116px}
+ .nova27-home .gtp215-intel-art .vault-chest{transform:scale(.58)!important}
+ .nova27-home .gtp215-intel-details h2{font-size:20px!important}
+ .nova27-home .gtp215-intel-details .gtp214-intel-kicker{font-size:7px}
+}
+
+/* Keep decorative chest strictly inside its column on narrow displays. */
+@media(max-width:740px){
+ .nova27-home .gtp215-intel-feature{gap:12px!important;grid-template-columns:139px minmax(0,1fr)!important}
+ .nova27-home .gtp215-intel-art{width:139px;overflow:hidden}
+ .nova27-home .gtp215-intel-art .vault-chest{transform:scale(.62)!important}
+}
+@media(max-width:375px){
+ .nova27-home .gtp215-intel-feature{gap:8px!important;grid-template-columns:112px minmax(0,1fr)!important}
+ .nova27-home .gtp215-intel-art{width:112px;overflow:hidden}
+ .nova27-home .gtp215-intel-art .vault-chest{transform:scale(.53)!important}
+}
+@media(max-width:740px){.nova27-home .gtp215-intel-art .vault-chest{translate:-14px 0}}
+@media(max-width:375px){.nova27-home .gtp215-intel-art .vault-chest{translate:-12px 0}}

@@ -12,8 +12,8 @@ test('header and browser title omit version and retired edition',()=>{
 });
 test('hero dock contains wheel left, daily Intel middle, spotlight right',()=>{
  const mark=app.slice(app.indexOf('function homeFeatureDock'),app.indexOf('function modeTile'));
- assert.ok(mark.indexOf('gtp213-dock-wheel')<mark.indexOf('gtp213-dock-intel'));
- assert.ok(mark.indexOf('gtp213-dock-intel')<mark.indexOf('gtp213-dock-legend'));
+ assert.ok(mark.indexOf('gtp213-dock-wheel')<mark.indexOf('gtp213-dock-legend'));
+ assert.ok(app.includes('function homeIntelPanel()'));
  assert.ok(app.includes('${homeFeatureDock()}'));assert.ok(!app.includes('SCROLL FOR EXTRAS'));
  assert.ok(css.includes('.gtp213-dock{order:5'));
 });

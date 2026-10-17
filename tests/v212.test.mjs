@@ -38,6 +38,6 @@ test('leaderboard, FAQ and how-to share dark page treatment',()=>{
  assert.ok(css.includes('body:has(#app[data-screen="howto"])'));
 });
 test('server package validator and cache version',()=>{
- assert.ok(read('index.html').includes('styles.css?v=2.13.0'));
+ assert.ok(read('index.html').includes('styles.css?v=2.15.0'));
  assert.ok(read('supabase/functions/submit-score/index.ts').includes("'debut','origin'"));
 });
