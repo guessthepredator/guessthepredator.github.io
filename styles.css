@@ -2524,3 +2524,129 @@ body.lightshift-playing:before{background:radial-gradient(ellipse at 8% 8%,#111d
 .gtp219-progress{gap:7px}.gtp219-progress>span{flex:1}.gtp219-rewards{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px}.gtp219-rewards button{min-width:0!important;overflow:hidden}.gtp219-rewards button span{font-size:10px!important}.gtp219-rewards button small{font-size:8px!important}.gtp219-intel{max-width:570px}
 .trivia-page{background:radial-gradient(circle at 52% 2%,#39305b85,transparent 46%),linear-gradient(180deg,#081526 0%,#130d29 55%,#070e1e 100%)!important}.trivia-shell{position:relative}.trivia-shell:before{content:'';position:absolute;top:-45px;left:-12%;width:124%;height:430px;background:url('./assets/decor/mirage-clean-final.webp') center 28%/cover no-repeat;opacity:.24;mask-image:linear-gradient(#000 20%,transparent 100%);pointer-events:none;z-index:-1}.trivia-hero{position:relative;padding:20px 14px}.trivia-hero h1{color:#fff8f1!important;text-shadow:0 0 24px #74d9fe50,0 5px 14px #000!important}.trivia-hero h1 em{color:#ffac7b!important}.trivia-main,.trivia-sidebar{border:1px solid #6dd6ec80!important;box-shadow:0 0 0 1px #ffffff0e,0 13px 45px #01030a99,0 0 25px #24698026!important;background:linear-gradient(150deg,#11243aec,#110e28f5)!important}.trivia-tag,.trivia-kicker{color:#91f0f3!important}.trivia-option{border-color:#5699be99!important}.trivia-option:hover,.trivia-option:focus-visible{border-color:#a7edff!important;box-shadow:0 0 19px #38d8ff42!important}.trivia-primary{background:linear-gradient(105deg,#0f93c7,#1b728a)!important;color:#fff!important;border:1px solid #92f6ff!important;box-shadow:0 0 20px #00caff35!important}.trivia-timebar>span{background:linear-gradient(90deg,#75f5ed,#79abfa)!important}.trivia-clock{border-color:#5bd6e7!important}.trivia-question h2{color:#fff9f7!important;text-shadow:0 2px 10px #020711}.trivia-switch .active{background:#175d7b!important;color:#fff!important;border-color:#6fe9f5!important}
 @media(max-width:720px){.gtp219-rewards button span{font-size:9px!important}.gtp219-rewards button small{font-size:7px!important}.gtp221-unified-brand .gtp219-brand-type{font-size:16px}}
+
+/* ============================================================
+   V2.22 – CONSISTENCY & PERSISTENCE HOTFIX
+   A real six-mode orbit around the central Forbidden Intel hub.
+   Homepage uses the same site-wide header as every game screen.
+   ============================================================ */
+#app[data-screen="home"]>.gtp2-top{display:flex!important;position:relative!important;z-index:40!important}
+#app[data-screen="home"]>.gtp2-top .gtp2-top-inner{width:min(1500px,calc(100% - 28px))}
+.gtp222-home{min-height:calc(100svh - 78px)!important;overflow:hidden!important}
+.gtp222-home .gtp219-backdrop{inset:0!important;background-image:url('./assets/decor/mirage-clean-final.webp')!important;background-size:cover!important;background-position:center 34%!important;opacity:.94!important}
+.gtp222-home:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 47%,#060c1ba1 0,#060a18d0 31%,transparent 72%),linear-gradient(180deg,#05091826,#06091825 78%,#050711d9)}
+.gtp222-layout{max-width:1550px;min-height:calc(100svh - 78px);margin:0 auto;position:relative;z-index:1;display:flex;flex-direction:column;gap:12px;justify-content:space-between;padding:14px clamp(15px,2.7vw,45px) 10px;color:#f4f7ff}
+.gtp222-eyebrow{text-align:center;color:#adf7f4;font-size:10px;letter-spacing:.26em;font-weight:900;text-shadow:0 2px 10px #000}
+.gtp222-arena{display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,1.15fr) minmax(0,1fr);column-gap:clamp(11px,1.8vw,26px);align-items:stretch;width:100%;margin:0 auto}
+.gtp222-side{display:flex;flex-direction:column;justify-content:center;gap:12px;min-width:0}
+.gtp222-side-left .gtp222-orbit-card:nth-child(1){margin-right:38px}
+.gtp222-side-left .gtp222-orbit-card:nth-child(2){margin-right:12px}
+.gtp222-side-left .gtp222-orbit-card:nth-child(3){margin-right:38px}
+.gtp222-side-right .gtp222-orbit-card:nth-child(1){margin-left:38px}
+.gtp222-side-right .gtp222-orbit-card:nth-child(2){margin-left:12px}
+.gtp222-side-right .gtp222-orbit-card:nth-child(3){margin-left:38px}
+.gtp222-orbit-card{--accent:#8de5ee;position:relative;min-height:clamp(116px,16.5svh,150px);display:flex;align-items:center;gap:12px;padding:14px 14px;border:1px solid var(--accent)!important;border-radius:16px;background:linear-gradient(125deg,color-mix(in srgb,var(--accent) 25%,#0b162b),#090f24f3 67%)!important;box-shadow:inset 0 0 0 1px #ffffff12,0 10px 26px #01051488;isolation:isolate;color:#fff;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s;overflow:hidden;text-align:left}
+.gtp222-orbit-card:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 55%,color-mix(in srgb,var(--accent) 12%,transparent)),repeating-linear-gradient(145deg,transparent 0 23px,#ffffff06 24px 25px);pointer-events:none;z-index:-1}
+.gtp222-orbit-card:hover,.gtp222-orbit-card:focus-visible{transform:translateY(-3px);border-color:#f1ffff!important;box-shadow:0 13px 29px #000a,0 0 19px color-mix(in srgb,var(--accent) 35%,transparent)}
+.gtp222-orbit-symbol{width:clamp(48px,5.3vw,76px);height:clamp(54px,6.5vw,86px);flex:0 0 auto;display:grid;place-items:center;border-radius:14px;background:radial-gradient(circle at 48% 38%,color-mix(in srgb,var(--accent) 27%,#171629),#0a1122 90%);border:1px solid color-mix(in srgb,var(--accent) 60%,transparent);color:var(--accent);font:900 clamp(37px,4.6vw,64px)/1 Impact,sans-serif;text-shadow:0 0 12px color-mix(in srgb,var(--accent) 55%,transparent)}
+.gtp222-orbit-copy{display:flex;flex-direction:column;gap:6px;min-width:0}
+.gtp222-orbit-copy strong{font:900 clamp(25px,2.6vw,37px)/.94 'Barlow Condensed',Impact,sans-serif;letter-spacing:.02em;color:#fff;text-shadow:0 2px 7px #000}
+.gtp222-orbit-copy small{font-size:clamp(9px,.95vw,12px);color:color-mix(in srgb,var(--accent) 65%,#fff);font-weight:700;line-height:1.3}
+.gtp222-orbit-arrow{position:absolute;right:12px;bottom:9px;font-size:17px;color:var(--accent)}
+.gtp222-card-classic{--accent:#ffc278}.gtp222-card-pixel{--accent:#56d9ff}.gtp222-card-quote{--accent:#f4d594}.gtp222-card-ability{--accent:#c4a6ff}.gtp222-card-emoji{--accent:#66ecc9}.gtp222-card-trivia{--accent:#ff8bb5}
+.gtp222-core{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding:5px 0;min-width:0}
+.gtp222-core .gtp219-chest-art{width:clamp(155px,17vw,236px)!important;height:clamp(100px,13svh,140px)!important;margin:0 auto;flex:none;filter:drop-shadow(0 8px 17px #0009)}
+.gtp222-core h1{font:italic 900 clamp(36px,3.3vw,53px)/1 'Barlow Condensed',Impact,sans-serif;margin:0;color:#ffbc81;text-shadow:0 0 19px #e7784692,0 3px 7px #000;white-space:nowrap}
+.gtp222-core h1 em{color:#9af4f2;font-style:normal}
+.gtp222-core .gtp222-intel{max-width:560px;width:100%;background:linear-gradient(145deg,#071c31ee,#10152aef)!important;border:1px solid #59bad5!important;border-radius:12px;padding:12px;box-shadow:0 12px 32px #0009,0 0 23px #29aed324}
+.gtp222-core .gtp219-rewards{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.gtp222-core .gtp219-rewards button{min-height:48px!important;padding:8px 3px!important;white-space:normal!important;border-color:#4c7898!important;background:linear-gradient(155deg,#1b344d,#0d2238)!important;color:#f3fcff!important}
+.gtp222-core .gtp219-rewards button:disabled{opacity:.78!important;color:#a2b9d0!important}
+.gtp222-core .gtp219-rewards button span{font-size:9px!important;white-space:normal!important}
+.gtp222-core .gtp219-rewards button small{font-size:8px!important;color:#89dbe1!important}
+.gtp222-primary-actions{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.gtp222-primary-actions button{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:7px;min-height:69px;border-radius:12px;border:1px solid #53d4e3;background:linear-gradient(135deg,#06405dec,#061a2eeb)!important;color:#eefcff;padding:11px 7px;cursor:pointer;box-shadow:0 7px 14px #0005}
+.gtp222-primary-actions .gtp219-free-btn{border-color:#72e7c9;background:linear-gradient(135deg,#063c3aeb,#051c30eb)!important}
+.gtp222-primary-actions strong{font:900 clamp(17px,1.6vw,24px)/1 'Barlow Condensed',Impact,sans-serif}
+.gtp222-primary-actions small{font-size:9px;color:#c1eafa;line-height:1.3}
+.gtp222-primary-actions button:hover{filter:brightness(1.15);transform:translateY(-2px)}
+.gtp222-home-dock{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,16vw,240px);align-items:stretch;width:100%;margin:0 auto}
+.gtp222-wheel,.gtp222-spotlight{display:flex;gap:12px;align-items:center;text-align:left;border-radius:14px;min-width:0;min-height:clamp(95px,12svh,128px);position:relative;overflow:hidden;padding:0;border:1px solid #66cce4;background:linear-gradient(120deg,#081a2ef5,#0a192be8)!important;box-shadow:0 8px 26px #0008;color:#e7faff}
+.gtp222-wheel{cursor:pointer;transition:transform .2s,box-shadow .2s}
+.gtp222-wheel:hover{transform:translateY(-3px);box-shadow:0 12px 32px #000a,0 0 18px #35ceea73}
+.gtp222-wheel-illustration{width:clamp(115px,40%,220px);align-self:stretch;flex:none;display:block;background:url('./assets/decor/gtp218-wheel-art.webp') left center/cover no-repeat;border-right:1px solid #64bede}
+.gtp222-dock-copy{display:flex;flex-direction:column;gap:7px;min-width:0}
+.gtp222-dock-copy strong{font:900 clamp(24px,2.2vw,33px)/.97 'Barlow Condensed',Impact,sans-serif;letter-spacing:.025em;color:#bdedff}
+.gtp222-dock-copy small{color:#c0dfe9;font-size:11px;line-height:1.3}
+.gtp222-dock-copy b{font-size:13px;color:#fff}
+.gtp222-wheel>b{margin-left:auto;margin-right:15px;color:#77eaff;font-size:29px}
+.gtp222-spotlight{padding:8px 16px}
+.gtp222-spotlight-art{display:grid;place-items:center;width:92px;align-self:stretch;flex:0 0 92px;overflow:hidden;border-radius:11px;border:1px solid #425f7f;background:transparent}
+.gtp222-spotlight-art .portrait-holder{height:100%!important;width:100%!important;border:0!important;background:transparent!important}
+.gtp222-spotlight-art img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.gtp222-home .gtp219-footer{margin:0;padding:1px 0;min-height:20px}
+/* Full scan never loses already-correct traits: persistent board and history. */
+.gtp222-locked-intel{display:grid;gap:8px;margin:12px 0;padding:11px 12px;border:1px solid #28797f;background:linear-gradient(130deg,#092d35,#121d32);border-radius:12px;color:#d2fff7}
+.gtp222-locked-intel>strong{color:#86f4e7;font-size:11px;letter-spacing:.13em}
+.gtp222-locked-intel>div{display:flex;flex-wrap:wrap;gap:7px}
+.gtp222-locked-intel small{font-size:10px;color:#c0d7df}
+.gtp222-locked-chip{display:inline-flex;align-items:center;gap:8px;background:#114e47;border:1px solid #5be7c0;padding:7px 9px;border-radius:9px;font-size:11px;color:#e6fff5;font-weight:900}
+.gtp222-locked-chip b{color:#87ffe0}
+.gtp222-scan-history{display:grid;gap:6px;padding:10px 0;max-height:240px;overflow:auto}
+.gtp222-scan-attempt{display:grid;gap:7px;background:#151b2b;border:1px solid #374b66;border-radius:9px;padding:9px 12px}
+.gtp222-scan-attempt>b{font-size:10px;color:#d4e4f3}
+.gtp222-scan-attempt>span{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.gtp222-scan-attempt small{font-size:9px;letter-spacing:.06em;font-weight:900;border:1px solid #42526d;border-radius:5px;padding:5px 2px;text-align:center}
+.gtp222-scan-attempt small.locked{background:#0e5142;border-color:#5dd6ac;color:#c9ffea}
+.gtp222-scan-attempt small.miss{background:#4d2438;color:#fcd4e3;border-color:#9d5369}
+.gtp222-scan-attempt small.pending{background:#212437;color:#9eafc6}
+/* Uniform transparent character stand across all roster cards, no backdrop art in frame. */
+.gtp2-picker .gtp2-legend-card{background:linear-gradient(160deg,#13172a,#0b1a2a)!important;border:1px solid #6c809b!important;box-shadow:0 3px 10px #0005!important;overflow:hidden!important}
+.gtp2-picker .gtp2-legend-card .portrait-holder,.gtp2-picker .gtp2-legend-card .portrait-holder.balanced{height:clamp(160px,16vw,205px)!important;min-height:160px!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;overflow:hidden!important;border:0!important;border-radius:11px!important;padding:2px!important;background:transparent!important;box-shadow:none!important}
+.gtp2-picker .gtp2-legend-card .portrait-holder img{max-width:100%!important;max-height:100%!important;width:100%!important;height:100%!important;display:block!important;object-fit:contain!important;object-position:center bottom!important;padding:0!important;border-radius:0!important;filter:drop-shadow(0 7px 9px #05061390)!important;background:transparent!important}
+.gtp2-picker .gtp2-legend-card strong{color:#eefbff!important;font-weight:900}
+/* Homepage removes duplicate menu and keeps a single home tab at any resolution. */
+@media(max-width:1150px){
+ .gtp222-arena{grid-template-columns:minmax(0,1fr) minmax(320px,1.15fr) minmax(0,1fr);gap:9px}
+ .gtp222-side .gtp222-orbit-card{margin-left:0!important;margin-right:0!important}
+ .gtp222-orbit-card{min-height:113px;padding:9px;gap:5px}
+ .gtp222-orbit-symbol{width:48px;height:51px;font-size:36px}
+ .gtp222-orbit-copy strong{font-size:23px}.gtp222-orbit-copy small{font-size:9px}
+ .gtp222-core h1{font-size:35px}.gtp222-layout{gap:9px}.gtp222-home-dock{gap:25px}
+}
+@media(max-width:830px){
+ .gtp222-home{overflow:visible!important}
+ .gtp222-layout{min-height:calc(100svh - 64px);padding:15px 14px 28px;gap:16px}
+ .gtp222-arena{display:flex;flex-direction:column;gap:16px}
+ .gtp222-core{order:-1;max-width:570px;width:100%;margin:10px auto 6px}
+ .gtp222-side{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+ .gtp222-orbit-card{display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;min-height:130px;padding:12px 7px;text-align:center}
+ .gtp222-orbit-copy strong{font-size:26px}.gtp222-orbit-copy small{font-size:9px}
+ .gtp222-orbit-arrow{display:none}
+ .gtp222-home-dock{gap:12px;grid-template-columns:1fr}
+ .gtp222-spotlight,.gtp222-wheel{min-height:110px}
+}
+@media(max-width:480px){
+ .gtp222-layout{gap:14px;padding-inline:10px}
+ .gtp222-eyebrow{font-size:8px;letter-spacing:.15em}
+ .gtp222-core .gtp219-chest-art{height:110px!important;width:166px!important}
+ .gtp222-core h1{font-size:34px}
+ .gtp222-side{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .gtp222-orbit-card{min-height:119px}.gtp222-side-right .gtp222-orbit-card:last-child{grid-column:span 2}
+ .gtp222-orbit-symbol{width:44px;height:42px;font-size:32px}
+ .gtp222-orbit-copy strong{font-size:24px}
+ .gtp222-primary-actions strong{font-size:17px}.gtp222-primary-actions small{font-size:8px}
+ .gtp222-core .gtp219-rewards button span{font-size:8px!important}
+ .gtp222-wheel-illustration{width:125px}
+ .gtp222-dock-copy strong{font-size:25px}
+ .gtp222-scan-attempt>span{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){.gtp222-orbit-card,.gtp222-wheel{transition:none!important}}
+
+/* V2.22: original skin render source gets the same full-body viewport on every card. */
+.gtp2-picker .gtp2-legend-card .portrait-model-render,.gtp2-picker .gtp2-legend-card .portrait-model-render img{background:transparent!important;object-fit:contain!important;object-position:center bottom!important}
+#app[data-screen="home"] .gtp2-top{height:76px!important;min-height:76px}
+@media(max-width:830px){#app[data-screen="home"] .gtp2-top{height:auto!important;min-height:64px!important}}
+/* Wheel source artwork contains a neighboring headline; show wheel itself only. */
+.gtp222-wheel-illustration{width:clamp(106px,29%,170px)!important;background-size:auto 168px!important;background-position:left center!important}
+@media(max-width:480px){.gtp222-wheel-illustration{width:116px!important;background-size:auto 154px!important}}

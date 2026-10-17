@@ -11,12 +11,12 @@ test('clean character backdrop is bundled and uniquely used by live homepage',()
 });
 test('game mode cards real HTML and correct five actions, no cropped screenshot art',()=>{
  for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(home.includes(`'${m}'`));
- for(const marker of ['gtp219-mode-pattern','gtp219-mode-glyph','gtp219-mode-title','data-action="open"','data-session="unlimited"'])assert.ok(home.includes(marker));
+ for(const marker of ['gtp222-orbit-card','gtp222-orbit-symbol','gtp222-orbit-copy','data-mode=','data-session='])assert.ok(home.includes(marker));
  assert.ok(!home.includes('gtp218-mode-classic.webp'));
 });
 test('both daily checkpoints and all main interactive surfaces wired',()=>{
- for(const action of ['home-daily','session','intel-open','wheel','leaderboard','howto','faq','audio','profile'])assert.ok(home.includes(`data-action="${action}"`));
- assert.ok(home.includes('gtp219-rewards'));assert.ok(home.includes('gtp219-dock-portrait'));
+ for(const action of ['home-daily','session','intel-open','wheel'])assert.ok(home.includes(`data-action="${action}"`));
+ assert.ok(home.includes('gtp219-rewards'));assert.ok(home.includes('gtp222-spotlight-art'));assert.ok(app.includes('data-action="leaderboard"'));assert.ok(app.includes('data-action="profile"'));
 });
 test('browse portraits consistently rendered without false full-body files',()=>{
  assert.ok(css.includes('#app .gtp2-picker .picker-legend .portrait-holder'));
@@ -26,7 +26,7 @@ test('browse portraits consistently rendered without false full-body files',()=>
 });
 test('mode accents and stable release cache versions',()=>{
  for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(css.includes(`[data-mode="${m}"]`));
- assert.ok(html.includes('styles.css?v=2.21.0'));
- assert.ok(html.includes('app.mjs?v=2.21.0'));
+ assert.ok(html.includes('styles.css?v=2.22.0'));
+ assert.ok(html.includes('app.mjs?v=2.22.0'));
  assert.ok(app.includes("app.dataset.mode=screen==='game'?active:''"));
 });

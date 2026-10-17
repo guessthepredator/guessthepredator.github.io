@@ -1,16 +1,13 @@
-# Browse Legends — Asset Accuracy Audit
+# V2.22 portrait asset audit
 
-**Highest-priority asset gap:** verified full-body, transparent renders for Vantage, Sparrow, Rampart, Revenant, Loba, Gibraltar, Conduit, Catalyst, Ballistic, Alter.
+**Highest priority fix:** all 28 Browse Legends cards now share the exact same clean model stage, scale, bottom alignment, transparent frame and text hierarchy.
 
-This release makes all 28 character cards consistently sized, aligned and dark-backed with no colored portrait backplates. It does NOT claim the ten portrait source files are full-body when they are not.
+Ten problematic Legends (Vantage, Sparrow, Rampart, Revenant, Loba, Gibraltar, Conduit, Catalyst, Ballistic, Alter) now attempt `Original [Legend].png` model/skin-renders from the Apex Legends Wiki first, then keep the old sources as fallback. The wiki lists model-sized Original skin images, typically 546×858 or 728×1144. Hotlink permissions, transparency and visual completeness remain dependent on the external hosts and **cannot be guaranteed until verified on the deployed website**.
 
-Current `assets/portraits/` is empty. The local-first loader currently tries the curated remote genuine-character sources from `src/art.mjs`. Sources may be unavailable or differ in crop/framing.
+Verified archive category references:
+- https://apexlegends.wiki.gg/wiki/Category:Loba_skin_images
+- https://apexlegends.wiki.gg/wiki/Category:Ballistic_skin_images
+- https://apexlegends.wiki.gg/wiki/Category:Datamined_skins (Vantage)
+- https://apexlegends.wiki.gg/wiki/Sparrow
 
-## Completing the final body-render set (once licensed source art is available)
-
-1. Obtain an accurate original full-body transparent render for each named Legend, with redistribution permitted. Verify character identity and pose visually; do not use unrelated AI approximations.
-2. Save as a portrait-oriented transparent `PNG` or `WebP` to `assets/portraits/<slug>.png`. Prefer at least ~450 px height and alpha transparency. Trim excess margins while preserving all visible head-to-boots character parts.
-3. Run `python3 scripts/import_portraits.py` to audit alpha/transparency, dimensions and portrait ratio. **Visually confirm each identity and complete body**. Then run `python3 scripts/import_portraits.py --apply` to update `src/portrait_media_manifest.mjs` automatically. Add only files that genuinely exist.
-4. Re-run `node --test tests/*.test.mjs` and preview Browse Legends on mobile and desktop.
-
-No changes to gameplay, matchmaking, backend or scoreboard are required to install a verified image replacement.
+For fully offline and stable 28/28 renders, provide appropriately licensed transparent PNGs named `assets/portraits/<slug>.png` and update `src/portrait_media_manifest.mjs`. We do not claim ten local verified cutouts are bundled. This is not an AI recreation of the characters.
