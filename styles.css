@@ -3252,3 +3252,384 @@ body.lightshift-playing #app[data-screen="game"]{background:radial-gradient(elli
  #app[data-screen="trivia"] .trivia-page-active .trivia-question h2{margin-bottom:12px!important}
  #app[data-screen="trivia"] .trivia-page-active .trivia-timebar{margin:6px 0 12px!important}
 }
+
+
+/* ====================================================================
+   V2.29 · GAMEPLAY CLARITY PASS
+   01 clue / 02 answer / 03 scanner. Solid buttons, no glass-only CTAs.
+   Keeps original functionality, score and daily protocols unchanged.
+   ==================================================================== */
+#app[data-screen="game"][data-mode="classic"] .gtp229-game{--gtp229-accent:#ffab60;--gtp229-accent-rgb:255 171 96;--gtp229-button-ink:#1d1222;--gtp229-dark:#241b20}
+#app[data-screen="game"][data-mode="pixel"] .gtp229-game{--gtp229-accent:#5bbaff;--gtp229-accent-rgb:91 186 255;--gtp229-button-ink:#071a32;--gtp229-dark:#0c213b}
+#app[data-screen="game"][data-mode="quote"] .gtp229-game{--gtp229-accent:#f3d278;--gtp229-accent-rgb:243 210 120;--gtp229-button-ink:#211b0e;--gtp229-dark:#242218}
+#app[data-screen="game"][data-mode="ability"] .gtp229-game{--gtp229-accent:#ba93ff;--gtp229-accent-rgb:186 147 255;--gtp229-button-ink:#1a112d;--gtp229-dark:#201834}
+#app[data-screen="game"][data-mode="emoji"] .gtp229-game{--gtp229-accent:#65e8cb;--gtp229-accent-rgb:101 232 203;--gtp229-button-ink:#06221d;--gtp229-dark:#122c2a}
+
+#app[data-screen="game"] .gtp229-game{
+ --gtp229-panel:#0d1c30;--gtp229-panel-alt:#13253b;
+ --gtp229-outline:#34526b;--gtp229-muted:#a9c6d8;
+ padding-top:10px!important;
+ max-width:1400px!important;
+ color:#eef9ff!important;
+}
+#app[data-screen="game"] .gtp229-game .game-topline{margin:0 0 6px!important}
+#app[data-screen="game"] .gtp229-game .game-topline .tiny-link{
+ background:#112940!important;border:1px solid #54738e!important;
+ color:#d5f3ff!important;border-radius:9px!important;
+ padding:8px 12px!important;font-size:10px!important;min-height:35px
+}
+#app[data-screen="game"] .gtp229-game .game-topline .tiny-link:hover{
+ background:#18445f!important;color:#fff!important;border-color:#76f1ee!important
+}
+#app[data-screen="game"] .gtp229-game .gtp224-session-banner{
+ border-radius:10px!important;margin:7px 0 10px!important;padding:9px 13px!important;
+ min-height:42px!important;
+ background:linear-gradient(90deg,#11233b,#0f1d2e)!important;
+ border:1px solid var(--gtp229-accent)!important;
+ box-shadow:inset 4px 0 0 var(--gtp229-accent)!important
+}
+#app[data-screen="game"] .gtp229-game .gtp224-session-banner strong{
+ font-size:12px!important;color:#f4fbff!important
+}
+#app[data-screen="game"] .gtp229-game .gtp224-session-banner>span{
+ color:#b8d3e3!important;opacity:1!important;font-size:10px!important;letter-spacing:.045em!important
+}
+#app[data-screen="game"] .gtp229-game .game-titlebar{
+ padding:5px 1px 10px!important;margin:6px 0 6px!important;
+ align-items:center!important
+}
+#app[data-screen="game"] .gtp229-game .game-titlebar h1{
+ font-size:clamp(38px,4.6vw,58px)!important;margin:3px 0 6px!important;
+ line-height:.92!important;color:#fff!important
+}
+#app[data-screen="game"] .gtp229-game .game-titlebar .kicker{
+ color:var(--gtp229-accent)!important;letter-spacing:.14em!important;font-size:9px!important
+}
+#app[data-screen="game"] .gtp229-game .game-titlebar p{font-size:12px!important;color:#bbd1e2!important}
+#app[data-screen="game"] .gtp229-game .game-status .game-attempts{
+ background:#11263e!important;color:#effbff!important;border:1px solid #597e9b!important;
+ border-radius:11px!important;padding:7px 12px!important
+}
+#app[data-screen="game"] .gtp229-game .game-timer{
+ background:#132d40!important;border:1px solid var(--gtp229-accent)!important;
+ color:#fff!important;box-shadow:none!important;border-radius:10px!important
+}
+
+/* All five mode tabs are visibly clickable filled surfaces. */
+#app[data-screen="game"] .gtp229-game .mode-rail{
+ display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ gap:8px!important;margin:6px 0 9px!important
+}
+#app[data-screen="game"] .gtp229-game .mode-tab{
+ min-width:0!important;min-height:44px!important;justify-content:center!important;
+ padding:8px 9px!important;
+ border:1px solid #4c6b84!important;border-radius:10px!important;
+ background:linear-gradient(180deg,#193049,#10243b)!important;
+ color:#bed9ea!important;box-shadow:none!important;
+ transition:background .15s ease,border-color .15s ease,transform .15s ease!important
+}
+#app[data-screen="game"] .gtp229-game .mode-tab b{font-size:17px!important;color:var(--tile)!important}
+#app[data-screen="game"] .gtp229-game .mode-tab.active{
+ background:linear-gradient(120deg,var(--gtp229-accent),color-mix(in srgb,var(--gtp229-accent) 72%,white))!important;
+ color:var(--gtp229-button-ink)!important;
+ border-color:var(--gtp229-accent)!important;font-weight:950!important;
+ box-shadow:0 0 0 2px rgb(var(--gtp229-accent-rgb) / .2)!important
+}
+#app[data-screen="game"] .gtp229-game .mode-tab.active b{color:var(--gtp229-button-ink)!important}
+#app[data-screen="game"] .gtp229-game .mode-tab:hover:not(.active){
+ background:#1d3e59!important;color:white!important;transform:translateY(-1px)
+}
+
+/* Scan/Rush settings only expand on demand in Free Play. */
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings{
+ margin:2px 0 13px!important;border:1px solid #305675!important;
+ background:#0d2036!important;border-radius:10px!important;
+ overflow:visible!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings summary{
+ display:flex!important;gap:10px;align-items:center;flex-wrap:wrap;
+ padding:10px 13px!important;list-style:none;cursor:pointer;color:#b9d5e6;font-size:11px
+}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings summary::-webkit-details-marker{display:none}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings summary>strong{
+ color:var(--gtp229-accent);font-size:12px!important;letter-spacing:.07em
+}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings summary>span{flex:1}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings summary>b{
+ font-size:18px;color:#8eb5ca;transition:transform .2s ease
+}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings[open] summary>b{transform:rotate(180deg)}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings .style-strip{
+ border:0!important;border-top:1px solid #3a6179!important;
+ border-radius:0 0 10px 10px!important;margin:0!important;
+ padding:12px 14px!important;background:#142a43!important;
+ box-shadow:none!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings .style-strip strong,
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings .style-description{color:#deedfb!important}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings .style-options .segment{
+ background:#1c3954!important;color:#d8edf9!important;border:1px solid #5c819d!important;
+ border-radius:8px!important;min-height:40px!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-settings .style-options .segment.active{
+ background:var(--gtp229-accent)!important;color:var(--gtp229-button-ink)!important;
+ border-color:var(--gtp229-accent)!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-locked-copy{
+ margin:0;padding:0 13px 12px;color:#bdd4e5;font-size:11px
+}
+#app[data-screen="game"] .gtp229-game .gtp229-classic-guide{display:none!important}
+
+/* One clue panel and one action + scanner panel. Panels are SOLID, not glass. */
+#app[data-screen="game"] .gtp229-game .gtp229-game-layout{
+ display:grid!important;
+ grid-template-columns:minmax(0,1.06fr) minmax(0,1fr)!important;
+ gap:clamp(12px,1.5vw,19px)!important;align-items:start!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-game-layout>.gtp229-clue-card,
+#app[data-screen="game"] .gtp229-game .gtp229-game-layout>.gtp229-guess-card{
+ position:relative!important;
+ border:1px solid #446780!important;
+ border-top:4px solid var(--gtp229-accent)!important;
+ border-radius:15px!important;background:#0e1d31!important;
+ box-shadow:0 12px 28px #0009!important;overflow:hidden!important;
+ min-width:0!important;transform:none!important;opacity:1!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-panel-head{
+ min-height:39px!important;padding:10px 14px!important;
+ background:#1a3048!important;border:0!important;
+ border-bottom:1px solid #3a607d!important;color:#eef8ff!important;
+ font-size:10px!important;letter-spacing:.11em!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-panel-head small{
+ color:var(--gtp229-accent)!important;font-weight:950!important
+}
+#app[data-screen="game"] .gtp229-game .guess-card .guess-body{
+ padding:16px!important;min-height:0!important;background:#0f1e33!important
+}
+#app[data-screen="game"] .gtp229-game .clue-card .clue-visual{
+ height:clamp(330px,46vh,520px)!important;
+ min-height:330px!important;max-height:none!important
+}
+#app[data-screen="game"] .gtp229-game .clue-card .clue-foot{
+ background:#112237!important;border-top:1px solid #395974!important;
+ color:#b4ccde!important;padding:9px 13px!important;font-size:10px!important
+}
+
+/* Clear sequential steps: 01 CLUE / 02 GUESS / 03 SCAN */
+#app[data-screen="game"] .gtp229-game .gtp229-step{
+ display:inline-block;color:var(--gtp229-accent)!important;
+ font-size:10px;font-weight:950;letter-spacing:.13em!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-stepbar{
+ display:flex;justify-content:space-between;align-items:center;
+ gap:12px;min-height:53px;margin-bottom:13px
+}
+#app[data-screen="game"] .gtp229-game .gtp229-stepbar h2{
+ font:900 clamp(25px,2.4vw,34px)/1 'Barlow Condensed',Impact,sans-serif!important;
+ color:#fff!important;margin:5px 0 0!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-stepbar h2 em{font-style:normal;color:var(--gtp229-accent)}
+#app[data-screen="game"] .gtp229-game .gtp229-remaining{
+ background:#182f49;border:1px solid #4f7390;border-radius:10px;
+ display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap;
+ padding:8px 10px;color:var(--gtp229-accent);
+ font:900 23px/1 'Barlow Condensed',Impact,sans-serif
+}
+#app[data-screen="game"] .gtp229-game .gtp229-remaining small{font:900 10px/1 system-ui,sans-serif;color:#c8e0ef}
+#app[data-screen="game"] .gtp229-game .gtp229-answer-zone{
+ background:#142940;border:1px solid #395a74;border-radius:12px;
+ padding:12px;display:grid;gap:9px
+}
+#app[data-screen="game"] .gtp229-game .gtp229-search-wrap{
+ display:flex!important;align-items:stretch!important;gap:8px!important;
+ position:relative!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-search-wrap input{
+ border:1px solid #6a9cbb!important;border-radius:10px!important;
+ padding:11px 14px!important;background:#07182d!important;
+ color:#fff!important;min-height:49px!important;min-width:0!important;
+ box-shadow:none!important;font-size:14px!important;
+}
+#app[data-screen="game"] .gtp229-game .gtp229-search-wrap input::placeholder{color:#91afc6!important}
+#app[data-screen="game"] .gtp229-game .gtp229-search-wrap input:focus{
+ outline:2px solid var(--gtp229-accent)!important;outline-offset:1px
+}
+#app[data-screen="game"] .gtp229-game .gtp229-search-wrap .gtp229-submit{
+ flex:0 0 auto;min-width:105px;min-height:49px!important;
+ background:var(--gtp229-accent)!important;color:var(--gtp229-button-ink)!important;
+ border:1px solid var(--gtp229-accent)!important;border-radius:10px!important;
+ font-weight:1000!important;letter-spacing:.055em!important;
+ padding:10px 15px!important;box-shadow:0 5px 12px #0006!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-search-wrap .gtp229-submit:hover{
+ filter:brightness(1.12)!important;transform:translateY(-1px)!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-guess-actions{
+ display:grid!important;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;
+ align-items:stretch!important;gap:8px!important;margin:0!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-guess-actions>button{
+ width:100%;min-width:0;min-height:47px!important;
+ border-radius:9px!important;padding:9px 11px!important;
+ display:flex;align-items:center;justify-content:center;gap:7px;
+ font-size:11px!important;font-weight:950!important;letter-spacing:.045em!important;
+ opacity:1!important;box-shadow:0 4px 10px #0005!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-guess-actions>.gtp229-browse{
+ background:#186f92!important;border:1px solid #54d1f3!important;color:#efffff!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-guess-actions>.gtp229-hint{
+ background:#79551e!important;border:1px solid #e7bd62!important;color:#fff3d7!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-guess-actions>.gtp229-hint small{
+ color:#fff1bb!important;font-size:9px!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-guess-actions>button:hover:not(:disabled){
+ filter:brightness(1.18)!important;transform:translateY(-1px)
+}
+#app[data-screen="game"] .gtp229-game .gtp229-guess-actions>button:disabled{
+ background:#293548!important;border-color:#53677b!important;color:#aebac9!important;
+ opacity:.68!important;cursor:not-allowed!important;box-shadow:none!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-action-help{
+ margin:0;color:#a8c2d5;font-size:10px;line-height:1.45
+}
+#app[data-screen="game"] .gtp229-game .gtp229-search-wrap .search-list{
+ top:calc(100% + 6px)!important;background:#0b2035!important;
+ border:1px solid #69c5d1!important;border-radius:10px!important;
+ box-shadow:0 10px 23px #000b!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-search-wrap .search-result{
+ background:#142d43!important;color:#f2fbff!important;border-bottom:1px solid #325b72!important
+}
+
+/* An intentionally lightweight scanner is shown before the first guess. */
+#app[data-screen="game"] .gtp229-game .gtp229-scan-preview{
+ display:grid;gap:4px;margin-top:11px;
+ background:#0c2639!important;border:1px dashed #4a879b!important;
+ border-radius:10px;padding:13px 14px
+}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-preview>strong{
+ font-size:12px;color:#d8fcfc;letter-spacing:.06em
+}
+#app[data-screen="game"] .gtp229-game .gtp229-scan-preview>small{
+ color:#a1c7d8;font-size:11px;line-height:1.5
+}
+#app[data-screen="game"] .gtp229-game .gtp229-history{
+ padding:9px 11px!important;margin:11px 0!important;
+ background:#14273c!important;border:1px solid #385e79!important;box-shadow:none!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-history>span{
+ background:#263c56!important;border:1px solid #50738e!important;color:#e2f5ff!important
+}
+#app[data-screen="game"] .gtp229-game .gtp226-scanner-head{
+ margin:12px 0 8px!important;background:#172d42!important;border:1px solid #4e7694!important
+}
+#app[data-screen="game"] .gtp229-game .scanner{
+ gap:7px!important;padding:0!important;border:0!important;background:transparent!important
+}
+#app[data-screen="game"] .gtp229-game .scanner .scan-cell{
+ border-radius:10px!important;min-height:78px!important
+}
+#app[data-screen="game"] .gtp229-game .end-actions .btn{
+ border-radius:10px!important;min-height:42px!important;
+ padding:10px 13px!important;opacity:1!important;font-weight:900!important
+}
+#app[data-screen="game"] .gtp229-game .end-actions .btn.pink{
+ background:var(--gtp229-accent)!important;border:1px solid var(--gtp229-accent)!important;
+ color:var(--gtp229-button-ink)!important
+}
+#app[data-screen="game"] .gtp229-game .end-actions .btn.lilac{
+ background:#217093!important;border:1px solid #70d7eb!important;color:#fff!important
+}
+#app[data-screen="game"] .gtp229-game .end-actions .btn.ghost{
+ background:#263549!important;border:1px solid #7990a7!important;color:#fff!important
+}
+
+/* Original anonymous character art; no known Legend is revealed. */
+#app[data-screen="game"] .gtp229-game .gtp229-mystery-visual{
+ display:flex!important;flex-direction:column!important;
+ align-items:center!important;justify-content:center!important;
+ gap:3px!important;padding:9px 18px 14px!important;
+ background:radial-gradient(ellipse at 50% 44%,#1b53627d 0%,#09223b 46%,#081429 100%)!important;
+ min-height:390px!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-mystery-visual:before,
+#app[data-screen="game"] .gtp229-game .gtp229-mystery-visual:after{display:none!important}
+#app[data-screen="game"] .gtp229-game .gtp229-mystery-stage{
+ position:relative;display:grid;place-items:center;
+ width:min(100%,380px);height:74%;min-height:250px;flex:1;z-index:2
+}
+#app[data-screen="game"] .gtp229-game .gtp229-unknown-portrait{
+ display:block!important;width:100%!important;height:100%!important;
+ max-width:360px!important;min-height:240px;object-fit:contain!important;
+ object-position:center bottom!important;
+ filter:drop-shadow(0 0 17px #48beea55)!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-classified-stamp{
+ position:absolute;left:50%;bottom:6px;transform:translateX(-50%);
+ padding:5px 10px;border-radius:5px;
+ background:#092337d9;border:1px solid #70d3e9a3;
+ color:#bcf9f5;font:900 9px/1 system-ui,sans-serif;
+ letter-spacing:.12em;white-space:nowrap
+}
+#app[data-screen="game"] .gtp229-game .gtp229-mystery-visual .mystery-wording{
+ position:relative!important;z-index:3!important;text-align:center!important;
+ padding:0 8px!important;display:grid!important;gap:2px!important;flex:0 0 auto
+}
+#app[data-screen="game"] .gtp229-game .gtp229-mystery-visual .mystery-wording strong{
+ font-size:clamp(27px,2.5vw,40px)!important;line-height:1!important;
+ margin:2px 0!important;color:#f7ffff!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-mystery-visual .mystery-wording small{
+ color:var(--gtp229-accent)!important;font-size:10px!important
+}
+#app[data-screen="game"] .gtp229-game .gtp229-mystery-visual .mystery-wording span{
+ color:#a9ccdf!important;font-size:11px!important;line-height:1.3!important
+}
+
+@media(max-width:950px){
+ #app[data-screen="game"] .gtp229-game .gtp229-game-layout{
+  grid-template-columns:minmax(0,1fr)!important
+ }
+ #app[data-screen="game"] .gtp229-game .clue-card .clue-visual{
+  height:clamp(245px,33vh,400px)!important;min-height:245px!important
+ }
+ #app[data-screen="game"] .gtp229-game .gtp229-mystery-visual{min-height:300px!important}
+ #app[data-screen="game"] .gtp229-game .gtp229-mystery-stage{min-height:160px}
+ #app[data-screen="game"] .gtp229-game .mode-rail{
+  display:flex!important;grid-template-columns:none!important;
+  overflow-x:auto;scrollbar-width:thin;padding-bottom:4px
+ }
+ #app[data-screen="game"] .gtp229-game .mode-rail .mode-tab{flex:0 0 142px!important}
+}
+@media(max-width:580px){
+ #app[data-screen="game"] .gtp229-game{padding-top:6px!important}
+ #app[data-screen="game"] .gtp229-game .game-titlebar h1{
+  font-size:39px!important
+ }
+ #app[data-screen="game"] .gtp229-game .gtp224-session-banner{
+  padding:8px 10px!important;gap:6px!important
+ }
+ #app[data-screen="game"] .gtp229-game .gtp224-session-banner strong{font-size:11px!important}
+ #app[data-screen="game"] .gtp229-game .gtp229-guess-card .guess-body{padding:11px!important}
+ #app[data-screen="game"] .gtp229-game .gtp229-answer-zone{padding:9px!important}
+ #app[data-screen="game"] .gtp229-game .gtp229-search-wrap .gtp229-submit{
+  min-width:80px!important;padding:9px!important
+ }
+ #app[data-screen="game"] .gtp229-game .gtp229-guess-actions>button{
+  font-size:10px!important;padding:8px 5px!important
+ }
+ #app[data-screen="game"] .gtp229-game .gtp229-stepbar h2{font-size:27px!important}
+ #app[data-screen="game"] .gtp229-game .gtp229-remaining{font-size:19px!important}
+ #app[data-screen="game"] .gtp229-game .gtp229-scan-settings summary{font-size:10px!important}
+ #app[data-screen="game"] .gtp229-game .gtp229-mystery-visual .mystery-wording strong{font-size:28px!important}
+ #app[data-screen="game"] .gtp229-game .gtp229-mystery-visual{min-height:290px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #app[data-screen="game"] .gtp229-game .mode-tab,
+ #app[data-screen="game"] .gtp229-game .gtp229-guess-actions>button{
+  transition:none!important
+ }
+}
