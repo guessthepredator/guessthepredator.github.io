@@ -4051,3 +4051,176 @@ body.lightshift-playing #app[data-screen="game"]{background:radial-gradient(elli
 @media(prefers-reduced-motion:reduce){
  #app[data-screen="game"] .gtp230-btn{transition:none!important}
 }
+
+
+/* =============================================================
+   V2.31 — SCREENSHOT QA / FULL-BLEED + ABOVE-THE-FOLD GAMEPLAY
+   A full scene across both side gutters; the game actions remain
+   visible at standard 768–1080 px browser viewport heights.
+   Applies ONLY to game screens, not Home, Trivia, or the modal.
+   ============================================================= */
+#app[data-screen="game"]{
+  min-height:100dvh!important;
+  background-color:#061021!important;
+  background-image:
+    linear-gradient(90deg,rgba(3,9,21,.87) 0%,rgba(4,12,26,.38) 17%,rgba(5,14,30,.29) 80%,rgba(3,9,21,.87) 100%),
+    linear-gradient(180deg,rgba(4,10,21,.76) 0%,rgba(5,11,24,.52) 42%,rgba(4,8,19,.85) 100%),
+    var(--gtp230-back)!important;
+  background-position:center center!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
+}
+/* The earlier fixed dark overlay hid the side-scene background.
+   The image is on #app itself, so this pseudo element is unnecessary. */
+#app[data-screen="game"] > .gtp230-game::before{
+  content:none!important;display:none!important;
+}
+#app[data-screen="game"] > .gtp230-game{
+  width:calc(100vw - 22px)!important;
+  max-width:none!important;
+  margin-inline:auto!important;
+  padding:8px 0 12px!important;
+  background:transparent!important;
+  min-height:0!important;
+  isolation:isolate!important;
+}
+/* At standard desktop heights, actively allocate room to the dock
+   BEFORE rendering the clue scene. A min-height-only flex wrapper
+   let the scene expand indefinitely and pushed Submit Guess offscreen. */
+@media (min-width:761px) and (min-height:680px){
+  #app[data-screen="game"] > .gtp230-game{
+    height:calc(100dvh - 79px)!important;
+    max-height:calc(100dvh - 79px)!important;
+    min-height:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:visible!important;
+  }
+  #app[data-screen="game"] .gtp230-game>.gtp230-titlebar{
+    flex:0 0 auto!important;
+    min-height:70px!important;
+    padding:8px 13px!important;
+    margin:0 0 7px!important;
+  }
+  #app[data-screen="game"] .gtp230-arena{
+    flex:1 1 0!important;
+    min-height:0!important;
+    max-height:none!important;
+    height:auto!important;
+    overflow:hidden!important;
+  }
+  #app[data-screen="game"] .gtp230-main-clue{
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    overflow:hidden!important;
+  }
+  #app[data-screen="game"] .gtp230-main-clue>.clue-visual{
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    overflow:hidden!important;
+  }
+  #app[data-screen="game"] .gtp230-game .gtp229-mystery-visual{
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    padding:6px 11px 7px!important;
+  }
+  #app[data-screen="game"] .gtp230-game .gtp229-mystery-stage{
+    min-height:0!important;
+    max-height:calc(100% - 77px)!important;
+    height:auto!important;
+    flex:1 1 0!important;
+  }
+  #app[data-screen="game"] .gtp230-game .gtp229-unknown-portrait{
+    height:100%!important;
+    min-height:0!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+  }
+  #app[data-screen="game"] .gtp230-game .gtp229-mystery-visual .mystery-wording{
+    flex:0 0 auto!important;
+    gap:0!important;
+    padding:0 6px 5px!important;
+  }
+  #app[data-screen="game"] .gtp230-game .gtp229-mystery-visual .mystery-wording strong{
+    font-size:clamp(25px,2.65vw,38px)!important;
+  }
+  #app[data-screen="game"] .gtp230-game .gtp229-classified-stamp{
+    bottom:3px!important;
+  }
+  #app[data-screen="game"] .gtp230-arena .gtp230-board,
+  #app[data-screen="game"] .gtp230-arena .gtp230-side{
+    max-height:calc(100% - 20px)!important;
+    margin-block:10px!important;
+    overflow-y:auto!important;
+    scrollbar-color:#4d7d9e #0a1e2f;
+  }
+  #app[data-screen="game"] .gtp230-console,
+  #app[data-screen="game"] .gtp230-finished{
+    flex:0 0 auto!important;
+    padding:9px 13px!important;
+    min-height:0!important;
+    max-height:38dvh!important;
+    overflow-y:auto!important;
+    scrollbar-color:#467b9d #0b182e;
+  }
+  #app[data-screen="game"] .gtp230-console-main{gap:7px!important}
+  #app[data-screen="game"] .gtp230-input-wrap input{
+    min-height:43px!important;max-height:43px!important;
+    padding:10px 13px!important;
+  }
+  #app[data-screen="game"] .gtp230-input-wrap>.gtp230-btn-main{
+    min-height:43px!important;max-height:43px!important;
+  }
+  #app[data-screen="game"] .gtp230-control-row{gap:7px!important}
+  #app[data-screen="game"] .gtp230-control-row>.gtp230-btn{
+    min-height:39px!important;padding-block:7px!important;
+  }
+  #app[data-screen="game"] .gtp230-console-help{margin-top:5px!important}
+  #app[data-screen="game"] .gtp230-feedback .flash{
+    padding:5px 9px!important;margin:5px 0 0!important;
+  }
+}
+/* The scene may be tall on phones, but never force a fixed viewport
+   that would clip controls. Keep mobile interaction safe to scroll. */
+@media (max-width:760px), (max-height:679px){
+  #app[data-screen="game"] > .gtp230-game{
+    height:auto!important;max-height:none!important;
+    min-height:0!important;display:flex!important;flex-direction:column!important;
+  }
+  #app[data-screen="game"] .gtp230-arena{
+    flex:0 0 auto!important;height:auto!important;min-height:0!important;
+  }
+  #app[data-screen="game"] .gtp230-main-clue>.clue-visual{
+    min-height:270px!important;
+  }
+  #app[data-screen="game"] .gtp230-console{
+    position:relative!important;
+    max-height:none!important;overflow:visible!important;
+  }
+}
+@media (max-width:760px){
+  #app[data-screen="game"] > .gtp230-game{
+    width:calc(100vw - 12px)!important;padding-top:5px!important;
+  }
+}
+@media (min-width:761px) and (max-height:770px){
+  #app[data-screen="game"] .gtp230-game>.gtp230-titlebar{
+    min-height:59px!important;padding:6px 10px!important;
+  }
+  #app[data-screen="game"] .gtp230-title-icon{
+    width:47px!important;height:47px!important;flex-basis:47px!important;font-size:29px!important;
+  }
+  #app[data-screen="game"] .gtp230-title-copy h1{
+    font-size:clamp(26px,2.6vw,35px)!important;
+  }
+  #app[data-screen="game"] .gtp230-board,
+  #app[data-screen="game"] .gtp230-side{padding:9px!important}
+  #app[data-screen="game"] .gtp230-trait{min-height:33px!important}
+  #app[data-screen="game"] .gtp230-trait-list{gap:4px!important}
+}
+/* Keep full-bleed coverage at custom device zoom and avoid sideways scroll. */
+html,body{overflow-x:hidden}

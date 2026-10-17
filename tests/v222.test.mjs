@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.30.0')&&html.includes('app.mjs?v=2.30.0'));
+ assert.ok(html.includes('styles.css?v=2.31.0')&&html.includes('app.mjs?v=2.31.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -227,4 +227,32 @@ test('V2.30 cinematic game matches supplied seven-panel UI reference while retai
  assert.ok(css.includes('.gtp230-trait-different'));
  assert.ok(css.includes('.gtp230-btn-danger'));
  assert.ok(css.includes('.trivia-page-active .trivia-main'));
+});
+
+test('V2.31 themed backgrounds backfill both screen gutters without horizontal scrolling',()=>{
+ assert.ok(css.includes('V2.31 — SCREENSHOT QA / FULL-BLEED'));
+ assert.ok(css.includes('background-image:'));
+ assert.ok(css.includes('var(--gtp230-back)!important'));
+ assert.ok(css.includes('width:calc(100vw - 22px)!important'));
+ assert.ok(css.includes('max-width:none!important'));
+ assert.ok(css.includes('background-attachment:fixed!important'));
+ assert.ok(css.includes('#app[data-screen="game"] > .gtp230-game::before'));
+});
+test('V2.31 gameplay dock is visible above fold at desktop viewport height',()=>{
+ assert.ok(css.includes('@media (min-width:761px) and (min-height:680px)'));
+ assert.ok(css.includes('height:calc(100dvh - 79px)!important'));
+ assert.ok(css.includes('.gtp230-arena{'));
+ assert.ok(css.includes('flex:1 1 0!important'));
+ assert.ok(css.includes('min-height:0!important'));
+ assert.ok(css.includes('.gtp230-console,'));
+ assert.ok(css.includes('max-height:38dvh!important'));
+ assert.ok(css.includes('.gtp230-main-clue>.clue-visual'));
+ assert.ok(css.includes('.gtp229-mystery-stage'));
+});
+test('V2.31 short and mobile viewports retain scrollable game controls',()=>{
+ assert.ok(css.includes('@media (max-width:760px), (max-height:679px)'));
+ assert.ok(css.includes('height:auto!important;max-height:none!important'));
+ assert.ok(css.includes('position:relative!important'));
+ assert.ok(app.includes('gtp230-control-row'));
+ assert.ok(app.includes('data-action="surrender"'));
 });
