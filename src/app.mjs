@@ -1,16 +1,16 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.14.0';
-import {legends} from './data.mjs?v=2.14.0';
-import {artCatalog} from './art.mjs?v=2.14.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.14.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.14.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.14.0';
-import {playSound} from './audio.mjs?v=2.14.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.14.0';
-import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.14.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.14.0';
-import {loadStore,saveStore} from './store.mjs?v=2.14.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.16.0';
+import {legends} from './data.mjs?v=2.16.0';
+import {artCatalog} from './art.mjs?v=2.16.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.16.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.16.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.16.0';
+import {playSound} from './audio.mjs?v=2.16.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.16.0';
+import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.16.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.16.0';
+import {loadStore,saveStore} from './store.mjs?v=2.16.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.14.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.16.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -272,7 +272,7 @@ function homeIntelPanel(){
 function homeFeatureDock(){
  const legend=dailySpotlight(utcDay(),legends);
  return `<section class="gtp213-dock gtp214-dock" aria-label="Next game and Legend of the day">
-  <article class="gtp213-dock-card gtp213-dock-wheel"><span class="gtp213-dock-kicker">◈ PLAY SOMETHING DIFFERENT</span><div class="gtp213-dock-main"><span class="gtp213-dock-icon" aria-hidden="true">✺</span><div><h3>NEXT GAME <em>LEGEND.</em></h3><p>Spin for a random Legend to play next.</p></div></div><button type="button" data-action="wheel">✦ SPIN THE WHEEL <span aria-hidden="true">↗</span></button></article>
+  <button class="gtp213-dock-card gtp213-dock-wheel gtp216-wheel-hitbox" type="button" data-action="wheel" aria-label="Spin the wheel to pick your next game Legend"><span class="gtp213-dock-kicker">◈ PLAY SOMETHING DIFFERENT</span><span class="gtp213-dock-main"><span class="gtp213-dock-icon gtp216-wheel-graphic" aria-hidden="true"><span class="gtp216-wheel-dial"></span></span><span class="gtp216-wheel-copy"><strong class="gtp216-wheel-title">NEXT GAME <em>LEGEND.</em></strong><span class="gtp216-wheel-descript">Spin for a random Legend to play next.</span></span></span><span class="gtp216-wheel-cta">✦ SPIN THE WHEEL <span aria-hidden="true">↗</span></span></button>
   <article class="gtp213-dock-card gtp213-dock-legend"><div class="gtp213-dock-portrait">${portrait(legend.slug,{alt:'',cls:'balanced'})}</div><div class="gtp213-dock-legend-copy"><span class="gtp213-dock-kicker">✳ LEGEND OF THE DAY</span><h3>${esc(legend.name)}</h3><p>${esc(legend.role)} · ${esc(legend.signature)}</p><small>NEW PICK EVERY DAY</small></div></article>
  </section>`;
 }
@@ -288,6 +288,8 @@ function home(){
  return `<main class="gtp2-home">
   <section class="gtp2-hero nova27-home" aria-label="Guess the Predator — five game modes">
    <img id="gtp2-backdrop" class="gtp2-backdrop" src="./assets/decor/haunted-hero.webp" alt="" aria-hidden="true" fetchpriority="high"/>
+   <div class="gtp216-center-clear" aria-hidden="true"></div>
+   <div class="gtp216-mirage-duo" aria-hidden="true"><span class="gtp216-mirage gtp216-mirage-left"></span><span class="gtp216-mirage gtp216-mirage-right"></span></div>
    <div class="gtp2-vignette" aria-hidden="true"></div>
    <div class="gtp2-hero-content">
      <div class="gtp214-hero-intro"><span>✦ FIVE MISSIONS · ONE MYSTERY</span><p>Pick your challenge. Follow the clues.</p></div>

@@ -17,3 +17,8 @@ Static GitHub Pages Apex fan-trivia game with 5 modes: Classic, Pixel, Quote, Ab
 **First read [START_HERE.md](START_HERE.md).** Rankings are live only after testing an authenticated anonymous submit from the deployed site. GitHub Pages does not host the database.
 
 This independent fan project is not affiliated with EA or Respawn. External Legend portrait hotlinks can fail and have independent rights/terms. Ability gameplay uses only locally available icon assets.
+
+
+## V2.16 – Mirage Duo
+
+Two inward-facing Mirage artworks flank the homepage while all interactive controls remain actual HTML elements. The entire Next Game Legend panel is now one accessible button with a low-glare spinning wheel icon. The Ability icon and scan tag share a centered layout. See `CHANGELOG_V216.md`.

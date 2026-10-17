@@ -1975,3 +1975,73 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{background:radial-gradient(e
 }
 @media(max-width:740px){.nova27-home .gtp215-intel-art .vault-chest{translate:-14px 0}}
 @media(max-width:375px){.nova27-home .gtp215-intel-art .vault-chest{translate:-12px 0}}
+
+
+/* ===== V2.16 — MIRAGE DUO + INTERACTIVE WHEEL =====
+   Two illustrated Mirage figures are strictly decorative; all gameplay buttons remain real. */
+.nova27-home{isolation:isolate!important}
+.nova27-home .gtp2-backdrop{filter:brightness(.41) saturate(.63) contrast(.94)!important;transform:none!important}
+.nova27-home .gtp216-center-clear{position:absolute;inset:0;z-index:-2;pointer-events:none;background:
+ radial-gradient(ellipse 26% 60% at 50% 48%,#0b1725ef 0%,#101c2bbc 49%,#0a152000 100%)}
+.nova27-home .gtp216-mirage-duo{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.nova27-home .gtp216-mirage{position:absolute;display:block;top:12%;height:68%;width:min(43vw,680px);max-height:550px;min-height:260px;
+ background-image:url('./assets/decor/mirage-duo-side.webp');background-position:center center;background-size:100% 100%;background-repeat:no-repeat;
+ opacity:.93;filter:saturate(.78) contrast(.98) drop-shadow(0 7px 21px #01041083)}
+.nova27-home .gtp216-mirage-left{left:-3.5%}
+.nova27-home .gtp216-mirage-right{right:-3.5%;transform:scaleX(-1)}
+.nova27-home .gtp2-vignette{z-index:-1!important;pointer-events:none!important;background:
+ linear-gradient(180deg,#08101c8c 0%,#06101d16 25%,#09152240 67%,#080f20ee 100%),
+ linear-gradient(90deg,#080d188c 0%,transparent 18%,transparent 82%,#080d188c 100%)!important}
+.nova27-home .gtp2-hero-content{z-index:2!important}
+/* Wheel: its entire surface is a single keyboard-accessible button. */
+.nova27-home .gtp214-dock .gtp216-wheel-hitbox{
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;text-align:left!important;
+ width:100%!important;min-width:0!important;cursor:pointer!important;color:#f4fcf9!important;
+ padding:12px 15px!important;border-radius:14px!important;font:inherit!important;line-height:normal!important;
+ transition:background .16s ease,border-color .16s ease,transform .16s ease!important;
+}
+.nova27-home .gtp214-dock .gtp216-wheel-hitbox:hover,
+.nova27-home .gtp214-dock .gtp216-wheel-hitbox:focus-visible{border-color:#b3e9e1!important;background:linear-gradient(130deg,#244152ef,#1a3545e9)!important;transform:translateY(-2px)!important}
+.nova27-home .gtp216-wheel-hitbox:focus-visible{outline:3px solid #ade9e0!important;outline-offset:3px!important}
+.nova27-home .gtp216-wheel-hitbox .gtp213-dock-kicker{align-self:flex-start}
+.nova27-home .gtp216-wheel-hitbox .gtp213-dock-main{display:flex!important;align-items:center!important;gap:13px!important;min-width:0!important;flex:1!important}
+.nova27-home .gtp216-wheel-graphic{display:grid!important;place-items:center!important;flex:0 0 48px!important;width:48px!important;height:48px!important;padding:0!important;border:1px solid #a0cfc7!important;border-radius:50%!important;
+ background:#112433!important;box-shadow:inset 0 2px 0 #d9f8ed14,0 0 0 3px #5d9a9e25!important;position:relative!important;overflow:visible!important}
+.nova27-home .gtp216-wheel-graphic:after{content:'▼';position:absolute;color:#e5cca2;top:-9px;left:50%;transform:translateX(-50%);font-size:12px;z-index:3;text-shadow:0 1px 2px #091521}
+.nova27-home .gtp216-wheel-dial{position:relative;display:block;width:38px;height:38px;border-radius:50%;border:2px solid #d4e5d9;
+ background:conic-gradient(from -17deg,#7abdb2 0deg 45deg,#293f5b 45deg 90deg,#c5a67e 90deg 135deg,#365d73 135deg 180deg,#acabc9 180deg 225deg,#34625e 225deg 270deg,#bf9d75 270deg 315deg,#2c4860 315deg 360deg);
+ box-shadow:inset 0 0 0 3px #0c2639,0 1px 7px #09192399;transition:transform .7s cubic-bezier(.17,.67,.17,1)!important}
+.nova27-home .gtp216-wheel-dial:after{content:'✦';position:absolute;inset:11px;display:grid;place-items:center;border-radius:50%;background:#0f2233;color:#d8e9e7;font-size:11px}
+.nova27-home .gtp216-wheel-hitbox:hover .gtp216-wheel-dial,.nova27-home .gtp216-wheel-hitbox:focus-visible .gtp216-wheel-dial{transform:rotate(85deg)}
+.nova27-home .gtp216-wheel-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.nova27-home .gtp216-wheel-title{font-family:'Barlow Condensed',Impact,sans-serif;font-size:clamp(22px,2.4vw,32px);line-height:1;font-weight:900;color:#f5f8f7;text-transform:uppercase}
+.nova27-home .gtp216-wheel-title em{color:#a6d1ca;font-style:normal}
+.nova27-home .gtp216-wheel-descript{font-size:10px;color:#c1d1d4;line-height:1.35}
+.nova27-home .gtp216-wheel-cta{display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;min-height:25px;padding:6px 9px;margin-top:5px;
+ border:1px solid #7aaab1;border-radius:8px;background:#335a64;color:#e5f4f1;text-align:left;font-size:9px;font-weight:900;letter-spacing:.055em}
+.nova27-home .gtp216-wheel-hitbox:hover .gtp216-wheel-cta{background:#467783}
+/* Ability visual: center the image itself (not merely the parent) within the stage. */
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-ability-stage{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(42px,auto) minmax(0,1fr) minmax(61px,auto)!important;justify-items:stretch!important;align-items:stretch!important;overflow:hidden!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-core{position:relative!important;min-width:0!important;min-height:0!important;max-width:none!important;
+ width:100%!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) 28px!important;
+ justify-items:center!important;align-items:center!important;justify-content:stretch!important;align-content:stretch!important;gap:1px!important;
+ padding:5px 10px 7px!important;margin:0!important;inset:auto!important;transform:none!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-core .gtp210-ability-icon{grid-area:1/1!important;position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+ margin:0!important;justify-self:center!important;align-self:center!important;
+ width:min(232px,70%)!important;height:auto!important;max-height:100%!important;aspect-ratio:1/1!important;transform:none!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-core .gtp210-scan-tag{grid-area:2/1!important;justify-self:center!important;align-self:center!important;margin:0!important;transform:none!important}
+@media(max-width:900px){
+ .nova27-home .gtp216-mirage{top:13%;width:48vw;height:45%;min-height:205px;opacity:.68}
+ .nova27-home .gtp216-mirage-left{left:-15%}.nova27-home .gtp216-mirage-right{right:-15%}
+}
+@media(max-width:600px){
+ .nova27-home .gtp216-mirage{top:12%;width:69vw;height:245px;min-height:0;opacity:.38}
+ .nova27-home .gtp216-mirage-left{left:-35%}.nova27-home .gtp216-mirage-right{right:-35%}
+ .nova27-home .gtp216-wheel-title{font-size:24px}
+ .nova27-home .gtp216-wheel-graphic{flex-basis:42px!important;width:42px!important;height:42px!important}
+ #app[data-screen="game"] .gtp2-game-scene .gtp210-ability-core .gtp210-ability-icon{width:min(208px,69%)!important}
+}
+@media(prefers-reduced-motion:reduce){.nova27-home .gtp216-wheel-dial{transition:none!important}}
+
+/* Mobile ability artwork remains square while staying centered in the shorter frame. */
+@media(max-width:600px){#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-core .gtp210-ability-icon{width:min(184px,62%)!important;height:auto!important;max-height:none!important;aspect-ratio:1!important}}
