@@ -42,6 +42,6 @@ test('the ten unverified full-body portraits are not falsely treated as installe
  assert.ok(manifest.includes('localPortraitFiles=Object.freeze({})'));
 });
 test('no stale V217 entrypoint; backend protocol marker present',()=>{
- assert.ok(html.includes('2.20.0'));assert.ok(app.includes("daily218.mjs?v=2.20.0"));
+ assert.ok(html.includes('2.21.0'));assert.ok(app.includes("daily218.mjs?v=2.21.0"));
  assert.ok(read('src/scoring.mjs').includes("protocol:'v218'"));
 });

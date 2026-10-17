@@ -33,7 +33,7 @@ for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs',
 assert 'cp index.html styles.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
 assert 'src/leaderboard_config.mjs' in workflow or 'cp -r src assets dist/' in workflow
 assert not any((P/'tests'/name).exists() for name in ['v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs','gtp2.test.mjs','v26.test.mjs'])
-print(f'Guess The Predator V{style_match.group(1)} FINAL VISUAL LOCK validation PASS: 5 play modes, 2 Daily challenges, 2 rewards, 14 SFX, 6 traits, 2 scoreboards')
+print(f'Guess The Predator V{style_match.group(1)} FINAL VISUAL LOCK validation PASS: 5 play modes, 2 Daily challenges, 3 rewards, 14 SFX, 6 traits, 2 scoreboards')
 print('Supabase project settings are preserved; live submission origin changes are deployed separately.')
 
 # V2.20 Trivia release safety: 50+ answer-key entries must stay outside GitHub Pages dist.

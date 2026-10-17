@@ -7,7 +7,7 @@ const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const app=read('src/app.mjs'),css=read('styles.css'),html=read('index.html');
 test('header and browser title omit version and retired edition',()=>{
  assert.ok(!html.includes('Aurora Cascade')&&!html.includes('AURORA CASCADE')&&!html.includes('V2.12'));
- assert.ok(app.includes('seby-apex-mark')&&!app.includes('AURORA CASCADE · V2.12'));
+ assert.ok(app.includes('gtp221-unified-brand')&&!app.includes('AURORA CASCADE · V2.12'));
  assert.ok(app.includes('Made by Sebyby'));
 });
 test('hero dock contains wheel left, daily Intel middle, spotlight right',()=>{

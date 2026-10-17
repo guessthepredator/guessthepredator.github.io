@@ -23,6 +23,6 @@ Fan website, not an official EA or Respawn product. Art rights belong to their r
 
 A separate TRIVIA navigation tab provides Daily Ranked and unlimited Practice. Each round has five questions at 20 seconds per question, scoring 20 points each for a maximum of 100 points. The Daily and Overall Trivia leaderboards are separate from the main deduction-game leaderboard.
 
-**Supabase status:** Project `pupdfltjeyzhnyrxutvt` already has all 91 curated questions in a private table, the scoring RPC, and separate ranking RPCs. The answer bank is deliberately **not** included in this public GitHub repository. Do not upload quiz answer keys.
+**Supabase status:** Project `pupdfltjeyzhnyrxutvt` already has 183 active question entries organized into 78 topics in a private table, the scoring RPC, and separate ranking RPCs. The answer bank is deliberately **not** included in this public GitHub repository. Do not upload quiz answer keys.
 
 Apply the three Trivia migrations in `supabase/migrations/` if setting up a new Supabase project; then seed a privately held answer bank as documented in `TRIVIA_SOURCES.md`. This repository alone cannot create the private bank for an entirely new project.
