@@ -48,3 +48,21 @@ test('release assets share updated cache version and old Supabase APIs remain',(
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
+
+test('mode launch always uses the clicked free-play session',()=>{
+ assert.ok(app.includes("openMode(button.dataset.mode,button.dataset.session||'unlimited')"));
+ assert.ok(home.includes('data-session="unlimited"'));
+});
+test('full scan history uses past snapshots and remains visible on finished rounds',()=>{
+ assert.ok(app.includes('function fullScanHistoryMarkup(round,target)'));
+ assert.ok(app.includes('guesses:round.guesses.slice(0,i+1),hints:[]'));
+ assert.ok(app.includes("${fullScanHistoryMarkup(round,target)}${round.mode==='full'?scannerMarkup(round,target):''}"));
+});
+test('partial local stores preserve progress without requiring a practice object',()=>{
+ const map=new Map([['guess-the-predator-2:daybreak-v1',JSON.stringify({days:{'2026-10-17':{daily218:{full:{won:true}}}},history:{wins:7}})]]);
+ const storage={getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};
+ const saved=loadStore(storage);
+ assert.equal(saved.history.wins,7);
+ assert.equal(saved.days['2026-10-17'].daily218.full.won,true);
+ assert.deepEqual(saved.practice,{});
+});
