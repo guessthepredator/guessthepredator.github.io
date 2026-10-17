@@ -45,6 +45,6 @@ test('only the five probed full-body renders are configured locally',()=>{
   assert.ok(!manifest.includes(slug+":'cutout-"+slug+".png'"));
 });
 test('no stale V217 entrypoint; backend protocol marker present',()=>{
- assert.ok(html.includes('2.28.0'));assert.ok(app.includes("daily218.mjs?v=2.28.0"));
+ assert.ok(html.includes('2.29.0'));assert.ok(app.includes("daily218.mjs?v=2.29.0"));
  assert.ok(read('src/scoring.mjs').includes("protocol:'v218'"));
 });

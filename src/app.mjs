@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.28.0';
-import {legends} from './data.mjs?v=2.28.0';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.28.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.28.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.28.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.28.0';
-import {playSound} from './audio.mjs?v=2.28.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.28.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.28.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.28.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.28.0';
-import {loadStore,saveStore} from './store.mjs?v=2.28.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.29.0';
+import {legends} from './data.mjs?v=2.29.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.29.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.29.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.29.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.29.0';
+import {playSound} from './audio.mjs?v=2.29.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.29.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.29.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.29.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.29.0';
+import {loadStore,saveStore} from './store.mjs?v=2.29.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.28.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.29.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -417,7 +417,7 @@ function getVisual(round,target){
       <div class="gtp210-clue-bottom"><strong>${shown===all.length?'ALL FIVE CLUES REVEALED':'DECRYPT THE REMAINING CLUES.'}</strong><span>${shown===all.length?'You have every symbol — make your final guess.':'More symbols unlock as you make guesses.'}</span></div>
     </div>`;
   }
-  return `<div class="clue-visual gtp27-mystery gtp29-classic-visual"><div class="gtp29-question-emblem" aria-hidden="true">?</div><div class="mystery-wording"><small>LEGEND UNKNOWN</small><strong>WHO’S THAT LEGEND?</strong><span>Use each guess to reveal the right identity.</span></div></div>`;
+  return `<div class="clue-visual gtp27-mystery gtp29-classic-visual gtp229-mystery-visual"><div class="gtp229-mystery-stage"><img class="gtp229-unknown-portrait" src="./assets/decor/unknown-legend.svg" alt="Unknown Legend: an armored silhouette with a glowing question mark" width="680" height="760" loading="eager" decoding="async"/><span class="gtp229-classified-stamp" aria-hidden="true">IDENTITY CLASSIFIED</span></div><div class="mystery-wording"><small>01 · UNKNOWN LEGEND</small><strong>WHO'S THAT LEGEND?</strong><span>Compare clues to uncover the identity.</span></div></div>`;
 }
 function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&Object.values(currentDailyRounds(store.days,today())).some(r=>r?.won&&r.answer===answers()[mode])?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" ><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
 function styleStrip(round){
@@ -436,6 +436,7 @@ function latestSignal(round,target){
   return `<div class="flash intel-neutral" role="status"><span class="signal-mark">⌁</span><span><strong>${esc(s.guess)} · ${LABELS[s.field]} ${correct?'TRAIT MATCH':'TRAIT DIFFERENCE'}${s.direction?s.direction>0?' ↑':' ↓':''}</strong><small>${esc(s.value)} ${s.direction?(s.direction>0?'· Target has a higher value':'· Target has a lower value'):correct?'· Only this trait matches — target not found':'· Keep investigating'} · NOT A WIN</small></span></div>`;
 }
 function scannerMarkup(round,target){
+  if(!round.guesses.length)return `<section class="gtp229-scan-preview" aria-label="Identity scanner waiting for guesses"><span class="gtp229-step">03 · IDENTITY SCANNER</span><strong>SCAN READY · AWAITING GUESS</strong><small>Make a guess to compare traits. Green = MATCH, red = DIFFERENT.</small></section>`;
   const scanner=scannerState(round,target,legends);
   const lastField=round.signals.at(-1)?.field;
   const verified=FIELDS.filter(field=>scanner[field]?.kind==='correct'||scanner[field]?.kind==='hint');
@@ -452,7 +453,7 @@ function scannerMarkup(round,target){
   const disabled=round.finished||round.guesses.length===0||round.hints.length>=MAX_HINTS||remaining.length===0;
   return `<div class="scanner-head gtp226-scanner-head"><div><strong>◈ IDENTITY SIGNAL BOARD</strong><small>${round.mode==='full'?'FULL SCAN · COMPARES THE LATEST GUESS ONLY':'ONE SIGNAL · CONFIRMED MATCHES STAY GREEN'}</small></div><div class="gtp226-scan-metrics" aria-label="${matches} matching and ${misses} different traits"><span class="matching">✓ ${matches} MATCH</span><span class="different">✕ ${misses} DIFFERENT</span></div></div>
   ${round.mode==='signal'?`<div class="gtp222-locked-intel" role="status" aria-label="Previously confirmed traits"><strong>CONFIRMED INTEL</strong><div>${chips||'<small>Correct traits will stay locked here after every new guess.</small>'}</div></div>`:''}<div class="scanner" role="group" aria-label="Legend scanner">${cells}</div>
-  <div class="hint-row"><button class="btn lilac small" data-action="hint" ${disabled?'disabled':''}>✧ SMART HINT · ${MAX_HINTS-round.hints.length} LEFT</button><small>Reveals a correct trait in green</small></div>`;
+  `;
 }
 function fullScanHistoryMarkup(round,target){
   if(round.mode!=='full'||!round.guesses.length)return '';
@@ -476,24 +477,29 @@ function guessBody(round,target){
     return `<div class="end-panel ${round.won?'gtp212-victory':''}"><span class="rank">${round.won?rank:'—'}</span><h2>${round.won?'TARGET FOUND!':round.loss==='time'?'TIME’S UP.':'NICE TRY.'}</h2><p>${round.won?`You identified ${esc(target.name)} in ${round.guesses.length} guesses. ${score} points earned.`:`Your mystery Legend was ${esc(target.name)}. Every guess counts. Try another round!`}</p>${badges.length?`<div class="medal-row">${badges.map(tag=>`<span class="medal">${esc(tag)}</span>`).join('')}</div>`:''}<div class="answer-tag">${portrait(target.slug,{alt:target.name,cls:'balanced'})}<strong>${esc(target.name)}</strong></div>
       <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?(dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'):'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
   }
-  return `<div class="guess-top"><div><small>YOUR NEXT MOVE</small><h2>WHO’S THAT <span style="color:var(--tile)">LEGEND?</span></h2></div><span class="pill">${round.guesses.length}/${maxGuesses(round)} GUESSES · ${maxGuesses(round)-round.guesses.length} LEFT</span></div>
-  <div class="search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button class="btn pink small" data-action="submit-search" title="Guess first matching Legend">↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
-  <div class="guess-tools"><button class="btn mint small" data-action="picker">◫ BROWSE LEGENDS</button><small>Filter by class · Guess faster · Press G</small></div>
-  ${latestSignal(round,target)}${round.guesses.length?`<div class="gtp28-instant-history" aria-label="Previous attempts"><b>GUESS HISTORY</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}${scannerMarkup(round,target)}
-  <div class="tried-list" aria-label="Eliminated guesses">${round.guesses.length?round.guesses.map(name=>`<span class="used">${esc(name)}</span>`).join(''):'<span style="color:#875d91;font-size:10px;font-weight:800">No Legends eliminated yet · open Browse for faster reads</span>'}</div>`;
+  const hintUnavailable=round.guesses.length===0||round.hints.length>=MAX_HINTS||availableHintFields(round,target,legends).length===0;
+  return `<div class="gtp229-stepbar"><div><span class="gtp229-step">02 · YOUR GUESS</span><h2>IDENTIFY THE <em>LEGEND</em></h2></div><strong class="gtp229-remaining">${maxGuesses(round)-round.guesses.length}<small> GUESSES LEFT</small></strong></div>
+  <div class="gtp229-answer-zone">
+    <div class="search-wrap gtp229-search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button type="button" class="btn pink gtp229-submit" data-action="submit-search" title="Guess the first matching Legend">GUESS ↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
+    <div class="guess-tools gtp229-guess-actions"><button type="button" class="btn mint gtp229-browse" data-action="picker">▦ BROWSE LEGENDS</button><button type="button" class="btn lilac gtp229-hint" data-action="hint" ${hintUnavailable?'disabled':''}>✧ GET HINT <small>${MAX_HINTS-round.hints.length} LEFT</small></button></div>
+    <p class="gtp229-action-help">${round.guesses.length===0?'Start with any Legend · hints unlock after your first guess':'Choose another Legend, or request a hint if you are stuck.'}</p>
+  </div>
+  ${round.guesses.length?latestSignal(round,target):''}
+  ${round.guesses.length?`<div class="gtp28-instant-history gtp229-history" aria-label="Previous attempts"><b>PREVIOUS GUESSES</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}
+  ${scannerMarkup(round,target)}`;
 }
 function game(){
   const round=ensureRound();const target=legendByName(legends,round.answer);
   const timeLeft=remainingTime(round);const urgent=timeLeft!=null&&timeLeft<=25&&!round.finished;
-  return `<main class="wrap game gtp2-game-scene gtp2-scene-${active}" style="--tile:${classOf(active)}"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${sharedDay?'◇ SHARED DAILY · '+today():session==='daily'?`◉ ${dailyTrack==='full'?'01 · FULL SCAN':'02 · ONE SIGNAL'} / ${today()}`:'∞ FREE PLAY'}</span></div>
+  return `<main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp229-game" style="--tile:${classOf(active)}"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${sharedDay?'◇ SHARED DAILY · '+today():session==='daily'?`◉ ${dailyTrack==='full'?'01 · FULL SCAN':'02 · ONE SIGNAL'} / ${today()}`:'∞ FREE PLAY'}</span></div>
   <div class="gtp224-session-banner ${session==='daily'?'gtp224-session-daily':'gtp224-session-practice'}" role="status"><strong>${session==='daily'?'◈ DAILY CHALLENGE · SHARED PUZZLE':'∞ FREE PLAY · PRACTICE ONLY'}</strong><span>${session==='daily'?(dailyTrack==='full'?'01 / 02 · FULL SCAN':'02 / 02 · ONE SIGNAL')+' · RESET 00:00 UTC':'Unlimited rounds · score does not affect Daily rankings'}</span></div>
   <div class="game-titlebar"><div><span class="kicker">SIGNAL FILE / 0${MODES.indexOf(active)+1}</span><h1>${MODE_NAMES[active]}<span style="color:var(--tile)">.</span></h1><p>${TAGLINES[active]}</p></div>
   <div class="game-status">${round.timeLimit?`<div id="round-timer" class="game-timer ${urgent?'urgent':''}" aria-label="Time remaining"><i>◷</i><span>${timeLeft??120}s</span></div>`:''}<span class="game-attempts">${maxGuesses(round)-round.guesses.length}<small> LEFT</small></span></div></div>
-  ${modeRail()}${styleStrip(round)}
-  ${active==='classic'?`<div class="gtp27-classic-banner"><span class="gtp27-question-symbol">?</span><div><small>CLASSIFIED IDENTITY / DAILY SIGNAL</small><strong>WHO'S THAT <em>LEGEND?</em></strong></div><span class="gtp27-banner-note">THE ANSWER IS ONE GUESS AWAY.</span></div>`:''}
-  <div class="game-layout"><section class="clue-card" aria-label="Challenge clue"><div class="panel-top"><span>✧ TRANSMISSION / ${MODE_NAMES[active]}</span><small>IDENTITY HIDDEN</small></div>${getVisual(round,target)}<div class="clue-foot"><span>✧ ${active==='quote'?'ORIGINAL FAN CLUE':active==='pixel'?'PIXEL SCRAMBLER':'SIX-TRAIT MYSTERY'}</span><span>${round.finished?'FILE DECLASSIFIED':'NO SPOILERS'}</span></div></section>
-  <section class="guess-card" aria-label="Guess the Legend"><div class="panel-top"><span>⌁ GUESS TERMINAL</span><small>${round.mode==='signal'?'ONE-SIGNAL INTEL':'FULL SCAN INTEL'}</small></div><div class="guess-body">${guessBody(round,target)}</div></section></div>
-  ${round.guesses.length?`<section class="game-bottom"><div class="bottom-card"><h3>SIGNAL HISTORY</h3><div class="signal-log">${round.guesses.map((name,i)=>`<span class="log-item ${name===target.name?'match':'mismatch'}">${i+1}. ${esc(name)} ${name===target.name?'✓ TARGET FOUND':'× ELIMINATED'}</span>`).join('')}</div></div></section>`:''}</main>`;
+  ${modeRail()}<details class="gtp229-scan-settings"><summary><strong>${round.mode==='full'?'▦ FULL SCAN':'✦ ONE SIGNAL'}</strong><span>${round.mode==='full'?'Six trait comparisons per guess':'One trait per guess'} · ${session==='daily'?'Daily rules locked':'Edit scan style / timer'}</span><b aria-hidden="true">⌄</b></summary>${session==='daily'?'<p class="gtp229-locked-copy">All players have the same Daily scan rules.</p>':styleStrip(round)}</details>
+  ${active==='classic'?`<div class="gtp27-classic-banner gtp229-classic-guide"><span class="gtp27-question-symbol">?</span><div><small>01 · CLUE</small><strong>UNKNOWN LEGEND</strong></div></div>`:''}
+  <div class="game-layout gtp229-game-layout"><section class="clue-card gtp229-clue-card" aria-label="Challenge clue"><div class="panel-top gtp229-panel-head"><span>01 · ${MODE_NAMES[active]} CLUE</span><small>IDENTITY CLASSIFIED</small></div>${getVisual(round,target)}<div class="clue-foot"><span>✧ ${active==='quote'?'ORIGINAL FAN CLUE':active==='pixel'?'PIXEL SCRAMBLER':'SIX-TRAIT MYSTERY'}</span><span>${round.finished?'FILE DECLASSIFIED':'NO SPOILERS'}</span></div></section>
+  <section class="guess-card gtp229-guess-card" aria-label="Guess the Legend"><div class="panel-top gtp229-panel-head"><span>02 · GUESS &amp; SCAN</span><small>${round.mode==='signal'?'ONE SIGNAL':'FULL SCAN'}</small></div><div class="guess-body">${guessBody(round,target)}</div></section></div>
+  </main>`;
 }
 function howTo(){return `<main class="wrap gtp27-guide" aria-labelledby="guide-title"><span class="kicker">FIELD GUIDE · FIVE WAYS TO PLAY</span><h1 id="guide-title">HOW TO <em>PLAY.</em></h1><p>Choose Daily for two shared puzzles each UTC day: Full Scan first, then One Signal, or Free Play for unlimited practice. Find the mystery Legend using up to six guesses (five in Full Scan).</p>
   <div class="guide-grid">${[

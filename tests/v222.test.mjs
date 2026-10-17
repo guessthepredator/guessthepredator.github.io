@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.28.0')&&html.includes('app.mjs?v=2.28.0'));
+ assert.ok(html.includes('styles.css?v=2.29.0')&&html.includes('app.mjs?v=2.29.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -197,4 +197,25 @@ test('V2.28 builds real transparent cutouts and prevents original scene backgrou
  for(const slug of ['alter','ballistic','catalyst','conduit','sparrow'])
   assert.ok(manifest.includes("cutout-"+slug+".png"));
  assert.ok(!manifest.includes("original-alter.png"));
+});
+
+test('V2.29 game clarity: clue, answer, scanner and readable filled buttons',()=>{
+ const unknown=read('assets/decor/unknown-legend.svg');
+ assert.ok(unknown.includes('<svg')&&unknown.includes('Unknown Legend')&&unknown.includes('id="visor"'));
+ assert.ok(app.includes('unknown-legend.svg'));
+ assert.ok(app.includes('gtp229-game-layout'));
+ assert.ok(app.includes('gtp229-answer-zone'));
+ assert.ok(app.includes('gtp229-scan-preview'));
+ assert.ok(app.includes('gtp229-scan-settings'));
+ assert.ok(app.includes('gtp229-submit'));
+ assert.ok(app.includes('gtp229-browse'));
+ assert.ok(app.includes('gtp229-hint'));
+ assert.ok(app.includes('details class="gtp229-scan-settings"'));
+ assert.ok(!app.includes('<section class="game-bottom">'));
+ assert.ok(!app.includes('<div class="tried-list"'));
+ assert.ok(css.includes('V2.29 · GAMEPLAY CLARITY PASS'));
+ for(const mode of ['classic','pixel','quote','ability','emoji'])
+  assert.ok(css.includes('[data-mode="'+mode+'"] .gtp229-game'));
+ assert.ok(css.includes('background:var(--gtp229-accent)!important'));
+ assert.ok(css.includes('.gtp229-mystery-visual'));
 });
