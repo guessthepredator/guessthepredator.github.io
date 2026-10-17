@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.28.0';
-import {legends} from './data.mjs?v=2.28.0';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.28.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.28.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.28.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.28.0';
-import {playSound} from './audio.mjs?v=2.28.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.28.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.28.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.28.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.28.0';
-import {loadStore,saveStore} from './store.mjs?v=2.28.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.29.0';
+import {legends} from './data.mjs?v=2.29.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.29.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.29.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.29.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.29.0';
+import {playSound} from './audio.mjs?v=2.29.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.29.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.29.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.29.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.29.0';
+import {loadStore,saveStore} from './store.mjs?v=2.29.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.28.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.29.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -491,15 +491,15 @@ function guessBody(round,target){
 function game(){
   const round=ensureRound();const target=legendByName(legends,round.answer);
   const timeLeft=remainingTime(round);const urgent=timeLeft!=null&&timeLeft<=25&&!round.finished;
-  return `<main class="wrap game gtp2-game-scene gtp2-scene-${active}" style="--tile:${classOf(active)}"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${sharedDay?'◇ SHARED DAILY · '+today():session==='daily'?`◉ ${dailyTrack==='full'?'01 · FULL SCAN':'02 · ONE SIGNAL'} / ${today()}`:'∞ FREE PLAY'}</span></div>
+  return `<main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp229-game" style="--tile:${classOf(active)}"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${sharedDay?'◇ SHARED DAILY · '+today():session==='daily'?`◉ ${dailyTrack==='full'?'01 · FULL SCAN':'02 · ONE SIGNAL'} / ${today()}`:'∞ FREE PLAY'}</span></div>
   <div class="gtp224-session-banner ${session==='daily'?'gtp224-session-daily':'gtp224-session-practice'}" role="status"><strong>${session==='daily'?'◈ DAILY CHALLENGE · SHARED PUZZLE':'∞ FREE PLAY · PRACTICE ONLY'}</strong><span>${session==='daily'?(dailyTrack==='full'?'01 / 02 · FULL SCAN':'02 / 02 · ONE SIGNAL')+' · RESET 00:00 UTC':'Unlimited rounds · score does not affect Daily rankings'}</span></div>
   <div class="game-titlebar"><div><span class="kicker">SIGNAL FILE / 0${MODES.indexOf(active)+1}</span><h1>${MODE_NAMES[active]}<span style="color:var(--tile)">.</span></h1><p>${TAGLINES[active]}</p></div>
   <div class="game-status">${round.timeLimit?`<div id="round-timer" class="game-timer ${urgent?'urgent':''}" aria-label="Time remaining"><i>◷</i><span>${timeLeft??120}s</span></div>`:''}<span class="game-attempts">${maxGuesses(round)-round.guesses.length}<small> LEFT</small></span></div></div>
-  ${modeRail()}${styleStrip(round)}
-  ${active==='classic'?`<div class="gtp27-classic-banner"><span class="gtp27-question-symbol">?</span><div><small>CLASSIFIED IDENTITY / DAILY SIGNAL</small><strong>WHO'S THAT <em>LEGEND?</em></strong></div><span class="gtp27-banner-note">THE ANSWER IS ONE GUESS AWAY.</span></div>`:''}
-  <div class="game-layout"><section class="clue-card" aria-label="Challenge clue"><div class="panel-top"><span>✧ TRANSMISSION / ${MODE_NAMES[active]}</span><small>IDENTITY HIDDEN</small></div>${getVisual(round,target)}<div class="clue-foot"><span>✧ ${active==='quote'?'ORIGINAL FAN CLUE':active==='pixel'?'PIXEL SCRAMBLER':'SIX-TRAIT MYSTERY'}</span><span>${round.finished?'FILE DECLASSIFIED':'NO SPOILERS'}</span></div></section>
-  <section class="guess-card" aria-label="Guess the Legend"><div class="panel-top"><span>⌁ GUESS TERMINAL</span><small>${round.mode==='signal'?'ONE-SIGNAL INTEL':'FULL SCAN INTEL'}</small></div><div class="guess-body">${guessBody(round,target)}</div></section></div>
-  ${round.guesses.length?`<section class="game-bottom"><div class="bottom-card"><h3>SIGNAL HISTORY</h3><div class="signal-log">${round.guesses.map((name,i)=>`<span class="log-item ${name===target.name?'match':'mismatch'}">${i+1}. ${esc(name)} ${name===target.name?'✓ TARGET FOUND':'× ELIMINATED'}</span>`).join('')}</div></div></section>`:''}</main>`;
+  ${modeRail()}<details class="gtp229-scan-settings"><summary><strong>${round.mode==='full'?'▦ FULL SCAN':'✦ ONE SIGNAL'}</strong><span>${round.mode==='full'?'Six trait comparisons per guess':'One trait per guess'} · ${session==='daily'?'Daily rules locked':'Edit scan style / timer'}</span><b aria-hidden="true">⌄</b></summary>${session==='daily'?'<p class="gtp229-locked-copy">All players have the same Daily scan rules.</p>':styleStrip(round)}</details>
+  ${active==='classic'?`<div class="gtp27-classic-banner gtp229-classic-guide"><span class="gtp27-question-symbol">?</span><div><small>01 · CLUE</small><strong>UNKNOWN LEGEND</strong></div></div>`:''}
+  <div class="game-layout gtp229-game-layout"><section class="clue-card gtp229-clue-card" aria-label="Challenge clue"><div class="panel-top gtp229-panel-head"><span>01 · ${MODE_NAMES[active]} CLUE</span><small>IDENTITY CLASSIFIED</small></div>${getVisual(round,target)}<div class="clue-foot"><span>✧ ${active==='quote'?'ORIGINAL FAN CLUE':active==='pixel'?'PIXEL SCRAMBLER':'SIX-TRAIT MYSTERY'}</span><span>${round.finished?'FILE DECLASSIFIED':'NO SPOILERS'}</span></div></section>
+  <section class="guess-card gtp229-guess-card" aria-label="Guess the Legend"><div class="panel-top gtp229-panel-head"><span>02 · GUESS &amp; SCAN</span><small>${round.mode==='signal'?'ONE SIGNAL':'FULL SCAN'}</small></div><div class="guess-body">${guessBody(round,target)}</div></section></div>
+  </main>`;
 }
 function howTo(){return `<main class="wrap gtp27-guide" aria-labelledby="guide-title"><span class="kicker">FIELD GUIDE · FIVE WAYS TO PLAY</span><h1 id="guide-title">HOW TO <em>PLAY.</em></h1><p>Choose Daily for two shared puzzles each UTC day: Full Scan first, then One Signal, or Free Play for unlimited practice. Find the mystery Legend using up to six guesses (five in Full Scan).</p>
   <div class="guide-grid">${[
