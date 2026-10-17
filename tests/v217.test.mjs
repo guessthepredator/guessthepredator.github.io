@@ -20,7 +20,7 @@ test('Live controls retain real five modes and wheel',()=>{
 });
 test('Cache busters synchronized, responsive legacy layout retained',()=>{
  const v=html.match(/styles\.css\?v=(\d+\.\d+\.\d+)/)?.[1];
- assert.equal(v,'2.22.0');
+ assert.equal(v,'2.23.0');
  assert.ok(html.includes('app.mjs?v='+v));
  assert.ok(app.includes('leaderboard.mjs?v='+v));
  assert.ok(app.includes('function homeLegacy()') && css.includes('.gtp217-mobile{display:block!important}'));
