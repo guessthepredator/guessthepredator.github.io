@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.23.0';
-import {legends} from './data.mjs?v=2.23.0';
-import {artCatalog} from './art.mjs?v=2.23.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.23.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.23.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.23.0';
-import {playSound} from './audio.mjs?v=2.23.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.23.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.23.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.23.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.23.0';
-import {loadStore,saveStore} from './store.mjs?v=2.23.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.24.0';
+import {legends} from './data.mjs?v=2.24.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.24.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.24.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.24.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.24.0';
+import {playSound} from './audio.mjs?v=2.24.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.24.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.24.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.24.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.24.0';
+import {loadStore,saveStore} from './store.mjs?v=2.24.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.23.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.24.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -45,6 +45,8 @@ let triviaBoardError='';
 let triviaSubmitting=false;
 let triviaAnswerText='';
 let triviaTickTimer=null;
+let triviaClockFrame=0;
+let triviaExpiredKey='';
 
 let session='daily';
 let active='classic';
@@ -135,9 +137,9 @@ function loadPortraitImages(parent=app){
     image.dataset.artReady='yes';
     const slug=image.dataset.portrait;const localFile=localPortraitFiles[slug];
     const inPixelPuzzle=Boolean(image.closest('.pixel-art'));
-    const sourceCatalog=artCatalog[slug]||[];
+    const sourceCatalog=portraitSourcesFor(slug,{pixel:inPixelPuzzle});
     // Pixel mode uses the old source priority so tall renders never change its canvas composition.
-    const candidates=[...(localFile?[`./assets/portraits/${localFile}`]:[]),...(inPixelPuzzle?sourceCatalog.filter(url=>!url.includes('Original%20')):sourceCatalog)];let index=0;
+    const candidates=[...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog];let index=0;
     const next=()=>{
       if(index>=candidates.length){
         const box=image.closest('.portrait-holder');
@@ -154,7 +156,7 @@ function loadPortraitImages(parent=app){
     };
     image.addEventListener('error',next);
     image.addEventListener('load',()=>{
-      if(image.naturalWidth<80||image.naturalHeight<80){next();return;}
+      if(image.naturalWidth<80||image.naturalHeight<80||((inPixelPuzzle||image.closest('.gtp2-picker'))&&image.naturalWidth>image.naturalHeight*1.2)){next();return;}
       if(image.dataset.portrait==='mirage')image.closest('.hero-stage')?.classList.add('art-loaded');
       const pixels=image.closest('.pixel-art');
       if(pixels){
@@ -325,7 +327,7 @@ function home(){
    ['emoji','EMOJI','Five symbols. One Legend.','✦'],
    ['trivia','TRIVIA','Five questions · 20 seconds each.','✧']
  ];
- const card=([mode,title,description,glyph],i)=>`<button type="button" class="gtp222-orbit-card gtp222-card-${mode}" data-action="${mode==='trivia'?'trivia':'open'}" ${mode==='trivia'?'':`data-mode="${mode}" data-session="unlimited"`} aria-label="${mode==='trivia'?'Open Trivia':'Play '+title}"><span class="gtp222-orbit-symbol" aria-hidden="true">${glyph}</span><span class="gtp222-orbit-copy"><strong>${title}</strong><small>${description}</small></span><span class="gtp222-orbit-arrow" aria-hidden="true">↗</span></button>`;
+ const card=([mode,title,description,glyph],i)=>`<button type="button" class="gtp222-orbit-card gtp222-card-${mode} gtp224-orbit-${i+1}" data-action="${mode==='trivia'?'trivia':'open'}" ${mode==='trivia'?'':`data-mode="${mode}" data-session="unlimited"`} aria-label="${mode==='trivia'?'Open Trivia':'Play '+title}"><span class="gtp222-orbit-symbol" aria-hidden="true">${glyph}</span><span class="gtp222-orbit-copy"><strong>${title}</strong><small>${description}</small></span><span class="gtp222-orbit-arrow" aria-hidden="true">↗</span></button>`;
  return `<main class="gtp219-home gtp222-home" aria-label="Guess the Predator homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
   <div class="gtp222-layout">
@@ -425,7 +427,7 @@ function styleStrip(round){
 }
 function latestSignal(round,target){
   if(!round.guesses.length)return `<div class="flash idle"><span class="signal-mark">✧</span><span><strong>AWAITING YOUR FIRST GUESS</strong><small>Your next guess will reveal ${round.mode==='signal'?'one of the six traits':'all six traits'}.</small></span></div>`;
-  if(round.mode==='full')return `<div class="flash idle"><span class="signal-mark">▦</span><span><strong>FULL SCAN RECEIVED</strong><small>Compare all six traits below. Matches stay green.</small></span></div>`;
+  if(round.mode==='full')return `<div class="flash idle"><span class="signal-mark">▦</span><span><strong>LATEST FULL SCAN RECEIVED</strong><small>The board displays this guess only. Red means mismatch, green means match.</small></span></div>`;
   const s=round.signals.at(-1);
   if(!s)return `<div class="flash idle"><span class="signal-mark">⌁</span><span><strong>NO NEW SIGNAL</strong><small>All remaining comparable fields were already revealed.</small></span></div>`;
   const correct=s.kind==='correct';
@@ -444,8 +446,8 @@ function scannerMarkup(round,target){
   }).join('');
   const remaining=availableHintFields(round,target,legends);
   const disabled=round.finished||round.guesses.length===0||round.hints.length>=MAX_HINTS||remaining.length===0;
-  return `<div class="scanner-head"><strong>◈ IDENTITY SIGNAL BOARD</strong><small>GREEN = MATCH / HINT · CYAN = INTEL</small></div>
-  <div class="gtp222-locked-intel" role="status" aria-label="Previously confirmed traits"><strong>CONFIRMED INTEL · PERSISTENT</strong><div>${chips||'<small>Correct traits will stay locked here after every new guess.</small>'}</div></div><div class="scanner" role="group" aria-label="Legend scanner">${cells}</div>
+  return `<div class="scanner-head"><strong>◈ IDENTITY SIGNAL BOARD</strong><small>${round.mode==='full'?'LATEST GUESS ONLY · GREEN = ACTUAL MATCH · RED = MISMATCH':'ONE SIGNAL · GREEN MATCHES STAY CONFIRMED'}</small></div>
+  ${round.mode==='signal'?`<div class="gtp222-locked-intel" role="status" aria-label="Previously confirmed traits"><strong>CONFIRMED INTEL</strong><div>${chips||'<small>Correct traits will stay locked here after every new guess.</small>'}</div></div>`:''}<div class="scanner" role="group" aria-label="Legend scanner">${cells}</div>
   <div class="hint-row"><button class="btn lilac small" data-action="hint" ${disabled?'disabled':''}>✧ SMART HINT · ${MAX_HINTS-round.hints.length} LEFT</button><small>Reveals a correct trait in green</small></div>`;
 }
 function fullScanHistoryMarkup(round,target){
@@ -468,18 +470,19 @@ function guessBody(round,target){
   if(round.finished){
     const score=gameScore(round);const rank=gameRank(score);const badges=styleBadges(round);
     return `<div class="end-panel ${round.won?'gtp212-victory':''}"><span class="rank">${round.won?rank:'—'}</span><h2>${round.won?'TARGET FOUND!':round.loss==='time'?'TIME’S UP.':'NICE TRY.'}</h2><p>${round.won?`You identified ${esc(target.name)} in ${round.guesses.length} guesses. ${score} points earned.`:`Your mystery Legend was ${esc(target.name)}. Every guess counts. Try another round!`}</p>${badges.length?`<div class="medal-row">${badges.map(tag=>`<span class="medal">${esc(tag)}</span>`).join('')}</div>`:''}<div class="answer-tag">${portrait(target.slug,{alt:target.name,cls:'balanced'})}<strong>${esc(target.name)}</strong></div>
-      <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?(dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'):'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${fullScanHistoryMarkup(round,target)}${round.mode==='full'?scannerMarkup(round,target):''}`;
+      <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?(dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'):'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
   }
   return `<div class="guess-top"><div><small>YOUR NEXT MOVE</small><h2>WHO’S THAT <span style="color:var(--tile)">LEGEND?</span></h2></div><span class="pill">${round.guesses.length}/${maxGuesses(round)} GUESSES · ${maxGuesses(round)-round.guesses.length} LEFT</span></div>
   <div class="search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button class="btn pink small" data-action="submit-search" title="Guess first matching Legend">↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
   <div class="guess-tools"><button class="btn mint small" data-action="picker">◫ BROWSE LEGENDS</button><small>Filter by class · Guess faster · Press G</small></div>
-  ${latestSignal(round,target)}${fullScanHistoryMarkup(round,target)}${round.guesses.length?`<div class="gtp28-instant-history" aria-label="Previous attempts"><b>GUESS HISTORY</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}${scannerMarkup(round,target)}
+  ${latestSignal(round,target)}${round.guesses.length?`<div class="gtp28-instant-history" aria-label="Previous attempts"><b>GUESS HISTORY</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}${scannerMarkup(round,target)}
   <div class="tried-list" aria-label="Eliminated guesses">${round.guesses.length?round.guesses.map(name=>`<span class="used">${esc(name)}</span>`).join(''):'<span style="color:#875d91;font-size:10px;font-weight:800">No Legends eliminated yet · open Browse for faster reads</span>'}</div>`;
 }
 function game(){
   const round=ensureRound();const target=legendByName(legends,round.answer);
   const timeLeft=remainingTime(round);const urgent=timeLeft!=null&&timeLeft<=25&&!round.finished;
   return `<main class="wrap game gtp2-game-scene gtp2-scene-${active}" style="--tile:${classOf(active)}"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${sharedDay?'◇ SHARED DAILY · '+today():session==='daily'?`◉ ${dailyTrack==='full'?'01 · FULL SCAN':'02 · ONE SIGNAL'} / ${today()}`:'∞ FREE PLAY'}</span></div>
+  <div class="gtp224-session-banner ${session==='daily'?'gtp224-session-daily':'gtp224-session-practice'}" role="status"><strong>${session==='daily'?'◈ DAILY CHALLENGE · SHARED PUZZLE':'∞ FREE PLAY · PRACTICE ONLY'}</strong><span>${session==='daily'?(dailyTrack==='full'?'01 / 02 · FULL SCAN':'02 / 02 · ONE SIGNAL')+' · RESET 00:00 UTC':'Unlimited rounds · score does not affect Daily rankings'}</span></div>
   <div class="game-titlebar"><div><span class="kicker">SIGNAL FILE / 0${MODES.indexOf(active)+1}</span><h1>${MODE_NAMES[active]}<span style="color:var(--tile)">.</span></h1><p>${TAGLINES[active]}</p></div>
   <div class="game-status">${round.timeLimit?`<div id="round-timer" class="game-timer ${urgent?'urgent':''}" aria-label="Time remaining"><i>◷</i><span>${timeLeft??120}s</span></div>`:''}<span class="game-attempts">${maxGuesses(round)-round.guesses.length}<small> LEFT</small></span></div></div>
   ${modeRail()}${styleStrip(round)}
@@ -527,7 +530,7 @@ function trivia(){
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}
   ${!run?`<div class="trivia-intro"><span class="trivia-tag">${isDaily?'ONE OFFICIAL RUN PER UTC DAY':'UNLIMITED UNRANKED ROUNDS'}</span><h2>${isDaily?'DAILY INTEL DROP':'TRAIN YOUR KNOWLEDGE'}</h2><p>${isDaily?'Everyone receives the same five-question selection today. Answers and timing are verified on the server; results appear on the separate Trivia leaderboard.':'Try varied sets across the question bank; recent topics are rotated when possible. Practice does not affect your global ranking.'}</p><p class="trivia-hint">Your public nickname: <strong>${esc(savedNickname()||'Not set')}</strong> · You can change it in the top navigation.</p><button type="button" data-action="trivia-start" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'CONNECTING…':isDaily?'START / RESUME DAILY →':'START PRACTICE →'}</button></div>`:''}
   ${run?.finished?`<div class="trivia-finale"><span class="trivia-tag">${isDaily?'DAILY SUBMITTED':'PRACTICE COMPLETE'}</span><h2>RUN COMPLETE.</h2><div class="trivia-final-score">${Number(run.score)||0}<small> / 100</small></div><p>${run.score===100?'PERFECT INTEL. FIVE FOR FIVE.':'You answered '+Math.floor(run.score/20)+' of 5 questions correctly.'} ${isDaily?'Your score is stored in the separate Trivia rankings.':'Practice rounds never change the leaderboard.'}</p>${run.feedback?`<div class="trivia-last-explanation"><strong>${run.feedback.correct?'✓ FINAL ANSWER CORRECT':'FINAL QUESTION REVIEW'}</strong><span>${esc(run.feedback.explanation||'')}</span>${run.feedback.source?`<a href="${esc(run.feedback.source)}" target="_blank" rel="noopener noreferrer">Official EA source ↗</a>`:''}</div>`:''}${isDaily&&triviaRewardEarned()?intelReadyMarkup(3):''}<div class="trivia-final-actions"><button type="button" class="trivia-primary" data-action="trivia-mode" data-trivia-mode="practice">∞ PRACTICE AGAIN</button><button type="button" class="trivia-secondary" data-action="trivia-board-refresh">VIEW RANKINGS ↗</button></div></div>`:''}
-  ${run&&!run.finished&&feedback?`<div class="trivia-feedback ${feedback.correct?'good':'bad'}"><span class="trivia-tag">QUESTION ${Math.min(run.number-1,5)} / 5</span><h2>${feedback.correct?'✓ CORRECT · +20':feedback.timedOut?'⌛ TIME EXPIRED':'✕ NOT QUITE'}</h2><p><strong>Accepted answer${feedback.acceptedAnswers?.length>1?'s':''}:</strong> ${esc((feedback.acceptedAnswers||[]).join(' · '))}</p><p>${esc(feedback.explanation||'')}</p>${feedback.source?`<a href="${esc(feedback.source)}" target="_blank" rel="noopener noreferrer">Verify with EA ↗</a>`:''}<p class="trivia-current-score">RUN SCORE: ${run.score} / 100</p><button data-action="trivia-next" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'LOADING…':'NEXT QUESTION →'}</button></div>`:''}
+  ${run&&!run.finished&&feedback?`<div class="trivia-feedback ${feedback.correct?'good':'bad'}"><span class="trivia-tag">QUESTION ${Math.min(run.number-1,5)} / 5</span><h2>${feedback.correct?'✓ CORRECT · +20':feedback.timedOut?'⌛ TIME’S UP · QUESTION EXPIRED':'✕ NOT QUITE'}</h2><p><strong>Accepted answer${feedback.acceptedAnswers?.length>1?'s':''}:</strong> ${esc((feedback.acceptedAnswers||[]).join(' · '))}</p><p>${esc(feedback.explanation||'')}</p>${feedback.source?`<a href="${esc(feedback.source)}" target="_blank" rel="noopener noreferrer">Verify with EA ↗</a>`:''}<p class="trivia-current-score">RUN SCORE: ${run.score} / 100</p><button data-action="trivia-next" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'LOADING…':'NEXT QUESTION →'}</button></div>`:''}
   ${run&&!run.finished&&!feedback&&question?`<div class="trivia-question"><div class="trivia-question-head"><span class="trivia-tag">QUESTION ${run.number} / 5 · ${['CADET','SCOUT','OPERATIVE','SPECIALIST','APEX MASTER'][Math.max(0,Math.min(4,run.number-1))]} · ${esc(question.category.replace(/-/g,' ').toUpperCase())}</span><strong class="trivia-clock ${remaining<=6?'urgent':''}" id="trivia-clock"><span id="trivia-seconds">${remaining}</span>s</strong></div><div class="trivia-timebar"><span id="trivia-timefill" style="width:${Math.max(0,Math.min(100,remaining*5))}%"></span></div><h2>${esc(question.prompt)}</h2><form id="trivia-answer-form">${question.kind==='choice'?`<div class="trivia-options">${question.options.map((v,i)=>`<button class="trivia-option" type="button" data-action="trivia-choice" data-value="${esc(v)}" ${triviaBusy?'disabled':''}><b>${String.fromCharCode(65+i)}</b><span>${esc(v)}</span><span>↗</span></button>`).join('')}</div>`:`<div class="trivia-type"><label for="trivia-written-answer">YOUR ANSWER</label><input id="trivia-written-answer" name="answer" spellcheck="false" autocomplete="off" placeholder="Type a Legend name…" maxlength="70" value="${esc(triviaAnswerText)}" ${triviaBusy?'disabled':''}/><button class="trivia-primary" type="submit" ${triviaBusy?'disabled':''}>SUBMIT ANSWER ↗</button></div>`}</form><button type="button" class="trivia-skip" data-action="trivia-skip" ${triviaBusy?'disabled':''}>SKIP / NO ANSWER</button><p class="trivia-note">The clock continues even when you switch tabs. Answers are evaluated server-side.</p></div>`:''}
   </section><aside class="trivia-sidebar"><div class="trivia-sidehead"><span>✦ SEPARATE TRIVIA RANKINGS</span><div class="trivia-tabs"><button data-action="trivia-board-tab" data-tab="daily" class="${triviaScoreTab==='daily'?'active':''}">TODAY</button><button data-action="trivia-board-tab" data-tab="overall" class="${triviaScoreTab==='overall'?'active':''}">ALL TIME</button></div></div>${triviaBoardBusy?'<p class="trivia-quiet">LOADING SCORES…</p>':triviaBoardError?`<p class="trivia-quiet">${esc(triviaBoardError)}</p>`:rows.length?`<div class="trivia-board-rows">${rows.map((r,i)=>`<div class="trivia-board-row"><b>#${Number(r.position)||i+1}</b><span>${esc(r.player_name||'Player')}</span><strong>${Number(r.score)||0} ${triviaScoreTab==='overall'?'PTS':'/100'}</strong></div>`).join('')}</div>`:'<p class="trivia-quiet">No daily submissions yet. Be the first!</p>'}<div class="trivia-aside-foot"><b>CURATED QUESTION BANK</b><p>Progressive difficulty, varied topics, and fewer repeated questions. Source: official EA game information.</p><button class="trivia-secondary" data-action="trivia-board-refresh">↻ REFRESH LEADERBOARD</button></div></aside></div>
   </div></main>`;
@@ -544,9 +547,9 @@ async function triviaStart(){if(triviaBusy)return;
  catch(e){triviaMessage=e?.message||'Could not start Trivia';}
  finally{triviaBusy=false;if(screen==='trivia')render({scroll:false});}
 }
-async function triviaSubmitAnswer(value){if(triviaBusy||triviaSubmitting||!triviaRun?.question||triviaRun.finished)return;
+async function triviaSubmitAnswer(value,timedOut=false){if(triviaBusy||triviaSubmitting||!triviaRun?.question||triviaRun.finished)return;
  triviaBusy=true;triviaSubmitting=true;let response;
- try{response=await triviaRequest({action:'answer',runId:triviaRun.runId,answer:String(value||'').slice(0,120)});triviaRun=response;saveTriviaReward(response);triviaAnswerText='';triviaMessage='';sound(response?.feedback?.correct?'correct':'wrong');if(response?.finished){sound('win');void loadTriviaBoards();}}
+ try{response=await triviaRequest({action:'answer',runId:triviaRun.runId,answer:String(value||'').slice(0,120)});if(timedOut&&response?.feedback)response={...response,feedback:{...response.feedback,timedOut:true}};triviaRun=response;saveTriviaReward(response);triviaAnswerText='';triviaMessage='';sound(response?.feedback?.correct?'correct':'wrong');if(response?.finished){sound('win');void loadTriviaBoards();}}
  catch(e){triviaMessage=e?.message||'Could not submit answer';}
  finally{triviaBusy=false;triviaSubmitting=false;if(screen==='trivia')render({scroll:false});}
 }
@@ -557,12 +560,31 @@ async function triviaNext(){if(triviaBusy||!triviaRun?.waitingNext)return;
  finally{triviaBusy=false;if(screen==='trivia')render({scroll:false});}
 }
 function triviaClockTick(){
- const q=triviaRun?.question;if(screen!=='trivia'||!q||!triviaRun.deadlineAt)return;
- const left=Math.max(0,Math.ceil((Date.parse(triviaRun.deadlineAt)-Date.now())/1000));
- const digits=document.getElementById('trivia-seconds');if(digits)digits.textContent=left;
- const fill=document.getElementById('trivia-timefill');if(fill)fill.style.width=`${Math.min(100,left*5)}%`;
- document.getElementById('trivia-clock')?.classList.toggle('urgent',left<=6);
- if(left<=0&&!triviaBusy&&!triviaSubmitting)void triviaSubmitAnswer('');
+ // Continuous compositor-friendly progress; the label itself updates only
+ // when the displayed whole second changes. The deadline stays server-owned.
+ if(triviaClockFrame)cancelAnimationFrame(triviaClockFrame);
+ triviaClockFrame=0;
+ const frame=()=>{
+  const run=triviaRun;
+  if(screen!=='trivia'||!run?.question||run?.feedback||!run.deadlineAt){triviaClockFrame=0;return;}
+  const remainingMs=Math.max(0,Date.parse(run.deadlineAt)-Date.now());
+  const seconds=Math.ceil(remainingMs/1000);
+  const digits=document.getElementById('trivia-seconds');
+  if(digits&&digits.textContent!==String(seconds))digits.textContent=seconds;
+  const fill=document.getElementById('trivia-timefill');
+  if(fill)fill.style.transform='scaleX('+Math.max(0,Math.min(1,remainingMs/20000))+')';
+  document.getElementById('trivia-clock')?.classList.toggle('urgent',seconds<=6);
+  if(remainingMs<=0){
+   const key=[run.runId,run.number,run.deadlineAt].join(':');
+   if(triviaExpiredKey!==key&&!triviaBusy&&!triviaSubmitting){
+    triviaExpiredKey=key;
+    void triviaSubmitAnswer('',true);
+   }
+   triviaClockFrame=0;return;
+  }
+  triviaClockFrame=requestAnimationFrame(frame);
+ };
+ triviaClockFrame=requestAnimationFrame(frame);
 }
 function leaderboard(){
  const summary=dailySummary(store.days,today());
@@ -939,7 +961,6 @@ document.addEventListener('keydown',event=>{
 });
 let lastSpotlightUTC=utcDay();
 setInterval(()=>{
-  triviaClockTick();
   const currentUTC=utcDay();
   if(currentUTC!==lastSpotlightUTC){
     lastSpotlightUTC=currentUTC;

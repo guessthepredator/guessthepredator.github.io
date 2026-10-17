@@ -1,3 +1,50 @@
+// Portrait consistency policy: prefer one vertical ORIGINAL skin render source
+// for the entire 28-Legend roster. Retain known alternate sources only as fallback.
+// Remote image availability is host-dependent and not a bundled 28/28 guarantee.
+export const portraitOriginalNames=Object.freeze({
+  "alter":"Alter",
+  "ash":"Ash",
+  "axle":"Axle",
+  "ballistic":"Ballistic",
+  "bangalore":"Bangalore",
+  "bloodhound":"Bloodhound",
+  "catalyst":"Catalyst",
+  "caustic":"Caustic",
+  "conduit":"Conduit",
+  "crypto":"Crypto",
+  "fuse":"Fuse",
+  "gibraltar":"Gibraltar",
+  "horizon":"Horizon",
+  "lifeline":"Lifeline",
+  "loba":"Loba",
+  "mad-maggie":"Mad Maggie",
+  "mirage":"Mirage",
+  "newcastle":"Newcastle",
+  "octane":"Octane",
+  "pathfinder":"Pathfinder",
+  "rampart":"Rampart",
+  "revenant":"Revenant",
+  "seer":"Seer",
+  "sparrow":"Sparrow",
+  "valkyrie":"Valkyrie",
+  "vantage":"Vantage",
+  "wattson":"Wattson",
+  "wraith":"Wraith"
+});
+export function portraitSourcesFor(slug,{pixel=false}={}){
+ const name=portraitOriginalNames[slug];
+ const file=slug==='axle'?'Axle Pose Stand Tall.png':'Original '+name+'.png';
+ const canonical=name?[
+  'https://apexlegends.wiki.gg/wiki/Special:Redirect/file/'+encodeURIComponent(file),
+  'https://apexlegends.fandom.com/wiki/Special:FilePath/'+encodeURIComponent(file)
+ ]:[];
+ const previous=artCatalog[slug]||[];
+ // Prioritize transparent vertical renders in both Pixel and Browse. Avoid
+ // article-photo sources in Pixel where they could reveal an unwanted scene.
+ const alternate=pixel?previous.filter(url=>!url.includes('dexerto.com')&&!url.includes('portrait.jpg')):previous;
+ return [...new Set([...canonical,...alternate])];
+}
+
 // Public artwork source catalog. Host permission and availability may change.
 export const artCatalog = {
   "alter": [
