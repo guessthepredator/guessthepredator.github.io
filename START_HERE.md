@@ -1,23 +1,21 @@
-# V2.7 Mirage Edition — clean install in your existing GitHub repository
+# GTP2 V2.8 TWILIGHT · install on the SAME GitHub repository
 
-1. Back up the repository folder. **Do not delete `.git`** or create a new repository.
-2. Extract this ZIP into the repository's **root**, replacing matching files. The archive contains `index.html` at root.
-3. Run `INSTALL_CLEAN_WINDOWS.bat` from the repository folder (or `python3 scripts/clean_old_release.py`). This removes old Map files, incompatible old tests and discarded themes. Copying over existing files alone **does not remove obsolete ones**.
-4. In GitHub Desktop, review the **Deleted** files (old Map, tests, stylesheets). Commit all tracked modifications and deletions, then Push Origin.
-5. In GitHub > Actions, wait for `GTP2 — Test and Deploy GitHub Pages` to complete. The website should report **MIRAGE EDITION · V2.7** and request `styles.css?v=2.7.0` and `app.mjs?v=2.7.0`.
-6. Refresh the browser with `Ctrl + Shift + R` if the previous version was cached.
+1. Make a backup of your current repository. Keep its `.git` folder.
+2. Copy all files/folders from this ZIP to the **root** of your existing repository and choose Replace.
+3. Run `INSTALL_CLEAN_WINDOWS.bat` **in the repository root** to remove old Map resources and test files.
+4. In GitHub Desktop review changes **and deletions**, Commit to main and Push origin.
+5. Wait for the GitHub Actions workflow to turn green, open GitHub Pages, and use Ctrl + Shift + R. Website files should request `styles.css?v=2.8.0` and `src/app.mjs?v=2.8.0`.
 
-## Global rankings (separate step, required)
-GitHub Pages cannot host shared player scores by itself. To activate the actual **Daily** and **Overall** online rankings, follow `LEADERBOARD_SETUP.md` to create a Supabase project, run SQL, deploy the Edge Function, enable anonymous sign-in, and enter **public** URL/key in `src/leaderboard_config.mjs`. Do **not** place a service-role or secret key in GitHub Pages.
+### Rankings
+Supabase project `gtl` is **already provisioned** with two public read functions and the active `submit-score` Edge Function. URL + public publishable key are already in `src/leaderboard_config.mjs`. **Do not rerun the old migration or redeploy the historical Edge source in this ZIP.** Ensure Supabase Dashboard → Authentication → Anonymous Sign-ins is enabled.
 
-Until then, all five modes work and personal scores are calculated locally; the Rankings screen shows `NOT CONNECTED` instead of pretending players are already online. Deploying the frontend alone is **not** equivalent to installing a database.
+To test: open Rankings (should show an empty, not disconnected board), complete five Daily puzzles, enter a **gamer nickname, not your real name**, and submit. One successful entry should appear on both Daily and Overall. No fake players are preloaded. See `LEADERBOARD_SETUP.md`.
 
-## Local tests
+Local CI checks:
 
 ```sh
-node --test tests/core.test.mjs tests/v27.test.mjs
-python3 -m pip install Pillow
+node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs
 python3 scripts/validate_release.py
 ```
 
-Tests also run on every push in GitHub Actions. New changes preserve the original local progress key; incomplete historical Map rounds are ignored by the five-mode daily streak.
+The store key is unchanged so current browser progress is preserved. Frontend ZIP deployment by itself does not alter your Supabase project.

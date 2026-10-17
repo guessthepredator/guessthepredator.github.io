@@ -1206,3 +1206,123 @@ body:has(.gtp27-guide),body:has(.gtp27-leaderboard){background:radial-gradient(c
 .gtp2-scene-classic .guess-card,.gtp2-scene-classic .clue-card{animation:none!important;opacity:1!important;transform:none!important}
 .gtp2-game-scene .scanner .scan-cell strong{overflow-wrap:anywhere;font-size:clamp(10px,1.15vw,14px)!important}
 @media(max-width:740px){.gtp2-scene-classic .clue-visual{height:143px!important}.gtp2-scene-classic .game-titlebar h1{font-size:49px!important}.gtp2-scene-classic .gtp27-classic-banner{min-height:75px!important}}
+
+/* GTP2 V2.8 TWILIGHT — authoritative dark-plum gameplay + cohesive UI */
+:root{--tw-ink:#f7eafd;--tw-muted:#c4b0d4;--tw-cyan:#85f2ee;--tw-pink:#f66cb9;--tw-surface:#281837;--tw-border:#82608b}
+#app[data-screen="game"]{min-height:100svh;background:radial-gradient(ellipse at 6% 8%,rgba(169,42,127,.24),transparent 43%),radial-gradient(ellipse at 88% 62%,rgba(55,152,171,.15),transparent 42%),linear-gradient(140deg,#110d24,#241433 44%,#171327 100%)!important;color:#f9edfc}
+html:has(#app[data-screen="game"]),body:has(#app[data-screen="game"]),body.lightshift-playing{background:#151023!important;color:#f7eafd!important}
+.gtp2-game-scene{color:#f8ebfc!important;animation:none!important}
+.gtp2-game-scene::before{inset:75px 0 0!important;opacity:.14!important;filter:saturate(.7);background:linear-gradient(115deg,rgba(52,22,64,.9),rgba(10,36,53,.75)),url('./assets/game-bg/classic.svg') center/cover!important}
+.gtp2-game-scene:after{opacity:.25!important;background-image:radial-gradient(#98d9df4a .8px,transparent 1px)!important;background-size:22px 22px!important}
+.gtp2-game-scene .game-topline,.gtp2-game-scene .game-topline .tiny-link{color:#e1c9eb!important}
+.gtp2-game-scene .game-topline .pill{background:#40294c!important;color:#9deded!important;border:1px solid #6e788f!important}
+.gtp2-game-scene .game-titlebar h1{color:#fdf4ff!important;text-shadow:0 3px 12px #100b2699!important}
+.gtp2-game-scene .game-titlebar .kicker{color:#8cf2e9!important}
+.gtp2-game-scene .game-titlebar p,.gtp2-game-scene .lead{color:#d6c3e0!important}
+.gtp2-game-scene .game-attempts{background:linear-gradient(135deg,#52315c,#37254c)!important;border:1px solid #b96e9d!important;color:white!important}
+.gtp2-game-scene .game-attempts small{color:#84f2eb!important}
+.gtp2-game-scene .mode-rail{gap:9px!important;margin:8px 0!important}
+.gtp2-game-scene .mode-tab{background:linear-gradient(145deg,#382344,#291d40)!important;color:#f4dff3!important;border:1px solid #754b83!important;box-shadow:inset 0 1px #ffffff10,0 4px 10px #0d081b55!important;transition:background .18s,border-color .18s,transform .18s!important}
+.gtp2-game-scene .mode-tab.active{background:linear-gradient(115deg,#b43e8e,#813970)!important;color:white!important;border-color:#f5add8!important;box-shadow:inset 0 1px #ffffff50,0 3px 14px #d340a854!important}
+.gtp2-game-scene .mode-tab.done:not(.active){box-shadow:inset 0 -3px #85e6da!important}
+.gtp2-game-scene .mode-tab:hover:not(:disabled){background:linear-gradient(120deg,#61325f,#3b3c60)!important}
+.gtp2-game-scene .style-strip{background:linear-gradient(100deg,#30213e,#23293f)!important;color:#f9ecfc!important;border:1px solid #8a648d!important;box-shadow:0 5px 16px #10061c66!important;padding:12px 17px!important;margin:9px 0 12px!important}
+.gtp2-game-scene .style-strip strong{color:#fff0fa!important}.gtp2-game-scene .style-description{color:#c9b4d5!important}
+.gtp2-game-scene .style-options .segment{background:linear-gradient(125deg,#563055,#483353)!important;color:#f6e3f6!important;border:1px solid #8d6a92!important;box-shadow:0 3px 0 #160e25!important;min-height:41px!important;transition:background .17s!important}
+.gtp2-game-scene .style-options .segment.active{background:linear-gradient(115deg,#e557a5,#ac3f8d)!important;color:white!important;border-color:#f6bde5!important}
+.gtp2-game-scene .style-options .segment.rush-btn.active{background:linear-gradient(110deg,#378695,#28637d)!important;border-color:#93f5f5!important;color:white!important}
+.gtp2-game-scene .style-options .segment:disabled{opacity:.72!important}
+.gtp2-game-scene .clue-card,.gtp2-game-scene .guess-card{background:#291b39!important;color:#f8eafd!important;border:1px solid #81618b!important;box-shadow:0 8px 24px #10081888,inset 0 1px 0 #ffffff12!important;animation:none!important;transform:none!important;opacity:1!important}
+.gtp2-game-scene .panel-top,.gtp2-game-scene .guess-card .panel-top,.gtp2-game-scene .clue-card .panel-top{background:linear-gradient(100deg,#7e356e,#442650)!important;color:#fff0f8!important;border-bottom:1px solid #9b668f!important}
+.gtp2-game-scene .panel-top small{color:#99eaea!important}
+.gtp2-game-scene .guess-body,.gtp2-game-scene .clue-foot{background:linear-gradient(160deg,#2d1e3c,#261b39)!important;color:#f6e5f6!important}
+.gtp2-game-scene .clue-foot{color:#c9acdc!important;border-top:1px solid #694d79!important}
+.gtp2-game-scene .guess-top small,.gtp2-game-scene .guess-tools small,.gtp2-game-scene .scanner-head small,.gtp2-game-scene .hint-row small{color:#c4afce!important}
+.gtp2-game-scene .guess-top h2,.gtp2-game-scene .scanner-head strong,.gtp2-game-scene h3,.gtp2-game-scene .bottom-card h3{color:#fff1fa!important}
+.gtp2-game-scene .search-wrap input{background:#1c1730!important;border:1px solid #a57da9!important;color:white!important;box-shadow:inset 0 2px 3px #09041863!important}
+.gtp2-game-scene .search-wrap input::placeholder{color:#bb9dbd!important}
+.gtp2-game-scene .search-list{background:#21182e!important;color:#fff;border-color:#b36eaf!important}
+.gtp2-game-scene .search-result{background:#30213c!important;color:#faeefa!important;border-color:#563954!important}
+.gtp2-game-scene .search-result:hover{background:#713968!important}
+.gtp2-game-scene .flash.idle{background:#312940!important;border:1px solid #846d9b!important;color:#f5e8fc!important}
+.gtp2-game-scene .flash.good{background:#214e49!important;color:#d5fff1!important;border-color:#67d8a7!important}
+.gtp2-game-scene .flash.bad{background:#612a51!important;color:#ffe6fa!important;border-color:#ec78ba!important}
+.gtp2-game-scene .flash small{color:#d6c5dd!important}
+.gtp2-game-scene .scan-cell.unknown,.gtp2-game-scene .scanner .scan-cell{background:#392943!important;color:#f1e3f6!important;border-color:#775c85!important;opacity:1!important}
+.gtp2-game-scene .scanner .scan-cell.good{background:#26564e!important;color:#d2fff2!important;border-color:#60d3b1!important}
+.gtp2-game-scene .scanner .scan-cell.bad{background:#66304f!important;color:#ffe5f4!important;border-color:#d975a8!important}
+.gtp2-game-scene .scanner .scan-cell.hinted{background:#625034!important;color:#fff0cd!important;border-color:#edc27d!important}
+.gtp2-game-scene .scan-cell.new{animation:none!important}
+.gtp2-game-scene .tried-list .used{background:#53324d!important;border:1px solid #a46a98!important;color:#fdeafa!important}
+.gtp2-game-scene .game-bottom{grid-template-columns:1fr!important;margin:10px 0 20px!important;animation:none!important}
+.gtp2-game-scene .game-bottom .bottom-card,.gtp2-game-scene .bottom-card{background:#2c203b!important;border:1px solid #87608b!important;color:#ffecfc!important;box-shadow:0 3px 13px #11091977!important}
+.gtp2-game-scene .log-item.mismatch{background:#50334c!important;border-color:#a55c87!important;color:#fee4f7!important}
+.gtp2-game-scene .log-item.match{background:#20594d!important;border-color:#75d8b3!important;color:white!important}
+.gtp2-game-scene .btn{border:1px solid #ad78a7!important;box-shadow:0 4px 0 #120d1f!important;color:#fff!important;transition:transform .17s,background .17s,box-shadow .17s!important}
+.gtp2-game-scene .btn.pink{background:linear-gradient(120deg,#e854a5,#ad3e8f)!important;border-color:#f8a7df!important}
+.gtp2-game-scene .btn.mint{background:linear-gradient(120deg,#248f97,#246d80)!important;border-color:#86f0ed!important}
+.gtp2-game-scene .btn.lilac{background:linear-gradient(120deg,#7956af,#654a98)!important;border-color:#b8a0ea!important}
+.gtp2-game-scene .btn.ghost{background:linear-gradient(120deg,#51305d,#342642)!important;border-color:#a279a2!important}
+.gtp2-game-scene .btn:disabled{opacity:.55!important}
+.gtp2-game-scene .gtp27-classic-banner{background:linear-gradient(90deg,#452044,#40243b 51%,#2d4159)!important;border:1px solid #ac7098!important;box-shadow:0 6px 22px #110918aa!important}
+.gtp2-game-scene .gtp27-question-symbol{background:linear-gradient(135deg,#7f3b6a,#633b82)!important;border:2px solid #ffc2e4!important;color:white!important}
+.gtp2-scene-classic .gtp27-mystery{background:radial-gradient(circle at 50% 40%,#53395f,#2c284d 62%,#211a38)!important}
+.gtp2-scene-classic .mystery-wording strong{color:#f9ecfc!important}.gtp2-scene-classic .mystery-wording small,.gtp2-scene-classic .mystery-wording span{color:#a3ede9!important}
+.gtp2-game-scene .visual-emoji{background:radial-gradient(ellipse at 50% 50%,#46304d,#291d3a)!important}
+.gtp2-game-scene .emoji-token{background:#45304e!important;border-color:#b67ba4!important;box-shadow:0 3px 0 #130e23!important}.gtp2-game-scene .emoji-token.locked{background:#382b46!important;color:#ad99bb!important}
+.gtp2-game-scene .clue-visual.visual-ability{background:radial-gradient(circle at center,#513c63,#2b223b)!important}
+.gtp2-game-scene .visual-pixel{background:linear-gradient(140deg,#251f38,#3c2b48)!important}
+.gtp2-game-scene .pixel-art{background:#201b33!important}
+.gtp2-game-scene .pixel-caption{background:#2e213b!important;color:#fbecfb!important;border-color:#a96c9d!important}
+.gtp2-game-scene .pixel-preset button{background:#4b2f51!important;color:white!important;border-color:#a06f9b!important;box-shadow:0 2px 4px #0f0d1a!important}
+.gtp2-game-scene .pixel-preset button.active{background:#c24a94!important;color:white!important;border-color:#f5ade0!important}
+.gtp2-game-scene .gtp2-quote-rework{background:radial-gradient(ellipse at 55% 50%,#553457,#211a34)!important;color:white!important}
+.gtp2-game-scene .gtp2-quote-rework blockquote{color:white!important}
+.gtp2-game-scene .end-panel p{color:#dcc3db!important}
+.gtp2-game-scene .guess-card,.gtp2-game-scene .clue-card,.gtp2-game-scene .game-layout,.gtp2-game-scene .flash{transition:none!important}
+/* Homepage bottom actions: no awkward orphaned 'Continue Daily' button. */
+.nova27-home .gtp28-hero-footer{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(220px,1.1fr) minmax(165px,.75fr)!important;max-width:980px!important;margin:12px auto 0!important;padding:14px 4px 0!important;gap:10px!important;align-items:center!important;justify-content:stretch!important;border-top:1px solid #e894c16b!important;background:transparent!important}
+.gtp28-daily-progress{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.1em;font-weight:900;color:#e9b4da}
+.gtp28-live-dot{width:9px;height:9px;background:#8bf0ea;box-shadow:0 0 11px #82ece3;border-radius:50%;flex:none}
+.nova27-home .gtp28-play-btn{display:flex;align-items:center;justify-content:space-between;width:100%;min-width:0!important;min-height:52px!important;background:linear-gradient(125deg,#e858a9,#b6419a)!important;color:#fff!important;border:1px solid #ffc0e8!important;border-radius:12px!important;padding:13px 18px!important;box-shadow:0 6px 20px #cc438b66!important;font-size:13px!important;white-space:nowrap}
+.nova27-home .gtp28-play-btn span{color:#97fff5;font-size:17px}
+.nova27-home .gtp28-rank-btn{min-height:52px;background:linear-gradient(125deg,#234b60,#24425b)!important;color:#b9fbf5!important;border:1px solid #86dce5!important;border-radius:12px!important;padding:11px 15px!important;display:flex;align-items:center;justify-content:center;gap:9px;white-space:nowrap;box-shadow:0 5px 14px #081a296b!important}
+.nova27-home .gtp28-rank-btn span{font-size:15px}
+.nova27-home .gtp28-hero-footer button:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.nova27-home .gtp28-hero-footer button:active{transform:translateY(0)}
+.nova27-home .gtp2-mode-card{animation:none!important;opacity:1!important;transform:none!important}
+.nova27-home .gtp2-mode-card:hover{transform:translateY(-4px)!important}
+/* Draw focus with fewer accents, not every hue simultaneously */
+.gtp2-game-scene .mode-tab:not(.active) b{color:#9aece4!important}
+@media(max-width:1030px){.nova27-home .gtp28-hero-footer{grid-template-columns:1fr 1.3fr!important}.gtp28-daily-progress{grid-column:1/-1;justify-content:center}.nova27-home .gtp28-rank-btn{min-width:0;white-space:normal}}
+@media(max-width:600px){.nova27-home .gtp28-hero-footer{grid-template-columns:1fr!important;gap:9px!important;padding-top:12px!important}.gtp28-daily-progress{grid-column:auto}.nova27-home .gtp28-rank-btn{min-height:43px}.gtp2-game-scene .style-strip{padding:9px!important}.gtp2-game-scene .style-options{gap:5px!important}.gtp2-game-scene .style-options .segment{padding:8px 10px!important;font-size:9px!important;min-height:34px!important}.gtp2-game-scene .mode-rail{gap:5px!important}.gtp2-game-scene .mode-tab{min-height:42px!important}.gtp2-game-scene .clue-visual{max-height:240px}.gtp2-game-scene .scanner .scan-cell{padding:7px 2px!important}.gtp2-game-scene .search-wrap input{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.gtp2-game-scene button,.nova27-home button{transition:none!important}}
+/* Remove inherited absolute positioning that caused Daily toggle/CTA overlap. */
+.nova27-home .gtp27-session-picker{position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;width:max-content!important;max-width:min(100%,850px)!important;align-self:center!important;margin:13px auto 8px!important;z-index:2!important}
+.nova27-home .gtp28-hero-footer{position:relative!important;top:auto!important;right:auto!important;left:auto!important;bottom:auto!important;width:min(980px,100%)!important;align-self:center!important;z-index:2!important;order:3!important}
+.nova27-home .gtp27-mode-grid{order:4!important;min-height:330px!important;flex:1!important;margin-top:10px!important}
+.nova27-home .gtp27-scroll{order:5!important;flex:none!important}
+.nova27-home .gtp2-hero-content{min-height:calc(100svh - 76px)!important}
+@media(max-width:740px){.nova27-home .gtp27-session-picker{margin:13px auto 4px!important;max-width:100%!important}.nova27-home .gtp28-hero-footer{width:min(98%,560px)!important;margin:8px auto!important}.nova27-home .gtp27-mode-grid{padding-top:32px!important;min-height:395px!important;margin-top:8px!important;align-items:end}.nova27-home .gtp27-scroll{margin-top:12px!important}.nova27-home .gtp28-play-btn{min-height:45px!important}}
+@media(max-width:450px){.nova27-home .gtp27-mode-grid{padding-top:34px!important;min-height:390px!important}.nova27-home .gtp28-hero-footer{grid-template-columns:1fr 1fr!important;gap:8px!important}.nova27-home .gtp28-daily-progress{grid-column:1/-1!important}.nova27-home .gtp28-play-btn,.nova27-home .gtp28-rank-btn{font-size:9px!important;min-height:45px!important;padding:10px 8px!important;white-space:normal!important}.nova27-home .gtp28-rank-btn span{display:none!important}}
+/* Stronger than legacy :has() rule with the ID+descendant selector. */
+body:has(.gtp2-game-scene) #app[data-screen="game"],body.lightshift-playing #app[data-screen="game"]{min-height:100svh!important;background:radial-gradient(ellipse at 5% 9%,rgba(157,50,116,.2),transparent 46%),radial-gradient(ellipse at 85% 67%,rgba(46,138,156,.17),transparent 46%),linear-gradient(135deg,#171027 0%,#271932 46%,#131a29 100%)!important;color:#f9edfd!important}
+.gtp2-game-scene .clue-visual.gtp27-mystery{background:radial-gradient(circle at 50% 40%,#53395f,#2c284d 62%,#211a38)!important}
+.gtp2-game-scene .clue-visual.gtp27-mystery .mystery-wording strong{color:#fff2fe!important}
+.gtp2-game-scene .clue-visual.gtp27-mystery .mystery-wording span,.gtp2-game-scene .clue-visual.gtp27-mystery .mystery-wording small{color:#90e8e4!important}
+.gtp2-game-scene .clue-visual.gtp27-mystery .mystery-pulse{box-shadow:0 0 0 8px #efacec1a,0 12px 25px #12091a80!important}
+.gtp2-game-scene .clue-visual.gtp27-mystery:not(.visual-pixel):not(.gtp2-quote-rework){background:radial-gradient(circle at 48% 38%,#55345c,#302645 62%,#21192f 100%)!important}
+/* More of the guessing workflow stays on screen; log is visible as soon as a guess is made. */
+.gtp2-scene-classic .game-topline{margin:2px 0 5px!important}
+.gtp2-scene-classic .game-titlebar{margin:4px 0 6px!important}
+.gtp2-scene-classic .game-titlebar h1{font-size:clamp(46px,4.6vw,62px)!important}
+.gtp2-scene-classic .game-titlebar p{margin:3px 0!important;font-size:12px!important}
+.gtp2-scene-classic .mode-rail{margin:6px 0!important}
+.gtp2-scene-classic .style-strip{min-height:57px!important;margin:6px 0 8px!important;padding:8px 12px!important}
+.gtp2-scene-classic .gtp27-classic-banner{min-height:74px!important;padding:7px 15px!important;margin:4px 0 8px!important}
+.gtp2-scene-classic .clue-visual{height:166px!important}
+.gtp2-scene-classic .mystery-pulse{height:70px!important;width:70px!important;font-size:63px!important}
+.gtp2-game-scene .gtp28-instant-history{background:#3c2944;border:1px solid #805b8c;border-radius:9px;padding:7px 9px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:8px 0}
+.gtp2-game-scene .gtp28-instant-history>b{font-size:9px;color:#9decdf;margin-right:4px;letter-spacing:.07em}
+.gtp2-game-scene .gtp28-instant-history>span{background:#573449;color:#ffeefa;border:1px solid #ba658f;border-radius:7px;padding:4px 8px;font-size:10px;font-weight:800}
+@media(max-width:740px){.gtp2-scene-classic .game-titlebar h1{font-size:49px!important}.gtp2-scene-classic .clue-visual{height:146px!important}}

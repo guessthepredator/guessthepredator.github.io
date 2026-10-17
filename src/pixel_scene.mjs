@@ -2,7 +2,7 @@
  * degrades BOTH the architecture and the subject instead of a cut-out alone.
  * No getImageData/toDataURL; remote sources may be tainted and still render.
  */
-export const PIXEL_SIZES=Object.freeze([24,36,55,86,145,260,900]);
+export const PIXEL_SIZES=Object.freeze([11,14,20,33,54,110,900]);
 export function scenePalette(seed='legend'){
   const hash=Array.from(String(seed)).reduce((a,c)=>(Math.imul(a^c.charCodeAt(0),16777619))>>>0,2166136261);
   const hues=[197,260,320,177,28,227];return {hue:hues[hash%hues.length],variation:hash%5};
@@ -11,9 +11,9 @@ export function paintPixelScene(canvas,portrait,{resolution=24,seed='legend'}={}
   const ctx=canvas?.getContext?.('2d');if(!ctx||!portrait?.naturalWidth||!portrait?.naturalHeight)return false;
   const w=Math.max(20,Math.min(900,Math.round(resolution))),h=Math.round(w*.72);
   canvas.width=w;canvas.height=h;
-  const {hue,variation}=scenePalette('fixed-neutral-backdrop');
+  const hue=260,variation=0;
   const S=x=>x*w, T=y=>y*h;
-  // Full scene: horizon sky, atmospheric depth, lit urban architecture, overhead lights and walkway.
+  // Neutral, non-Apex arena: exactly the same for every target, no environmental clue leakage.
   const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,`hsl(${hue},43%,17%)`);bg.addColorStop(.60,`hsl(${(hue+32)%360},36%,35%)`);bg.addColorStop(1,`hsl(${hue},30%,57%)`);
   ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
   ctx.fillStyle='rgba(253,222,249,.15)';ctx.beginPath();ctx.ellipse(S(.74),T(.26),S(.17),T(.25),0,0,Math.PI*2);ctx.fill();

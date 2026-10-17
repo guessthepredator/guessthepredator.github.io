@@ -1,4 +1,4 @@
-import {installedAbilityFiles} from './ability_media_manifest.mjs?v=2.7.0';
+import {installedAbilityFiles} from './ability_media_manifest.mjs?v=2.8.0';
 /**
  * User-provided screenshot supplies eight locally cropped genuine passive ability icons.
  * Other entries use candidate filenames from the public Apex ability wiki. These remote

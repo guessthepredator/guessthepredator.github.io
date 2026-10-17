@@ -89,7 +89,7 @@ export const legends = [
     "debut": 0,
     "signature": "Smoke cover",
     "extraEmoji": [
-      "🪖",
+      "📻",
       "🚨"
     ],
     "lore": "Military discipline defines her playbook.",
@@ -128,7 +128,7 @@ export const legends = [
     "signature": "Ferrofluid control",
     "extraEmoji": [
       "🪨",
-      "🖤"
+      "🌑"
     ],
     "lore": "Their battlefield control comes from a dark magnetic material.",
     "age": 30
@@ -222,7 +222,7 @@ export const legends = [
     "debut": 0,
     "signature": "Protection dome",
     "extraEmoji": [
-      "☂️",
+      "🏔️",
       "🤝"
     ],
     "lore": "His team can regroup inside a mobile shielded space.",
@@ -260,7 +260,7 @@ export const legends = [
     "debut": 0,
     "signature": "Combat healing",
     "extraEmoji": [
-      "🚑",
+      "🎵",
       "💗"
     ],
     "lore": "A medic never forgets that the squad comes first.",
@@ -298,7 +298,7 @@ export const legends = [
     "debut": 12,
     "signature": "Cover disruption",
     "extraEmoji": [
-      "🥊",
+      "🗣️",
       "💣"
     ],
     "lore": "She crashes through any plan that relies on hiding.",
@@ -337,7 +337,7 @@ export const legends = [
     "signature": "Mobile protection",
     "extraEmoji": [
       "🏰",
-      "🛡️"
+      "👨‍👧"
     ],
     "lore": "He turns a rescue into a defensive stand.",
     "age": 41
@@ -356,7 +356,7 @@ export const legends = [
     "signature": "Speed boost",
     "extraEmoji": [
       "💉",
-      "🦿"
+      "🎬"
     ],
     "lore": "For him, moving at normal speed is not an option.",
     "age": 26
@@ -374,7 +374,7 @@ export const legends = [
     "debut": 0,
     "signature": "Grapple hook",
     "extraEmoji": [
-      "🪝",
+      "💛",
       "📺"
     ],
     "lore": "A friendly mechanical scout always looks for a new route.",
@@ -394,7 +394,7 @@ export const legends = [
     "signature": "Mounted turret",
     "extraEmoji": [
       "🧰",
-      "⚙️"
+      "🔫"
     ],
     "lore": "A brilliant tinkerer knows how to hold a position.",
     "age": 23
@@ -450,8 +450,8 @@ export const legends = [
     "debut": 25,
     "signature": "Archery scouting",
     "extraEmoji": [
-      "🎯",
-      "🪶"
+      "🦅",
+      "🔭"
     ],
     "lore": "An eagle-eyed scout sees paths from unusual angles.",
     "age": 20
@@ -488,7 +488,7 @@ export const legends = [
     "debut": 14,
     "signature": "Sniper scouting",
     "extraEmoji": [
-      "🔭",
+      "🥾",
       "🐾"
     ],
     "lore": "She watches patiently from the edge of the fight.",
@@ -508,7 +508,7 @@ export const legends = [
     "signature": "Electric fences",
     "extraEmoji": [
       "🔌",
-      "⚡"
+      "🏠"
     ],
     "lore": "Her fences change the shape of a safe location.",
     "age": 24
@@ -526,7 +526,7 @@ export const legends = [
     "debut": 0,
     "signature": "Void phase",
     "extraEmoji": [
-      "🚪",
+      "🌑",
       "👁️"
     ],
     "lore": "She escapes into another dimension when cornered.",

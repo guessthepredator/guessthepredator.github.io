@@ -1,15 +1,15 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.7.0';
-import {legends} from './data.mjs?v=2.7.0';
-import {artCatalog} from './art.mjs?v=2.7.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.7.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.7.0';
-import {playSound} from './audio.mjs?v=2.7.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.7.0';
-import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.7.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.7.0';
-import {loadStore,saveStore} from './store.mjs?v=2.7.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.8.0';
+import {legends} from './data.mjs?v=2.8.0';
+import {artCatalog} from './art.mjs?v=2.8.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.8.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.8.0';
+import {playSound} from './audio.mjs?v=2.8.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.8.0';
+import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.8.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.8.0';
+import {loadStore,saveStore} from './store.mjs?v=2.8.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.7.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.8.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -36,7 +36,7 @@ let wheelAngle=0;
 let wheelSpinning=false;
 let wheelChosen=null;
 let wheelDisplayList=null;
-const COLORS={classic:'#ff7ac8',pixel:'#5dd9ef',quote:'#ffc88f',ability:'#84decc',emoji:'#dca3fe'};
+const COLORS={classic:'#f879bd',pixel:'#81e9e9',quote:'#ed87bc',ability:'#83e5de',emoji:'#cf7bb9'};
 const ICONS={classic:'❔',pixel:'▦',quote:'❞',ability:'⌁',emoji:'✧'};
 const TAGLINES={classic:'Deduce the target with every signal.',pixel:'Reveal the legend, not the background.',quote:'Who wrote this intercepted line?',ability:'Identify the passive ability icon.',emoji:'Five symbols. One legend.'};
 const params=new URLSearchParams(location.search);
@@ -160,7 +160,7 @@ function edgeArenaDecor(){
 }
 // The character is painted only once inside the backdrop art. No artificial gaze overlay.
 function nav(){return `<header class="top gtp2-top"><div class="gtp2-top-inner">
-  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>MIRAGE EDITION · V2.7</small></span></button>
+  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>TWILIGHT PATCH · V2.8</small></span></button>
   <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='leaderboard'?'active':''}" data-action="leaderboard">♛ RANKINGS</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item ${screen==='howto'?'active':''}" data-action="howto">? HOW TO PLAY</button><button class="nav-item ${screen==='faq'?'active':''}" data-action="faq">◉ FAQ</button></nav>
   <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
  </div></header>`;}
@@ -244,13 +244,13 @@ function home(){
        <div class="gtp27-center"><span>YOU THINK YOU KNOW THEM?</span><b>MIRAGE’S<br/>FIVE-WAY<br/><em>CHALLENGE</em></b><span>ONE LEGEND. MANY CLUES.</span></div>
        <div class="gtp27-mode-right">${['quote','ability','emoji'].map((mode,i)=>modeTile(mode,i+2)).join('')}</div>
      </div>
-     <div class="gtp2-hero-footer"><span>FIVE MODES · DAILY & FREE PLAY</span>${session==='daily'?`<button data-action="home-daily" class="gtp2-primary">${unfinished.length?'CONTINUE DAILY':'VIEW YOUR SCORE'} ↗</button>`:`<button data-action="open" data-mode="classic" class="gtp2-primary">START FREE PLAY ↗</button>`}<button class="gtp27-rank-link" data-action="leaderboard">♛ GLOBAL RANKINGS</button></div>
+     <div class="gtp2-hero-footer gtp28-hero-footer"><div class="gtp28-daily-progress"><span class="gtp28-live-dot"></span><span>FIVE MODES · ${session==='daily'?`${done}/5 DAILY CLEARED`:'PRACTICE MODE'}</span></div><div class="gtp28-primary-row">${session==='daily'?`<button data-action="home-daily" class="gtp2-primary gtp28-play-btn">${unfinished.length?'◈ CONTINUE DAILY':'✦ VIEW YOUR DAILY SCORE'} <span>↗</span></button>`:`<button data-action="open" data-mode="classic" class="gtp2-primary gtp28-play-btn">∞ START FREE PLAY <span>↗</span></button>`}</div><button class="gtp27-rank-link gtp28-rank-btn" data-action="leaderboard">♛ GLOBAL RANKINGS <span>↗</span></button></div>
      <button class="gtp27-scroll" data-action="scroll-extras" type="button" aria-label="Scroll to rewards">SCROLL FOR EXTRAS <span>⌄</span></button>
    </div>
   </section>
   <div class="gtp2-bottom" id="home-extras"><div class="gtp2-side-label"><span>THE AFTERSHOW · WHEEL / LEGEND / INTEL</span><small>BEYOND THE FIVE MISSIONS</small></div>
   ${dailyExtras()}${forbiddenPanel()}${statCards()}
-  <footer class="gtp2-disclaimer">Independent fan trivia — not affiliated with EA. Character images are third-party references with availability and rights subject to source terms. Global score registration requires an independently connected Supabase project.</footer></div>
+  <footer class="gtp2-disclaimer">Independent fan trivia — not affiliated with EA. Character images are third-party references with availability and rights subject to source terms. Global rankings publish chosen nicknames and verified daily scores.</footer></div>
  </main>`;
 }
 function getVisual(round,target){
@@ -259,9 +259,9 @@ function getVisual(round,target){
     const effect=['mosaic','holo','soft'].includes(store.settings.pixelStyle)?store.settings.pixelStyle:'mosaic';
     const step=Math.min(round.guesses.length,6);
     // Pixelate and blur the FULL COMPOSITE SCENE (location, lights, character), not a lone cutout.
-    const sizes=[15,20,28,44,72,120,900];
-    const blur=effect==='soft'?[24,20,16,12,8,4,0]:effect==='holo'?[7,6,5,4,3,1,0]:[6,5,4,3,1.8,.8,0];
-    const pct=[12,28,43,59,74,90,100];
+    const sizes=[11,14,20,33,54,110,900];
+    const blur=effect==='soft'?[34,30,25,19,13,6,0]:effect==='holo'?[15,13,10,7,4,2,0]:[13,11,9,6,4,1,0];
+    const pct=[8,18,31,49,69,86,100];
     const size=effect==='soft'?900:sizes[step];
     return `<div class="clue-visual visual-pixel px-effect-${effect} nova-pixel-scene"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
       <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted full scene featuring a Legend"></canvas>
@@ -318,7 +318,7 @@ function guessBody(round,target){
   return `<div class="guess-top"><div><small>YOUR NEXT MOVE</small><h2>WHO’S THAT <span style="color:#ef4895">LEGEND?</span></h2></div><span class="pill">${round.guesses.length}/${maxGuesses(round)} GUESSES · ${maxGuesses(round)-round.guesses.length} LEFT</span></div>
   <div class="search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button class="btn pink small" data-action="submit-search" title="Guess first matching Legend">↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
   <div class="guess-tools"><button class="btn mint small" data-action="picker">◫ BROWSE LEGENDS</button><small>Filter by class · Guess faster · Press G</small></div>
-  ${latestSignal(round,target)}${scannerMarkup(round,target)}
+  ${latestSignal(round,target)}${round.guesses.length?`<div class="gtp28-instant-history" aria-label="Previous attempts"><b>GUESS HISTORY</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}${scannerMarkup(round,target)}
   <div class="tried-list" aria-label="Eliminated guesses">${round.guesses.length?round.guesses.map(name=>`<span class="used">${esc(name)}</span>`).join(''):'<span style="color:#875d91;font-size:10px;font-weight:800">No Legends eliminated yet · open Browse for faster reads</span>'}</div>`;
 }
 function game(){
@@ -352,7 +352,7 @@ function faq(){return `<main class="wrap gtp27-guide gtp27-faq" aria-labelledby=
   ['What is One Signal?','One honest green or red trait comparison for each incorrect guess. Six attempts.'],
   ['What is Full Scan?','Five comparisons per guess, but only five guesses.'],
   ['What is Rush OFF?','No timer. With Rush ON, you have 180 seconds after your first guess.'],
-  ['Is the leaderboard public?','Yes, once the owner connects Supabase. Public entries show your nickname and score, not your email. Never use a real name or contact information.'],
+  ['Is the leaderboard public?','Yes. Rankings are connected to Supabase. Public entries display nicknames and scores only. Do not use a real name or contact details.'],
   ['Why can a portrait be unavailable?','Some real Legend portraits come from third-party sources. If a source blocks access, we do not replace it with an unrelated character.'],
   ['Is this an official Apex game?','No. It is an independent fan trivia project, not endorsed by EA.']
  ].map(([q,a])=>`<details class="faq-item"><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
@@ -366,7 +366,7 @@ function leaderboard(){
  <section class="gtp27-board"><div class="board-head"><strong>${boardTab==='daily'?'TOP DAILY HUNTERS':'OVERALL LEGENDS'}</strong><small>${leaderboardConfigured()?'LIVE · PUBLIC DATABASE':'DATABASE CONNECTION PENDING'}</small></div>
  ${!leaderboardConfigured()?`<div class="board-empty"><b>RANKINGS NOT CONNECTED YET</b><p>The game owner must link a Supabase project first. The database and server validation code are included in this release.</p></div>`:boardLoading?'<div class="board-empty">LOADING THE LEADERBOARD…</div>':boardError?`<div class="board-empty">${esc(boardError)}</div>`:rows.length?`<div class="board-table">${rows.map((line,i)=>`<div class="board-row"><span>#${Number(line.position)||i+1}</span><strong>${esc(line.player_name)}</strong><b>${Number(line.score).toLocaleString('en-US')} PTS</b><small>${boardTab==='daily'?`✦ STREAK ${Number(line.streak)||0}`:`${Number(line.days_played)||0} DAYS · BEST ${Number(line.best_streak)||0}`}</small></div>`).join('')}</div>`:'<div class="board-empty">NO SCORES YET. BE THE FIRST!</div>'}</section>
  <section class="gtp27-submit"><div><span class="kicker">YOUR DAILY SCORE</span><h2>${summary.score.toLocaleString('en-US')} <small>PTS (LOCAL PREVIEW)</small></h2><p>${summary.completed?'Five daily games complete. Submit once to appear in the public rankings.':'Complete all five Daily games to submit your score. Practice rounds do not count.'}</p><small>BASE ${summary.baseScore.toLocaleString('en-US')} · STREAK BONUS ${summary.bonus.toLocaleString('en-US')} · ${summary.streak} DAY STREAK</small></div>
- <form class="board-form" id="board-submit-form"><label for="board-nickname">PUBLIC NICKNAME</label><input id="board-nickname" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Your gamer nickname" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}/><button class="btn pink" type="submit" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}>SUBMIT DAILY SCORE ↗</button><small>One submission per UTC day · nickname is visible to everyone · no real names.</small></form></section>
+ <form class="board-form" id="board-submit-form"><label for="board-nickname">PUBLIC NICKNAME</label><input id="board-nickname" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Your gamer nickname" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}/><button class="btn pink" type="submit" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}>SUBMIT DAILY SCORE ↗</button><small>One submission per UTC day · nickname is visible to everyone · no real names.</small><p id="board-submit-feedback" class="board-submit-feedback" role="status" aria-live="polite"></p></form></section>
  <div class="guide-cta"><button class="btn lilac" data-action="home">BACK TO FIVE MODES</button><button class="btn mint" data-action="records">MY STATS ↗</button></div></main>`;
 }
 async function refreshBoards(){
@@ -383,11 +383,13 @@ async function submitScores(){
  const input=document.getElementById('board-nickname');
  if(!input||!input.checkValidity()){input?.reportValidity();return;}
  const button=document.querySelector('#board-submit-form button[type=submit]');
+ const feedback=document.getElementById('board-submit-feedback');
+ if(feedback){feedback.textContent='Checking your Daily run…';feedback.dataset.status='pending';}
  if(button){button.disabled=true;button.textContent='SUBMITTING…';}
  try{
   const receipt=await submitDaily(buildSubmission(store.days,today(),input.value.trim()));
-  await refreshBoards();showToast(`SCORE SUBMITTED · ${receipt.totalScore} PTS · STREAK ${receipt.streak}`);
- }catch(error){showToast(error.message||'Submission failed');if(button){button.disabled=false;button.textContent='SUBMIT DAILY SCORE ↗';}}
+  await refreshBoards();const message=`SCORE SUBMITTED · ${receipt.totalScore} PTS · STREAK ${receipt.streak}`;showToast(message);const status=document.getElementById('board-submit-feedback');if(status){status.textContent=message;status.dataset.status='success';}
+ }catch(error){const message=error.message||'Submission failed';showToast(message);if(feedback){feedback.textContent=message;feedback.dataset.status='error';}if(button){button.disabled=false;button.textContent='SUBMIT DAILY SCORE ↗';}}
 }
 function records(){
   const stats=streak(store.days,utcDay(),dailyModes());const days=Object.keys(store.days).sort().reverse().slice(0,14);
@@ -592,7 +594,7 @@ app.addEventListener('click',event=>{
   const action=button.dataset.action;
   if(action==='intel-open'){const day=store.days[today()]||{};if(!unlockedIntel(day,dailyModes())){showToast('Complete all available daily missions first.');return;}store.intelOpenedDays??={};intelFirstRevealPending=!store.intelOpenedDays[today()];store.intelOpenedDays[today()]=true;sync();intelDialog();}
   else if(action==='intel-close')closeIntelDialog();
-  else if(action==='pixel-style'){if(!['mosaic','soft','holo'].includes(button.dataset.style))return;store.settings.pixelStyle=button.dataset.style;sync();document.querySelector('.visual-pixel')?.classList.remove('px-effect-mosaic','px-effect-soft','px-effect-holo');document.querySelector('.visual-pixel')?.classList.add('px-effect-'+button.dataset.style);document.querySelectorAll('[data-action=pixel-style]').forEach(el=>{el.classList.toggle('active',el.dataset.style===button.dataset.style);el.setAttribute('aria-pressed',String(el.dataset.style===button.dataset.style));});const visual=document.querySelector('.pixel-art');if(visual){const step=Math.min(getRound()?.guesses.length||0,6);visual.style.setProperty('--px-blur',(button.dataset.style==='soft'?[24,20,16,12,8,4,0]:button.dataset.style==='holo'?[7,6,5,4,3,1,0]:[6,5,4,3,1.8,.8,0])[step]+'px');}sound('pick');}
+  else if(action==='pixel-style'){if(!['mosaic','soft','holo'].includes(button.dataset.style))return;store.settings.pixelStyle=button.dataset.style;sync();document.querySelector('.visual-pixel')?.classList.remove('px-effect-mosaic','px-effect-soft','px-effect-holo');document.querySelector('.visual-pixel')?.classList.add('px-effect-'+button.dataset.style);document.querySelectorAll('[data-action=pixel-style]').forEach(el=>{el.classList.toggle('active',el.dataset.style===button.dataset.style);el.setAttribute('aria-pressed',String(el.dataset.style===button.dataset.style));});const visual=document.querySelector('.pixel-art');if(visual){const step=Math.min(getRound()?.guesses.length||0,6);visual.style.setProperty('--px-blur',(button.dataset.style==='soft'?[34,30,25,19,13,6,0]:button.dataset.style==='holo'?[15,13,10,7,4,2,0]:[13,11,9,6,4,1,0])[step]+'px');}sound('pick');}
   else if(action==='wheel')showWheel();
   else if(action==='close-wheel')closeWheel();
   else if(action==='spin')spinWheel();
@@ -609,7 +611,19 @@ app.addEventListener('click',event=>{
     session='daily';const next=dailyModes().find(mode=>!store.days[today()]?.[mode]?.finished);
     if(next)openMode(next,'daily');else{screen='leaderboard';render();void refreshBoards();}
   }
-  else if(action==='session'){session=button.dataset.session;document.querySelectorAll('[data-action=session]').forEach(el=>{el.classList.toggle('active',el.dataset.session===session);el.setAttribute('aria-pressed',String(el.dataset.session===session));});render({scroll:false});sound('nav');}
+  else if(action==='session'){
+    if(session===button.dataset.session)return;
+    session=button.dataset.session;
+    // Update only the changed controls: no hero/backdrop DOM replacement or flash.
+    document.querySelectorAll('[data-action=session]').forEach(el=>{el.classList.toggle('active',el.dataset.session===session);el.setAttribute('aria-pressed',String(el.dataset.session===session));});
+    const label=document.querySelector('.gtp27-session-picker>span');if(label)label.textContent=session==='daily'?'ONE SCORE PER DAY':'UNLIMITED PRACTICE';
+    const footer=document.querySelector('.gtp28-hero-footer');
+    const done=dailyModes().filter(mode=>store.days[today()]?.[mode]?.finished).length;
+    if(footer){footer.querySelector('.gtp28-daily-progress>span:last-child').textContent=`FIVE MODES · ${session==='daily'?`${done}/5 DAILY CLEARED`:'PRACTICE MODE'}`;
+      footer.querySelector('.gtp28-primary-row').innerHTML=session==='daily'?`<button data-action="home-daily" class="gtp2-primary gtp28-play-btn">${done===5?'✦ VIEW YOUR DAILY SCORE':'◈ CONTINUE DAILY'} <span>↗</span></button>`:`<button data-action="open" data-mode="classic" class="gtp2-primary gtp28-play-btn">∞ START FREE PLAY <span>↗</span></button>`;}
+    document.querySelectorAll('.gtp2-mode-card').forEach(el=>{const m=el.dataset.mode;const round=session==='daily'?store.days[today()]?.[m]:store.practice[m];el.classList.toggle('finished',Boolean(session==='daily'&&round?.finished));const status=el.querySelector('.gtp2-mode-copy em');if(status)status.textContent=session==='daily'&&round?.finished?(round.won?'✓ CLEARED':'✓ COMPLETED'):'PLAY NOW ↗';});
+    sound('nav');
+  }
   else if(action==='audio'){store.settings.audio=!store.settings.audio;sync();button.textContent=store.settings.audio?'♫ FX ON':'♪ FX OFF';button.setAttribute('aria-pressed',String(store.settings.audio));if(store.settings.audio)sound('pick');}
   else if(action==='motion'){store.settings.motion=!store.settings.motion;sync();render({scroll:false});}
   else if(action==='picker'){pickerOpen=true;pickerSearch='';pickerClass='All';pickerSort='az';renderPicker();sound('pick');}

@@ -1,15 +1,14 @@
-# Global public leaderboards — setup
+# V2.8 live project · Supabase
 
-The ZIP contains the database schema, secure submission function, frontend UI and tests. **The live database is not created by extracting a ZIP or pushing to GitHub Pages.** You must provision your own Supabase project.
+Project **gtl** (`pupdfltjeyzhnyrxutvt`). Live URL and the public publishable key are already configured in `src/leaderboard_config.mjs`. Database table + two RPC leaderboard readers + hardened `submit-score` Edge Function were provisioned in the connected Supabase project on 2026-10-17.
 
-1. Create a project at https://supabase.com/dashboard . Open SQL Editor and execute `supabase/migrations/202610170001_leaderboards.sql`.
-2. In Supabase Authentication > Providers/Settings, enable **Anonymous Sign-ins**. Configure captcha / abuse protection as appropriate.
-3. Install the Supabase CLI, sign in and link your Supabase project. Deploy `supabase functions deploy submit-score --use-api --no-verify-jwt` from the repository root. The function verifies the user JWT itself using `auth.getUser` and never trusts browser-provided points. Confirm function environment secrets `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are available (Supabase normally provides them). Enable CORS for the Pages origin if you customize the code.
-4. Enter **only** your Supabase project URL and publishable key in `src/leaderboard_config.mjs`. Commit those public values and push to GitHub Pages. Never commit `service_role`, database password, or `sb_secret_...` key.
-5. Visit the Leaderboard tab, complete all five Daily puzzles and choose a public nickname to submit once per UTC day. Overall totals update across days under the same anonymous browser identity.
+**IMPORTANT: Do not rerun the legacy migration or deploy the old function source included here.** The live `submit-score` function has already been updated to check bearer identity and challenge submissions. Old source is historical and is not automatically deployed via GitHub Pages.
 
-**Security model:** RLS denies direct table writes; public rankings expose only nicknames and scores through constrained SQL functions. The Edge Function verifies authenticated anonymous identity, five completed rounds, targets and score bounds before insert, one entry per user per day. Nonetheless, as puzzle logic and answers are client-visible, a determined adversary could fabricate plausible guesses or create new anonymous accounts. This is a **casual leaderboard, not a tamper-proof competition**. Enabling Supabase Auth CAPTCHA / rate limits and adding server-initiated challenge state is recommended before prizes or competitions.
+The only required user setup check is **Supabase Dashboard → Authentication → Anonymous Sign-ins: enabled**. Configure rate limits and CAPTCHA if public abuse occurs.
 
-**Privacy:** displayed nickname and score are public. Do not use real names or contact details. Anonymous login in this prototype persists only in the current browser and device. Clearing storage can lose the link to the account.
+Website deploy: unzip over the same GitHub repository (keep `.git`), run `INSTALL_CLEAN_WINDOWS.bat` from the repository folder, then Commit → Push in GitHub Desktop. Supabase does not need a new project and no secret key belongs in GitHub.
 
-**Local preview:** rankings show an honest `NOT CONNECTED` message until URL and publishable key are configured. The five game modes, private history, wheel and FAQ still function offline.
+**Acceptance test:** open your GitHub Pages site; visit Rankings; both public boards should load and initially show no scores. Complete the five Daily modes today, type an anonymous nickname (not real name), submit once, then confirm it appears on Daily and Overall. Submissions require a valid anonymous session and use the live backend. Browser/API live E2E has not yet been verified.
+
+The local game code includes deterministic answers and cannot prevent determined manipulation. Treat the leaderboard as casual, not competition-grade security.
+

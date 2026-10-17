@@ -19,7 +19,7 @@ revoke all on public.gtp_daily_scores from anon,authenticated;
 -- No SELECT/INSERT/UPDATE policy. Only the secret server client can write raw rows.
 
 create or replace function public.get_daily_leaderboard(p_day date, p_limit integer default 25)
-returns table (position bigint, player_name text, score integer, streak integer)
+returns table ("position" bigint, player_name text, score integer, streak integer)
 language sql stable security definer set search_path = '' as $$
  select row_number() over (order by d.total_score desc,d.created_at asc),
         d.display_name::text, d.total_score, d.streak
@@ -27,7 +27,7 @@ language sql stable security definer set search_path = '' as $$
        where day=p_day order by total_score desc,created_at asc limit greatest(1,least(coalesce(p_limit,25),50))) d
 $$;
 create or replace function public.get_overall_leaderboard(p_limit integer default 25)
-returns table (position bigint,player_name text,score bigint,days_played bigint, best_streak integer)
+returns table ("position" bigint,player_name text,score bigint,days_played bigint, best_streak integer)
 language sql stable security definer set search_path = '' as $$
  with totals as (
    select user_id,sum(total_score)::bigint as score,count(*)::bigint as days_played,max(streak)::integer as best_streak

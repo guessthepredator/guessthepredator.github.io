@@ -1,4 +1,4 @@
-import {localAbilitySlugs} from './abilities.mjs?v=2.7.0';
+import {localAbilitySlugs} from './abilities.mjs?v=2.8.0';
 /** Guess the Predator 2 · Deduction engine. No DOM, timers or network in this module. */
 export const FIELDS = Object.freeze(['role', 'gender', 'form', 'age', 'debut']);
 export const LABELS = Object.freeze({role: 'CLASS', gender: 'GENDER', form: 'FORM', age: 'AGE', debut: 'LAUNCH'});

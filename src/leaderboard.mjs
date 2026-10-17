@@ -22,7 +22,7 @@ export async function submitDaily(payload){
  if(!session){const response=await sb.auth.signInAnonymously();if(response.error)throw response.error;session=response.data.session;}
  if(!session?.access_token)throw Error('Could not create anonymous leaderboard session');
  const {data,error}=await sb.functions.invoke('submit-score',{body:payload});
- if(error)throw new Error(error.message||'Score submission failed');
+ if(error){let detail='';try{const response=error.context;if(response?.json){const body=await response.json();detail=typeof body?.error==='string'?body.error:'';}}catch{}throw new Error(detail||error.message||'Score submission failed');}
  if(!data?.ok)throw new Error(data?.error||'Invalid score submission');
  return data;
 }

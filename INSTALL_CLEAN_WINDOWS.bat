@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-echo GTP2 V2.7 MIRAGE EDITION - CLEAN UP OLD MAP AND TESTS
+echo GTP2 V2.8 TWILIGHT PATCH - CLEAN UP OLD MAP AND TESTS
 echo This does not delete .git or your saved progress.
 echo.
 for %%V in (21 22 23 24 25 26) do (
@@ -27,6 +27,6 @@ if not errorlevel 1 (
 )
 echo.
 echo Check ALL changes and deletions in GitHub Desktop.
-echo Commit then Push origin. Database setup is separate: LEADERBOARD_SETUP.md
+echo Commit then Push origin. Supabase gtl is already provisioned. Verify Anonymous Sign-ins.
 echo No new repository required.
 pause

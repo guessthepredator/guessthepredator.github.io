@@ -1,25 +1,15 @@
-# Guess The Predator 2 — V2.7 Mirage Edition
+# Guess The Predator 2 — V2.8 TWILIGHT
 
-Five-mode independent fan-trivia website for GitHub Pages. Full repository root in this ZIP.
+Static GitHub Pages Apex fan-trivia game with 5 modes: Classic, Pixel, Quote, Ability, Emoji. Map permanently removed.
 
-## Included
-- 5 Daily / Free Play modes: Classic, Pixel, Quote, Ability, Emoji. **Map is removed from the UI and logic.**
-- Mirage landing page with reorganized animated cards, prominent Daily / Free Play control, and Scroll for Extras.
-- Classic: new question panel, more visible settings, shorter content layout, `UNDISCLOSED` for unknown ages.
-- Pixel: progressive mosaic / soft blur / signal with the same backdrop for every Legend (less background leakage).
-- Emoji: individual audit of the 28 three-symbol clue groups.
-- Pure instrumental UI sound palette: 13 small WAV effects, no spoken announcer and no extracted Apex recordings.
-- Wheel, Legend of the Day, 5-mission Forbidden Intel, local streaks and personal stats.
-- **Two public leaderboard UIs**: Daily and Overall, with nickname entry after all 5 Daily rounds. Supabase schema + Edge submission function included in `supabase/`.
-- Standalone How To Play and FAQ in the top navigation.
+## New in V2.8
+- Home Daily/Free Play broken button layout fixed with one clear action plus separate rankings. Session switching no longer redraws the hero.
+- Darker, textured plum gameplay with magenta/cyan filled controls and higher contrast.
+- Clear Classic question banner, visible rules, smaller terminal and in-place guess history.
+- Harder Pixel reveal using a shared, neutral background. 28-legend emoji checks with no repeated symbols.
+- Thirteen freshly synthesized, quiet nonverbal UI SFX.
+- Daily/Overall public leaderboard remains connected to existing `gtl` Supabase project and preserves old anonymous browser session + local game data.
 
-## Deploy
-Start with [START_HERE.md](START_HERE.md). For global leaderboard deployment, [LEADERBOARD_SETUP.md](LEADERBOARD_SETUP.md) is required. GitHub Pages alone does not include a database.
+**First read [START_HERE.md](START_HERE.md).** Rankings are live only after testing an authenticated anonymous submit from the deployed site. GitHub Pages does not host the database.
 
-## Accuracy & limitations
-- Website works as a local/static app without Supabase; scoreboards honestly report `RANKINGS NOT CONNECTED YET` until configured. No fabricated entries.
-- The 28 playable Legend identities are preserved; artwork is linked to external reference sources and may fail or be protected. We deliberately do not replace them with fake stand-in characters.
-- 8 locally included Ability icons. Other Legends will not appear in Ability target rotation until verified local icon assets are installed.
-- Overall score is tracked by the same anonymous login on that browser. New browser / cleared storage does not recover the identity.
-- Global submission checks authenticated users, the 5 Daily target answers and plausible results server-side, with one entry/day per user. This is **not fraud-proof**; client-readable trivia can still be manipulated.
-- Not affiliated with EA or Respawn. Review `RIGHTS_AND_GITHUB_AUDIT.md` before public release.
+This independent fan project is not affiliated with EA or Respawn. External Legend portrait hotlinks can fail and have independent rights/terms. Ability gameplay uses only locally available icon assets.
