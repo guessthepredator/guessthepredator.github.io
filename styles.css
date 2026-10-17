@@ -2822,3 +2822,193 @@ body.lightshift-playing #app[data-screen="game"]{background:radial-gradient(elli
  .gtp222-side .gtp222-orbit-card{transition:none!important}
  .trivia-timebar #trivia-timefill{will-change:auto}
 }
+
+
+/* V2.25 — Screenshot QA: orbit collision safety, real wheel art and consistent picker */
+@media(min-width:831px){
+ .gtp222-layout{max-width:1400px!important}
+ .gtp222-arena{
+   display:grid!important;
+   grid-template-columns:minmax(196px,255px) minmax(390px,435px) minmax(196px,255px)!important;
+   gap:clamp(10px,1.5vw,22px)!important;max-width:1015px!important;
+   justify-content:center!important;align-items:center!important;margin-inline:auto!important;
+ }
+ .gtp222-core{width:100%!important;max-width:435px!important;min-width:0!important;z-index:3!important}
+ .gtp222-core .gtp222-primary-actions{width:100%!important;min-width:0!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ .gtp222-primary-actions button{min-width:0!important;padding-inline:8px!important}
+ .gtp222-primary-actions strong{font-size:clamp(17px,1.65vw,22px)!important;white-space:normal!important}
+ .gtp222-side{height:100%!important;min-width:0!important;justify-content:space-evenly!important;gap:0!important}
+ .gtp222-side .gtp222-orbit-card{
+   --orbit-shift:0px!important;
+   width:100%!important;max-width:100%!important;
+   transform:translateY(var(--orbit-rise,0px))!important;
+   margin:0!important;
+   min-width:0!important;
+ }
+ .gtp222-side .gtp222-orbit-card:hover,.gtp222-side .gtp222-orbit-card:focus-visible{
+   transform:translateY(calc(var(--orbit-rise,0px) - 4px)) scale(1.02)!important
+ }
+ .gtp222-side-left .gtp222-orbit-card:first-child,
+ .gtp222-side-left .gtp222-orbit-card:last-child{width:93%!important;align-self:flex-end!important}
+ .gtp222-side-right .gtp222-orbit-card:first-child,
+ .gtp222-side-right .gtp222-orbit-card:last-child{width:93%!important;align-self:flex-start!important}
+ .gtp222-side-left .gtp222-orbit-card:nth-child(1),
+ .gtp222-side-right .gtp222-orbit-card:nth-child(1){--orbit-rise:12px}
+ .gtp222-side-left .gtp222-orbit-card:nth-child(3),
+ .gtp222-side-right .gtp222-orbit-card:nth-child(3){--orbit-rise:-12px}
+ .gtp222-orbit-copy strong{font-size:clamp(21px,2vw,29px)!important}
+ .gtp222-core .gtp219-intel,.gtp222-core .gtp222-intel{max-width:100%!important;box-sizing:border-box!important}
+}
+@media(min-width:831px) and (max-width:1060px){
+ .gtp222-arena{grid-template-columns:minmax(172px,218px) minmax(350px,400px) minmax(172px,218px)!important;gap:10px!important}
+ .gtp222-orbit-copy small{font-size:9px!important}
+ .gtp222-core h1{font-size:clamp(32px,3.3vw,44px)!important}
+}
+
+/* Use a genuine CSS-drawn wheel instead of the source collage with baked-in
+   stray text. Artwork fills the right half of the clickable full-width card. */
+.gtp222-home-dock .gtp222-wheel{min-height:136px!important;background:linear-gradient(110deg,#061728 3%,#123b4a 58%,#10142e)!important;isolation:isolate}
+.gtp222-home-dock .gtp222-wheel-illustration{
+ position:absolute!important;left:auto!important;right:17px!important;top:50%!important;
+ inset:auto 17px auto auto!important;width:191px!important;height:191px!important;flex:none!important;
+ transform:translateY(-50%) rotate(-16deg)!important;z-index:0!important;
+ border-radius:50%!important;border:8px solid #f3c789!important;
+ background-image:conic-gradient(#ffbf7c 0 45deg,#4bcbcf 45deg 90deg,#ad7bf2 90deg 135deg,#fc759d 135deg 180deg,#f5d486 180deg 225deg,#1c9db3 225deg 270deg,#a2e6ad 270deg 315deg,#ff9768 315deg 360deg)!important;
+ background-size:cover!important;box-shadow:0 0 0 5px #131d3a,0 0 0 7px #71eae0a4,0 0 27px #71dafa7a,inset 0 0 24px #090f28a8!important;
+ opacity:1!important;pointer-events:none
+}
+.gtp222-home-dock .gtp222-wheel-illustration:before{
+ content:"✦";position:absolute;inset:31%;display:grid;place-items:center;
+ background:#111b31;border:3px solid #f4d79e;border-radius:50%;color:#f3d89c;
+ font:900 30px/1 Impact,sans-serif;box-shadow:0 0 14px #050a19ab
+}
+.gtp222-home-dock .gtp222-wheel-illustration:after{
+ content:"";position:absolute;left:50%;top:-19px;transform:translateX(-50%);
+ width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;
+ border-top:24px solid #fff4bc;filter:drop-shadow(0 2px 4px #070f25)
+}
+.gtp222-home-dock .gtp222-wheel:before{
+ background:linear-gradient(90deg,#061324f9 0%,#061626eb 47%,#071a2b1b 85%,transparent)!important;z-index:1!important
+}
+.gtp222-home-dock .gtp222-wheel>.gtp222-dock-copy{position:relative;z-index:2!important;max-width:64%!important}
+.gtp222-home-dock .gtp222-wheel>b{position:relative;z-index:2!important}
+.gtp222-home-dock .gtp222-spotlight{min-height:136px!important;padding:12px 19px!important}
+.gtp222-home-dock .gtp222-spotlight-art{z-index:0!important;pointer-events:none}
+.gtp222-spotlight-art .portrait-holder{position:absolute!important;inset:0!important}
+.gtp222-spotlight-art .portrait-holder img{
+ width:68%!important;height:188%!important;
+ position:absolute!important;right:-3%!important;bottom:-66%!important;
+ object-fit:contain!important;object-position:right center!important;transform:none!important;
+ filter:brightness(1.30) saturate(1.12) drop-shadow(0 7px 9px #030915c4)!important
+}
+.gtp222-home-dock .gtp222-spotlight:before{
+ background:linear-gradient(90deg,#07152af8 0%,#091a31f0 36%,#071d2e6b 65%,#071a2b00 100%)!important;z-index:1!important
+}
+.gtp222-home-dock .gtp222-spotlight .gtp222-dock-copy{z-index:2!important;position:relative;max-width:60%!important}
+@media(max-width:480px){
+ .gtp222-home-dock .gtp222-wheel-illustration{width:157px!important;height:157px!important;right:4px!important}
+ .gtp222-home-dock .gtp222-wheel .gtp222-dock-copy{max-width:66%!important}
+ .gtp222-home-dock .gtp222-spotlight-art img{width:75%!important;right:-11%!important}
+}
+
+/* Modal needs the same dark neon language as Home and Game.
+   The original pink panels were inherited from legacy CSS. */
+#app .picker-backdrop{
+ background:rgba(3,8,21,.86)!important;backdrop-filter:blur(11px)!important;
+ z-index:100!important;padding:clamp(8px,2.2vw,22px)!important;
+}
+#app .picker.gtp2-picker{
+ width:min(1120px,100%)!important;height:min(770px,calc(100dvh - 24px))!important;
+ max-height:calc(100dvh - 24px)!important;border:1px solid #5cc6de!important;
+ background:linear-gradient(150deg,#0c1b30,#0a1225 65%,#130e2b)!important;
+ border-radius:19px!important;box-shadow:0 25px 80px #000d,0 0 37px #3abfe42d!important;
+ color:#f0faff!important
+}
+#app .gtp2-picker .picker-header{
+ background:linear-gradient(108deg,#0e3045,#16223e 61%,#2f1944)!important;
+ color:#f4fcff!important;border-bottom:1px solid #497fa3!important;
+ padding:16px 24px!important;flex:0 0 auto!important;
+}
+#app .gtp2-picker .picker-header .kicker{color:#8cf6ea!important;font-size:10px!important}
+#app .gtp2-picker .picker-header h2{
+ color:#fff!important;text-shadow:0 0 20px #60d8eb4a!important;
+ font-size:clamp(34px,4vw,52px)!important;line-height:1!important
+}
+#app .gtp2-picker .picker-header p{color:#bbd3e6!important;font-size:11px!important;line-height:1.4!important}
+#app .gtp2-picker .picker-header .btn{
+ background:#0d2438!important;color:#f9ffff!important;border:1px solid #7ad8e5!important;
+ border-radius:8px!important;padding:10px 14px!important;box-shadow:none!important
+}
+#app .gtp2-picker .picker-search{padding:14px 20px 11px!important;background:transparent!important;flex:0 0 auto}
+#app .gtp2-picker .picker-search input{
+ background:#071529!important;border:1px solid #4fa6c3!important;color:#f2fcff!important;
+ border-radius:10px!important;box-shadow:none!important;outline-offset:3px!important;
+ padding:13px 16px!important
+}
+#app .gtp2-picker .picker-search input::placeholder{color:#89a6be!important}
+#app .gtp2-picker .picker-search input:focus{border-color:#74eff1!important;outline:2px solid #3a9dbd5d!important}
+#app .gtp2-picker .picker-search select{
+ min-width:102px!important;color:#eafaff!important;background:#0c2841!important;
+ border:1px solid #4fa6c3!important;border-radius:9px!important;padding:12px 10px!important
+}
+#app .gtp2-picker .class-filters{padding:1px 20px 12px!important;gap:8px!important;flex:0 0 auto}
+#app .gtp2-picker .filter-btn{
+ background:#13253c!important;border:1px solid #53758f!important;color:#c7e4f4!important;
+ border-radius:18px!important;font-weight:900!important;min-height:34px!important
+}
+#app .gtp2-picker .filter-btn.active,#app .gtp2-picker .filter-btn:hover{
+ background:#16687b!important;border-color:#83f3e9!important;color:#fff!important
+}
+#app .gtp2-picker .picker-count{color:#a4d7e4!important;padding:0 23px 5px!important;font-size:10px!important;flex:0 0 auto}
+#app .gtp2-picker .picker-visual-note{
+ color:#8abacb!important;font-size:9px!important;font-weight:850!important;
+ letter-spacing:.08em!important;padding:4px 23px 9px!important;flex:0 0 auto
+}
+#app .gtp2-picker .picker-grid{
+ gap:10px!important;padding:5px 20px 20px!important;background:transparent!important;
+ flex:1 1 auto;min-height:0;align-content:start;overflow-y:auto;overscroll-behavior:contain;
+ scrollbar-color:#447590 #0b1629
+}
+#app .gtp2-picker .picker-legend{
+ background:linear-gradient(170deg,#152d42,#0b1b2e)!important;border:1px solid #416784!important;
+ border-radius:13px!important;padding:7px!important;box-shadow:0 4px 14px #0007!important;
+ color:#f0fbff!important;min-height:238px!important
+}
+#app .gtp2-picker .picker-legend:hover,#app .gtp2-picker .picker-legend:focus-visible{
+ background:linear-gradient(170deg,#19445b,#0f263c)!important;border-color:#84f5ef!important
+}
+#app .gtp2-picker .picker-legend .portrait-holder{
+ background:radial-gradient(ellipse at 50% 62%,#2c48627d,transparent 75%)!important;
+ border:1px solid #385d73!important;border-radius:8px!important;
+ height:clamp(135px,13vw,185px)!important;min-height:135px!important;padding:4px!important
+}
+#app .gtp2-picker .picker-legend .portrait-holder img{
+ object-fit:contain!important;object-position:center bottom!important;filter:drop-shadow(0 4px 7px #000a)!important;
+ width:100%!important;height:100%!important;background:transparent!important
+}
+#app .gtp2-picker .picker-legend strong{
+ color:#f2fdff!important;text-align:center!important;font-size:17px!important;padding:9px 3px 1px!important
+}
+#app .gtp2-picker .picker-legend small{
+ color:#8dc9d7!important;text-align:center!important;font-size:10px!important;padding-bottom:6px!important
+}
+#app .gtp2-picker .portrait-unavailable{
+ color:#b9daea!important;background:linear-gradient(155deg,#12293e,#0f2037)!important;
+ border:1px dashed #4b7893!important;border-radius:8px!important;letter-spacing:.05em
+}
+#app .gtp2-picker .portrait-unavailable b{
+ color:#6adbd9!important;font-size:42px!important;line-height:1.1;text-shadow:0 0 20px #51e1e93d
+}
+#app .gtp2-picker .portrait-unavailable small{color:#9cb9c9!important}
+@media(max-width:600px){
+ #app .gtp2-picker .picker-header{padding:14px!important}
+ #app .gtp2-picker .picker-header h2{font-size:33px!important}
+ #app .gtp2-picker .picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding:8px!important}
+ #app .gtp2-picker .picker-legend{min-height:205px!important}
+ #app .gtp2-picker .picker-legend .portrait-holder{height:145px!important;min-height:145px!important}
+ #app .gtp2-picker .picker-search{padding:10px!important}
+ #app .gtp2-picker .class-filters{padding:1px 10px 10px!important}
+}
+
+/* Keep the wheel vertically centered after legacy inset overrides. */
+.gtp222-home-dock .gtp222-wheel-illustration{top:50%!important;bottom:auto!important;left:auto!important;right:17px!important}

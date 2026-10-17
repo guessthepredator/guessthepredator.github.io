@@ -1,6 +1,40 @@
-// Portrait consistency policy: prefer one vertical ORIGINAL skin render source
-// for the entire 28-Legend roster. Retain known alternate sources only as fallback.
-// Remote image availability is host-dependent and not a bundled 28/28 guarantee.
+// Stable, single-source look for 22 early Legends: same masked vertical
+// medium renders used in the public Raddy fan project. Both Loba and Gibraltar
+// have real existing portrait files here (the 2.24 fallback omitted them).
+// Remaining 6 Legends use *real listed* full-body skin file names on wiki.gg,
+// never the often-missing assumed "Original Name.png" path.
+export const stableFanPortraits=Object.freeze({
+  "wraith":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0000_Wraith.png",
+  "wattson":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0001_Wattson.png",
+  "vantage":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0002_Vantage.png",
+  "valkyrie":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0003_Valkyrie.png",
+  "seer":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0004_Seer.png",
+  "revenant":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0005_Revenant.png",
+  "rampart":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0006_Rampart.png",
+  "pathfinder":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0007_Pathfinder.png",
+  "octane":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0008_Octane.png",
+  "newcastle":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0009_Newcastle.png",
+  "mirage":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0010_Mirage.png",
+  "mad-maggie":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0011_Maggie.png",
+  "loba":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0012_Loba.png",
+  "lifeline":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0013_Lifeline.png",
+  "horizon":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0014_Horizon.png",
+  "gibraltar":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0015_Gibraltar.png",
+  "fuse":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0016_Fuse.png",
+  "crypto":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0017_Crypto.png",
+  "caustic":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0018_Caustic.png",
+  "bloodhound":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0019_Bloodhound.png",
+  "bangalore":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0020_Bangalore.png",
+  "ash":"https://raddythebrand.github.io/apex-legends/img/legends/apex_medium_0021_Ash.png"
+});
+export const verifiedSkinPortraits=Object.freeze({
+  "alter":"Crimson Dynasty Alter.png",
+  "axle":"Cyber Racer Axle.png",
+  "ballistic":"Earl Grey Ballistic.png",
+  "catalyst":"Crimson Goddess Catalyst.png",
+  "conduit":"Clearwater Conduit.png",
+  "sparrow":"Char Sparrow.png"
+});
 export const portraitOriginalNames=Object.freeze({
   "alter":"Alter",
   "ash":"Ash",
@@ -32,17 +66,21 @@ export const portraitOriginalNames=Object.freeze({
   "wraith":"Wraith"
 });
 export function portraitSourcesFor(slug,{pixel=false}={}){
+ const direct=stableFanPortraits[slug];
+ const skin=verifiedSkinPortraits[slug];
  const name=portraitOriginalNames[slug];
- const file=slug==='axle'?'Axle Pose Stand Tall.png':'Original '+name+'.png';
- const canonical=name?[
-  'https://apexlegends.wiki.gg/wiki/Special:Redirect/file/'+encodeURIComponent(file),
-  'https://apexlegends.fandom.com/wiki/Special:FilePath/'+encodeURIComponent(file)
+ const knownSkin=skin?[
+  'https://apexlegends.wiki.gg/wiki/Special:Redirect/file/'+encodeURIComponent(skin),
+  'https://apexlegends.fandom.com/wiki/Special:FilePath/'+encodeURIComponent(skin)
+ ]:[];
+ const defaultName=slug==='axle'?'Axle Pose Stand Tall.png':'Original '+name+'.png';
+ const originals=name?[
+  'https://apexlegends.wiki.gg/wiki/Special:Redirect/file/'+encodeURIComponent(defaultName),
+  'https://apexlegends.fandom.com/wiki/Special:FilePath/'+encodeURIComponent(defaultName)
  ]:[];
  const previous=artCatalog[slug]||[];
- // Prioritize transparent vertical renders in both Pixel and Browse. Avoid
- // article-photo sources in Pixel where they could reveal an unwanted scene.
  const alternate=pixel?previous.filter(url=>!url.includes('dexerto.com')&&!url.includes('portrait.jpg')):previous;
- return [...new Set([...canonical,...alternate])];
+ return [...new Set([...(direct?[direct]:[]),...knownSkin,...originals,...alternate])];
 }
 
 // Public artwork source catalog. Host permission and availability may change.
