@@ -52,10 +52,10 @@ test('mode launch always uses the clicked free-play session',()=>{
  assert.ok(app.includes("openMode(button.dataset.mode,button.dataset.session||'unlimited')"));
  assert.ok(home.includes('data-session="unlimited"'));
 });
-test('full scan history uses past snapshots and remains visible on finished rounds',()=>{
- assert.ok(app.includes('function fullScanHistoryMarkup(round,target)'));
- assert.ok(app.includes('guesses:round.guesses.slice(0,i+1),hints:[]'));
- assert.ok(app.includes("${fullScanHistoryMarkup(round,target)}${round.mode==='full'?scannerMarkup(round,target):''}"));
+test('Full Scan keeps its standard latest-attempt board, no extra history UI',()=>{
+ assert.ok(app.includes("round.mode==='full'?scannerMarkup(round,target):''"));
+ assert.ok(!app.includes('${fullScanHistoryMarkup(round,target)}'));
+ assert.ok(app.includes("LATEST GUESS ONLY"));
 });
 test('partial local stores preserve progress without requiring a practice object',()=>{
  const map=new Map([['guess-the-predator-2:daybreak-v1',JSON.stringify({days:{'2026-10-17':{daily218:{full:{won:true}}}},history:{wins:7}})]]);
