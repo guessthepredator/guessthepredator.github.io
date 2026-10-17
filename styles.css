@@ -3009,3 +3009,6 @@ body.lightshift-playing #app[data-screen="game"]{background:radial-gradient(elli
  #app .gtp2-picker .picker-search{padding:10px!important}
  #app .gtp2-picker .class-filters{padding:1px 10px 10px!important}
 }
+
+/* Keep the wheel vertically centered after legacy inset overrides. */
+.gtp222-home-dock .gtp222-wheel-illustration{top:50%!important;bottom:auto!important;left:auto!important;right:17px!important}
