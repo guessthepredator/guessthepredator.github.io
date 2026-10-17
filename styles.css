@@ -2725,3 +2725,100 @@ body.lightshift-playing:before{background:radial-gradient(ellipse at 8% 8%,#111d
  .gtp223-intel-ready .btn{width:100%}
 }
 @media(prefers-reduced-motion:reduce){.gtp223-intel-ready,.gtp222-orbit-card{transition:none!important}}
+
+
+/* ======================================================================
+   V2.24 — true orbit, readable art, immersive game gutters and smooth trivia
+   Overrides V2.22/2.23 without changing game scoring or backend protocols.
+   ====================================================================== */
+/* Six cards arc inward toward the physical Forbidden Intel chest. */
+@media(min-width:831px){
+ .gtp222-layout{max-width:1430px!important;padding-inline:clamp(14px,1.8vw,30px)!important}
+ .gtp222-arena{grid-template-columns:minmax(205px,265px) minmax(330px,424px) minmax(205px,265px)!important;justify-content:center!important;gap:0!important;align-items:center!important;max-width:1130px!important;min-height:clamp(445px,66svh,600px)!important;margin-inline:auto!important}
+ .gtp222-side{height:100%!important;display:flex!important;flex-direction:column!important;justify-content:space-evenly!important;gap:0!important;z-index:2}
+ .gtp222-side .gtp222-orbit-card{width:100%!important;min-height:clamp(78px,10svh,102px)!important;max-height:104px!important;margin:0!important;padding:9px 10px!important;border-radius:13px!important;transform:translateX(var(--orbit-shift,0px)) translateY(var(--orbit-rise,0px))!important;transition:transform .22s ease,box-shadow .22s ease!important;background:linear-gradient(115deg,color-mix(in srgb,var(--accent) 19%,#071329c4),#090d24b9 78%)!important;backdrop-filter:blur(7px)}
+ .gtp222-side .gtp222-orbit-card:hover,.gtp222-side .gtp222-orbit-card:focus-visible{transform:translateX(var(--orbit-shift,0px)) translateY(calc(var(--orbit-rise,0px) - 5px)) scale(1.025)!important}
+ .gtp222-side-left .gtp222-orbit-card:nth-child(1){--orbit-shift:38px;--orbit-rise:14px}
+ .gtp222-side-left .gtp222-orbit-card:nth-child(2){--orbit-shift:3px;--orbit-rise:0px}
+ .gtp222-side-left .gtp222-orbit-card:nth-child(3){--orbit-shift:38px;--orbit-rise:-14px}
+ .gtp222-side-right .gtp222-orbit-card:nth-child(1){--orbit-shift:-38px;--orbit-rise:14px}
+ .gtp222-side-right .gtp222-orbit-card:nth-child(2){--orbit-shift:-3px;--orbit-rise:0px}
+ .gtp222-side-right .gtp222-orbit-card:nth-child(3){--orbit-shift:-38px;--orbit-rise:-14px}
+ .gtp222-core{z-index:3!important;align-self:center!important;padding-inline:3px!important;max-width:430px!important}
+ .gtp222-core .gtp219-chest-art{width:clamp(184px,17vw,240px)!important;height:clamp(118px,15svh,154px)!important}
+ .gtp222-orbit-symbol{width:46px!important;height:49px!important;font-size:36px!important}
+ .gtp222-orbit-copy strong{font-size:clamp(22px,2.1vw,29px)!important}
+}
+/* Display the actual Mirage illustration instead of painting over it. */
+.gtp222-home .gtp219-backdrop{background-image:url('./assets/decor/mirage-clean-final.webp')!important;background-size:cover!important;background-position:center 35%!important;opacity:1!important;filter:saturate(1.13) brightness(1.23)!important}
+.gtp222-home:after{background:linear-gradient(180deg,#0508162b 0%,#04071514 35%,#04081917 60%,#04071185 100%)!important}
+.gtp222-core .gtp222-intel{background:linear-gradient(145deg,#0a1936d9,#10172de5)!important;backdrop-filter:blur(8px)}
+.gtp222-orbit-card:after{opacity:.34}
+.gtp222-home .gtp222-eyebrow{color:#c4ffff;text-shadow:0 2px 12px #010516,0 0 10px #010516}
+@media(min-width:831px) and (max-width:1150px){
+ .gtp222-arena{grid-template-columns:minmax(170px,220px) minmax(310px,390px) minmax(170px,220px)!important;max-width:1020px!important}
+ .gtp222-side-left .gtp222-orbit-card:nth-child(1),.gtp222-side-left .gtp222-orbit-card:nth-child(3){--orbit-shift:23px}
+ .gtp222-side-right .gtp222-orbit-card:nth-child(1),.gtp222-side-right .gtp222-orbit-card:nth-child(3){--orbit-shift:-23px}
+}
+/* Two image-driven dock panels, both full-bleed behind readable captions. */
+.gtp222-home-dock{gap:clamp(14px,5vw,64px)!important;max-width:1160px;margin:0 auto!important}
+.gtp222-home-dock .gtp222-wheel,.gtp222-home-dock .gtp222-spotlight{min-height:clamp(118px,15svh,155px)!important;position:relative;padding:14px 20px!important;background:#0a1930!important;isolation:isolate;overflow:hidden}
+.gtp222-home-dock .gtp222-wheel-illustration{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;background-image:url('./assets/decor/gtp218-wheel-art.webp')!important;background-size:cover!important;background-position:center center!important;border:0!important;opacity:.95!important;z-index:-2}
+.gtp222-home-dock .gtp222-wheel:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#071329e8 2%,#0b1d34be 49%,#07132944 100%);pointer-events:none}
+.gtp222-home-dock .gtp222-wheel>.gtp222-dock-copy{padding:4px 0;position:relative;z-index:1;max-width:73%}
+.gtp222-home-dock .gtp222-wheel>b{z-index:1;position:relative}
+.gtp222-home-dock .gtp222-spotlight-art{position:absolute!important;inset:0!important;max-width:none!important;width:100%!important;height:100%!important;z-index:-2!important;flex:auto!important;border:0!important;overflow:hidden!important}
+.gtp222-spotlight-art .portrait-holder{width:100%!important;height:100%!important;display:flex!important;align-items:flex-end!important;justify-content:flex-end!important}
+.gtp222-spotlight-art img{width:80%!important;height:100%!important;object-fit:contain!important;object-position:85% bottom!important;transform:scale(1.14);filter:drop-shadow(0 6px 12px #020512a0)}
+.gtp222-home-dock .gtp222-spotlight:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#071527f5 0%,#0b1e38dc 43%,#061a2a28 100%)}
+.gtp222-home-dock .gtp222-spotlight .gtp222-dock-copy{position:relative;z-index:1;max-width:63%;text-shadow:0 2px 6px #030815}
+.gtp222-home-dock .gtp222-spotlight .gtp222-dock-copy b{font-size:clamp(20px,2vw,29px)}
+
+/* Real mode-specific atmosphere on BOTH side gutters, with distinct SVGs. */
+body.lightshift-playing #app[data-screen="game"]{background:radial-gradient(ellipse at 4% 32%,color-mix(in srgb,var(--side-tone) 22%,transparent),transparent 45%),radial-gradient(ellipse at 96% 70%,color-mix(in srgb,var(--side-tone) 26%,transparent),transparent 42%),linear-gradient(130deg,#071022,#101525 60%,#070b1a)!important}
+#app[data-screen="game"]::before,#app[data-screen="game"]::after{top:70px!important;bottom:0!important;z-index:0!important;width:clamp(72px,18vw,340px)!important;opacity:.95!important;background-image:linear-gradient(90deg,color-mix(in srgb,var(--side-tone) 25%,#081427a0),transparent),var(--side-art)!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;background-blend-mode:screen!important;filter:saturate(1.65) contrast(1.1)!important;pointer-events:none}
+#app[data-screen="game"]::before{left:0!important;mask-image:linear-gradient(to right,#000 0%,#000 45%,transparent 100%)!important}
+#app[data-screen="game"]::after{right:0!important;transform:scaleX(-1);mask-image:linear-gradient(to right,#000 0%,#000 45%,transparent 100%)!important}
+#app[data-screen="game"]>.gtp2-game-scene{position:relative!important;z-index:1!important}
+#app[data-screen="game"] .gtp2-game-scene:before{background:radial-gradient(ellipse at 18% 25%,color-mix(in srgb,var(--side-tone) 24%,transparent),transparent 51%),radial-gradient(ellipse at 82% 62%,color-mix(in srgb,var(--side-tone) 17%,transparent),transparent 51%),linear-gradient(145deg,#070f21,#151226 67%,#091726)!important}
+.gtp224-session-banner{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin:8px 0 13px;padding:11px 16px;border-radius:10px;color:#f5fcff;border:1px solid var(--tile);font-size:11px;font-weight:850;letter-spacing:.07em}
+.gtp224-session-banner>strong{font-size:14px;letter-spacing:.065em;color:#fff}
+.gtp224-session-banner>span{opacity:.85;font-size:10px}
+.gtp224-session-daily{background:linear-gradient(96deg,#3c2b24e9,#162b3de9);border-color:#ffcf81;box-shadow:inset 3px 0 #ffbf5d,0 0 11px #ffaf4728}
+.gtp224-session-practice{background:linear-gradient(96deg,#103446ee,#13243bee);border-color:#78d9e5;box-shadow:inset 3px 0 #62d9e7}
+
+/* Trivia also gets an atmospheric, visible background and populated sides. */
+#app[data-screen="trivia"] .trivia-page{background:linear-gradient(90deg,#060b1b8c,#0b17356e 36%,#15102a80 67%,#050b1a96),url('./assets/decor/mirage-clean-final.webp') center 34%/cover no-repeat!important;isolation:isolate}
+#app[data-screen="trivia"] .trivia-page::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 8% 43%,#43d5ed39,transparent 37%),radial-gradient(ellipse at 94% 60%,#c18aff59,transparent 38%);mask-image:none!important;opacity:1!important;z-index:-1}
+#app[data-screen="trivia"] .trivia-page::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#06132199 0%,transparent 25%,transparent 78%,#30194482 100%),repeating-linear-gradient(160deg,transparent 0 50px,#e8b6ff0c 51px 53px)}
+#app[data-screen="trivia"] .trivia-shell{position:relative;z-index:2}
+#app[data-screen="trivia"] .trivia-shell:before{opacity:0!important;display:none!important}
+#app[data-screen="trivia"] .trivia-main,#app[data-screen="trivia"] .trivia-sidebar{background:linear-gradient(150deg,#11243bed,#130e29ee)!important;backdrop-filter:blur(7px)}
+.trivia-timebar{overflow:hidden;contain:layout paint}
+.trivia-timebar #trivia-timefill{display:block;width:100%!important;height:100%;transform:scaleX(1);transform-origin:left center;transition:none!important;will-change:transform}
+.trivia-clock.urgent{animation:none!important;text-shadow:0 0 14px #ff8b7366}
+
+/* Pixel canvas: no secondary scene leaks, no stretched off-center background. */
+#app[data-screen="game"] .nova-pixel-scene .pixel-art{display:grid!important;place-items:center!important;background:linear-gradient(145deg,#10182c,#1d2241)!important;overflow:hidden!important;isolation:isolate}
+#app[data-screen="game"] .nova-pixel-scene .pixel-canvas{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;display:block!important;object-fit:contain!important;object-position:50% 50%!important;transform:none!important;margin:0 auto!important}
+#app[data-screen="game"] .nova-pixel-scene .pixel-art .pixel-source{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;visibility:hidden!important;overflow:hidden!important;pointer-events:none!important}
+#app[data-screen="game"] .nova-pixel-scene .pixel-canvas.loaded{filter:blur(var(--px-blur,0px)) saturate(1.08)!important}
+#app[data-screen="game"] .nova-pixel-scene .pixel-fallback{z-index:4!important}
+
+@media(max-width:830px){
+ .gtp222-arena{display:flex!important;flex-direction:column!important}
+ .gtp222-side{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
+ .gtp222-side .gtp222-orbit-card{transform:none!important;min-height:118px!important}
+ .gtp222-side .gtp222-orbit-card:hover{transform:translateY(-3px)!important}
+ .gtp222-home-dock{grid-template-columns:1fr!important;gap:12px!important}
+ #app[data-screen="game"]::before,#app[data-screen="game"]::after{width:55px!important;opacity:.5!important}
+}
+@media(max-width:480px){
+ .gtp222-side{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .gtp222-side-right .gtp222-orbit-card:last-child{grid-column:span 2}
+ .gtp222-spotlight-art img{object-position:90% bottom!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .gtp222-side .gtp222-orbit-card{transition:none!important}
+ .trivia-timebar #trivia-timefill{will-change:auto}
+}
