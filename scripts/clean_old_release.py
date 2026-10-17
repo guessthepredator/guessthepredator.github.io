@@ -28,3 +28,14 @@ if testdir.exists():
   if old.exists():old.unlink();print('REMOVED',old.relative_to(R))
  for old in testdir.glob('v24_*.png'):
   old.unlink();print('REMOVED',old.relative_to(R))
+
+# v2.6 consolidates all legacy CSS and removes the optional voice announcer.
+for name in ['pinkshift.css','dark-pink-v23.css','eclipse-v24.css','lightshift-v25.css']:
+    stale=R/name
+    if stale.is_file():stale.unlink();print('REMOVED old theme:',name)
+for name in ['announcer.mjs','voice.mjs','voice_manifest.mjs']:
+    stale=R/'src'/name
+    if stale.is_file():stale.unlink();print('REMOVED voice module:',name)
+for name in ['announcer','voices']:
+    stale=R/'assets'/name
+    if stale.is_dir():shutil.rmtree(stale);print('REMOVED voice directory:',name)

@@ -1,21 +1,13 @@
-# Source / Rights Audit — V2.5 Test Build
+# Sources and distribution notes — NOVA V2.6
 
-**Not an authorized EA fan game.** EA's content policy allows some personal uses and fan sites, but **specifically disallows fan games, spin-offs and knock-offs**. Merely making small cosmetic modifications to copyrighted images, quoting the source, linking to a wiki, or adding a disclaimer does not guarantee that use is permissible. Public GitHub hosting could be subject to a copyright complaint.
+This is a fan-made Apex-themed trivia prototype, not endorsed by EA/Respawn. It is NOT certified as legally safe to publish on GitHub Pages. EA content policy: https://help.ea.com/en/articles/security-and-rules/ea-content-policy/
 
-EA policy: https://help.ea.com/en/articles/security-and-rules/ea-content-policy/
+**Map:** 36 catalogued POIs; zero verified Apex screenshot files bundled. `src/external_map_sources.mjs` lists wiki filenames. The browser checks their availability; successful network loading is not a reproduction license. If none loads, Map stays disabled rather than displaying unrelated art.
 
-## Map images
+**Legends:** 28 names but zero verified locally licensed identical-pose 3D renders. `src/art.mjs` tries third-party portrait sources, which can be unavailable or restricted. The UI treats missing portraits as unavailable; it never substitutes misleading generic characters.
 
-The prototype references file redirect URLs published in `src/external_map_sources.mjs`. Wiki locations: https://apexlegends.wiki.gg/wiki/Category:Map_images and https://apexlegends.wiki.gg/wiki/Category:Kings_Canyon_images . The app **does not redistribute** those original screenshots inside the ZIP. They are external image URLs, not confirmed reproduction licenses. At runtime only successfully loaded external location references can enter the playable pool. The corresponding POI name comes from the catalog; unknown or mismatched images must be reviewed before release.
+**Audio:** 14 local original non-verbal synthesised SFX, no EA sound recordings, no announcer, no synthetic speech.
 
-**Zero authentic Apex POI screenshots bundled.** **No fabricated Map image fallback.** If the external hosts block direct image embedding, Map cannot be played on that device. Our offline browser tests do not establish internet image availability.
+**Other:** 8 legacy Ability PNGs, permissions unverified. Six local decorative vector backgrounds, original project art. The homepage background is fan artwork, not guaranteed cleared for third-party distribution.
 
-## Other assets
-
-28 Legend roster names are present, but official matching local 3D artwork is not. `src/art.mjs` uses external image URLs subject to third-party restrictions; it is not an image license. Eight old ability icon PNGs have unresolved permissions.
-
-Original code, locally generated decorative background, CSS, and locally synthesized UI SFX are included. Quote text clues are written and are not voice impersonations. Human announcement playback is integrated with the optional Kenney Voiceover Pack released under CC0; the actual speech clips are **not included** in the ZIP and the deployment download can fail.
-
-Kenney Voiceover Pack: https://kenney.nl/assets/voiceover-pack
-
-This source list is informational, **not** certification of copyright or GitHub account safety.
+EA's fan-content restrictions, including fan games, still apply regardless of recoloring, disclaimers or naming.

@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync, existsSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {dirname,resolve} from 'node:path';
+import {PIXEL_SIZES,scenePalette} from '../src/pixel_scene.mjs';
+import {freshStore} from '../src/store.mjs';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');const read=x=>readFileSync(resolve(root,x),'utf8');
+test('single stylesheet prevents mixed release CSS caches',()=>{assert.equal((read('index.html').match(/rel="stylesheet"/g)||[]).length,1);assert.match(read('index.html'),/v=2\.6\.0/)});
+test('no announcer or voice synthesized',()=>{assert.ok(!existsSync(resolve(root,'src/announcer.mjs')));assert.ok(!read('src/app.mjs').includes('voiceCue'));assert.ok(!read('.github/workflows/pages.yml').includes('install_cc0_announcer'));assert.ok(!('announcer' in freshStore().settings));});
+test('Pixel applies scene compositor with progression',()=>{assert.deepEqual(PIXEL_SIZES,[24,36,55,86,145,260,900]);assert.ok(read('src/app.mjs').includes('paintPixelScene'));assert.ok(read('src/pixel_scene.mjs').includes('ctx.drawImage(portrait'));assert.ok(read('src/pixel_scene.mjs').includes('ctx.fillRect'));assert.notDeepEqual(scenePalette('ash'),scenePalette('wraith'));});
+test('daily and free play CTA are exclusive',()=>{assert.ok(read('src/app.mjs').includes("session==='daily'?`<button data-action=\"home-daily\""));assert.ok(read('src/app.mjs').includes('START FREE PLAY'));});
+test('six game tabs and 14 original sfx',()=>{assert.ok(read('styles.css').includes('repeat(6,minmax(0,1fr))'));assert.ok(!read('src/audio.mjs').includes('SpeechSynthesis'));});

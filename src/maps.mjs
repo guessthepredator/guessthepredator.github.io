@@ -1,5 +1,5 @@
-import {externalMapSources} from './external_map_sources.mjs';
-import {mapMediaManifest} from './map_media_manifest.mjs';
+import {externalMapSources} from './external_map_sources.mjs?v=2.6.0';
+import {mapMediaManifest} from './map_media_manifest.mjs?v=2.6.0';
 /** Actual POI screenshots are referenced by their documented Wiki filenames.
  * Real game assets are NOT manufactured or silently replaced by generic art.
  * Local files under assets/maps are always preferred when present.

@@ -35,12 +35,10 @@ jobs:
         run: |
           python3 -m pip install --quiet Pillow
           python3 scripts/validate_release.py
-      - name: Add optional CC0 human announcer voices
-        run: python3 scripts/install_cc0_announcer.py --auto
       - name: Create GitHub Pages artifact
         run: |
           mkdir -p dist
-          cp index.html styles.css pinkshift.css dark-pink-v23.css eclipse-v24.css lightshift-v25.css dist/
+          cp index.html styles.css dist/
           cp -r src assets dist/
           cp SOURCES_AND_RIGHTS.md dist/
           touch dist/.nojekyll

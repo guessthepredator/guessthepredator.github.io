@@ -1,5 +1,5 @@
 /** Daily spotlight and wheel helpers — kept separate from secret puzzle answers. */
-import {hash,shuffle,puzzleAnswers} from './engine.mjs';
+import {hash,shuffle,puzzleAnswers} from './engine.mjs?v=2.6.0';
 
 const EPOCH_DAY=Date.UTC(2026,0,1)/86400000;
 const isoDayNumber=day=>Math.floor(Date.parse(day+'T00:00:00Z')/86400000);

@@ -1,7 +1,7 @@
 /** Guardrail: a Map round may begin only with a loaded, real location screenshot.
  * No generated sketches, unrelated shots, or text-only substitute in the answer pool.
  */
-import {LOCATIONS,mapShots} from './maps.mjs';
+import {LOCATIONS,mapShots} from './maps.mjs?v=2.6.0';
 export const verifiedMapEntries=LOCATIONS.filter(e=>mapShots(e).some(url=>!url.includes('/map-recon/')));
 export const dayMapSelection=(day,ready)=>{
   if(!ready.length)return null;

@@ -1,21 +1,19 @@
-import {MAPS,LOCATIONS,LEGACY_LOCATIONS,mapShots,mapRound,mapGuess,dailyMap,resolveLocation,sourceForLocation} from './maps.mjs';
-import {findVerifiedMapImages,dayMapSelection} from './map_runtime.mjs';
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs';
-import {playVoice,stopVoice,hasVoiceClip} from './voice.mjs';
-import {legends} from './data.mjs';
-import {artCatalog} from './art.mjs';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs';
-import {playSound} from './audio.mjs';
-import {say,stopAnnouncer,announcerAvailable} from './announcer.mjs';
-import {loadStore,saveStore} from './store.mjs';
+import {MAPS,LOCATIONS,LEGACY_LOCATIONS,mapShots,mapRound,mapGuess,dailyMap,resolveLocation,sourceForLocation} from './maps.mjs?v=2.6.0';
+import {findVerifiedMapImages,dayMapSelection} from './map_runtime.mjs?v=2.6.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.6.0';
+import {legends} from './data.mjs?v=2.6.0';
+import {artCatalog} from './art.mjs?v=2.6.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.6.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.6.0';
+import {playSound} from './audio.mjs?v=2.6.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.6.0';
+import {loadStore,saveStore} from './store.mjs?v=2.6.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.6.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
 let mapAvailability='checking', verifiedMapPool=[], mapCheckPromise=null;
-let humanAnnouncerInstalled=null;
 const dailyModes=()=>mapAvailability==='ready'?MODES:MODES.filter(mode=>mode!=='map');
 const mapEntry=()=>dayMapSelection(today(),verifiedMapPool.map(item=>item.entry));
 const availableMapEntry=(id)=>verifiedMapPool.some(item=>item.entry.id===id);
@@ -46,7 +44,6 @@ let wheelOpen=false;
 let wheelRole="All";
 let wheelExcluded=new Set();
 let wheelNoRepeat=true;
-let voiceClipStatus='';
 let wheelAnimation=0;
 let wheelAngle=0;
 let wheelSpinning=false;
@@ -54,7 +51,7 @@ let wheelChosen=null;
 let wheelDisplayList=null;
 const COLORS={classic:'#aa80f6',pixel:'#5dd9ef',quote:'#ffc88f',ability:'#8de6bf',emoji:'#dca3fe',map:'#91baff'};
 const ICONS={classic:'✦',pixel:'▦',quote:'❞',ability:'⌁',emoji:'✧',map:'⌖'};
-const TAGLINES={classic:'Deduce the Legend with five clues.',pixel:'See the portrait sharpen with each guess.',quote:'Read the intercepted transmission.',ability:'Identify the real passive icon.',emoji:'Decode three mysterious symbols.',map:'Which map? Which location?'};
+const TAGLINES={classic:'Deduce the Legend with five clues.',pixel:'Uncover a complete mystery scene with each guess.',quote:'Read the intercepted transmission.',ability:'Identify the real passive icon.',emoji:'Decode three mysterious symbols.',map:'Which map? Which location?'};
 const params=new URLSearchParams(location.search);
 const paramDay=params.get('day');
 let sharedDay=(paramDay&&/^\d{4}-\d{2}-\d{2}$/.test(paramDay)&&!Number.isNaN(Date.parse(paramDay+'T00:00:00Z')))?paramDay:null;
@@ -69,7 +66,6 @@ const styleBadges=round=>{const tags=[];if(round.won&&round.guesses.length<=3&&!
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const classOf=mode=>COLORS[mode]||'#ff91b7';
 const sound=name=>playSound(name,store.settings.audio);
-const voiceCue=name=>{void say(name,store.settings.announcer&&store.settings.audio);};
 const sync=()=>saveStore(store);
 const getRound=()=>session==='daily'?store.days[today()]?.[active]:store.practice[active];
 function setRound(round){
@@ -140,7 +136,7 @@ function loadPortraitImages(parent=app){
       if(index>=candidates.length){
         const box=image.closest('.portrait-holder');
         const px=box?.closest('.pixel-art');
-        if(px){const status=px.querySelector('.pixel-error');if(status)status.textContent='SIGNAL INTERRUPTED · USE THE GUESS TERMINAL';}
+        if(px){const status=px.querySelector('.pixel-error');if(status)status.textContent='IMAGE SOURCE UNAVAILABLE · USE BACKUP INTEL';}
         if(box){const name=image.dataset.portrait||'?';const initial=(name[0]||'?').toUpperCase();box.innerHTML='<span class="portrait-unavailable" aria-label="Image unavailable"><b>'+initial+'</b><small>VISUAL SIGNAL<br>UNAVAILABLE</small></span>';}
         return;
       }
@@ -160,19 +156,10 @@ function loadPortraitImages(parent=app){
   });
 }
 function paintPixel(canvas,image){
-  // Drawing cross-origin images is permitted for visual display even if canvas
-  // becomes tainted. We never call toDataURL/getImageData/readback.
-  const size=Math.max(12,Math.min(720,Number(canvas.dataset.resolution)||24));
-  canvas.width=size;canvas.height=size;
-  const ctx=canvas.getContext('2d');if(!ctx)return;
-  ctx.imageSmoothingEnabled=true;
-  const w=image.naturalWidth||image.width,h=image.naturalHeight||image.height;
-  if(!w||!h)return;
-  // Show the complete subject instead of chopping off the pose.
-  const fit=Math.min(size/w,size/h),dw=w*fit,dh=h*fit;
-  try{ctx.clearRect(0,0,size,size);ctx.drawImage(image,0,0,w,h,(size-dw)/2,(size-dh)/2,dw,dh);canvas.classList.add('loaded');}
-  catch{canvas.classList.remove('loaded');}
+  const result=paintPixelScene(canvas,image,{resolution:Number(canvas.dataset.resolution)||28,seed:image.dataset.portrait||'legend'});
+  canvas.classList.toggle('loaded',result);
 }
+
 function loadAbilityImages(parent=app){
   parent.querySelectorAll('img[data-ability]:not([data-ability-ready])').forEach(img=>{
     img.dataset.abilityReady='1';
@@ -229,9 +216,9 @@ function edgeArenaDecor(){
 }
 // The character is painted only once inside the backdrop art. No artificial gaze overlay.
 function nav(){return `<header class="top gtp2-top"><div class="gtp2-top-inner">
-  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator 2 home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>LIGHTSHIFT · V2.5 TEST</small></span></button>
+  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator 2 home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>NOVA · V2.6</small></span></button>
   <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item" data-action="open" data-mode="map" ${mapAvailability!=='ready'?'disabled title="Map unlocks only when a real screenshot loads"':''}>⌖ MAP HUNT</button></nav>
-  <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle original sound effects" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ SOUND ON':'♪ SOUND OFF'}</button><button class="gtp2-audio-preview" data-action="sound-test" title="Preview original UI sound">◖)) TEST</button><button class="gtp2-voice-toggle" data-action="announcer" title="CC0 human voice announcer" aria-pressed="${humanAnnouncerInstalled===true&&store.settings.announcer}" ${humanAnnouncerInstalled===false?'disabled data-pack="missing"':''}>${humanAnnouncerInstalled===false?'🎙 NO PACK':humanAnnouncerInstalled===null?'🎙 CHECKING':store.settings.announcer?'🎙 HUMAN ON':'🎙 HUMAN OFF'}</button></div>
+  <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle original sound effects" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ SOUND ON':'♪ SOUND OFF'}</button><button class="gtp2-audio-preview" data-action="sound-test" title="Preview original UI sound">♪ PREVIEW FX</button></div>
  </div></header>`;}
 function statCards(){
   const day=store.days[today()]||{};const stats=streak(store.days,utcDay(),dailyModes());
@@ -322,12 +309,13 @@ function getVisual(round,target){
   if(mode==='pixel'){
     const effect=['mosaic','holo','soft'].includes(store.settings.pixelStyle)?store.settings.pixelStyle:'mosaic';
     const step=Math.min(round.guesses.length,6);
-    const sizes=[19,27,39,60,88,135,220];
-    const blur=effect==='soft'?[15,12,9,6,3,1,0]:[2.5,2,1.5,1,.5,0,0];
-    const pct=[12,24,39,55,73,91,100];
-    const size=effect==='soft'?620:sizes[step];
-    return `<div class="clue-visual visual-pixel px-effect-${effect}"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
-      <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted Legend portrait"></canvas>
+    // Pixelate and blur the FULL COMPOSITE SCENE (location, lights, character), not a lone cutout.
+    const sizes=[24,36,55,86,145,260,900];
+    const blur=effect==='soft'?[18,14,10,7,4,1.5,0]:effect==='holo'?[5,4,3,2,1,0,0]:[4,3,2,1,0.4,0,0];
+    const pct=[12,28,43,59,74,90,100];
+    const size=effect==='soft'?900:sizes[step];
+    return `<div class="clue-visual visual-pixel px-effect-${effect} nova-pixel-scene"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
+      <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted full scene featuring a Legend"></canvas>
       ${portrait(target.slug,{alt:'',cls:'pixel-source',concealed:!round.finished,eager:true})}
       <div class="pixel-fallback" role="group" aria-label="Offline character identity clues"><span class="pixel-fallback-kicker">◈ BACKUP INTEL / SIGNAL RECOVERY</span><div class="pixel-fallback-emblem">${esc((target.emoji.split(/\s+/)[0]||'◇'))}</div><strong>${step>=1?esc(target.role.toUpperCase()):'CLASSIFIED ROLE'}</strong><p>${step>=3?esc(target.title):'IDENTITY PROFILE ENCRYPTED'}</p><small>${step>=5?esc(target.signature):'ADDITIONAL INTEL UNLOCKS AFTER GUESSES'}</small></div><div class="pixel-error" aria-hidden="true"></div><div class="pixel-scratch scratch-a"></div><div class="pixel-scratch scratch-b"></div><div class="pixel-scan"></div><div class="pixel-vignette"></div>
       </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div><div class="pixel-preset" role="group" aria-label="Choose pixel reveal effect">${[['mosaic','▦ MOSAIC'],['soft','◌ SOFT BLUR'],['holo','⌁ SIGNAL']].map(([value,label])=>`<button class="${effect===value?'active':''}" type="button" data-action="pixel-style" data-style="${value}" aria-pressed="${effect===value}">${label}</button>`).join('')}</div></div>`;
@@ -548,7 +536,7 @@ function render({scroll=true}={}) {
 function openMode(mode,playSession=session){
   if(!MODES.includes(mode))return;
   if(mode==='map'&&mapAvailability!=='ready'){showToast('MAP STAYS DISABLED UNTIL A REAL LOCATION SCREENSHOT LOADS.');return;}
-  stopVoice();stopAnnouncer();voiceClipStatus='';active=mode;session=playSession;screen='game';pickerOpen=false;quickSearch='';ensureRound();render();sound('nav');voiceCue('ready');
+  active=mode;session=playSession;screen='game';pickerOpen=false;quickSearch='';ensureRound();render();sound('nav');
 }
 function submitGuess(name){
   const round=getRound();if(!round||round.finished)return;
@@ -557,8 +545,8 @@ function submitGuess(name){
   const wasWon=round.won;setRound(next);
   if(next.won&&!wasWon){
     store.history.wins=(store.history.wins||0)+1;
-    store.history.bestScore=Math.max(store.history.bestScore||0,gameScore(next));sync();sound('win');voiceCue('mission_completed');
-  } else {sound(next.signals.at(-1)?.kind==='correct'?'correct':'wrong');if(next.finished)voiceCue('mission_failed');}
+    store.history.bestScore=Math.max(store.history.bestScore||0,gameScore(next));sync();sound('win');
+  } else {sound(next.signals.at(-1)?.kind==='correct'?'correct':'wrong');if(next.finished)sound('lose');}
   pickerOpen=false;quickSearch='';render({scroll:false});
 }
 function updateSearchResults(){
@@ -623,10 +611,9 @@ app.addEventListener('click',event=>{
   else if(action==='close-wheel')closeWheel();
   else if(action==='spin')spinWheel();
   else if(action==='share-wheel')void copyWheelPick();
-  else if(action==='map-guess'){const round=getRound();const entry=resolveLocation(round?.answer);if(!round||!entry)return;const updated=mapGuess(round,button.dataset.name,entry);if(updated===round)return;setRound(updated);if(updated.won){store.history.wins++;sync();sound('win');voiceCue('mission_completed');}else{sound(updated.finished?'lose':'pick');if(updated.finished)voiceCue('mission_failed');}render({scroll:false});}
-  else if(action==='play-voice') {const target=legendByName(legends,getRound()?.answer);if(target){void playVoice(target.slug).then(played=>{voiceClipStatus=played?'Playing a provided recording.':'No voice recording installed. The written clue above is fully playable.';const state=document.querySelector('.voice-message');if(state)state.textContent=voiceClipStatus;});}}
-  else if(action==='home'){stopVoice();screen='home';pickerOpen=false;render();sound('nav');}
-  else if(action==='records'){stopVoice();screen='records';pickerOpen=false;render();sound('nav');}
+  else if(action==='map-guess'){const round=getRound();const entry=resolveLocation(round?.answer);if(!round||!entry)return;const updated=mapGuess(round,button.dataset.name,entry);if(updated===round)return;setRound(updated);if(updated.won){store.history.wins++;sync();sound('win');}else{sound(updated.finished?'lose':'pick');}render({scroll:false});}
+  else if(action==='home'){screen='home';pickerOpen=false;render();sound('nav');}
+  else if(action==='records'){screen='records';pickerOpen=false;render();sound('nav');}
   else if(action==='open'){openMode(button.dataset.mode);}
   else if(action==='home-daily'){
     session='daily';const next=dailyModes().find(mode=>!store.days[today()]?.[mode]?.finished);
@@ -634,8 +621,7 @@ app.addEventListener('click',event=>{
   }
   else if(action==='session'){session=button.dataset.session;render({scroll:false});sound('nav');}
   else if(action==='audio'){store.settings.audio=!store.settings.audio;sync();sound('pick');render({scroll:false});}
-  else if(action==='announcer'){if(button.dataset.pack==='missing'){showToast('Optional human CC0 announcer: see START_HERE.md for source and setup.');return;}store.settings.announcer=!store.settings.announcer;sync();render({scroll:false});if(store.settings.announcer)voiceCue('ready');}
-  else if(action==='sound-test'){if(!store.settings.audio){store.settings.audio=true;sync();}sound('reveal');voiceCue('ready');render({scroll:false});}
+  else if(action==='sound-test'){if(!store.settings.audio){store.settings.audio=true;sync();}sound('reveal');render({scroll:false});}
   else if(action==='motion'){store.settings.motion=!store.settings.motion;sync();render({scroll:false});}
   else if(action==='picker'){pickerOpen=true;pickerSearch='';pickerClass='All';pickerSort='az';renderPicker();sound('pick');}
   else if(action==='close-picker'){pickerOpen=false;document.getElementById('picker-backdrop')?.remove();}
@@ -712,9 +698,9 @@ setInterval(()=>{
   const round=getRound();if(!round)return;
   if(active==='map')return;
   const expired=expireRound(round,Date.now());
-  if(expired!==round){setRound(expired);sound('lose');voiceCue('time_over');render({scroll:false});return;}
+  if(expired!==round){setRound(expired);sound('lose');render({scroll:false});return;}
   const timer=document.getElementById('round-timer');if(timer){const time=remainingTime(round);timer.querySelector('span').textContent=`${time}s`;timer.classList.toggle('urgent',time<=25&&!round.finished);}
 },500);
 render();
 void startMapPreflight();
-void announcerAvailable().then(result=>{humanAnnouncerInstalled=result;if(screen==='home')render({scroll:false});});
+

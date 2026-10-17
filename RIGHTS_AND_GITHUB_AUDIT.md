@@ -1,21 +1,13 @@
-# Rights and GitHub publishing review — V2.3
+# Sources and distribution notes — NOVA V2.6
 
-**HIGH RISK: NOT certified legally safe for a public GitHub fan game.**
+This is a fan-made Apex-themed trivia prototype, not endorsed by EA/Respawn. It is NOT certified as legally safe to publish on GitHub Pages. EA content policy: https://help.ea.com/en/articles/security-and-rules/ea-content-policy/
 
-EA content policy, checked 2026-10-17: https://help.ea.com/en/articles/security-and-rules/ea-content-policy/
-EA allows some noncommercial fan sites, but explicitly restricts fan games/knock-offs/spin-offs. EA also distinguishes third-party music and voices, does not grant those rights, and requires no false official affiliation. Renaming, recoloring or modestly modifying proprietary captures does NOT clear copyright.
+**Map:** 36 catalogued POIs; zero verified Apex screenshot files bundled. `src/external_map_sources.mjs` lists wiki filenames. The browser checks their availability; successful network loading is not a reproduction license. If none loads, Map stays disabled rather than displaying unrelated art.
 
-## Media inventory
-| Media | Installed in the distributed ZIP | Provenance |
-|---|---:|---|
-| UI sound effects | 14 WAV | Original procedural musical cues; no speech |
-| Map recon illustrations | 36 SVG | Original procedural architectural schematics, not screenshots |
-| Gameplay backgrounds | 6 SVG | Original decorative vectors |
-| Ability icons | 8 PNG | Legacy game-style icons; recheck publishing permission |
-| Legend renders | 0 local new cleared renders | Dynamic portrait URL candidates, 28 entries; copyright/hotlink reliability unresolved |
-| Apex voice lines | 0 | No extracted / ripped game audio |
-| Human announcer OGG | 0 in ZIP, installer included | Kenney Voiceover Pack CC0, human male/female voices, installed only on successful download |
+**Legends:** 28 names but zero verified locally licensed identical-pose 3D renders. `src/art.mjs` tries third-party portrait sources, which can be unavailable or restricted. The UI treats missing portraits as unavailable; it never substitutes misleading generic characters.
 
-Kenney rights: https://kenney.nl/assets/voiceover-pack and https://opengameart.org/content/voiceover-pack-40-lines (CC0 1.0). Attribution optional but added to credits. These sounds do not impersonate any Legend or claim origin in Apex.
+**Audio:** 14 local original non-verbal synthesised SFX, no EA sound recordings, no announcer, no synthetic speech.
 
-This README does not grant trademark or derivative-work rights. Before publishing the site publicly, review EA's current terms and consider obtaining clearance if applicable. Avoid including EA logos and presenting this as an official product. No public deployment was performed from this conversation.
+**Other:** 8 legacy Ability PNGs, permissions unverified. Six local decorative vector backgrounds, original project art. The homepage background is fan artwork, not guaranteed cleared for third-party distribution.
+
+EA's fan-content restrictions, including fan games, still apply regardless of recoloring, disclaimers or naming.

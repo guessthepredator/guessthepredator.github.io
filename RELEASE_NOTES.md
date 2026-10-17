@@ -1,17 +1,7 @@
-# V2.5 Lightshift · Map Quality Gate
+# NOVA v2.6 — Code / UX audit
 
-- Restored a readable **light pink / lilac / cyan game canvas** without replacing the dramatic homepage background.
-- Fixed Free Play mistakenly displaying **Continue Daily**.
-- Fixed **SOFT BLUR** button not responding and improved progressive blur levels, raster sampling, and full-character framing.
-- Adjusted Browse Legends card sizes and consistent image containment (the externally sourced character poses are still non-uniform).
-- Replaced 14 loud electronic WAV effects with shorter, quieter tactile sounds.
-- Made Map strictly conditional on verified real external POI images; **removed all generated recon images** and prevented unsupported locations from entering the playable pool. Map disables itself when screenshots fail. Five daily core missions remain playable.
-- Preserved text-only Quote and optional CC0 human-voice announcer integration. No robotic voice or official voice clips are distributed.
-- Added deterministic/negative-path Map tests, Daily/Free Play checks, and offline Chromium QA (success path uses simulated QA media, not an actual Apex screenshot).
+**Removed:** extra four CSS requests and mixed-version cache states, CC0 announcer auto-play and the repeated `Ready` clips, voice scripts and voice toggles, legacy tests tied to superseded release CSS, AI substitute Legend figures, schematic Map fallbacks.
 
-## Known limitations
+**Changed:** original 14 SFX re-synthesized from short tonal/noise transients; Pixel now composites a full environmental scene plus original Legend portrait before applying Mosaic / Soft Blur / Signal to the entire frame; Daily/Free Play home navigation checked; animated menu card stagger, glint on hover, page-panel entrance and accessibility-friendly reduced motion; dark-pink home and genuinely bright gameplay styling in a *single* stylesheet.
 
-- **0** real Apex map screenshots are bundled. External URLs are not guaranteed to load or be licensed for this project.
-- **0** complete sets of local official 3D Legend renders. Existing externally sourced poses differ.
-- Human announcer OGGs are **not** in the archive; optional network-dependent CC0 acquisition runs during deploy.
-- EA currently restricts fan games; public GitHub release has legal risk. See `SOURCES_AND_RIGHTS.md`.
+**Unresolved due to third-party ownership/network:** remote Legend portraits and external Map photos. Map only unlocks after an image responds with sufficient dimensions. File exists does not imply content licensing.
