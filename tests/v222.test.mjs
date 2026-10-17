@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.26.0')&&html.includes('app.mjs?v=2.26.0'));
+ assert.ok(html.includes('styles.css?v=2.27.0')&&html.includes('app.mjs?v=2.27.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -154,4 +154,28 @@ test('V2.26 audio supports distinct modes, visible homepage hover and valid loss
  assert.ok(audio.includes("if(name==='wrong')"));
  assert.ok(app.includes("closest?.('.arena-mode,.gtp222-orbit-card')"));
  assert.ok(app.includes("if(next.finished)sound('lose');"));
+});
+
+test('V2.27 local full-body build is preferred for five Legends, not head-only fallback',()=>{
+ const manifest=read('src/portrait_media_manifest.mjs');
+ const probe=read('scripts/probe_fullbody.py');
+ const workflow=read('.github/workflows/pages.yml');
+ const qa=read('.github/workflows/pr-qa.yml');
+ for(const slug of ['alter','ballistic','catalyst','conduit','sparrow']){
+  assert.ok(manifest.includes("original-"+slug+".png"));
+ }
+ assert.ok(app.includes('...(localFile?[\x60./assets/portraits/'));
+ assert.ok(probe.includes('raise SystemExit('));
+ assert.ok(workflow.includes('OUTPUT_DIR=assets/portraits python3 scripts/probe_fullbody.py --strict'));
+ assert.ok(qa.includes('OUTPUT_DIR=assets/portraits python3 scripts/probe_fullbody.py --strict'));
+ assert.ok(workflow.includes('cp -r src assets dist/'));
+});
+test('V2.27 active Trivia centers its question and supports typed answers in view',()=>{
+ assert.ok(app.includes('trivia-page-active'));
+ assert.ok(app.includes('trivia-page-written'));
+ assert.ok(app.includes('function focusTriviaQuestion()'));
+ assert.ok(app.includes("question.scrollIntoView({behavior:'instant',block:'center'"));
+ assert.ok(css.includes('V2.27 — Focused Trivia gameplay'));
+ assert.ok(css.includes('.trivia-page-active .trivia-type'));
+ assert.ok(css.includes('.trivia-page-active .trivia-main'));
 });
