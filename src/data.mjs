@@ -533,3 +533,17 @@ export const legends = [
     "age": 34
   }
 ];
+
+
+// Homeworld / place of origin for the six-trait scanner. Unknown cases stay undisclosed.
+// Lore references: https://apexlegends.wiki.gg/wiki/List_of_official_biographies
+//                      https://apexlegends.wiki.gg/wiki/Planets_and_systems
+export const ORIGIN_BY_SLUG=Object.freeze({
+  alter:null,ash:'Psamathe',axle:'Salvo',ballistic:null,bangalore:'Gridiron',
+  bloodhound:'Talos',catalyst:'Boreas',caustic:'Gaea',conduit:'Nexus',crypto:'Gaea',
+  fuse:'Salvo',gibraltar:'Solace',horizon:'Psamathe',lifeline:'Psamathe',loba:null,
+  'mad-maggie':'Salvo',mirage:'Solace',newcastle:'Gridiron',octane:'Psamathe',
+  pathfinder:null,rampart:'Gaea',revenant:null,seer:'Boreas',sparrow:'Psamathe',
+  valkyrie:null,vantage:'Págos',wattson:'Solace',wraith:'Typhon'
+});
+for(const legend of legends)legend.origin=ORIGIN_BY_SLUG[legend.slug]??null;

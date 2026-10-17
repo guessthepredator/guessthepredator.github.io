@@ -1,10 +1,8 @@
-# Install V2.10 (CLUE DECK)
+# Guess The Predator V2.12 — install
 
-1. Extract `GTP2_V210_CLUE_DECK_FULL_REPOSITORY.zip`.
-2. Copy the **contents of the ZIP root** into your existing GitHub repository folder (alongside `.git`, `index.html`, `src`, and `assets`). Replace matching files. Do not copy the whole extracted folder as a subfolder.
-3. Run `INSTALL_CLEAN_WINDOWS.bat` in that repository directory.
-4. GitHub Desktop: Commit changes → Push origin. Wait until GitHub Pages Actions finishes.
-5. Open the same site URL and hard refresh (`Ctrl+Shift+R`). Check header version **CLUE DECK · V2.10**.
-6. Visit Emoji and Ability, where the old light circular screens should be replaced. Existing nickname and saved games stay in localStorage.
+1. Extract this archive. Copy all the extracted files/folders into your EXISTING `guessthepredator.github.io` repository root (alongside `.git`, which should be retained).
+2. Commit and Push to `main`. Let GitHub Pages Actions complete.
+3. Visit https://guessthepredator.github.io/ and hard refresh with Ctrl+Shift+R.
+4. Check Home's five-tile cascade, Rankings/FAQ/How To Play, Origin scanner, Smart Hint green, partial-signal cyan, and Free Play victory confetti/SFX.
 
-**Scoring:** unchanged. Both Daily and Overall entries were verified in live Supabase; the server function was not edited or redeployed.
+Leaderboard data is stored separately in Supabase and isn't erased by this update. The live submit-score Edge Function has to accept `origin` as a valid hint field; server updates are independent from the static GitHub Pages deploy.

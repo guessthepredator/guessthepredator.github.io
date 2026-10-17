@@ -1,4 +1,4 @@
-name: GTP2 — Test and Deploy GitHub Pages
+name: Guess The Predator — Test and Deploy
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: gtp2-pages
+  group: guess-the-predator-pages
   cancel-in-progress: true
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
       - name: Check JavaScript modules
         run: for f in src/*.mjs; do node --check "$f"; done
       - name: Run game, catalog and asset tests
-        run: node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs tests/v210.test.mjs
+        run: node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs tests/v210.test.mjs tests/v212.test.mjs
       - name: Validate release
         run: |
           python3 -m pip install --quiet Pillow

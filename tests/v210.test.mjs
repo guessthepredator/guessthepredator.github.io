@@ -27,9 +27,9 @@ test('Both modes have explicit dark gradients and isolated pseudo-elements',()=>
   assert.ok(css.includes('#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-emoji-stage'));
   assert.ok(css.includes('.gtp210-emoji-tile.is-visible'));
 });
-test('V2.10 cache busters and saved nickname are preserved',()=>{
-  assert.ok(html.includes('styles.css?v=2.10.0'));
-  assert.ok(html.includes('app.mjs?v=2.10.0'));
+test('V2.12 cache busters and saved nickname are preserved',()=>{
+  assert.ok(html.includes('styles.css?v=2.12.0'));
+  assert.ok(html.includes('app.mjs?v=2.12.0'));
   assert.ok(app.includes('function identityPrompt()'));
   assert.ok(app.includes('function submitScores()'));
   assert.ok(read('src/leaderboard_config.mjs').includes('pupdfltjeyzhnyrxutvt'));

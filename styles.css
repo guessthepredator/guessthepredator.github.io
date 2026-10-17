@@ -1498,3 +1498,142 @@ body.lightshift-playing .app:before{opacity:.08}
   background:linear-gradient(135deg,#c547a2,#b559b0)!important;
   border-color:#ffc1e6!important;color:#fff!important;box-shadow:0 0 0 1px #ffc1e633,inset 0 1px 0 #ffffff42!important;
 }
+
+
+/* ===== V2.11 quick presentation fixes ===== */
+/* Main page: reduce brightness and tame highlights */
+body:before{background:radial-gradient(circle at 83% 14%,#f2d278 0,transparent 18%),radial-gradient(circle at 8% 44%,#8c58c6 0,transparent 24%),radial-gradient(circle at 70% 82%,#d46099 0,transparent 26%),#12091f!important}
+.gtp2-home{background:linear-gradient(180deg,#0b0616 0%,#120a20 62%,#0c0717 100%)!important}
+.nova27-home .gtp2-hero-content{background:linear-gradient(180deg,rgba(8,5,18,.28) 0%,rgba(8,5,18,.14) 36%,rgba(8,5,18,.32) 100%)!important;border-radius:28px}
+.gtp2-hero-content:before{opacity:.14!important}
+.nova27-home .gtp2-mode-card{background:linear-gradient(115deg,#130b22f0,#1b0d31e8 56%,#0f0a22f0)!important;box-shadow:0 7px 20px #09031270,inset 0 0 0 1px #ffffff10!important}
+.nova27-home .gtp28-play-btn{filter:saturate(.92) brightness(.95)!important}
+.nova27-home .gtp28-rank-btn{filter:saturate(.92) brightness(.92)!important}
+
+/* Win/reveal badges: remove purple-on-yellow readability issue */
+.end-panel .medal-row{margin:14px 0 4px!important}
+.end-panel .medal{background:linear-gradient(135deg,#2e1c40,#17283c)!important;color:#fdf7ff!important;border:1px solid #a98dca!important;box-shadow:0 4px 12px #00000038,inset 0 1px 0 #ffffff1a!important}
+.end-panel .medal::before{content:"✦";color:#9ff0ec;font-size:11px}
+.end-panel p{color:#e7d9ea!important}
+
+/* Game surface: slightly darker, less washed out, filled controls */
+.gtp2-game-scene .guess-card,.gtp2-game-scene .clue-card{background:#24182f!important;border-color:#6d5579!important;box-shadow:0 10px 28px #09051188,inset 0 1px 0 #ffffff10!important}
+.gtp2-game-scene .guess-body,.gtp2-game-scene .clue-foot{background:#21172c!important;color:#ebdef1!important}
+.gtp2-game-scene .panel-top{background:linear-gradient(95deg,#4d295f,#2f355a)!important;color:#fef8ff!important;border-bottom:1px solid #66557a!important}
+.gtp2-game-scene .panel-top small,.gtp2-game-scene .clue-foot{color:#cfc1d7!important}
+.gtp2-game-scene .search-wrap input{background:#191320!important;color:#f7eef8!important;border:1px solid #7f648f!important;box-shadow:inset 0 1px 0 #ffffff0d!important}
+.gtp2-game-scene .search-wrap .btn,.gtp2-game-scene .end-actions .btn,.gtp2-game-scene .pixel-preset button,.gtp2-game-scene .mode-tab{box-shadow:0 4px 12px #0a061055!important}
+.gtp2-game-scene .mode-tab{background:linear-gradient(145deg,#41274d,#2a1f40)!important;color:#f9effd!important;border:1px solid #7b6289!important}
+.gtp2-game-scene .mode-tab.active{background:linear-gradient(135deg,#d9569f,#8a4ecf)!important;color:#fff!important;border-color:#ffc3ea!important}
+.gtp2-game-scene .pixel-preset button{background:linear-gradient(145deg,#3b254a,#261a37)!important;color:#fcf3fe!important;border:1px solid #896fa0!important}
+.gtp2-game-scene .pixel-preset button.active{background:linear-gradient(135deg,#d4509a,#7d5ed7)!important;color:#fff!important;border-color:#ffd0ef!important}
+
+/* Pixel mode: one step blurrier */
+.gtp2-game-scene .visual-pixel .pixel-art{background:radial-gradient(circle at 50% 48%,#352542,#241b35 68%,#191325)!important}
+.gtp2-game-scene .pixel-caption{background:#22172f!important;color:#fff1fb!important;border:1px solid #7f5a88!important}
+
+/* Quote mode: remove distracting background imagery, make centered panel fill the frame */
+.gtp2-game-scene .gtp29-quote-visual{padding:16px!important;background:linear-gradient(160deg,#201528,#17111f)!important}
+.gtp2-game-scene .gtp29-quote-visual .gtp2-quote-lines,.gtp2-game-scene .gtp29-quote-visual .gtp2-quote-mark{display:none!important}
+.gtp2-game-scene .gtp29-quote-card{width:100%!important;max-width:none!important;min-height:calc(100% - 4px)!important;padding:28px 26px!important;border-radius:24px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:18px!important;background:linear-gradient(180deg,#1c1225,#130d1a)!important;border:1px solid #785e90!important;box-shadow:inset 0 0 0 1px #ffffff0d,0 12px 28px #0000004a!important}
+.gtp2-game-scene .gtp29-quote-card blockquote{font-size:clamp(34px,3.25vw,50px)!important;line-height:1.06!important;color:#fff7ff!important;text-align:center!important}
+.gtp2-game-scene .gtp29-quote-footer{justify-content:center!important;text-align:center!important}
+.gtp2-game-scene .gtp29-quote-footer small{grid-column:1/-1!important;font-size:13px!important;text-align:center!important;color:#d9c8e2!important}
+.gtp2-game-scene .gtp29-quote-footer b{justify-self:center!important}
+
+/* Ability mode: make the icon larger */
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{width:222px!important;height:222px!important;border-radius:34px!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon img{padding:13px!important}
+@media(max-width:750px){#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{width:168px!important;height:168px!important;border-radius:25px!important}}
+
+/* ===== V2.12 AURORA CASCADE • single cohesive dark design ===== */
+#app[data-screen="howto"],#app[data-screen="faq"],#app[data-screen="leaderboard"]{
+  background:radial-gradient(ellipse at 90% 0%,#42224b75,transparent 42%),radial-gradient(ellipse at 2% 70%,#17465357,transparent 48%),linear-gradient(155deg,#100b1b,#151022 55%,#0b0b19)!important;color:#f8edf9!important;
+}
+body:has(#app[data-screen="howto"]),body:has(#app[data-screen="faq"]),body:has(#app[data-screen="leaderboard"]){background:#100b1b!important;color:#f8edf9!important}
+#app .gtp27-guide,#app .gtp27-leaderboard{background:transparent!important;color:#f7eafa!important}
+#app .gtp27-guide h1,#app .gtp27-leaderboard h1{color:#fff5fa!important;text-shadow:0 8px 20px #05040e55}
+#app .gtp27-guide h1 em,#app .gtp27-leaderboard h1 em{color:#ff7bc0!important}
+#app .gtp27-guide .kicker,#app .gtp27-leaderboard .kicker{color:#9bedeb!important}
+#app .gtp27-guide>p,#app .gtp27-leaderboard>p,#app .gtp27-leaderboard .lead{color:#d7cadd!important}
+#app .gtp27-guide .guide-card{background:linear-gradient(154deg,#2a1c3c,#171426 90%)!important;color:#fef4ff!important;border:1px solid #8f689e!important;box-shadow:0 12px 25px #0704106e!important}
+#app .gtp27-guide .guide-card:hover{border-color:#f282c5!important;transform:translateY(-4px)}
+#app .gtp27-guide .guide-card>span{color:#91e8e8!important}
+#app .gtp27-guide .guide-card h2{color:#fff5fe!important}
+#app .gtp27-guide .guide-card p,#app .gtp27-guide .guide-rule-row p{color:#ddcee6!important}
+#app .gtp27-guide .guide-rule-row article{background:linear-gradient(145deg,#231c35,#161a2b)!important;border:1px solid #705f9b!important;color:#fff!important;box-shadow:0 7px 16px #05040d55}
+#app .gtp27-guide .guide-rule-row b{color:#9defea!important}
+#app .gtp27-faq .faq-item{background:linear-gradient(125deg,#2b203d,#181425)!important;border:1px solid #795d92!important;box-shadow:0 5px 16px #07041558!important}
+#app .gtp27-faq .faq-item[open]{background:linear-gradient(140deg,#322446,#1d1930)!important;border-color:#c486b7!important}
+#app .gtp27-faq .faq-item summary{color:#fff0fa!important}
+#app .gtp27-faq .faq-item summary:hover{color:#9ef2ef!important}
+#app .gtp27-faq .faq-item p{color:#e0d2e6!important}
+#app .gtp27-leaderboard .board-switch{gap:10px}
+#app .gtp27-leaderboard .board-switch button{background:#271b36!important;color:#f8eafc!important;border:1px solid #8f74a5!important;box-shadow:0 4px 12px #05040c5c!important}
+#app .gtp27-leaderboard .board-switch button.active{background:linear-gradient(110deg,#c6509c,#613e8c)!important;color:#fff!important;border-color:#ffc4ec!important}
+#app .gtp27-leaderboard .gtp27-board{background:#191422!important;border:1px solid #856d9c!important;box-shadow:0 15px 30px #05030c90!important}
+#app .gtp27-leaderboard .board-head{background:linear-gradient(110deg,#52264f,#202f4f)!important;border-bottom:1px solid #8a6198!important;color:#fff!important}
+#app .gtp27-leaderboard .board-head small{color:#9bf4ef!important}
+#app .gtp27-leaderboard .board-row{background:#1b1428!important;color:#f5ebf9!important;border-bottom:1px solid #65486c!important}
+#app .gtp27-leaderboard .board-row:first-child{background:linear-gradient(100deg,#54305c,#24394a)!important}
+#app .gtp27-leaderboard .board-row>span{color:#a8f3ec!important}
+#app .gtp27-leaderboard .board-row b{color:#fff!important}
+#app .gtp27-leaderboard .board-row small{color:#e4cde8!important}
+#app .gtp27-leaderboard .board-empty{background:#191423!important;color:#ead8ed!important}
+#app .gtp27-leaderboard .board-empty b{color:#f0a5d3!important}
+#app .gtp27-leaderboard .gtp27-submit{background:linear-gradient(135deg,#2b1b37,#142637)!important;border:1px solid #976d9b!important;color:#fff3fc!important;box-shadow:0 15px 30px #05040c63!important}
+#app .gtp27-leaderboard .gtp27-submit h2{color:#ff9acc!important}
+#app .gtp27-leaderboard .gtp27-submit h2 small{color:#decfe7!important}
+#app .gtp27-leaderboard .gtp27-submit p,#app .gtp27-leaderboard .gtp27-submit small{color:#e4d2e9!important}
+#app .gtp27-leaderboard .board-form label{color:#9bf3ed!important}
+#app .gtp27-leaderboard .board-form input{background:#100d1a!important;color:#fff!important;border:1px solid #987bab!important}
+#app .gtp27-leaderboard .board-form input::placeholder{color:#a999b9!important}
+#app .gtp27-leaderboard .board-form .btn,#app .gtp27-guide .btn{background:linear-gradient(135deg,#da58a5,#8b4cac)!important;color:#fff!important;border:1px solid #ffb5e3!important;box-shadow:0 6px 16px #0906176f!important}
+#app .gtp27-leaderboard .guide-cta .btn.mint,#app .gtp27-guide .btn.lilac{background:linear-gradient(120deg,#215263,#304774)!important;border-color:#8aeded!important;color:#e2ffff!important}
+
+/* Five-mode cascade: symmetric steps around Mirage, odd centre tile belongs at the foot of the staircase. */
+.nova27-home .gtp212-cascade{display:grid!important;grid-template-columns:minmax(225px,1.1fr) minmax(170px,.83fr) minmax(225px,1.1fr)!important;grid-template-rows:repeat(3,minmax(97px,auto))!important;gap:11px 20px!important;align-items:center!important;flex:1!important;min-height:385px!important;width:100%!important;max-width:1370px!important;margin:10px auto 0!important;order:4!important;padding:6px 0 18px!important;position:relative!important;isolation:isolate}
+.nova27-home .gtp212-step{min-width:0;z-index:2;position:relative;display:flex}
+.nova27-home .gtp212-step .gtp2-mode-card{width:100%;min-height:95px!important}
+.nova27-home .gtp212-step-classic{grid-column:1;grid-row:1;margin-right:48px}
+.nova27-home .gtp212-step-pixel{grid-column:1;grid-row:2;margin-left:25px;margin-right:22px}
+.nova27-home .gtp212-step-quote{grid-column:2;grid-row:3;min-width:240px;justify-self:center;width:100%;z-index:3}
+.nova27-home .gtp212-step-ability{grid-column:3;grid-row:2;margin-left:22px;margin-right:25px}
+.nova27-home .gtp212-step-emoji{grid-column:3;grid-row:1;margin-left:48px}
+.nova27-home .gtp212-cascade-label{grid-column:2;grid-row:1/3;z-index:1;text-align:center;align-self:center;color:#fff4fd;text-shadow:0 3px 16px #05040ffa;display:grid;gap:7px;justify-items:center;pointer-events:none;margin-top:20px}
+.nova27-home .gtp212-cascade-label small{font-size:10px;letter-spacing:.21em;font-weight:900;color:#b1eeee}
+.nova27-home .gtp212-cascade-label strong{font-size:clamp(29px,3vw,50px);font-family:'Barlow Condensed',Impact,sans-serif;line-height:.95;font-weight:900}
+.nova27-home .gtp212-cascade-label strong span{color:#ff88c9}
+.nova27-home .gtp212-cascade-label>span{font-size:9px;letter-spacing:.17em;font-weight:900;color:#ffe7fa}
+@media(max-width:1020px){.nova27-home .gtp212-cascade{grid-template-columns:minmax(170px,1fr) minmax(116px,.62fr) minmax(170px,1fr)!important;column-gap:9px!important}.nova27-home .gtp212-step-classic{margin-right:15px}.nova27-home .gtp212-step-pixel{margin-left:12px;margin-right:0}.nova27-home .gtp212-step-ability{margin-left:0;margin-right:12px}.nova27-home .gtp212-step-emoji{margin-left:15px}.nova27-home .gtp212-step-quote{min-width:175px}}
+@media(max-width:740px){.nova27-home .gtp212-cascade{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(3,auto)!important;gap:10px!important;min-height:0!important;padding:12px 0!important;margin-top:14px!important;align-content:end!important}.nova27-home .gtp212-cascade-label{display:none!important}.nova27-home .gtp212-step-classic{grid-column:1;grid-row:1;margin:0 12px 0 0}.nova27-home .gtp212-step-pixel{grid-column:2;grid-row:1;margin:22px 0 0 0}.nova27-home .gtp212-step-quote{grid-column:1;grid-row:2;margin:0 12px 0 0;min-width:0;width:auto;justify-self:stretch}.nova27-home .gtp212-step-ability{grid-column:2;grid-row:2;margin:22px 0 0 0}.nova27-home .gtp212-step-emoji{grid-column:1/-1;grid-row:3;margin:0 auto;width:min(90%,350px)}.nova27-home .gtp212-step .gtp2-mode-card{min-height:92px!important}}
+@media(max-width:400px){.nova27-home .gtp212-cascade{gap:8px!important}.nova27-home .gtp212-step .gtp2-mode-card{min-height:98px!important;padding:8px!important}.nova27-home .gtp212-step-emoji{width:95%}}
+
+/* Intel flash: never visually celebrate a correct trait as a solved target */
+#app[data-screen="game"] .gtp2-game-scene .flash.intel-neutral{background:linear-gradient(110deg,#18283c,#1d2036)!important;border:1px solid #7bbace!important;color:#e2fbff!important;box-shadow:inset 3px 0 0 #86d5e2!important}
+#app[data-screen="game"] .gtp2-game-scene .flash.intel-neutral .signal-mark{color:#99f1ed!important}
+#app[data-screen="game"] .gtp2-game-scene .flash.intel-neutral strong{color:#e8ffff!important}
+#app[data-screen="game"] .gtp2-game-scene .flash.intel-neutral small{color:#a9dfe7!important}
+
+/* Six-trait scanner, responsive with readable origin values. Green for confirmed smart hints */
+#app[data-screen="game"] .gtp2-game-scene .scanner{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:6px!important}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell{min-width:0;min-height:90px!important;padding:9px 4px!important;overflow-wrap:anywhere}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell strong{font-size:clamp(11px,1.04vw,17px)!important;line-height:1.12;overflow-wrap:anywhere}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell small,#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell span{font-size:8px!important}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.hinted{background:linear-gradient(155deg,#246850,#173c35)!important;border-color:#8bf7be!important;color:#e3fff0!important;box-shadow:inset 0 1px 0 #ffffff15!important}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.hinted strong{color:#fff!important}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.good{background:#235747!important;color:#e0ffed!important;border-color:#6ce0af!important}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.unknown{background:#2b2334!important;color:#c6b6d1!important;border-color:#62536d!important}
+@media(max-width:900px){#app[data-screen="game"] .gtp2-game-scene .scanner{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell{min-height:75px!important}#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell strong{font-size:15px!important}}
+@media(max-width:500px){#app[data-screen="game"] .gtp2-game-scene .scanner{gap:6px!important}#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell strong{font-size:13px!important}}
+
+/* End-of-round party and readable result */
+#app[data-screen="game"] .gtp2-game-scene .end-panel.gtp212-victory{background:radial-gradient(ellipse at 50% 0%,#6729554f,transparent 54%);border-radius:18px}
+#app[data-screen="game"] .gtp2-game-scene .end-panel.gtp212-victory h2{color:#fff7ff!important;text-shadow:0 2px 20px #db5da755}
+#app[data-screen="game"] .gtp2-game-scene .end-panel.gtp212-victory .rank{background:linear-gradient(145deg,#f698ca,#a083ee)!important;color:#20132f!important;border:2px solid #e5b6ea!important;box-shadow:0 8px 19px #0007!important}
+.gtp212-confetti{position:fixed;inset:0;z-index:120;pointer-events:none;overflow:hidden;contain:layout paint}
+.gtp212-confetti i{display:block;position:absolute;left:var(--left);top:-15vh;width:10px;height:17px;opacity:0;box-shadow:0 2px 5px #0002;animation:gtp212-party var(--time) ease-in var(--delay) forwards}
+.gtp212-confetti i:nth-child(5n+1){border-radius:50%;width:9px;height:9px}
+.gtp212-confetti i:nth-child(7n){width:5px;height:23px}
+@keyframes gtp212-party{0%{transform:translate3d(0,-12vh,0) rotate(0);opacity:0}8%{opacity:1}85%{opacity:1}100%{transform:translate3d(var(--drift),125vh,0) rotate(var(--twist));opacity:0}}
+@media(prefers-reduced-motion:reduce){.gtp212-confetti{display:none!important}}

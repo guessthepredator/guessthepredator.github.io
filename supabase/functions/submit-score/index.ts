@@ -32,7 +32,7 @@ export default {
   for(const mode of MODES){
    const r=body.rounds[mode];
    if(!r||!validGuesses(r.guesses)||r.guesses.length<1||r.guesses.length>6||!Array.isArray(r.hints)||r.hints.length>2||!['signal','full'].includes(r.mode)||![0,180].includes(r.timeLimit)||r.finished!==true)return json({error:`Invalid ${mode} round`},400);
-   if(r.hints.some((h:any)=>!['role','gender','form','age','debut'].includes(h))||new Set(r.hints).size!==r.hints.length||r.guesses.length>(r.mode==='full'?5:6))return json({error:`Invalid ${mode} attempt limits`},400);
+   if(r.hints.some((h:any)=>!['role','gender','form','age','debut','origin'].includes(h))||new Set(r.hints).size!==r.hints.length||r.guesses.length>(r.mode==='full'?5:6))return json({error:`Invalid ${mode} attempt limits`},400);
    const hit=r.guesses.indexOf(expected[mode]);
    // Only a last, correct guess is a win. Loss must exhaust attempts or timeout.
    const won=hit===r.guesses.length-1;

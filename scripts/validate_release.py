@@ -5,8 +5,8 @@ P=Path(__file__).resolve().parents[1]
 required=['index.html','styles.css','src/app.mjs','src/engine.mjs','src/scoring.mjs','src/leaderboard.mjs','src/leaderboard_config.mjs','src/pixel_scene.mjs','src/audio.mjs','src/data.mjs','LEADERBOARD_SETUP.md','supabase/migrations/202610170001_leaderboards.sql','supabase/functions/submit-score/index.ts','assets/decor/haunted-hero.webp','.github/workflows/pages.yml']
 for name in required: assert (P/name).is_file(),name
 html=(P/'index.html').read_text();js=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
-assert html.count('rel="stylesheet"')==1 and 'styles.css?v=2.10.0' in html
-assert 'app.mjs?v=2.10.0' in html
+assert html.count('rel="stylesheet"')==1 and 'styles.css?v=2.12.0' in html
+assert 'app.mjs?v=2.12.0' in html
 assert 'function leaderboard()' in js and 'function howTo()' in js and 'function faq()' in js
 assert 'gtp27-mode-grid' in css and 'gtp27-classic-banner' in js
 assert "['classic', 'pixel', 'quote', 'ability', 'emoji']" in (P/'src/engine.mjs').read_text()
@@ -14,12 +14,14 @@ assert 'mapGame(' not in js and 'data-mode="map"' not in js
 assert not any((P/name).exists() for name in ['MEDIA_STUDIO.html','src/maps.mjs','src/map_runtime.mjs','src/announcer.mjs','assets/game-bg/map.svg'])
 assert Image.open(P/'assets/decor/haunted-hero.webp').size[0]>=1200
 assert not (P/'src/concept_map_manifest.mjs').exists()
-assert len(list((P/'assets/sfx').glob('*.wav')))==13
+assert len(list((P/'assets/sfx').glob('*.wav')))==14
 for sound in (P/'assets/sfx').glob('*.wav'):
- with wave.open(str(sound)) as wav:assert wav.getnchannels()==1 and .03<wav.getnframes()/wav.getframerate()<.42,sound
-assert 'node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs tests/v210.test.mjs' in workflow
+ with wave.open(str(sound)) as wav:
+  seconds=wav.getnframes()/wav.getframerate()
+  assert wav.getnchannels()==1 and (.03<seconds<5 if sound.name=='party.wav' else .03<seconds<.42),sound
+assert 'node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs tests/v210.test.mjs tests/v212.test.mjs' in workflow
 assert 'cp index.html styles.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
 assert 'src/leaderboard_config.mjs' in workflow or 'cp -r src assets dist/' in workflow
 assert not any((P/'tests'/name).exists() for name in ['v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs','gtp2.test.mjs','v26.test.mjs'])
-print('GTP2 V2.10 release validation PASS: 5 modes, 13 nonverbal SFX, 1 CSS, 2 scoreboards, Supabase backend package')
-print('Supabase project connected; a 2026-10-17 score record was verified in Daily and Overall. This patch changes only the frontend UI.')
+print('Guess The Predator V2.12 release validation PASS: 5 modes, 14 nonverbal SFX, 6 traits, 2 scoreboards')
+print('Supabase project settings are preserved; live submission origin changes are deployed separately.')

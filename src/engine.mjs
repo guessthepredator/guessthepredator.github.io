@@ -1,7 +1,7 @@
 import {localAbilitySlugs} from './abilities.mjs?v=2.8.0';
 /** Guess the Predator 2 · Deduction engine. No DOM, timers or network in this module. */
-export const FIELDS = Object.freeze(['role', 'gender', 'form', 'age', 'debut']);
-export const LABELS = Object.freeze({role: 'CLASS', gender: 'GENDER', form: 'FORM', age: 'AGE', debut: 'LAUNCH'});
+export const FIELDS = Object.freeze(['role', 'gender', 'form', 'age', 'debut', 'origin']);
+export const LABELS = Object.freeze({role: 'CLASS', gender: 'GENDER', form: 'FORM', age: 'AGE', debut: 'LAUNCH',origin:'ORIGIN'});
 export const MODES = Object.freeze(['classic', 'pixel', 'quote', 'ability', 'emoji']);
 export const MODE_NAMES = Object.freeze({classic:'CLASSIC',pixel:'PIXEL',quote:'QUOTE',ability:'ABILITY',emoji:'EMOJI'});
 export const MAX_GUESSES = 6;
