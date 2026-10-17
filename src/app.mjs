@@ -45,6 +45,8 @@ let triviaBoardError='';
 let triviaSubmitting=false;
 let triviaAnswerText='';
 let triviaTickTimer=null;
+let triviaClockFrame=0;
+let triviaExpiredKey='';
 
 let session='daily';
 let active='classic';
@@ -528,7 +530,7 @@ function trivia(){
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}
   ${!run?`<div class="trivia-intro"><span class="trivia-tag">${isDaily?'ONE OFFICIAL RUN PER UTC DAY':'UNLIMITED UNRANKED ROUNDS'}</span><h2>${isDaily?'DAILY INTEL DROP':'TRAIN YOUR KNOWLEDGE'}</h2><p>${isDaily?'Everyone receives the same five-question selection today. Answers and timing are verified on the server; results appear on the separate Trivia leaderboard.':'Try varied sets across the question bank; recent topics are rotated when possible. Practice does not affect your global ranking.'}</p><p class="trivia-hint">Your public nickname: <strong>${esc(savedNickname()||'Not set')}</strong> · You can change it in the top navigation.</p><button type="button" data-action="trivia-start" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'CONNECTING…':isDaily?'START / RESUME DAILY →':'START PRACTICE →'}</button></div>`:''}
   ${run?.finished?`<div class="trivia-finale"><span class="trivia-tag">${isDaily?'DAILY SUBMITTED':'PRACTICE COMPLETE'}</span><h2>RUN COMPLETE.</h2><div class="trivia-final-score">${Number(run.score)||0}<small> / 100</small></div><p>${run.score===100?'PERFECT INTEL. FIVE FOR FIVE.':'You answered '+Math.floor(run.score/20)+' of 5 questions correctly.'} ${isDaily?'Your score is stored in the separate Trivia rankings.':'Practice rounds never change the leaderboard.'}</p>${run.feedback?`<div class="trivia-last-explanation"><strong>${run.feedback.correct?'✓ FINAL ANSWER CORRECT':'FINAL QUESTION REVIEW'}</strong><span>${esc(run.feedback.explanation||'')}</span>${run.feedback.source?`<a href="${esc(run.feedback.source)}" target="_blank" rel="noopener noreferrer">Official EA source ↗</a>`:''}</div>`:''}${isDaily&&triviaRewardEarned()?intelReadyMarkup(3):''}<div class="trivia-final-actions"><button type="button" class="trivia-primary" data-action="trivia-mode" data-trivia-mode="practice">∞ PRACTICE AGAIN</button><button type="button" class="trivia-secondary" data-action="trivia-board-refresh">VIEW RANKINGS ↗</button></div></div>`:''}
-  ${run&&!run.finished&&feedback?`<div class="trivia-feedback ${feedback.correct?'good':'bad'}"><span class="trivia-tag">QUESTION ${Math.min(run.number-1,5)} / 5</span><h2>${feedback.correct?'✓ CORRECT · +20':feedback.timedOut?'⌛ TIME EXPIRED':'✕ NOT QUITE'}</h2><p><strong>Accepted answer${feedback.acceptedAnswers?.length>1?'s':''}:</strong> ${esc((feedback.acceptedAnswers||[]).join(' · '))}</p><p>${esc(feedback.explanation||'')}</p>${feedback.source?`<a href="${esc(feedback.source)}" target="_blank" rel="noopener noreferrer">Verify with EA ↗</a>`:''}<p class="trivia-current-score">RUN SCORE: ${run.score} / 100</p><button data-action="trivia-next" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'LOADING…':'NEXT QUESTION →'}</button></div>`:''}
+  ${run&&!run.finished&&feedback?`<div class="trivia-feedback ${feedback.correct?'good':'bad'}"><span class="trivia-tag">QUESTION ${Math.min(run.number-1,5)} / 5</span><h2>${feedback.correct?'✓ CORRECT · +20':feedback.timedOut?'⌛ TIME’S UP · QUESTION EXPIRED':'✕ NOT QUITE'}</h2><p><strong>Accepted answer${feedback.acceptedAnswers?.length>1?'s':''}:</strong> ${esc((feedback.acceptedAnswers||[]).join(' · '))}</p><p>${esc(feedback.explanation||'')}</p>${feedback.source?`<a href="${esc(feedback.source)}" target="_blank" rel="noopener noreferrer">Verify with EA ↗</a>`:''}<p class="trivia-current-score">RUN SCORE: ${run.score} / 100</p><button data-action="trivia-next" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'LOADING…':'NEXT QUESTION →'}</button></div>`:''}
   ${run&&!run.finished&&!feedback&&question?`<div class="trivia-question"><div class="trivia-question-head"><span class="trivia-tag">QUESTION ${run.number} / 5 · ${['CADET','SCOUT','OPERATIVE','SPECIALIST','APEX MASTER'][Math.max(0,Math.min(4,run.number-1))]} · ${esc(question.category.replace(/-/g,' ').toUpperCase())}</span><strong class="trivia-clock ${remaining<=6?'urgent':''}" id="trivia-clock"><span id="trivia-seconds">${remaining}</span>s</strong></div><div class="trivia-timebar"><span id="trivia-timefill" style="width:${Math.max(0,Math.min(100,remaining*5))}%"></span></div><h2>${esc(question.prompt)}</h2><form id="trivia-answer-form">${question.kind==='choice'?`<div class="trivia-options">${question.options.map((v,i)=>`<button class="trivia-option" type="button" data-action="trivia-choice" data-value="${esc(v)}" ${triviaBusy?'disabled':''}><b>${String.fromCharCode(65+i)}</b><span>${esc(v)}</span><span>↗</span></button>`).join('')}</div>`:`<div class="trivia-type"><label for="trivia-written-answer">YOUR ANSWER</label><input id="trivia-written-answer" name="answer" spellcheck="false" autocomplete="off" placeholder="Type a Legend name…" maxlength="70" value="${esc(triviaAnswerText)}" ${triviaBusy?'disabled':''}/><button class="trivia-primary" type="submit" ${triviaBusy?'disabled':''}>SUBMIT ANSWER ↗</button></div>`}</form><button type="button" class="trivia-skip" data-action="trivia-skip" ${triviaBusy?'disabled':''}>SKIP / NO ANSWER</button><p class="trivia-note">The clock continues even when you switch tabs. Answers are evaluated server-side.</p></div>`:''}
   </section><aside class="trivia-sidebar"><div class="trivia-sidehead"><span>✦ SEPARATE TRIVIA RANKINGS</span><div class="trivia-tabs"><button data-action="trivia-board-tab" data-tab="daily" class="${triviaScoreTab==='daily'?'active':''}">TODAY</button><button data-action="trivia-board-tab" data-tab="overall" class="${triviaScoreTab==='overall'?'active':''}">ALL TIME</button></div></div>${triviaBoardBusy?'<p class="trivia-quiet">LOADING SCORES…</p>':triviaBoardError?`<p class="trivia-quiet">${esc(triviaBoardError)}</p>`:rows.length?`<div class="trivia-board-rows">${rows.map((r,i)=>`<div class="trivia-board-row"><b>#${Number(r.position)||i+1}</b><span>${esc(r.player_name||'Player')}</span><strong>${Number(r.score)||0} ${triviaScoreTab==='overall'?'PTS':'/100'}</strong></div>`).join('')}</div>`:'<p class="trivia-quiet">No daily submissions yet. Be the first!</p>'}<div class="trivia-aside-foot"><b>CURATED QUESTION BANK</b><p>Progressive difficulty, varied topics, and fewer repeated questions. Source: official EA game information.</p><button class="trivia-secondary" data-action="trivia-board-refresh">↻ REFRESH LEADERBOARD</button></div></aside></div>
   </div></main>`;
@@ -545,9 +547,9 @@ async function triviaStart(){if(triviaBusy)return;
  catch(e){triviaMessage=e?.message||'Could not start Trivia';}
  finally{triviaBusy=false;if(screen==='trivia')render({scroll:false});}
 }
-async function triviaSubmitAnswer(value){if(triviaBusy||triviaSubmitting||!triviaRun?.question||triviaRun.finished)return;
+async function triviaSubmitAnswer(value,timedOut=false){if(triviaBusy||triviaSubmitting||!triviaRun?.question||triviaRun.finished)return;
  triviaBusy=true;triviaSubmitting=true;let response;
- try{response=await triviaRequest({action:'answer',runId:triviaRun.runId,answer:String(value||'').slice(0,120)});triviaRun=response;saveTriviaReward(response);triviaAnswerText='';triviaMessage='';sound(response?.feedback?.correct?'correct':'wrong');if(response?.finished){sound('win');void loadTriviaBoards();}}
+ try{response=await triviaRequest({action:'answer',runId:triviaRun.runId,answer:String(value||'').slice(0,120)});if(timedOut&&response?.feedback)response={...response,feedback:{...response.feedback,timedOut:true}};triviaRun=response;saveTriviaReward(response);triviaAnswerText='';triviaMessage='';sound(response?.feedback?.correct?'correct':'wrong');if(response?.finished){sound('win');void loadTriviaBoards();}}
  catch(e){triviaMessage=e?.message||'Could not submit answer';}
  finally{triviaBusy=false;triviaSubmitting=false;if(screen==='trivia')render({scroll:false});}
 }
@@ -558,12 +560,31 @@ async function triviaNext(){if(triviaBusy||!triviaRun?.waitingNext)return;
  finally{triviaBusy=false;if(screen==='trivia')render({scroll:false});}
 }
 function triviaClockTick(){
- const q=triviaRun?.question;if(screen!=='trivia'||!q||!triviaRun.deadlineAt)return;
- const left=Math.max(0,Math.ceil((Date.parse(triviaRun.deadlineAt)-Date.now())/1000));
- const digits=document.getElementById('trivia-seconds');if(digits)digits.textContent=left;
- const fill=document.getElementById('trivia-timefill');if(fill)fill.style.width=`${Math.min(100,left*5)}%`;
- document.getElementById('trivia-clock')?.classList.toggle('urgent',left<=6);
- if(left<=0&&!triviaBusy&&!triviaSubmitting)void triviaSubmitAnswer('');
+ // Continuous compositor-friendly progress; the label itself updates only
+ // when the displayed whole second changes. The deadline stays server-owned.
+ if(triviaClockFrame)cancelAnimationFrame(triviaClockFrame);
+ triviaClockFrame=0;
+ const frame=()=>{
+  const run=triviaRun;
+  if(screen!=='trivia'||!run?.question||run?.feedback||!run.deadlineAt){triviaClockFrame=0;return;}
+  const remainingMs=Math.max(0,Date.parse(run.deadlineAt)-Date.now());
+  const seconds=Math.ceil(remainingMs/1000);
+  const digits=document.getElementById('trivia-seconds');
+  if(digits&&digits.textContent!==String(seconds))digits.textContent=seconds;
+  const fill=document.getElementById('trivia-timefill');
+  if(fill)fill.style.transform='scaleX('+Math.max(0,Math.min(1,remainingMs/20000))+')';
+  document.getElementById('trivia-clock')?.classList.toggle('urgent',seconds<=6);
+  if(remainingMs<=0){
+   const key=[run.runId,run.number,run.deadlineAt].join(':');
+   if(triviaExpiredKey!==key&&!triviaBusy&&!triviaSubmitting){
+    triviaExpiredKey=key;
+    void triviaSubmitAnswer('',true);
+   }
+   triviaClockFrame=0;return;
+  }
+  triviaClockFrame=requestAnimationFrame(frame);
+ };
+ triviaClockFrame=requestAnimationFrame(frame);
 }
 function leaderboard(){
  const summary=dailySummary(store.days,today());
@@ -940,7 +961,6 @@ document.addEventListener('keydown',event=>{
 });
 let lastSpotlightUTC=utcDay();
 setInterval(()=>{
-  triviaClockTick();
   const currentUTC=utcDay();
   if(currentUTC!==lastSpotlightUTC){
     lastSpotlightUTC=currentUTC;
