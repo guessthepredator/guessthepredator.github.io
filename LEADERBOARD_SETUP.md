@@ -1,14 +1,7 @@
-# V2.8 live project · Supabase
+# Live Leaderboards
 
-Project **gtl** (`pupdfltjeyzhnyrxutvt`). Live URL and the public publishable key are already configured in `src/leaderboard_config.mjs`. Database table + two RPC leaderboard readers + hardened `submit-score` Edge Function were provisioned in the connected Supabase project on 2026-10-17.
+Daily and Overall are powered by Supabase RPC functions and server-validated anonymous score submissions. The live Supabase project and publishable key are already configured; no database wipe or migration is required for V2.18.
 
-**IMPORTANT: Do not rerun the legacy migration or deploy the old function source included here.** The live `submit-score` function has already been updated to check bearer identity and challenge submissions. Old source is historical and is not automatically deployed via GitHub Pages.
+A player must finish **both** Daily Challenges, Full Scan first and One Signal second, to submit. Wins earn points; loss still completes a checkpoint. The V2.18 score uses two rounds scaled by 2.5 to remain on the prior five-round point scale, and the Edge Function independently checks answers and results. Submission is allowed once per UTC day per player, including if the user played a legacy version earlier that same day.
 
-The only required user setup check is **Supabase Dashboard → Authentication → Anonymous Sign-ins: enabled**. Configure rate limits and CAPTCHA if public abuse occurs.
-
-Website deploy: unzip over the same GitHub repository (keep `.git`), run `INSTALL_CLEAN_WINDOWS.bat` from the repository folder, then Commit → Push in GitHub Desktop. Supabase does not need a new project and no secret key belongs in GitHub.
-
-**Acceptance test:** open your GitHub Pages site; visit Rankings; both public boards should load and initially show no scores. Complete the five Daily modes today, type an anonymous nickname (not real name), submit once, then confirm it appears on Daily and Overall. Submissions require a valid anonymous session and use the live backend. Browser/API live E2E has not yet been verified.
-
-The local game code includes deterministic answers and cannot prevent determined manipulation. Treat the leaderboard as casual, not competition-grade security.
-
+Free Play scores never enter global rankings. Nicknames are public; do not use real names or contact information. The Supabase service-role secret is never distributed to the frontend.

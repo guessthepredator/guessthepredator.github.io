@@ -1,14 +1,9 @@
-# Supabase connected · GTP2 V2.7.1
+# Supabase — Live integration
 
-Project: gtl (`pupdfltjeyzhnyrxutvt`), Europe West.
+Project: `pupdfltjeyzhnyrxutvt` (Supabase URL `https://pupdfltjeyzhnyrxutvt.supabase.co`). Frontend publishable credentials are located in `src/leaderboard_config.mjs`.
 
-**Already deployed in Supabase**
-- Public table `gtp_daily_scores` with RLS; no direct browser writes.
-- RPCs `get_daily_leaderboard`, `get_overall_leaderboard` return only display names and scores.
-- Edge Function `submit-score` was deployed to the Supabase project on 2026-10-17. Its `verify_jwt` gateway option is OFF because the function itself validates the user's bearer token with Supabase Auth. CORS restricts browser Origins to `https://negoitasebastian.github.io` and localhost.
+**Live Edge Function `submit-score`: ACTIVE v5** (updated 2026-10-17). Accepts the official website origin `https://guessthepredator.github.io` (and earlier origin), verifies anonymous Supabase sessions, checks names, date, game answers, hints and Full Scan/One Signal results, requires the correct track order and recalculates all points server-side. The same endpoint accepts legacy five-round payloads during rollout.
 
-**What you still need to check:** Enable anonymous sign-ins under Supabase Authentication, if not already enabled. Browser must have network access to `esm.sh` (dynamic supabase-js dependency) and Supabase. We have not run a real anonymous sign-in and completed score submission.
+Client protocol V2.18: `protocol:'v218'`, `rounds:{full:{gameMode,...},signal:{gameMode,...}}`. Two-round scores normalized by 2.5 for continuity with five-round leaderboard history. Database schema unchanged, with one score per anonymous account and UTC day.
 
-To publish: copy this repository into your existing GitHub repository, run `INSTALL_CLEAN_WINDOWS.bat`, review GitHub Desktop changes (keep `.git`), then Commit and Push. No new Supabase project and no secret credentials are necessary.
-
-**Important:** The daily targets are deterministic and public in the game code. Server validation helps reject malformed or altered scores but this remains a casual, not cheat-proof leaderboard. The function was deployed from a hardened server implementation; do not run an older `supabase functions deploy` command from earlier ZIPs, which would overwrite it. See `LEADERBOARD_SETUP.md`.
+Publishing the GitHub repository DOES NOT redeploy the Supabase Edge Function. The checked-in `supabase/functions/submit-score` folder documents the service-side code. NEVER place the Supabase service-role key in static website files.

@@ -27,7 +27,7 @@ test('redundant home controls removed and contrast toggles remain',()=>{
 test('softened background and palette that is not pink',()=>{
  assert.ok(css.includes('brightness(.71) saturate(.67)'));
  assert.ok(css.includes('background:linear-gradient(110deg,#111f2de8'));
- assert.ok(app.includes("classic:'#71c8bb'"));
+ assert.ok(app.includes("classic:'#f17b72'"));
  assert.ok(css.includes('.nova27-home .gtp2-hero-content:before{animation:none'));
 });
 test('prominent and centered mode controls',()=>{

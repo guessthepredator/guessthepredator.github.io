@@ -26,11 +26,12 @@ for sound in (P/'assets/sfx').glob('*.wav'):
  with wave.open(str(sound)) as wav:
   seconds=wav.getnframes()/wav.getframerate()
   assert wav.getnchannels()==1 and (.03<seconds<5 if sound.name=='party.wav' else .03<seconds<.42),sound
-assert 'node --test' in workflow, 'CI missing Node test runner'
-for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs','v212.test.mjs','v213.test.mjs','v214.test.mjs','v215.test.mjs','v216.test.mjs','v217.test.mjs']:
+assert 'node --test' in workflow
+assert (P/'src/daily218.mjs').is_file(), 'CI missing Node test runner'
+for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs','v212.test.mjs','v213.test.mjs','v214.test.mjs','v215.test.mjs','v216.test.mjs','v217.test.mjs','v218.test.mjs']:
  assert test_file in workflow, f'CI missing {test_file}'
 assert 'cp index.html styles.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
 assert 'src/leaderboard_config.mjs' in workflow or 'cp -r src assets dist/' in workflow
 assert not any((P/'tests'/name).exists() for name in ['v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs','gtp2.test.mjs','v26.test.mjs'])
-print('Guess The Predator release validation PASS: 5 modes, 14 nonverbal SFX, 6 traits, 2 scoreboards')
+print('Guess The Predator V2.18 release validation PASS: 5 play modes, 2 Daily challenges, 2 rewards, 14 SFX, 6 traits, 2 scoreboards')
 print('Supabase project settings are preserved; live submission origin changes are deployed separately.')

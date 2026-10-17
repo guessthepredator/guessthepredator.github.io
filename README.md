@@ -1,29 +1,15 @@
-Guess The Predator V2.14 — LOW GLOW
+# Guess The Predator
 
-See CHANGELOG_V214.md for the new look and optional full-body artwork setup.
+A five-mode Apex Legends fan guessing game, built for GitHub Pages with global Supabase rankings. Independent fan project, **Made by Sebyby**. Not affiliated with EA or Respawn.
 
-# Guess The Predator 2 — V2.8 TWILIGHT
+**Release:** V2.18 Neon Dual Daily (see `CHANGELOG_V218.md`).
 
-Static GitHub Pages Apex fan-trivia game with 5 modes: Classic, Pixel, Quote, Ability, Emoji. Map permanently removed.
+**Play modes:** Classic, Pixel (Soft Blur), Quote, Ability and Emoji. **Daily:** two UTC challenges per day, Full Scan then One Signal; the underlying mode rotates between the five games. **Free Play:** unlimited attempts in all five modes.
 
-## New in V2.8
-- Home Daily/Free Play broken button layout fixed with one clear action plus separate rankings. Session switching no longer redraws the hero.
-- Darker, textured plum gameplay with magenta/cyan filled controls and higher contrast.
-- Clear Classic question banner, visible rules, smaller terminal and in-place guess history.
-- Harder Pixel reveal using a shared, neutral background. 28-legend emoji checks with no repeated symbols.
-- Thirteen freshly synthesized, quiet nonverbal UI SFX.
-- Daily/Overall public leaderboard remains connected to existing `gtl` Supabase project and preserves old anonymous browser session + local game data.
+**Forbidden Intel:** Completing Daily 1 opens a useful tip; completing Daily 2 opens a more advanced tip. Both are separately claimable, including if the round was lost.
 
-**First read [START_HERE.md](START_HERE.md).** Rankings are live only after testing an authenticated anonymous submit from the deployed site. GitHub Pages does not host the database.
+**Rankings:** Daily and Overall via Supabase; backend recomputes score independently. V2.18 submissions contain 2 validated rounds and are normalized to the previous five-round score range for continuity. Existing database rows are not reset.
 
-This independent fan project is not affiliated with EA or Respawn. External Legend portrait hotlinks can fail and have independent rights/terms. Ability gameplay uses only locally available icon assets.
+**Artwork:** the user-selected Mirage Halloween reference is included as a desktop background; real HTML buttons sit above it. Mobile has its own responsive layout. Some Legend portraits originate from external servers; see `assets/portraits/README.md` for the ten unverified transparent full-body files.
 
-
-## V2.16 – Mirage Duo
-
-Two inward-facing Mirage artworks flank the homepage while all interactive controls remain actual HTML elements. The entire Next Game Legend panel is now one accessible button with a low-glare spinning wheel icon. The Ability icon and scan tag share a centered layout. See `CHANGELOG_V216.md`.
-
-
-## Exact-reference homepage (V2.17)
-
-Desktop homepage uses `assets/decor/forbidden-intel-exact-v217.webp`, created from the user's chosen concept image. The illustrated parts are decorative; interactive transparent HTML targets cover each navigation region. A live progress widget displays the real current Daily completion count and session buttons choose Daily or Free Play. The five cards are labeled with the actual available game modes: Classic, Pixel, Ability, Quote, Emoji. Phone layout retains the previous adaptive homepage.
+**Build:** static ESM modules. Open with an HTTP server for local testing; do not expect module imports to work directly from `file://` in every browser. Deployment and CI details in `START_HERE.md`.

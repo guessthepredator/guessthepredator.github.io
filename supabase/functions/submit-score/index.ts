@@ -1,61 +1,61 @@
-import { createClient } from 'npm:@supabase/supabase-js@2.57.0';
+import {createClient} from 'npm:@supabase/supabase-js@2.57.0';
 import {legends} from './_shared/data.mjs';
-import {MODES,puzzleAnswers,gameScore} from './_shared/engine.mjs';
+import {MODES,hash,puzzleAnswers} from './_shared/engine.mjs';
 
-const ORIGIN='*';
-const headers={'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Headers':'authorization, apikey, x-client-info, content-type','Access-Control-Allow-Methods':'POST,OPTIONS'};
-const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{...headers,'Content-Type':'application/json'}});
-const validName=(name:unknown)=>typeof name==='string'&&/^[A-Za-z0-9 _-]{3,18}$/.test(name);
-const UTC=()=>new Date().toISOString().slice(0,10);
-const midnightUTC=(day:string)=>Date.parse(day+'T00:00:00.000Z');
-const validGuesses=(values:unknown)=>Array.isArray(values)&&values.every(x=>typeof x==='string'&&legends.some(l=>l.name===x))&&new Set(values).size===values.length;
-export default {
- async fetch(request:Request){
-  if(request.method==='OPTIONS')return new Response(null,{headers});
-  if(request.method!=='POST')return json({error:'Method not allowed'},405);
-  const auth=request.headers.get('Authorization')||'';
-  const token=auth.startsWith('Bearer ')?auth.slice(7):'';
-  if(!token||request.headers.get('Content-Length')&&Number(request.headers.get('Content-Length'))>15000)return json({error:'Unauthorized/too large'},401);
-  const endpoint=Deno.env.get('SUPABASE_URL')||'';
-  const publicKey=Deno.env.get('SUPABASE_ANON_KEY')||'';
-  const serviceKey=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')||'';
-  if(!endpoint||!publicKey||!serviceKey)return json({error:'Server is not configured'},503);
-  const authClient=createClient(endpoint,publicKey,{auth:{persistSession:false}});
-  const {data:{user},error:userError}=await authClient.auth.getUser(token);
-  if(userError||!user)return json({error:'Invalid user session'},401);
-  let body:any;
-  try{body=await request.json();}catch{return json({error:'Invalid JSON'},400);}
-  if(!validName(body?.displayName)||body?.day!==UTC()||!body?.rounds||Object.keys(body.rounds).length!==MODES.length)return json({error:'Invalid name or challenge date'},400);
-  const expected=puzzleAnswers(body.day,legends);
-  let base=0,allWon=true;
-  const result:Record<string,unknown>={};
-  for(const mode of MODES){
-   const r=body.rounds[mode];
-   if(!r||!validGuesses(r.guesses)||r.guesses.length<1||r.guesses.length>6||!Array.isArray(r.hints)||r.hints.length>2||!['signal','full'].includes(r.mode)||![0,120,180].includes(r.timeLimit)||r.finished!==true)return json({error:`Invalid ${mode} round`},400);
-   if(r.hints.some((h:any)=>!['role','gender','form','age','debut','origin'].includes(h))||new Set(r.hints).size!==r.hints.length||r.guesses.length>(r.mode==='full'?5:6))return json({error:`Invalid ${mode} attempt limits`},400);
-   const hit=r.guesses.indexOf(expected[mode]);
-   // Only a last, correct guess is a win. Loss must exhaust attempts or timeout.
-   const won=hit===r.guesses.length-1;
-   if(hit>=0&&!won||won!==r.won||(!won&&r.guesses.length<(r.mode==='full'?5:6)&&r.loss!=='time'))return json({error:`Round result mismatch (${mode})`},400);
-   allWon&&=won;
-   let seconds=0;
-   if([120,180].includes(r.timeLimit)&&Number.isFinite(r.startedAt)&&Number.isFinite(r.finishedAt)){
-    const duration=Math.max(0,Math.min(r.timeLimit,Math.ceil((r.finishedAt-r.startedAt)/1000)));
-    seconds=Math.max(0,r.timeLimit-duration);
-   }
-   const pts=won?Math.max(100,Math.round(1460-(r.guesses.length-1)*180-r.hints.length*145+seconds*4)):0;
-   base+=pts;
-   result[mode]={won,guesses:r.guesses.length,hints:r.hints.length,score:pts};
+/** Offline source parity with deployed submit-score v5. Deploy separately from GitHub Pages.
+ * Supports V2.18 dual challenges and legacy five-puzzle submissions during transition.
+ */
+const allowedOrigins=new Set(['https://negoitasebastian.github.io','https://guessthepredator.github.io','http://localhost:8000','http://127.0.0.1:8000']);
+const fields=new Set(['role','gender','form','age','debut','origin']);
+const names=new Set(legends.map(l=>l.name));
+const json=(body:unknown,status=200,origin='https://guessthepredator.github.io')=>new Response(JSON.stringify(body),{
+ status,headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'authorization, apikey, x-client-info, content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Vary':'Origin'}
+});
+const yesterday=day=>new Date(Date.parse(day+'T00:00:00Z')-86400000).toISOString().slice(0,10);
+Deno.serve(async(req:Request)=>{
+ const incoming=req.headers.get('Origin');if(incoming&&!allowedOrigins.has(incoming))return json({error:'Origin not allowed'},403);
+ const origin=incoming||'https://guessthepredator.github.io';
+ if(req.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'authorization, apikey, x-client-info, content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Vary':'Origin'}});
+ if(req.method!=='POST')return json({error:'Method not allowed'},405,origin);
+ const bearer=req.headers.get('Authorization')||'';if(!bearer.startsWith('Bearer '))return json({error:'Authentication required'},401,origin);
+ const endpoint=Deno.env.get('SUPABASE_URL')||'',secret=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')||'';
+ if(!endpoint||!secret)return json({error:'Server configuration unavailable'},503,origin);
+ let raw:string;try{raw=await req.text();}catch{return json({error:'Invalid request'},400,origin);}
+ if(raw.length>16000)return json({error:'Payload too large'},413,origin);
+ let payload:any;try{payload=JSON.parse(raw);}catch{return json({error:'Invalid JSON'},400,origin);}
+ const day=new Date().toISOString().slice(0,10),isDual=payload?.protocol==='v218';
+ const tracks=isDual?['full','signal']:MODES;
+ if(typeof payload?.displayName!=='string'||!/^[A-Za-z0-9 _-]{3,18}$/.test(payload.displayName)||payload.day!==day||!payload.rounds||typeof payload.rounds!=='object'||Object.keys(payload.rounds).length!==tracks.length||tracks.some(track=>!Object.hasOwn(payload.rounds,track)))return json({error:'Invalid nickname, date or rounds'},400,origin);
+ const client=createClient(endpoint,secret,{auth:{persistSession:false,autoRefreshToken:false}});
+ const {data:{user},error:authError}=await client.auth.getUser(bearer.slice(7).trim());
+ if(authError||!user||user.is_anonymous!==true)return json({error:'Invalid anonymous session'},401,origin);
+ const answers=puzzleAnswers(day,legends),pivot=hash('gtp:v218:daily:'+day)%MODES.length;
+ const schedule={full:MODES[pivot],signal:MODES[(pivot+2)%MODES.length]};
+ if(isDual&&(!payload.rounds.full||!payload.rounds.signal||payload.rounds.full.mode!=='full'||payload.rounds.signal.mode!=='signal'||payload.rounds.full.gameMode!==schedule.full||payload.rounds.signal.gameMode!==schedule.signal||payload.rounds.full.timeLimit!==0||payload.rounds.signal.timeLimit!==0))return json({error:'Daily track configuration mismatch'},400,origin);
+ if(isDual&&(!Number.isFinite(payload.rounds.full.finishedAt)||!Number.isFinite(payload.rounds.signal.startedAt)||payload.rounds.signal.startedAt<payload.rounds.full.finishedAt))return json({error:'Daily track order invalid'},400,origin);
+ let base=0,allWon=true;const details:Record<string,unknown>={};
+ for(const track of tracks){
+  const gameMode=isDual?schedule[track]:track,r=payload.rounds[track],guesses=r?.guesses;
+  if(!r||!Array.isArray(guesses)||guesses.length>6||!guesses.every((guess:unknown)=>typeof guess==='string'&&names.has(guess as string))||new Set(guesses).size!==guesses.length||!Array.isArray(r.hints)||r.hints.length>2||r.hints.some((field:unknown)=>typeof field!=='string'||!fields.has(field as string))||new Set(r.hints).size!==r.hints.length||!['signal','full'].includes(r.mode)||![0,120,180].includes(r.timeLimit)||r.finished!==true||typeof r.won!=='boolean')return json({error:`Invalid ${track} round`},400,origin);
+  const limit=r.mode==='full'?5:6;if(guesses.length>limit)return json({error:'Too many guesses'},400,origin);
+  const hit=guesses.indexOf(answers[gameMode]),won=hit===guesses.length-1&&hit!==-1;
+  if((hit!==-1&&!won)||r.won!==won||(!won&&!(guesses.length===limit||([120,180].includes(r.timeLimit)&&r.loss==='time'))))return json({error:`Round verification failed: ${track}`},400,origin);
+  if(r.loss==='time'&&![120,180].includes(r.timeLimit))return json({error:'Invalid timer'},400,origin);
+  let remain=0;if([120,180].includes(r.timeLimit)&&Number.isFinite(r.startedAt)&&Number.isFinite(r.finishedAt)){
+   const duration=(r.finishedAt-r.startedAt)/1000;if(duration<0||duration>86400)return json({error:'Invalid timing'},400,origin);
+   remain=Math.max(0,Math.min(r.timeLimit,Math.ceil(r.timeLimit-duration)));
   }
-  const db=createClient(endpoint,serviceKey,{auth:{persistSession:false}});
-  const {data:existing}=await db.from('gtp_daily_scores').select('user_id').eq('user_id',user.id).eq('day',body.day).maybeSingle();
-  if(existing)return json({error:'Score already submitted for today'},409);
-  const yesterday=new Date(midnightUTC(body.day)-86400000).toISOString().slice(0,10);
-  const {data:previous}=await db.from('gtp_daily_scores').select('streak,all_won').eq('user_id',user.id).eq('day',yesterday).maybeSingle();
-  const run=allWon?(previous?.all_won?previous.streak+1:1):0;
-  const bonus=Math.round(base*Math.min(run,10)*.05);
-  const {error:insertError}=await db.from('gtp_daily_scores').insert({user_id:user.id,day:body.day,display_name:body.displayName,base_score:base,streak_bonus:bonus,streak:run,all_won:allWon,round_results:result});
-  if(insertError)return json({error:insertError.code==='23505'?'Already submitted': 'Could not store score'},insertError.code==='23505'?409:500);
-  return json({ok:true,baseScore:base,streakBonus:bonus,totalScore:base+bonus,streak:run});
+  const points=won?Math.max(100,Math.round(1460-(guesses.length-1)*180-r.hints.length*145+remain*4)):0;
+  base+=points;allWon&&=won;details[track]={gameMode,won,guesses:guesses.length,hints:r.hints.length,score:points};
  }
-};
+ if(isDual)base=Math.round(base*2.5);
+ const {data:prior,error:priorError}=await client.from('gtp_daily_scores').select('user_id').eq('user_id',user.id).eq('day',day).maybeSingle();
+ if(priorError)return json({error:'Unable to check existing scores'},503,origin);
+ if(prior)return json({error:"Today's score is already registered"},409,origin);
+ const {data:prev,error:prevError}=await client.from('gtp_daily_scores').select('streak,all_won').eq('user_id',user.id).eq('day',yesterday(day)).maybeSingle();
+ if(prevError)return json({error:'Unable to check streak'},503,origin);
+ const streak=allWon?(prev?.all_won?prev.streak+1:1):0,bonus=Math.round(base*Math.min(streak,10)*.05);
+ const {error:insertError}=await client.from('gtp_daily_scores').insert({user_id:user.id,day,display_name:payload.displayName,base_score:base,streak_bonus:bonus,streak,all_won:allWon,round_results:details});
+ if(insertError)return json({error:insertError.code==='23505'?'Already submitted':'Score storage failed'},insertError.code==='23505'?409:500,origin);
+ return json({ok:true,baseScore:base,streakBonus:bonus,totalScore:base+bonus,streak},200,origin);
+});
