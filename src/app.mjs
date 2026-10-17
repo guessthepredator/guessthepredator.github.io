@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.26.0';
-import {legends} from './data.mjs?v=2.26.0';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.26.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.26.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.26.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.26.0';
-import {playSound} from './audio.mjs?v=2.26.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.26.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.26.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.26.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.26.0';
-import {loadStore,saveStore} from './store.mjs?v=2.26.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.27.0';
+import {legends} from './data.mjs?v=2.27.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.27.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.27.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.27.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.27.0';
+import {playSound} from './audio.mjs?v=2.27.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.27.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.27.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.27.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.27.0';
+import {loadStore,saveStore} from './store.mjs?v=2.27.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.26.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.27.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -528,9 +528,9 @@ function trivia(){
  const isDaily=triviaMode==='daily';
  const rows=triviaBoard?.[triviaScoreTab]||[];
  const feedback=run?.feedback;
- return `<main class="trivia-page" aria-label="Apex Trivia"><div class="trivia-shell">
+ return `<main class="trivia-page ${run&&!run.finished?'trivia-page-active':''} ${question&&!feedback&&!run?.finished?'trivia-page-question':''} ${question?.kind==='text'?'trivia-page-written':''}" aria-label="Apex Trivia"><div class="trivia-shell">
   <section class="trivia-hero"><span class="trivia-kicker">◈ OUTLANDS INTELLIGENCE / VERIFIED QUESTIONS</span><h1>APEX <em>TRIVIA.</em></h1><p>Five questions. 20 seconds each. Every right answer earns <b>20 points</b> — up to 100. Different from Daily Challenges.</p><div class="trivia-switch" role="group" aria-label="Trivia mode"><button data-action="trivia-mode" data-trivia-mode="daily" class="${isDaily?'active':''}">✦ DAILY RANKED</button><button data-action="trivia-mode" data-trivia-mode="practice" class="${!isDaily?'active':''}">∞ PRACTICE</button></div></section>
-  <div class="trivia-grid"><section class="trivia-main">
+  <div class="trivia-grid"><section class="trivia-main" id="trivia-main-content" tabindex="-1">
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}
   ${!run?`<div class="trivia-intro"><span class="trivia-tag">${isDaily?'ONE OFFICIAL RUN PER UTC DAY':'UNLIMITED UNRANKED ROUNDS'}</span><h2>${isDaily?'DAILY INTEL DROP':'TRAIN YOUR KNOWLEDGE'}</h2><p>${isDaily?'Everyone receives the same five-question selection today. Answers and timing are verified on the server; results appear on the separate Trivia leaderboard.':'Try varied sets across the question bank; recent topics are rotated when possible. Practice does not affect your global ranking.'}</p><p class="trivia-hint">Your public nickname: <strong>${esc(savedNickname()||'Not set')}</strong> · You can change it in the top navigation.</p><button type="button" data-action="trivia-start" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'CONNECTING…':isDaily?'START / RESUME DAILY →':'START PRACTICE →'}</button></div>`:''}
   ${run?.finished?`<div class="trivia-finale"><span class="trivia-tag">${isDaily?'DAILY SUBMITTED':'PRACTICE COMPLETE'}</span><h2>RUN COMPLETE.</h2><div class="trivia-final-score">${Number(run.score)||0}<small> / 100</small></div><p>${run.score===100?'PERFECT INTEL. FIVE FOR FIVE.':'You answered '+Math.floor(run.score/20)+' of 5 questions correctly.'} ${isDaily?'Your score is stored in the separate Trivia rankings.':'Practice rounds never change the leaderboard.'}</p>${run.feedback?`<div class="trivia-last-explanation"><strong>${run.feedback.correct?'✓ FINAL ANSWER CORRECT':'FINAL QUESTION REVIEW'}</strong><span>${esc(run.feedback.explanation||'')}</span>${run.feedback.source?`<a href="${esc(run.feedback.source)}" target="_blank" rel="noopener noreferrer">Official EA source ↗</a>`:''}</div>`:''}${isDaily&&triviaRewardEarned()?intelReadyMarkup(3):''}<div class="trivia-final-actions"><button type="button" class="trivia-primary" data-action="trivia-mode" data-trivia-mode="practice">∞ PRACTICE AGAIN</button><button type="button" class="trivia-secondary" data-action="trivia-board-refresh">VIEW RANKINGS ↗</button></div></div>`:''}
@@ -549,7 +549,7 @@ async function triviaStart(){if(triviaBusy)return;
  triviaBusy=true;triviaMessage='';render({scroll:false});
  try{triviaRun=await triviaRequest({action:'start',mode:triviaMode,displayName:nickname});saveTriviaReward(triviaRun);triviaAnswerText='';triviaMessage='';if(triviaRun.finished)void loadTriviaBoards();}
  catch(e){triviaMessage=e?.message||'Could not start Trivia';}
- finally{triviaBusy=false;if(screen==='trivia')render({scroll:false});}
+ finally{triviaBusy=false;if(screen==='trivia'){render({scroll:false});focusTriviaQuestion();}}
 }
 async function triviaSubmitAnswer(value,timedOut=false){if(triviaBusy||triviaSubmitting||!triviaRun?.question||triviaRun.finished)return;
  triviaBusy=true;triviaSubmitting=true;let response;
@@ -561,7 +561,17 @@ async function triviaNext(){if(triviaBusy||!triviaRun?.waitingNext)return;
  triviaBusy=true;render({scroll:false});
  try{triviaRun=await triviaRequest({action:'next',runId:triviaRun.runId});triviaMessage='';triviaAnswerText='';}
  catch(e){triviaMessage=e?.message||'Could not load the next question';}
- finally{triviaBusy=false;if(screen==='trivia')render({scroll:false});}
+ finally{triviaBusy=false;if(screen==='trivia'){render({scroll:false});focusTriviaQuestion();}}
+}
+function focusTriviaQuestion(){
+ if(screen!=='trivia'||!triviaRun?.question||triviaRun?.finished||triviaRun?.feedback)return;
+ requestAnimationFrame(()=>{
+  const question=document.querySelector('#trivia-main-content .trivia-question');
+  if(!question)return;
+  // Keep the entire question, answer box and submit button within the viewport.
+  // Avoid focusing the text input, which would force the virtual keyboard open.
+  question.scrollIntoView({behavior:'instant',block:'center',inline:'nearest'});
+ });
 }
 function triviaClockTick(){
  // Continuous compositor-friendly progress; the label itself updates only
@@ -928,6 +938,15 @@ app.addEventListener('submit',event=>{
   if(event.target.id==='board-submit-form'){event.preventDefault();void submitScores();return;}
   if(event.target.id==='trivia-answer-form'){event.preventDefault();void triviaSubmitAnswer(document.getElementById('trivia-written-answer')?.value||'');return;}
   if(event.target.id==='identity-form'){event.preventDefault();const form=new FormData(event.target);const nickname=String(form.get('nickname')||'').trim().replace(/\s+/g,' ');const input=document.getElementById('identity-name');if(!input?.checkValidity()){input?.reportValidity();return;}saveNickname(nickname);render({scroll:false});showToast(`Nickname saved: ${nickname}`);}
+});
+app.addEventListener('focusin',event=>{
+ if(event.target?.id!=='trivia-written-answer')return;
+ // The keyboard can reduce the visual viewport. Keep the entry area visible,
+ // while leaving text selection and typing to the browser.
+ requestAnimationFrame(()=>{
+  const input=document.getElementById('trivia-written-answer');
+  input?.scrollIntoView({behavior:'instant',block:'nearest'});
+ });
 });
 app.addEventListener('input',event=>{
   if(event.target.id==='guess-search'){quickSearch=event.target.value;updateSearchResults();}
