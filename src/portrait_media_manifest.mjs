@@ -1,15 +1,14 @@
-/** Five verified transparent full-body renders are fetched at build-time from
- * Apex Legends Wiki (game art: Electronic Arts / Respawn Entertainment).
- * The GitHub Pages artifact contains the resulting first-party PNGs, avoiding
- * the browser hotlink redirects that caused face-only fallbacks.
- * Source images: Original <Legend>.png via apexlegends.wiki.gg.
- * Other unverified portraits keep their existing safe fallback sources.
+/** Five full-body model renders are transparently cut out at build time.
+ * Their original PNGs include baked-in showcase scenes. We use U2Net to
+ * remove those panels and platform props, then serve local RGBA PNG files.
+ * Original game art belongs to Electronic Arts / Respawn Entertainment.
+ * Older fallback sources remain for failed image requests.
  */
 export const localPortraitFiles=Object.freeze({
-  alter:'original-alter.png',
-  ballistic:'original-ballistic.png',
-  catalyst:'original-catalyst.png',
-  conduit:'original-conduit.png',
-  sparrow:'original-sparrow.png'
+  alter:'cutout-alter.png',
+  ballistic:'cutout-ballistic.png',
+  catalyst:'cutout-catalyst.png',
+  conduit:'cutout-conduit.png',
+  sparrow:'cutout-sparrow.png'
 });
 export const desiredFullBodySlugs=Object.freeze(['vantage','sparrow','rampart','revenant','loba','gibraltar','conduit','catalyst','ballistic','alter']);
