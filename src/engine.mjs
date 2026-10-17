@@ -38,7 +38,7 @@ export function puzzleAnswers(day, roster) {
   return answers;
 }
 export function newRound(answer, mode='signal', timeLimit=0) {
-  return {answer,mode:mode==='full'?'full':'signal',timeLimit:timeLimit===180?180:0,
+  return {answer,mode:mode==='full'?'full':'signal',timeLimit:[120,180].includes(timeLimit)?timeLimit:0,
     guesses:[],signals:[],hints:[],won:false,finished:false,startedAt:null,deadline:null,finishedAt:null,loss:null};
 }
 export function legendByName(roster,name){return roster.find(x=>x.name===name);}
@@ -49,7 +49,7 @@ export function compare(candidate, target, field){
   const numeric=field==='age'||field==='debut';
   return {field,kind:'wrong',value:formatValue(a,field),direction:numeric?(b>a?1:-1):0};
 }
-export function formatValue(value,field){if(value==null)return 'UNDISCLOSED';if(field==='debut')return value===0?'LAUNCH':`S${value}`;return String(value);}
+export function formatValue(value,field){if(value==null)return '—';if(field==='debut')return value===0?'LAUNCH':`S${value}`;return String(value);}
 export function signalForGuess(round,candidate,target,roster){
   const locked=new Set(confirmedFields(round,target,roster));
   const seen=new Set(round.signals.map(s=>s.field));
@@ -121,7 +121,7 @@ export function scannerState(round,target,roster){
   for(const field of FIELDS){
     const last=signals.filter(s=>s.field===field).at(-1);
     const green=signals.find(s=>s.field===field&&s.kind==='correct');
-    if(target[field]==null){output[field]={field,kind:'unknown',value:'UNDISCLOSED',direction:0};continue;}
+    if(target[field]==null){output[field]=round.guesses.length?{field,kind:'unknown',value:'UNKNOWN',direction:0}:{field,kind:'hidden',value:'—',direction:0};continue;}
     if(green){output[field]={...green,kind:'correct',value:formatValue(target[field],field)};continue;}
     if(round.hints.includes(field)){output[field]={field,kind:'hint',value:formatValue(target[field],field),direction:0};continue;}
     output[field]=last||{field,kind:'hidden',value:'—',direction:0};

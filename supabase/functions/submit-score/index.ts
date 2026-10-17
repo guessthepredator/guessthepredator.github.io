@@ -31,7 +31,7 @@ export default {
   const result:Record<string,unknown>={};
   for(const mode of MODES){
    const r=body.rounds[mode];
-   if(!r||!validGuesses(r.guesses)||r.guesses.length<1||r.guesses.length>6||!Array.isArray(r.hints)||r.hints.length>2||!['signal','full'].includes(r.mode)||![0,180].includes(r.timeLimit)||r.finished!==true)return json({error:`Invalid ${mode} round`},400);
+   if(!r||!validGuesses(r.guesses)||r.guesses.length<1||r.guesses.length>6||!Array.isArray(r.hints)||r.hints.length>2||!['signal','full'].includes(r.mode)||![0,120,180].includes(r.timeLimit)||r.finished!==true)return json({error:`Invalid ${mode} round`},400);
    if(r.hints.some((h:any)=>!['role','gender','form','age','debut','origin'].includes(h))||new Set(r.hints).size!==r.hints.length||r.guesses.length>(r.mode==='full'?5:6))return json({error:`Invalid ${mode} attempt limits`},400);
    const hit=r.guesses.indexOf(expected[mode]);
    // Only a last, correct guess is a win. Loss must exhaust attempts or timeout.
@@ -39,9 +39,9 @@ export default {
    if(hit>=0&&!won||won!==r.won||(!won&&r.guesses.length<(r.mode==='full'?5:6)&&r.loss!=='time'))return json({error:`Round result mismatch (${mode})`},400);
    allWon&&=won;
    let seconds=0;
-   if(r.timeLimit===180&&Number.isFinite(r.startedAt)&&Number.isFinite(r.finishedAt)){
-    const duration=Math.max(0,Math.min(180,Math.ceil((r.finishedAt-r.startedAt)/1000)));
-    seconds=Math.max(0,180-duration);
+   if([120,180].includes(r.timeLimit)&&Number.isFinite(r.startedAt)&&Number.isFinite(r.finishedAt)){
+    const duration=Math.max(0,Math.min(r.timeLimit,Math.ceil((r.finishedAt-r.startedAt)/1000)));
+    seconds=Math.max(0,r.timeLimit-duration);
    }
    const pts=won?Math.max(100,Math.round(1460-(r.guesses.length-1)*180-r.hints.length*145+seconds*4)):0;
    base+=pts;

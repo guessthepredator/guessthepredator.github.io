@@ -1637,3 +1637,137 @@ body:has(#app[data-screen="howto"]),body:has(#app[data-screen="faq"]),body:has(#
 .gtp212-confetti i:nth-child(7n){width:5px;height:23px}
 @keyframes gtp212-party{0%{transform:translate3d(0,-12vh,0) rotate(0);opacity:0}8%{opacity:1}85%{opacity:1}100%{transform:translate3d(var(--drift),125vh,0) rotate(var(--twist));opacity:0}}
 @media(prefers-reduced-motion:reduce){.gtp212-confetti{display:none!important}}
+
+/* ===== GUESS THE PREDATOR / V2.13 — SEBYBY PRESENTATION POLISH ===== */
+/* Original angular A mark: an inspired sci-fi monogram rather than official artwork. */
+.gtp2-brand .brand-icon{border-radius:9px!important;clip-path:polygon(50% 0,98% 27%,92% 91%,50% 100%,8% 91%,2% 27%)!important;background:linear-gradient(150deg,#32183d,#120d26)!important;color:#f48cce!important;box-shadow:inset 0 0 0 2px #cc74b6!important;filter:drop-shadow(2px 3px 0 #0d0614)!important}
+.gtp2-brand .seby-apex-mark{display:block;width:80%;height:80%;filter:drop-shadow(0 1px 4px #f56dbe66)}
+.gtp2-brand .brand-text strong{white-space:nowrap!important;letter-spacing:.025em!important}
+/* Compact home: all three formerly lower-page features live in the hero. */
+.nova27-home .gtp2-hero-content{width:min(1600px,100%)!important;max-width:1600px!important;min-height:calc(100svh - 76px)!important;padding:14px clamp(14px,2.8vw,46px) 9px!important;gap:0!important;justify-content:space-between!important}
+.nova27-home .gtp2-heading{order:1!important;flex:0 0 auto!important;margin:0!important}
+.nova27-home .gtp27-session-picker{order:2!important;flex:0 0 auto!important;margin:6px auto 4px!important}
+.nova27-home .gtp28-hero-footer{order:3!important;flex:0 0 auto!important;max-width:940px!important;margin:2px auto 0!important;padding:7px 4px 0!important}
+.nova27-home .gtp28-play-btn,.nova27-home .gtp28-rank-btn{min-height:43px!important;padding:8px 12px!important;font-size:11px!important}
+.nova27-home .gtp212-cascade{order:4!important;flex:1 1 240px!important;min-height:285px!important;max-height:370px!important;grid-template-rows:repeat(3,minmax(73px,1fr))!important;row-gap:6px!important;padding:2px 0 5px!important;margin:6px auto 0!important}
+.nova27-home .gtp212-step .gtp2-mode-card{min-height:79px!important;padding:9px 13px!important}
+.nova27-home .gtp2-mode-copy strong{font-size:clamp(20px,1.7vw,27px)!important}
+.nova27-home .gtp2-mode-copy small{font-size:9px!important}
+.nova27-home .gtp212-cascade-label{margin-top:0!important}
+.nova27-home .gtp212-cascade-label strong{font-size:clamp(25px,2.7vw,43px)!important}
+.gtp213-dock{order:5;z-index:4;width:min(100%,1390px);margin:7px auto 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1fr);gap:12px;align-items:stretch;flex:0 0 auto}
+.gtp213-dock-card{position:relative;min-width:0;min-height:126px;max-height:164px;border:1px solid #ba87ba99;border-radius:14px;overflow:hidden;background:linear-gradient(140deg,#24152ede 0%,#190e26ee 100%);box-shadow:0 6px 22px #05030caa,inset 0 1px 0 #ffffff12;color:#fff1fa;padding:12px 15px;display:flex;flex-direction:column;justify-content:center;gap:4px;backdrop-filter:blur(9px)}
+.gtp213-dock-card h3{margin:1px 0 2px!important;font-family:'Barlow Condensed',Impact,sans-serif;font-size:clamp(22px,2.1vw,29px)!important;line-height:.97!important;color:#fff5fb!important;letter-spacing:.015em}
+.gtp213-dock-card h3 em{font-style:normal;color:#f38fcf}
+.gtp213-dock-card p{margin:0!important;font-size:10px!important;line-height:1.3!important;color:#d6c8e0!important}
+.gtp213-dock-kicker{color:#8ff0e7;font-weight:900;font-size:9px;letter-spacing:.105em}
+.gtp213-dock-card button{border:1px solid #dd99c8;border-radius:8px;background:linear-gradient(110deg,#a63e88,#5e3b90);color:#fff;font-size:10px;font-weight:900;letter-spacing:.03em;padding:7px 11px;cursor:pointer;box-shadow:0 2px 7px #05040d77}
+.gtp213-dock-card button:hover:not(:disabled){background:linear-gradient(110deg,#d4529c,#7d52b2)}
+.gtp213-dock-card button:disabled{opacity:1!important;color:#c1b0ca!important;border-color:#645371!important;background:#31233d!important;cursor:not-allowed!important}
+.gtp213-dock-wheel{border-color:#ec88cc99!important}
+.gtp213-dock-wheel .gtp213-dock-main{display:flex;align-items:center;gap:13px}
+.gtp213-dock-icon{display:grid;place-items:center;min-width:46px;width:46px;height:46px;border:2px dashed #d982ce;border-radius:50%;font-size:28px;color:#f6b4e4;background:#9d418522}
+.gtp213-dock-wheel button{margin:4px 0 0;align-self:stretch;display:flex;justify-content:space-between}
+.gtp213-dock-intel{border-color:#78ced3a3!important;background:linear-gradient(145deg,#182a37e8,#241730ed 100%)}
+.gtp213-dock-intel h3{font-size:clamp(23px,2vw,28px)!important}
+.gtp213-dock-progress{height:9px;border-radius:99px;margin:8px 0 4px;background:#0b1323;border:1px solid #577283;overflow:hidden}
+.gtp213-dock-progress>span{height:100%;display:block;border-radius:99px;background:linear-gradient(90deg,#69e1d9,#f07cc5);transition:width .25s}
+.gtp213-dock-legend{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;padding:7px 12px;gap:13px;border-color:#d8a3e0a3!important}
+.gtp213-dock-portrait{width:98px;height:110px;min-width:98px;flex:none;overflow:hidden;border-radius:11px;background:radial-gradient(circle at center,#6c4779,#2b1838);border:1px solid #a57aab;display:grid;place-items:end center}
+.gtp213-dock-portrait .portrait-holder{width:100%;height:100%;display:flex}
+.gtp213-dock-portrait img{width:100%;height:100%;object-fit:contain!important;object-position:center bottom!important}
+.gtp213-dock-legend-copy{min-width:0;display:flex;flex-direction:column;gap:4px}
+.gtp213-dock-legend-copy h3{overflow-wrap:anywhere}
+.gtp213-dock-legend-copy small{font-size:8px;letter-spacing:.1em;font-weight:900;color:#e1badb}
+.gtp213-credit{order:6;flex:0 0 auto!important;width:100%;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;padding:5px 8px 0;text-align:center;font-size:9px;line-height:1.3;color:#e1bfdc;text-shadow:0 1px 5px #05030d}
+.gtp213-credit strong{font-size:11px;color:#f4a6d8;letter-spacing:.04em}
+/* The quote stage is a plain, text-first panel; no inherited circles, pictures or overlays. */
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp29-quote-visual{display:grid!important;grid-template-rows:auto minmax(0,1fr)!important;grid-template-columns:minmax(0,1fr)!important;align-content:stretch!important;place-items:stretch!important;height:410px!important;min-height:0!important;max-height:none!important;gap:7px!important;overflow:hidden!important;padding:15px!important;background:#100d1a!important;background-image:none!important;isolation:isolate}
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp29-quote-visual::before,#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp29-quote-visual::after{content:none!important;display:none!important;background:none!important;background-image:none!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp29-quote-visual .gtp2-quote-head{display:flex!important;justify-content:space-between!important;flex-wrap:wrap!important;gap:5px!important;align-self:stretch!important;min-width:0!important;font-size:9px!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp29-quote-visual .gtp29-quote-card{display:flex!important;flex-direction:column!important;min-height:0!important;height:100%!important;width:100%!important;max-width:none!important;box-sizing:border-box!important;padding:18px 23px!important;justify-content:center!important;align-items:stretch!important;gap:12px!important;overflow:auto!important;border:1px solid #7d688d!important;border-radius:17px!important;background:#1c1526!important;box-shadow:inset 0 0 0 1px #ffffff0b!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp29-quote-visual blockquote{width:100%!important;max-width:100%!important;margin:auto 0!important;overflow-wrap:anywhere!important;white-space:normal!important;font:800 clamp(24px,2.5vw,39px)/1.15 'Barlow Condensed',Impact,sans-serif!important;text-align:center!important;color:#fff9ff!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp29-quote-visual .gtp29-quote-footer{flex:0 0 auto!important;display:flex!important;flex-wrap:wrap!important;gap:5px 10px!important;justify-content:center!important;align-items:center!important;text-align:center!important;margin:0!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp29-quote-footer small{flex-basis:100%!important;font-size:10px!important}
+/* Ability: square large and mathematically centered inside the clue core. */
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-core{padding:4px 12px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;min-height:0!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{flex:0 0 auto!important;align-self:center!important;width:min(238px,58%)!important;height:auto!important;aspect-ratio:1!important;margin:0 auto!important;border-radius:28px!important;transform:none!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon img{inset:0!important;width:100%!important;height:100%!important;padding:8px!important;object-position:center center!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-scan-tag{flex:0 0 auto!important;align-self:center!important;margin:0!important}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-orbit-detail::before{left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:245px!important;height:245px!important}
+/* Hidden values are neutral; unknown after attempting a comparison is amber. */
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.unknown{background:linear-gradient(150deg,#483716,#342b20)!important;color:#ffe8a3!important;border:1px solid #d5ae4f!important;box-shadow:inset 0 0 0 1px #c6a34a26!important}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.unknown strong,#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.unknown span{color:#ffe69b!important}
+/* One effect label rather than three selectable Pixel effects. */
+.gtp2-game-scene .pixel-effect-label{position:absolute;left:13px;bottom:13px;z-index:5;background:#21192ae8;border:1px solid #af8cc0;color:#e8dced;padding:7px 11px;border-radius:9px;font-size:10px;font-weight:900;letter-spacing:.08em;pointer-events:none}
+@media(max-height:800px) and (min-width:950px){
+ .nova27-home .gtp2-hero-content{padding-top:7px!important;padding-bottom:5px!important}
+ .nova27-home .gtp2-heading h1{font-size:clamp(31px,3.1vw,50px)!important}
+ .nova27-home .gtp2-heading p{display:none!important}
+ .nova27-home .gtp27-session-picker{margin:2px auto!important}
+ .nova27-home .gtp212-cascade{flex-basis:220px!important;min-height:238px!important;max-height:296px!important;row-gap:3px!important}
+ .nova27-home .gtp212-step .gtp2-mode-card{min-height:75px!important}
+ .gtp213-dock-card{min-height:109px!important;max-height:125px!important;padding:8px 12px!important}
+ .gtp213-dock-portrait{height:93px;width:83px;min-width:83px}
+ .gtp213-dock-card h3{font-size:22px!important}
+ .gtp213-credit{padding-top:2px!important}
+}
+@media(max-width:950px){
+ .nova27-home .gtp2-hero-content{height:auto!important;min-height:calc(100svh - 76px)!important;overflow:visible!important}
+ .nova27-home .gtp212-cascade{flex:0 0 auto!important;max-height:none!important;min-height:280px!important}
+ .gtp213-dock{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;margin:12px auto!important}
+ .gtp213-dock-intel{grid-column:1/-1;grid-row:2}
+ .gtp213-dock-legend{grid-column:2;grid-row:1}
+ .gtp213-dock-wheel{grid-column:1;grid-row:1}
+}
+@media(max-width:600px){
+ .gtp213-dock{grid-template-columns:1fr!important;gap:9px!important}
+ .gtp213-dock-wheel{grid-column:1;grid-row:1}
+ .gtp213-dock-intel{grid-column:1;grid-row:2}
+ .gtp213-dock-legend{grid-column:1;grid-row:3}
+ .gtp213-dock-card{min-height:113px!important;max-height:none!important}
+ .gtp213-dock-portrait{height:96px;width:90px;min-width:90px}
+ .nova27-home .gtp2-hero-content{padding:14px 12px 10px!important}
+ .gtp213-credit{flex-direction:column;gap:3px;padding:9px 7px 5px;font-size:8px}
+ #app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp29-quote-visual{height:310px!important;padding:10px!important}
+ #app[data-screen="game"] .gtp2-game-scene .gtp29-quote-visual blockquote{font-size:clamp(24px,6vw,31px)!important}
+ #app[data-screen="game"] .gtp2-game-scene .gtp29-quote-visual .gtp29-quote-card{padding:15px 12px!important}
+ #app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{width:min(188px,64vw)!important;height:auto!important;aspect-ratio:1!important}
+ #app[data-screen="game"] .gtp2-game-scene .gtp210-orbit-detail::before{width:204px!important;height:204px!important}
+}
+/* Small screens prioritize the actual game logo, nickname and sound over crowded nav. */
+@media(max-width:600px){
+ .gtp2-top .topnav{display:none!important}
+ .gtp2-top .gtp2-top-inner{display:flex!important;align-items:center!important;justify-content:space-between!important}
+ .gtp2-top .gtp2-brand{display:flex!important;flex:1 1 auto!important;min-width:0!important;overflow:visible!important;gap:5px!important}
+ .gtp2-top .brand-icon{flex:0 0 28px!important}
+ .gtp2-top .brand-text strong{font-size:clamp(10px,3.1vw,14px)!important;letter-spacing:0!important}
+ .gtp2-top .top-actions{flex:0 0 auto!important;gap:3px!important}
+ .gtp2-top .gtp2-profile-switch{max-width:75px!important;overflow:hidden!important;text-overflow:ellipsis!important}
+ .gtp2-top .gtp2-profile-switch,.gtp2-top .gtp2-sound-switch{font-size:7px!important;padding:7px 5px!important}
+}
+/* Keep every navigation destination accessible without cutting off the title on mobile. */
+.gtp213-mobile-menu{display:none}
+@media(max-width:600px){
+ .gtp213-mobile-menu{display:block;order:3;flex:0 0 34px;position:relative;z-index:45}
+ .gtp213-mobile-menu summary{list-style:none;display:grid;place-items:center;width:34px;height:34px;border:1px solid #b866a8;border-radius:9px;background:#301b3e;color:#ffcfeb;font-size:19px;font-weight:900;cursor:pointer}
+ .gtp213-mobile-menu summary::-webkit-details-marker{display:none}
+ .gtp213-mobile-menu .gtp213-mobile-links{position:absolute;right:0;top:41px;width:202px;max-height:min(360px,calc(100svh - 74px));overflow:auto;display:grid;gap:2px;border-radius:13px;padding:7px;background:#1c122a;border:1px solid #c477b7;box-shadow:0 16px 30px #05010ebb}
+ .gtp213-mobile-links button{text-align:left;padding:10px;border:0;border-radius:8px;background:transparent;color:#f9edf9;font-size:11px;font-weight:900;cursor:pointer}
+ .gtp213-mobile-links button:hover,.gtp213-mobile-links button:focus-visible{background:#703d75}
+ .gtp2-top .gtp2-top-inner{gap:5px!important}
+ .gtp2-top .gtp2-brand{order:1;flex:1 1 0!important;min-width:0!important}
+ .gtp2-top .gtp2-brand .brand-text{flex:1 1 0;min-width:0}
+ .gtp2-top .gtp2-brand .brand-text strong{font-size:clamp(11px,3.3vw,15px)!important;letter-spacing:-.03em!important}
+ .gtp2-top .top-actions{order:2;gap:3px!important}
+ .gtp2-top .gtp2-profile-switch,.gtp2-top .gtp2-sound-switch{font-size:0!important;padding:0!important;min-width:33px!important;width:33px!important;height:34px!important;display:grid!important;place-items:center!important;overflow:visible!important}
+ .gtp2-top .gtp2-profile-switch::before{content:'◉';font-size:16px;color:#e7bfeb}
+ .gtp2-top .gtp2-sound-switch::before{content:'♫';font-size:16px;color:#b7f2f0}
+ .gtp2-top .gtp2-sound-switch[aria-pressed="false"]::before{content:'♪';color:#af98bd}
+}
+@media(max-width:600px){
+ .gtp2-top .top-actions .gtp2-profile-switch,.gtp2-top .top-actions .gtp2-sound-switch{font-size:0!important;line-height:0!important;overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important}
+ .gtp2-top .top-actions .gtp2-profile-switch::before,.gtp2-top .top-actions .gtp2-sound-switch::before{font-size:16px!important;line-height:1!important;display:block!important}
+}
+/* Desktop viewport has a 78px navigation bar; avoid a stray 2px scrollbar. */
+@media(min-width:951px){.gtp2-home .nova27-home{min-height:calc(100svh - 78px)!important}.nova27-home .gtp2-hero-content{min-height:calc(100svh - 78px)!important}}

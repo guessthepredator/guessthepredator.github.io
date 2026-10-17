@@ -30,8 +30,8 @@ test('game palette is plum and filled; no white pastel under the screenshot',()=
  assert.ok(style.includes('.gtp2-game-scene .btn.pink{background:linear-gradient'));
  assert.ok(style.includes('.gtp2-game-scene .clue-visual.gtp27-mystery:not(.visual-pixel):not(.gtp2-quote-rework)'));
 });
-test('missing Age is UNDICLOSED and guesses show inline history',()=>{
- assert.ok(read('src/engine.mjs').includes("if(value==null)return 'UNDISCLOSED'"));
+test('missing Age is hidden until attempted and guesses show inline history',()=>{
+ assert.ok(read('src/engine.mjs').includes("if(value==null)return '—'"));
  assert.ok(app.includes('gtp28-instant-history'));
 });
 test('28 unique emoji sets with no duplicate token among hints',()=>{
