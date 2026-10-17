@@ -1,15 +1,15 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.9.0';
-import {legends} from './data.mjs?v=2.9.0';
-import {artCatalog} from './art.mjs?v=2.9.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.9.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.9.0';
-import {playSound} from './audio.mjs?v=2.9.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.9.0';
-import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.9.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.9.0';
-import {loadStore,saveStore} from './store.mjs?v=2.9.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.10.0';
+import {legends} from './data.mjs?v=2.10.0';
+import {artCatalog} from './art.mjs?v=2.10.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.10.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.10.0';
+import {playSound} from './audio.mjs?v=2.10.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.10.0';
+import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.10.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.10.0';
+import {loadStore,saveStore} from './store.mjs?v=2.10.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.9.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.10.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -191,7 +191,7 @@ function edgeArenaDecor(){
 }
 // The character is painted only once inside the backdrop art. No artificial gaze overlay.
 function nav(){const nick=savedNickname();return `<header class="top gtp2-top"><div class="gtp2-top-inner">
-  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>TWILIGHT PATCH · V2.9</small></span></button>
+  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>CLUE DECK · V2.10</small></span></button>
   <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='leaderboard'?'active':''}" data-action="leaderboard">♛ RANKINGS</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item ${screen==='howto'?'active':''}" data-action="howto">? HOW TO PLAY</button><button class="nav-item ${screen==='faq'?'active':''}" data-action="faq">◉ FAQ</button></nav>
   <div class="top-actions"><button class="switch gtp2-profile-switch" data-action="profile" aria-label="Choose nickname">${nick?`◉ ${esc(nick)}`:'◎ NICKNAME'}</button><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
  </div></header>`;}
@@ -301,11 +301,27 @@ function getVisual(round,target){
       </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div><div class="pixel-preset" role="group" aria-label="Choose pixel reveal effect">${[['mosaic','▦ MOSAIC'],['soft','◌ SOFT BLUR'],['holo','⌁ SIGNAL']].map(([value,label])=>`<button class="${effect===value?'active':''}" type="button" data-action="pixel-style" data-style="${value}" aria-pressed="${effect===value}">${label}</button>`).join('')}</div></div>`;
   }
   if(mode==='quote')return `<div class="clue-visual gtp2-quote-rework gtp29-quote-visual"><div class="gtp2-quote-lines" aria-hidden="true"></div><div class="gtp2-quote-head"><span>◈ WRITTEN CLUE / NO VOICE IMPERSONATION</span><span>CHANNEL 0${MODES.indexOf(active)+1}</span></div><div class="gtp29-quote-card"><div class="gtp2-quote-mark" aria-hidden="true">“</div><blockquote>“${esc(target.quote)}”</blockquote><div class="gtp29-quote-footer"><span class="gtp2-live-dot"></span><b>SPEAKER UNKNOWN</b><small>Use class, age and launch comparisons to narrow it down.</small></div></div></div>`;
-  if(mode==='ability')return `<div class="clue-visual visual-ability"><div class="ability-stage" aria-label="Recognize the Apex ability icon"><div class="ability-outer-orbit"></div><div class="ability-symbol" role="img" aria-label="Unidentified in-game passive ability icon"><img data-ability="${esc(target.slug)}" alt="" loading="eager"/><span class="ability-wait">LOADING ABILITY<br>ICON…</span><span class="ability-fail">ABILITY ICON<br>UNAVAILABLE</span></div><span class="ability-tag">PASSIVE // IMAGE ONLY</span></div></div>`;
+  if(mode==='ability')return `<div class="clue-visual visual-ability gtp210-ability-stage" aria-label="Ability icon puzzle">
+    <div class="gtp210-clue-top"><span><i class="gtp210-live-dot"></i> ABILITY / PASSIVE</span><small>FILE 04 · CLASSIFIED</small></div>
+    <div class="gtp210-ability-core">
+      <div class="gtp210-orbit-detail" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="ability-symbol gtp210-ability-icon" role="img" aria-label="Mystery Legend ability icon"><img data-ability="${esc(target.slug)}" alt="" loading="eager"/><span class="ability-wait">LOADING<br>ABILITY ICON…</span><span class="ability-fail">ABILITY ICON<br>UNAVAILABLE</span></div>
+      <div class="gtp210-scan-tag">VISUAL SCAN // 01</div>
+    </div>
+    <div class="gtp210-clue-bottom"><strong>RECOGNIZE THE ABILITY.</strong><span>Identify the Legend from the icon above.</span></div>
+  </div>`;
   if(mode==='emoji'){
     const all=[...target.emoji.split(/\s+/),...target.extraEmoji];
     const shown=Math.min(all.length,3+Math.floor(round.guesses.length/2));
-    return `<div class="clue-visual visual-emoji gtp29-emoji-stage"><div class="gtp29-emoji-head"><span>◈ EMOJI SIGNAL</span><small>${shown}/${all.length} SYMBOLS REVEALED</small></div><div class="gtp29-emoji-grid">${all.map((symbol,i)=>`<span class="emoji-token ${i>=shown?'locked':''}"><b>${i<shown?esc(symbol):'?'}</b></span>`).join('')}</div><div class="gtp29-emoji-note">More symbols unlock as you keep guessing.</div></div>`;
+    return `<div class="clue-visual visual-emoji gtp210-emoji-stage" aria-label="Emoji puzzle: ${shown} of ${all.length} symbols visible">
+      <div class="gtp210-clue-top"><span><i class="gtp210-live-dot"></i> EMOJI / DECRYPTION</span><small>${shown} / ${all.length} UNLOCKED</small></div>
+      <div class="gtp210-emoji-core">
+        <span class="gtp210-inner-kicker">FIVE SYMBOLS. ONE LEGEND.</span>
+        <div class="gtp210-emoji-slots" role="group" aria-label="Emoji clues">${all.map((symbol,i)=>`<span class="gtp210-emoji-tile ${i>=shown?'is-locked':'is-visible'}" aria-label="${i<shown?'Visible clue '+(i+1):'Locked clue '+(i+1)}"><span>${i<shown?esc(symbol):'<b aria-hidden="true">?</b>'}</span><small>0${i+1}</small></span>`).join('')}</div>
+        <div class="gtp210-reveal-track" aria-hidden="true">${all.map((_,i)=>`<span class="${i<shown?'is-lit':''}"></span>`).join('')}</div>
+      </div>
+      <div class="gtp210-clue-bottom"><strong>${shown===all.length?'ALL FIVE CLUES REVEALED':'DECRYPT THE REMAINING CLUES.'}</strong><span>${shown===all.length?'You have every symbol — make your final guess.':'More symbols unlock as you make guesses.'}</span></div>
+    </div>`;
   }
   return `<div class="clue-visual gtp27-mystery gtp29-classic-visual"><div class="gtp29-question-emblem" aria-hidden="true">?</div><div class="mystery-wording"><small>LEGEND UNKNOWN</small><strong>WHO’S THAT LEGEND?</strong><span>Use each guess to reveal the right identity.</span></div></div>`;
 }

@@ -1363,3 +1363,138 @@ body.lightshift-playing .app:before{opacity:.08}
 .gtp2-game-scene .scanner{gap:10px}.gtp2-game-scene .scan-cell{background:#191220;border:1px solid #6f5b84;color:#f7eefb}.gtp2-game-scene .scan-cell strong{color:#fff}.gtp2-game-scene .scan-cell.good{background:#173428;border-color:#3dbb7b}.gtp2-game-scene .scan-cell.bad{background:#3a1c2a;border-color:#ff79b1}.gtp2-game-scene .scan-cell.hinted{background:#1a3042;border-color:#79dbe6}
 .gtp2-game-scene .guess-tools,.gtp2-game-scene .hint-row,.gtp2-game-scene .tried-list,.gtp2-game-scene .flash,.gtp2-game-scene .style-strip{border-radius:16px!important}
 @media(max-width:740px){.identity-modal{padding:22px 18px 18px}.gtp29-question-emblem{width:94px;height:94px;font-size:60px}.gtp29-classic-visual .mystery-wording strong{font-size:42px}.gtp2-game-scene .clue-visual{height:300px!important}.gtp29-emoji-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.gtp2-game-scene .emoji-token{min-width:72px;min-height:72px;border-radius:18px}.gtp2-game-scene .emoji-token b{font-size:34px}.gtp29-quote-card{padding:24px 18px 18px}.gtp29-quote-card blockquote{font-size:28px!important}}
+
+/* === GTP2 2.10 Clue Deck: isolate Emoji / Ability from legacy white circle === */
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-emoji-stage,
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-ability-stage{
+  position:relative!important;
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+  gap:0!important;
+  width:100%!important;
+  min-width:0!important;
+  height:398px!important;
+  padding:0!important;
+  align-content:stretch!important;
+  overflow:hidden!important;
+  background:radial-gradient(ellipse at 78% 15%,#452652 0,transparent 48%),
+    radial-gradient(ellipse at 0% 100%,#12394a 0,transparent 58%),
+    linear-gradient(145deg,#1c152d,#100e1c 72%)!important;
+  color:#fff4fb!important;
+  isolation:isolate;
+}
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-emoji-stage::before,
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-ability-stage::before,
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-emoji-stage::after,
+#app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-ability-stage::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.gtp210-emoji-stage .gtp210-clue-top,
+.gtp210-ability-stage .gtp210-clue-top{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;
+  padding:15px 20px 10px;position:relative;z-index:2;
+  color:#f8eefa;font-size:10px;font-weight:900;letter-spacing:.13em;
+}
+.gtp210-clue-top span{display:inline-flex;gap:8px;align-items:center}
+.gtp210-clue-top small{font-size:10px;font-weight:900;color:#8eeced;letter-spacing:.11em}
+.gtp210-live-dot{display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:#70ece7;box-shadow:0 0 0 4px #70ece726,0 0 12px #70ece777}
+.gtp210-emoji-stage .gtp210-emoji-core,
+.gtp210-ability-stage .gtp210-ability-core{
+  position:relative;isolation:isolate;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;min-height:0;min-width:0;width:100%;
+  padding:12px 26px 18px;
+}
+.gtp210-emoji-core::before,.gtp210-ability-core::before{
+  content:"";display:block;position:absolute;z-index:-1;inset:3px 18px 5px;
+  border:1px solid #9873ad63;border-radius:18px;
+  background:linear-gradient(112deg,#ffffff05 0,transparent 42%),
+    repeating-linear-gradient(90deg,#ffffff05 0 1px,transparent 1px 28px),
+    repeating-linear-gradient(0deg,#ffffff04 0 1px,transparent 1px 28px),
+    linear-gradient(135deg,#271c3d94,#1417269e 65%);
+  pointer-events:none;
+}
+.gtp210-inner-kicker{position:relative;color:#d7b9df;font-size:10px;font-weight:900;letter-spacing:.18em;text-align:center;margin:2px 0 20px}
+.gtp210-emoji-slots{
+  width:min(100%,550px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;z-index:1;
+  align-items:center;
+}
+.gtp210-emoji-tile{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:0;height:114px;position:relative;
+  border:1px solid #b474b4;border-radius:17px;
+  color:#fff;background:linear-gradient(155deg,#503256,#2a203b 65%,#1b192c);
+  box-shadow:inset 0 1px 0 #ffcded33,0 9px 18px #08071565;
+}
+.gtp210-emoji-tile.is-visible{border-color:#f4a8d999}
+.gtp210-emoji-tile.is-locked{border-color:#685675;color:#b7a3c3;background:linear-gradient(155deg,#2a263a,#1a182b)}
+.gtp210-emoji-tile>span{display:grid;place-items:center;width:100%;height:76px;font-size:clamp(28px,3.8vw,49px);line-height:1;filter:drop-shadow(0 4px 7px #08050b55);white-space:nowrap}
+.gtp210-emoji-tile.is-locked>span{filter:none;color:#baabc6}
+.gtp210-emoji-tile.is-locked b{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;border:1px dashed #9b85aa78;background:#50405a55;font:bold 25px/1 'Barlow Condensed',Impact,sans-serif}
+.gtp210-emoji-tile small{display:block;width:100%;text-align:center;padding:5px 0 7px;border-top:1px solid #eebde522;font-size:9px;letter-spacing:.12em;font-weight:900;color:#e3b7d6}
+.gtp210-reveal-track{display:flex;gap:6px;width:min(100%,550px);margin-top:16px;z-index:1}
+.gtp210-reveal-track span{flex:1;height:5px;border-radius:99px;background:#76637d55;border:1px solid #ad8ea044}
+.gtp210-reveal-track span.is-lit{background:linear-gradient(90deg,#f77cc3,#b982f3);border:0;box-shadow:0 0 10px #da6ab55c}
+.gtp210-clue-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:relative;z-index:2;margin:0 20px 16px;padding:12px 14px;
+  background:linear-gradient(110deg,#281a34,#162438);border:1px solid #736184;border-radius:11px}
+.gtp210-clue-bottom strong{font-size:10px;color:#92f3f0;letter-spacing:.11em;font-weight:900}
+.gtp210-clue-bottom span{font-size:11px;font-weight:600;color:#e0cddd;text-align:right}
+.gtp210-ability-core{gap:0}
+.gtp210-orbit-detail{position:absolute;display:block;z-index:0;inset:0;pointer-events:none}
+.gtp210-orbit-detail::before{content:"";position:absolute;width:244px;height:244px;left:50%;top:48%;transform:translate(-50%,-50%);border:1px solid #ab7cb56a;border-radius:50%;box-shadow:0 0 0 22px #9c73ba09,0 0 0 44px #9c73ba05}
+.gtp210-orbit-detail::after{content:"";position:absolute;inset:calc(50% - 1px) 14%;height:1px;background:linear-gradient(90deg,transparent,#7dece477,transparent);opacity:.5}
+.gtp210-orbit-detail span{position:absolute;width:16px;height:16px;border:solid #89e4e188;border-width:2px 0 0 2px}
+.gtp210-orbit-detail span:nth-child(1){top:15%;left:19%}
+.gtp210-orbit-detail span:nth-child(2){top:15%;right:19%;transform:rotate(90deg)}
+.gtp210-orbit-detail span:nth-child(3){bottom:15%;right:19%;transform:rotate(180deg)}
+.gtp210-orbit-detail span:nth-child(4){bottom:15%;left:19%;transform:rotate(270deg)}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{
+  position:relative;z-index:1;transform:none!important;
+  width:196px!important;height:196px!important;aspect-ratio:1;
+  padding:8px!important;margin:0!important;
+  display:grid;place-items:center;overflow:hidden;
+  border-radius:31px!important;border:2px solid #eac8e8!important;
+  background:radial-gradient(circle at 30% 24%,#f3f0fc 0%,#ddd3ed 63%,#b2b3d6 100%)!important;
+  box-shadow:inset 0 1px 0 #fff,0 0 0 9px #382543,0 0 0 10px #ad7eb887,0 18px 32px #09081488!important;
+}
+#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;padding:17px!important;filter:contrast(1.06) saturate(1)!important;transform:none!important}
+.gtp210-ability-icon .ability-wait,.gtp210-ability-icon .ability-fail{color:#4a3567!important;font-size:12px!important}
+.gtp210-scan-tag{z-index:1;padding:7px 12px;margin-top:15px;border:1px solid #86eded80;border-radius:999px;background:#17303b;color:#9ff5ec;font-size:9px;font-weight:900;letter-spacing:.16em}
+@media(max-width:750px){
+  #app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-emoji-stage,
+  #app[data-screen="game"] .gtp2-game-scene .clue-visual.gtp210-ability-stage{height:320px!important;max-height:none!important}
+  .gtp210-emoji-stage .gtp210-emoji-core,.gtp210-ability-stage .gtp210-ability-core{padding:8px 15px 11px}
+  .gtp210-emoji-core::before,.gtp210-ability-core::before{inset:3px 7px 5px;border-radius:14px}
+  .gtp210-emoji-slots{gap:6px}
+  .gtp210-emoji-tile{height:77px;border-radius:12px}
+  .gtp210-emoji-tile>span{height:51px;font-size:clamp(26px,6.7vw,36px)}
+  .gtp210-emoji-tile small{font-size:8px;padding:3px 0 4px}
+  .gtp210-inner-kicker{margin-bottom:13px;font-size:9px}
+  .gtp210-reveal-track{margin-top:13px}
+  .gtp210-clue-top{padding:11px 12px 7px!important;font-size:9px!important}
+  .gtp210-clue-top small{font-size:9px}
+  .gtp210-clue-bottom{margin:0 10px 10px;padding:8px 11px}
+  .gtp210-clue-bottom strong{font-size:9px}
+  .gtp210-clue-bottom span{font-size:10px}
+  #app[data-screen="game"] .gtp2-game-scene .gtp210-ability-icon{width:146px!important;height:146px!important;border-radius:23px!important}
+  .gtp210-orbit-detail::before{width:190px;height:190px}
+  .gtp210-scan-tag{margin-top:9px}
+}
+@media(max-width:360px){.gtp210-clue-bottom{flex-direction:column;align-items:flex-start}.gtp210-clue-bottom span{text-align:left}.gtp210-emoji-tile{height:70px}.gtp210-emoji-tile>span{font-size:26px}}
+@media(prefers-reduced-motion:reduce){.gtp210-clue-top,.gtp210-emoji-tile,.gtp210-ability-icon{animation:none!important}}
+/* Emoji glyphs can be dark by design (e.g., moon, spider). Pale per-tile backgrounds
+   keep each symbol legible while the clue stage remains deep-plum. */
+#app[data-screen="game"] .gtp210-emoji-tile.is-visible{
+  background:linear-gradient(148deg,#d8c9e5,#b19acb 80%)!important;
+  border-color:#f7c2e5!important;
+  box-shadow:inset 0 1px 0 #fff9,0 7px 18px #0b071575!important;
+}
+#app[data-screen="game"] .gtp210-emoji-tile.is-visible small{color:#432449;border-color:#4b345c33}
+#app[data-screen="game"] .gtp210-emoji-tile.is-locked{background:linear-gradient(155deg,#2a263a,#1a182b)!important}
+#app[data-screen="game"] .gtp2-game-scene .mode-tab.active{
+  background:linear-gradient(135deg,#c547a2,#b559b0)!important;
+  border-color:#ffc1e6!important;color:#fff!important;box-shadow:0 0 0 1px #ffc1e633,inset 0 1px 0 #ffffff42!important;
+}

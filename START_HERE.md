@@ -1,21 +1,10 @@
-# GTP2 V2.8 TWILIGHT · install on the SAME GitHub repository
+# Install V2.10 (CLUE DECK)
 
-1. Make a backup of your current repository. Keep its `.git` folder.
-2. Copy all files/folders from this ZIP to the **root** of your existing repository and choose Replace.
-3. Run `INSTALL_CLEAN_WINDOWS.bat` **in the repository root** to remove old Map resources and test files.
-4. In GitHub Desktop review changes **and deletions**, Commit to main and Push origin.
-5. Wait for the GitHub Actions workflow to turn green, open GitHub Pages, and use Ctrl + Shift + R. Website files should request `styles.css?v=2.8.0` and `src/app.mjs?v=2.8.0`.
+1. Extract `GTP2_V210_CLUE_DECK_FULL_REPOSITORY.zip`.
+2. Copy the **contents of the ZIP root** into your existing GitHub repository folder (alongside `.git`, `index.html`, `src`, and `assets`). Replace matching files. Do not copy the whole extracted folder as a subfolder.
+3. Run `INSTALL_CLEAN_WINDOWS.bat` in that repository directory.
+4. GitHub Desktop: Commit changes → Push origin. Wait until GitHub Pages Actions finishes.
+5. Open the same site URL and hard refresh (`Ctrl+Shift+R`). Check header version **CLUE DECK · V2.10**.
+6. Visit Emoji and Ability, where the old light circular screens should be replaced. Existing nickname and saved games stay in localStorage.
 
-### Rankings
-Supabase project `gtl` is **already provisioned** with two public read functions and the active `submit-score` Edge Function. URL + public publishable key are already in `src/leaderboard_config.mjs`. **Do not rerun the old migration or redeploy the historical Edge source in this ZIP.** Ensure Supabase Dashboard → Authentication → Anonymous Sign-ins is enabled.
-
-To test: open Rankings (should show an empty, not disconnected board), complete five Daily puzzles, enter a **gamer nickname, not your real name**, and submit. One successful entry should appear on both Daily and Overall. No fake players are preloaded. See `LEADERBOARD_SETUP.md`.
-
-Local CI checks:
-
-```sh
-node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs
-python3 scripts/validate_release.py
-```
-
-The store key is unchanged so current browser progress is preserved. Frontend ZIP deployment by itself does not alter your Supabase project.
+**Scoring:** unchanged. Both Daily and Overall entries were verified in live Supabase; the server function was not edited or redeployed.
