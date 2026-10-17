@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.24.0')&&html.includes('app.mjs?v=2.24.0'));
+ assert.ok(html.includes('styles.css?v=2.25.0')&&html.includes('app.mjs?v=2.25.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -103,12 +103,25 @@ test('V2.24 orbit, full dock art, game sessions and Trivia timeout are wired',()
  assert.ok(app.includes("requestAnimationFrame(frame)"));
  assert.ok(app.includes('TIME’S UP · QUESTION EXPIRED'));
 });
-test('portrait catalog attempts the same vertical source on every Legend',async()=>{
- const {portraitOriginalNames,portraitSourcesFor}=await import('../src/art.mjs');
+test('portrait catalog prioritizes known real vertical assets, including missing screenshot roster',async()=>{
+ const {portraitOriginalNames,portraitSourcesFor,stableFanPortraits,verifiedSkinPortraits}=await import('../src/art.mjs');
  assert.equal(Object.keys(portraitOriginalNames).length,28);
+ assert.equal(Object.keys(stableFanPortraits).length,22);
+ assert.equal(Object.keys(verifiedSkinPortraits).length,6);
  for(const legend of legends){
   const sources=portraitSourcesFor(legend.slug);
-  assert.ok(sources[0].includes('apexlegends.wiki.gg'));
   assert.ok(sources.length>=2);
+  if(stableFanPortraits[legend.slug])assert.equal(sources[0],stableFanPortraits[legend.slug]);
+  else assert.ok(sources[0].includes(encodeURIComponent(verifiedSkinPortraits[legend.slug])));
  }
+ for(const slug of ['loba','gibraltar'])assert.ok(portraitSourcesFor(slug)[0].includes(slug==='loba'?'0012_Loba.png':'0015_Gibraltar.png'));
+});
+test('screenshot regression: dark Browse, non-overlapping Home and original graphic wheel',()=>{
+ assert.ok(css.includes('V2.25 — Screenshot QA'));
+ assert.ok(css.includes('#app .gtp2-picker .picker-header'));
+ assert.ok(css.includes('#app .gtp2-picker .picker-search select'));
+ assert.ok(css.includes('#app .gtp2-picker .portrait-unavailable'));
+ assert.ok(css.includes('.gtp222-core .gtp222-primary-actions'));
+ assert.ok(css.includes('conic-gradient('));
+ assert.ok(css.includes('.gtp222-home-dock .gtp222-spotlight-art'));
 });
