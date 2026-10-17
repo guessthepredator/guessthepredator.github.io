@@ -2045,3 +2045,69 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{background:radial-gradient(e
 
 /* Mobile ability artwork remains square while staying centered in the shorter frame. */
 @media(max-width:600px){#app[data-screen="game"] .gtp2-game-scene .gtp210-ability-core .gtp210-ability-icon{width:min(184px,62%)!important;height:auto!important;max-height:none!important;aspect-ratio:1!important}}
+
+
+/* =====================================================================
+   V2.17 — EXACT REFERENCE HOMEPAGE
+   User-selected 1536x1024 source illustration is rendered unchanged.
+   REAL interactive DOM buttons float over painted elements, not another
+   background art layer. Gameplay uses the original HTML after navigation.
+   ===================================================================== */
+@media(min-width:901px){
+ #app[data-screen="home"]>.gtp2-top{display:none!important}
+ #app[data-screen="home"]{min-height:100svh!important;overflow:hidden!important}
+ #app[data-screen="home"] .gtp217-mobile{display:none!important}
+ #app[data-screen="home"] .gtp217-home{position:relative!important;height:100svh!important;min-height:560px!important;display:flex!important;align-items:center;justify-content:center;background:#070b18!important;overflow:hidden!important}
+ .gtp217-art-backdrop{position:absolute;inset:-35px;background:url('./assets/decor/forbidden-intel-exact-v217.webp') center/cover no-repeat;filter:blur(35px) brightness(.37) saturate(.8);opacity:.8;pointer-events:none}
+ .gtp217-graphic{position:relative;z-index:1;width:min(100vw,150svh)!important;height:min(100svh,66.6667vw)!important;flex:none;display:block!important;box-shadow:0 0 75px #0409138a}
+ .gtp217-stage{position:relative;width:100%!important;height:100%!important;aspect-ratio:3/2;overflow:hidden;background:url('./assets/decor/forbidden-intel-exact-v217.webp') center/100% 100% no-repeat;container-type:inline-size}
+ .gtp217-stage .gtp217-hit{display:block;position:absolute;z-index:4;border:0!important;padding:0!important;margin:0!important;color:transparent;background:transparent!important;cursor:pointer;border-radius:8px;box-shadow:none!important;transform:none!important;min-height:0!important;min-width:0!important}
+ .gtp217-stage .gtp217-hit:hover{background:#57ddfc15!important;outline:2px solid #8cece975}
+ .gtp217-stage .gtp217-hit:focus-visible,.gtp217-stage .gtp217-mode:focus-visible,.gtp217-stage .gtp217-progress:focus-visible{outline:3px solid #f8e5a4!important;outline-offset:2px!important}
+ .gtp217-logo{left:1.5%;top:.4%;width:14.2%;height:7.4%}
+ .gtp217-nav-play{left:33.6%;top:.8%;width:7.5%;height:6%}
+ .gtp217-nav-rank{left:42%;top:1%;width:8%;height:5.6%}
+ .gtp217-nav-guide{left:50.4%;top:1%;width:8.4%;height:5.6%}
+ .gtp217-nav-faq{left:59.5%;top:1%;width:5.7%;height:5.6%}
+ .gtp217-nav-audio{left:89.8%;top:1%;width:3.2%;height:5.5%;display:grid!important;place-items:center;font-size:2cqw;color:#9cddfa!important;text-shadow:0 0 6px #070b18}
+ .gtp217-nav-audio span{font-size:1.8cqw;background:#0a1a30eb;border:1px solid #335477;border-radius:8px;width:80%;height:83%;display:grid;place-items:center}
+ .gtp217-nav-profile{left:93.4%;top:1%;width:3.5%;height:5.5%}
+ .gtp217-stage .gtp217-nav-stats{left:65.9%;top:1.2%;width:2.8%;height:5.1%;background:#09182c97!important;color:#80c5dc!important;font-size:1.5cqw;opacity:.8}
+ .gtp217-progress{position:absolute;z-index:3;top:28.9%;left:33.9%;width:32.25%;height:8.24%;padding:.8cqw 1.45cqw!important;display:flex;flex-direction:column;gap:.45cqw;text-align:left;cursor:pointer;border:1px solid #428c9f!important;clip-path:polygon(2% 0,98% 0,100% 15%,100% 83%,98% 100%,2% 100%,0 84%,0 16%);border-radius:6px;color:#c8eaff!important;background:linear-gradient(120deg,#122742,#091323 80%)!important;box-shadow:inset 0 0 0 1px #3dc6ce44!important}
+ .gtp217-progress:hover{filter:brightness(1.15)}
+ .gtp217-progress-head{display:flex;justify-content:space-between;gap:4px;align-items:center;font-size:1.2cqw;line-height:1;letter-spacing:.055em;font-weight:900}
+ .gtp217-progress-head strong{font-size:1.45cqw;color:#fff}
+ .gtp217-progress-bars{display:flex;gap:.45cqw;width:100%;height:1.12cqw;flex:1;max-height:1.14cqw}
+ .gtp217-progress-bars i{flex:1;display:block;border:1px solid #486078;background:#263547;border-radius:3px}
+ .gtp217-progress-bars i.cleared{background:linear-gradient(100deg,#08baf0,#00e2ec);border-color:#27eff5;box-shadow:0 0 12px #09cdec5c}
+ .gtp217-progress-hint{font-size:.67cqw;color:#9abdd2!important;letter-spacing:.065em;align-self:center;white-space:nowrap}
+ .gtp217-session-daily{left:27.15%;top:38.45%;width:22.5%;height:8.25%}
+ .gtp217-session-free{left:50.5%;top:38.45%;width:22.5%;height:8.25%}
+ .gtp217-stage .gtp217-session-daily.active,.gtp217-stage .gtp217-session-free.active{outline:1px solid #a6f1ec90;border-radius:12px}
+ .gtp217-mode-region{position:absolute;inset:0;pointer-events:none;z-index:3}
+ .gtp217-mode{position:absolute;pointer-events:auto;overflow:hidden;border:0!important;padding:0!important;cursor:pointer;display:block;background:transparent!important;transform:none!important;box-shadow:none!important;border-radius:12px;color:#fff!important}
+ .gtp217-mode:hover{filter:brightness(1.11);outline:2px solid #cafef2a6}
+ .gtp217-mode-classic{left:4.8%;top:50.9%;width:22.2%;height:23.6%}
+ .gtp217-mode-pixel{left:24%;top:51.2%;width:18.7%;height:22.8%}
+ .gtp217-mode-ability{left:41.8%;top:51.4%;width:16.7%;height:24.1%}
+ .gtp217-mode-quote{left:59.1%;top:51.3%;width:17.7%;height:24%}
+ .gtp217-mode-emoji{left:77.1%;top:50.9%;width:18.0%;height:23.6%}
+ .gtp217-mode-caption{position:absolute;bottom:0;left:0;right:0;min-height:42%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.36cqw;background:linear-gradient(0deg,#030812 0%,#070e1ce8 58%,#07102100 100%);color:#e9e9f5;padding:.6cqw .3cqw .85cqw}
+ .gtp217-mode-caption strong{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-size:clamp(16px,2.17cqw,38px);font-weight:900;letter-spacing:.015em;line-height:1.05;text-shadow:0 2px 7px #000}
+ .gtp217-mode-caption small{font-size:clamp(9px,1.13cqw,18px);line-height:1.15;font-weight:600;white-space:nowrap}
+ .gtp217-mode-classic .gtp217-mode-caption{color:#ffd385;background:linear-gradient(0deg,#180e0f 0%,#1b1311ee 83%,transparent 100%)}
+ .gtp217-mode-pixel .gtp217-mode-caption{color:#7ae9ff;background:linear-gradient(0deg,#071320,#071927ef 83%,transparent 100%)}
+ .gtp217-mode-ability .gtp217-mode-caption{color:#dfb4fa;background:linear-gradient(0deg,#130a2a,#1b0d32ec 83%,transparent 100%)}
+ .gtp217-mode-quote .gtp217-mode-caption{color:#8dfcf2;background:linear-gradient(0deg,#041d1e,#062527ee 83%,transparent 100%)}
+ .gtp217-mode-emoji .gtp217-mode-caption{color:#ffa9b5;background:linear-gradient(0deg,#260e15,#260e1eee 83%,transparent 100%)}
+ .gtp217-wheel{left:2.4%;top:78.3%;width:37.4%;height:13.8%}
+ .gtp217-spotlight{position:absolute;left:72.3%;top:84.55%;width:24%;height:6.3%;z-index:3;display:flex;align-items:center;flex-direction:column;gap:.2cqw;justify-content:center;background:linear-gradient(90deg,#081728,#09182e 14%,#071529 90%);color:#fff}
+ .gtp217-spotlight b{font:900 1.55cqw/1 'Barlow Condensed',Impact,sans-serif;letter-spacing:.03em}
+ .gtp217-spotlight small{font-size:.85cqw;color:#a6d2e4}
+}
+/* Smaller screens use fully adaptive *real* HTML, no bitmap text or invisible overlapping hit areas. */
+@media(max-width:900px){
+ .gtp217-graphic,.gtp217-art-backdrop{display:none!important}
+ .gtp217-mobile{display:block!important}
+ .gtp217-home{display:block!important;min-height:0;height:auto!important;overflow:visible!important;background:#070d1b!important}
+}

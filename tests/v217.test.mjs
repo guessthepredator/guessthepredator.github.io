@@ -1,0 +1,27 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync,statSync} from 'node:fs';
+const root=new URL('../',import.meta.url);
+const read=name=>readFileSync(new URL('../'+name,import.meta.url),'utf8');
+const app=read('src/app.mjs');const css=read('styles.css');const html=read('index.html');
+test('Exact user-selected artwork bundled and displayed without old dual overlay',()=>{
+ assert.ok(statSync(new URL('../assets/decor/forbidden-intel-exact-v217.webp',import.meta.url)).size>200_000);
+ const b=app.slice(app.indexOf('function home(){'),app.indexOf('function homeLegacy(){'));
+ assert.ok(b.includes('gtp217-stage') && b.includes('gtp217-progress'));
+ assert.ok(!b.includes('haunted-hero.webp')&&!b.includes('gtp216-mirage-left'));
+ assert.ok(css.includes("url('./assets/decor/forbidden-intel-exact-v217.webp')"));
+});
+test('Live controls retain real five modes and wheel',()=>{
+ const b=app.slice(app.indexOf('function home(){'),app.indexOf('function homeLegacy(){'));
+ for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(b.includes("'"+m+"'"));
+ assert.ok(b.includes('data-action="session"')&&b.includes('data-action="intel-open"'));
+ assert.ok(b.includes('data-action="wheel"')&&b.includes('data-action="leaderboard"'));
+ assert.ok(b.includes('data-action="audio"')&&b.includes('data-action="profile"'));
+});
+test('Cache busters synchronized, responsive legacy layout retained',()=>{
+ const v=html.match(/styles\.css\?v=(\d+\.\d+\.\d+)/)?.[1];
+ assert.equal(v,'2.17.0');
+ assert.ok(html.includes('app.mjs?v='+v));
+ assert.ok(app.includes('leaderboard.mjs?v='+v));
+ assert.ok(app.includes('function homeLegacy()') && css.includes('.gtp217-mobile{display:block!important}'));
+});

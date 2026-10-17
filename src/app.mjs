@@ -1,16 +1,16 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.16.0';
-import {legends} from './data.mjs?v=2.16.0';
-import {artCatalog} from './art.mjs?v=2.16.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.16.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.16.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.16.0';
-import {playSound} from './audio.mjs?v=2.16.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.16.0';
-import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.16.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.16.0';
-import {loadStore,saveStore} from './store.mjs?v=2.16.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.17.0';
+import {legends} from './data.mjs?v=2.17.0';
+import {artCatalog} from './art.mjs?v=2.17.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.17.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.17.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.17.0';
+import {playSound} from './audio.mjs?v=2.17.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.17.0';
+import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.17.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.17.0';
+import {loadStore,saveStore} from './store.mjs?v=2.17.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.16.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.17.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -285,6 +285,48 @@ function modeTile(mode,i){
  </button>`;
 }
 function home(){
+ const rounds=store.days[today()]||{};
+ const done=dailyModes().filter(mode=>rounds[mode]?.finished).length;
+ const total=dailyModes().length;
+ const unlocked=unlockedIntel(rounds,dailyModes());
+ const spotlight=dailySpotlight(utcDay(),legends);
+ const modes=[
+  ['classic','CLASSIC','Find the mystery Legend.'],
+  ['pixel','PIXEL','See through the blur.'],
+  ['ability','ABILITY','Recognize the ability.'],
+  ['quote','QUOTE','Who said that line?'],
+  ['emoji','EMOJI','Five clues. One Legend.']
+ ];
+ return `<main class="gtp217-home" aria-label="Guess The Predator homepage">
+ <div class="gtp217-art-backdrop" aria-hidden="true"></div>
+ <section class="gtp217-graphic" aria-label="Forbidden Intel illustrated homepage">
+  <div class="gtp217-stage">
+   <button class="gtp217-hit gtp217-logo" data-action="home" aria-label="Guess the Predator home"></button>
+   <button class="gtp217-hit gtp217-nav-play" data-action="open" data-mode="classic" aria-label="Play Classic"></button>
+   <button class="gtp217-hit gtp217-nav-rank" data-action="leaderboard" aria-label="Open Rankings"></button>
+   <button class="gtp217-hit gtp217-nav-guide" data-action="howto" aria-label="How to Play"></button>
+   <button class="gtp217-hit gtp217-nav-faq" data-action="faq" aria-label="FAQ"></button>
+   <button class="gtp217-hit gtp217-nav-audio" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}"><span aria-hidden="true">${store.settings.audio?'♫':'♪'}</span></button>
+   <button class="gtp217-hit gtp217-nav-profile" data-action="profile" aria-label="Change nickname" title="Nickname and profile"></button>
+   <button class="gtp217-hit gtp217-nav-stats" data-action="records" aria-label="Your Stats" title="Your Stats">▤</button>
+   <button class="gtp217-progress" data-action="intel-open" aria-label="Forbidden Intel reward; ${done} of ${total} daily challenges completed" title="${unlocked?'Open Forbidden Intel':'Complete all five Daily challenges to unlock'}">
+     <span class="gtp217-progress-head"><b>DAILY CHALLENGES</b><strong>${done} / ${total}</strong></span>
+     <span class="gtp217-progress-bars" aria-hidden="true">${dailyModes().map((mode,i)=>`<i class="${rounds[mode]?.finished?'cleared':''}"></i>`).join('')}</span>
+     <span class="gtp217-progress-hint">${unlocked?'✦ OPEN YOUR FORBIDDEN INTEL':'✦ COMPLETE ALL FIVE TO UNLOCK'}</span>
+   </button>
+   <button data-action="session" data-session="daily" class="gtp217-hit gtp217-session-daily ${session==='daily'?'active':''}" aria-label="Choose Daily Challenge" aria-pressed="${session==='daily'}"></button>
+   <button data-action="session" data-session="unlimited" class="gtp217-hit gtp217-session-free ${session==='unlimited'?'active':''}" aria-label="Choose Free Play" aria-pressed="${session==='unlimited'}"></button>
+   <div class="gtp217-mode-region" aria-label="Five game modes">
+    ${modes.map(([mode,title,sub],i)=>`<button class="gtp217-mode gtp217-mode-${mode}" type="button" data-action="open" data-mode="${mode}" aria-label="Play ${title} ${session==='daily'?'Daily':'Free Play'}"><span class="gtp217-mode-caption"><strong>${title}</strong><small>${session==='daily'&&rounds[mode]?.finished?'✓ COMPLETED':sub}</small></span></button>`).join('')}
+   </div>
+   <button class="gtp217-hit gtp217-wheel" type="button" data-action="wheel" aria-label="Spin the Next Game Legend wheel" title="Next Game Legend — Spin the wheel"></button>
+   <div class="gtp217-spotlight" aria-label="Legend of the day: ${esc(spotlight.name)}" title="Legend of the Day: ${esc(spotlight.name)} · ${esc(spotlight.role)}"><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)}</small></div>
+  </div>
+ </section>
+ <div class="gtp217-mobile">${homeLegacy()}</div>
+ </main>`;
+}
+function homeLegacy(){
  return `<main class="gtp2-home">
   <section class="gtp2-hero nova27-home" aria-label="Guess the Predator — five game modes">
    <img id="gtp2-backdrop" class="gtp2-backdrop" src="./assets/decor/haunted-hero.webp" alt="" aria-hidden="true" fetchpriority="high"/>
@@ -709,6 +751,12 @@ app.addEventListener('click',event=>{
     const done=dailyModes().filter(mode=>store.days[today()]?.[mode]?.finished).length;
     if(footer){footer.querySelector('.gtp28-daily-progress>span:last-child').textContent=`FIVE MODES · ${session==='daily'?`${done}/5 DAILY CLEARED`:'PRACTICE MODE'}`;
       footer.querySelector('.gtp28-primary-row').innerHTML=session==='daily'?`<button data-action="home-daily" class="gtp2-primary gtp28-play-btn">${done===5?'✦ VIEW YOUR DAILY SCORE':'◈ CONTINUE DAILY'} <span>↗</span></button>`:`<button data-action="open" data-mode="classic" class="gtp2-primary gtp28-play-btn">∞ START FREE PLAY <span>↗</span></button>`;}
+    if(document.querySelector('.gtp217-graphic')){document.querySelectorAll('.gtp217-mode-caption small').forEach((node,i)=>{
+      const mode=['classic','pixel','ability','quote','emoji'][i];
+      const round=store.days[today()]?.[mode];
+      const detail={classic:'Find the mystery Legend.',pixel:'See through the blur.',ability:'Recognize the ability.',quote:'Who said that line?',emoji:'Five clues. One Legend.'};
+      node.textContent=session==='daily'&&round?.finished?'✓ COMPLETED':detail[mode];
+    });}
     document.querySelectorAll('.gtp2-mode-card').forEach(el=>{const m=el.dataset.mode;const round=session==='daily'?store.days[today()]?.[m]:store.practice[m];el.classList.toggle('finished',Boolean(session==='daily'&&round?.finished));const status=el.querySelector('.gtp2-mode-copy em');if(status)status.textContent=session==='daily'&&round?.finished?(round.won?'✓ CLEARED':'✓ COMPLETED'):'PLAY NOW ↗';});
     sound('nav');
   }

@@ -2,7 +2,7 @@ from pathlib import Path
 from PIL import Image
 import wave,re
 P=Path(__file__).resolve().parents[1]
-required=['index.html','styles.css','src/app.mjs','src/engine.mjs','src/scoring.mjs','src/leaderboard.mjs','src/leaderboard_config.mjs','src/pixel_scene.mjs','src/audio.mjs','src/data.mjs','LEADERBOARD_SETUP.md','supabase/migrations/202610170001_leaderboards.sql','supabase/functions/submit-score/index.ts','assets/decor/haunted-hero.webp','.github/workflows/pages.yml']
+required=['index.html','styles.css','src/app.mjs','src/engine.mjs','src/scoring.mjs','src/leaderboard.mjs','src/leaderboard_config.mjs','src/pixel_scene.mjs','src/audio.mjs','src/data.mjs','LEADERBOARD_SETUP.md','supabase/migrations/202610170001_leaderboards.sql','supabase/functions/submit-score/index.ts','assets/decor/haunted-hero.webp','assets/decor/forbidden-intel-exact-v217.webp','.github/workflows/pages.yml']
 for name in required: assert (P/name).is_file(),name
 html=(P/'index.html').read_text();js=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
 # Cache-busting version is allowed to advance with each deployment.
@@ -27,7 +27,7 @@ for sound in (P/'assets/sfx').glob('*.wav'):
   seconds=wav.getnframes()/wav.getframerate()
   assert wav.getnchannels()==1 and (.03<seconds<5 if sound.name=='party.wav' else .03<seconds<.42),sound
 assert 'node --test' in workflow, 'CI missing Node test runner'
-for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs','v212.test.mjs','v213.test.mjs','v214.test.mjs','v215.test.mjs','v216.test.mjs']:
+for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs','v212.test.mjs','v213.test.mjs','v214.test.mjs','v215.test.mjs','v216.test.mjs','v217.test.mjs']:
  assert test_file in workflow, f'CI missing {test_file}'
 assert 'cp index.html styles.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
 assert 'src/leaderboard_config.mjs' in workflow or 'cp -r src assets dist/' in workflow

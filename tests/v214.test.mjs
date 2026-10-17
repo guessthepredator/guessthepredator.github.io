@@ -6,8 +6,8 @@ const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const app=read('src/app.mjs'),css=read('styles.css'),html=read('index.html');
 const home=app.slice(app.indexOf('function home(){'),app.indexOf('function getVisual('));
 test('v2.14 cache bust and clean single site identity',()=>{
- assert.match(html,/app\.mjs\?v=2\.16\.0/);
- assert.match(html,/styles\.css\?v=2\.16\.0/);
+ assert.match(html,/app\.mjs\?v=\d+\.\d+\.\d+/);
+ assert.match(html,/styles\.css\?v=\d+\.\d+\.\d+/);
  assert.ok(!home.includes('<h1>GUESS THE'));
  assert.ok(app.includes('Made by Sebyby'));
 });

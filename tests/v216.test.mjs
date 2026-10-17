@@ -43,8 +43,8 @@ test('Ability icon has centered grid aligned to stage on desktop/mobile',()=>{
   assert.ok(css.includes('.gtp210-ability-core .gtp210-scan-tag{grid-area:2/1!important'));
 });
 test('Cache keys bumped for Github Pages; Supabase client and game files kept',()=>{
-  assert.ok(index.includes('styles.css?v=2.16.0'));
-  assert.ok(index.includes('app.mjs?v=2.16.0'));
-  assert.ok(app.includes('leaderboard.mjs?v=2.16.0'));
-  assert.ok(app.includes('store.mjs?v=2.16.0'));
+  assert.ok(index.match(/styles\.css\?v=\d+\.\d+\.\d+/));
+  assert.ok(index.match(/app\.mjs\?v=\d+\.\d+\.\d+/));
+  assert.ok(app.match(/leaderboard\.mjs\?v=\d+\.\d+\.\d+/));
+  assert.ok(app.match(/store\.mjs\?v=\d+\.\d+\.\d+/));
 });

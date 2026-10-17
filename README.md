@@ -22,3 +22,8 @@ This independent fan project is not affiliated with EA or Respawn. External Lege
 ## V2.16 – Mirage Duo
 
 Two inward-facing Mirage artworks flank the homepage while all interactive controls remain actual HTML elements. The entire Next Game Legend panel is now one accessible button with a low-glare spinning wheel icon. The Ability icon and scan tag share a centered layout. See `CHANGELOG_V216.md`.
+
+
+## Exact-reference homepage (V2.17)
+
+Desktop homepage uses `assets/decor/forbidden-intel-exact-v217.webp`, created from the user's chosen concept image. The illustrated parts are decorative; interactive transparent HTML targets cover each navigation region. A live progress widget displays the real current Daily completion count and session buttons choose Daily or Free Play. The five cards are labeled with the actual available game modes: Classic, Pixel, Ability, Quote, Emoji. Phone layout retains the previous adaptive homepage.
