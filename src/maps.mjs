@@ -1,3 +1,4 @@
+import {externalMapSources} from './external_map_sources.mjs';
 import {mapMediaManifest} from './map_media_manifest.mjs';
 /** Actual POI screenshots are referenced by their documented Wiki filenames.
  * Real game assets are NOT manufactured or silently replaced by generic art.
@@ -310,7 +311,7 @@ export const LEGACY_LOCATIONS=Object.freeze([
  {id:'ed-boardwalk',map:'E-District',poi:'Boardwalk',legacy:true,clue:'A brightly lit commercial district in the city.'},
 ]);
 export const resolveLocation=id=>LOCATIONS.find(x=>x.id===id)||LEGACY_LOCATIONS.find(x=>x.id===id);
-/** No remote hotlinks. Multiple verified local captures per location, including interiors. */
+/** Source-backed external screenshot references plus explicit local visual-intel fallback. */
 export const mapLocalPath=(entry,ext='webp')=>`./assets/maps/${entry.id}.${ext}`;
 const safeLocalName=name=>typeof name==='string' && /^[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)?\.(?:webp|png|jpg|jpeg)$/i.test(name);
 export function mapShots(entry,angle=0){
@@ -319,10 +320,10 @@ export function mapShots(entry,angle=0){
    .map(filename=>`./assets/maps/${filename}`);
  if(manifest.length){
    const start=((Math.trunc(Number(angle)||0)%manifest.length)+manifest.length)%manifest.length;
-   return [...manifest.slice(start),...manifest.slice(0,start),`./assets/map-recon/${entry.id}.svg`];
+   return [...manifest.slice(start),...manifest.slice(0,start),...externalCandidates(entry),`./assets/map-recon/${entry.id}.svg`];
  }
  // Backward-compatible single-image installation without a manifest.
- return [...['webp','png','jpg','jpeg'].map(ext=>mapLocalPath(entry,ext)),`./assets/map-recon/${entry.id}.svg`];
+ return [...externalCandidates(entry),`./assets/map-recon/${entry.id}.svg`];
 }
 export function mapRound(entry){return {answer:entry.id,stage:1,mapGuesses:[],poiGuesses:[],won:false,finished:false,loss:null,startedAt:null,finishedAt:null,mediaAngle:Math.floor(Math.random()*100000)};}
 export function mapGuess(round,value,entry,now=Date.now()){
@@ -341,3 +342,16 @@ export function mapGuess(round,value,entry,now=Date.now()){
  return {...round,poiGuesses:guesses,won,finished,loss:finished&&!won?'poi':null,finishedAt:finished?now:null};
 }
 export function dailyMap(day,seed){return LOCATIONS[seed('gtp:v16:map:'+day)%LOCATIONS.length];}
+
+/** In-game screenshots mirrored by community wiki. Remote-hosted, not bundled.
+ * Rights/availability may change. UI gracefully falls back to a local landmark sketch.
+ */
+function externalCandidates(entry){
+ const name=externalMapSources[entry.id];
+ return name?[`https://apexlegends.wiki.gg/wiki/Special:Redirect/file/${encodeURIComponent(name)}`]:[];
+}
+export function sourceForLocation(entry){
+ const name=externalMapSources[entry.id];
+ if(name)return `https://apexlegends.wiki.gg/wiki/File:${encodeURIComponent(name.replace(/ /g,'_'))}`;
+ return `https://apexlegends.wiki.gg/wiki/${encodeURIComponent(entry.map.replace(/’/g,"'" ).replace(/ /g,'_'))}`;
+}

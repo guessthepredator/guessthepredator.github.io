@@ -4,7 +4,7 @@ Will NEVER delete .git, real maps, or other user-provided files.
 """
 from pathlib import Path
 R=Path(__file__).resolve().parents[1]
-paths=[R/'src/concept_map_manifest.mjs',R/'assets/decor/haunted-showcase-full.png']
+paths=[R/'src/concept_map_manifest.mjs',R/'assets/decor/haunted-showcase-full.png',R/'MEDIA_STUDIO.html',R/'MEDIA_DIAGNOSTIC.html']
 paths+=list((R/'assets/maps').glob('*-concept-*.webp'))
 paths+=list((R/'assets/legends').glob('*.webp')) if (R/'assets/legends').exists() else []
 paths+=list((R/'assets/sfx').glob('enter-*.wav'))

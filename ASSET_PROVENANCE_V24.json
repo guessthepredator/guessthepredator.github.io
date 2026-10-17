@@ -1,0 +1,15 @@
+{
+  "build": "GTP2 V2.4 Pinkshift Eclipse",
+  "official_apex_screenshots_bundled": 0,
+  "external_wiki_screenshot_filename_references": 20,
+  "wiki_image_permission_for_fan_game": "NOT VERIFIED",
+  "local_poi_schematics": 36,
+  "original_local_audio_sfx_wavs": 14,
+  "recorded_human_voice_clips_bundled": 0,
+  "optional_external_cc0_voice_installer": "scripts/install_cc0_announcer.py",
+  "official_legend_renders_bundled": 0,
+  "external_legend_art_candidates": 28,
+  "local_ability_icons_rights_unverified": 8,
+  "EA_fan_game_permission": "NOT GRANTED",
+  "risk_notes": "SOURCES_AND_RIGHTS.md"
+}

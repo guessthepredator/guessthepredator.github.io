@@ -29,8 +29,8 @@ test('map stage correctly works for interior location',()=>{
  let round=mapRound(location);round=mapGuess(round,location.map,location,100);assert.equal(round.stage,2);
  round=mapGuess(round,location.poi,location,200);assert.equal(round.finished,true);assert.equal(round.won,true);
 });
-test('all map photo lookups start with local image path',()=>{
- for(const location of LOCATIONS){const sources=mapShots(location);assert.ok(sources.length>=4);assert.ok(sources[0].endsWith(`${location.id}.webp`));assert.ok(sources.slice(0,4).every(s=>s.startsWith('./assets/maps/')));}
+test('map screenshot sources use documented remote redirect with a local fallback',()=>{
+ for(const location of LOCATIONS){const sources=mapShots(location);assert.ok(sources.length>=1);assert.ok(sources.at(-1).endsWith(location.id+'.svg'));for(const src of sources)assert.ok(src.startsWith('./assets/map-recon/')||src.startsWith('https://apexlegends.wiki.gg/'))}
 });
 test('game rules preserved',()=>{
  assert.equal(MAX_GUESSES,6);assert.equal(FULL_SCAN_GUESSES,5);
@@ -47,8 +47,8 @@ test('eight legitimate ability icons only',()=>{
  assert.equal(localAbilitySlugs.length,8);
  for(const slug of localAbilitySlugs){assert.ok(abilityCandidates(slug).length);assert.ok(existsSync(resolve(root,`assets/ability-icons/${slug}.png`)))}
 });
-test('voice and media studio present, no fake installed voices',()=>{
- assert.ok(js.includes('NO VOICE IMPERSONATION'));assert.ok(js.includes('MEDIA_STUDIO.html'));
+test('Media Studio removed; Quote is text-only and has no imitation voice',()=>{
+ assert.ok(js.includes('NO VOICE IMPERSONATION'));assert.ok(!js.includes('MEDIA_STUDIO.html'));
  assert.ok(!js.includes('HUMAN VOICE FILE NOT INSTALLED'));
- assert.ok(existsSync(resolve(root,'MEDIA_STUDIO.html')));
+ assert.ok(!existsSync(resolve(root,'MEDIA_STUDIO.html')));
 });

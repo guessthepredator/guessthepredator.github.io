@@ -1,4 +1,4 @@
-import {MAPS,LOCATIONS,LEGACY_LOCATIONS,mapShots,mapRound,mapGuess,dailyMap,resolveLocation} from './maps.mjs';
+import {MAPS,LOCATIONS,LEGACY_LOCATIONS,mapShots,mapRound,mapGuess,dailyMap,resolveLocation,sourceForLocation} from './maps.mjs';
 import {TIPS,unlockedIntel,tipFor} from './tips.mjs';
 import {playVoice,stopVoice,hasVoiceClip} from './voice.mjs';
 import {legends} from './data.mjs';
@@ -116,8 +116,8 @@ function loadPortraitImages(parent=app){
       if(index>=candidates.length){
         const box=image.closest('.portrait-holder');
         const px=box?.closest('.pixel-art');
-        if(px){const status=px.querySelector('.pixel-error');if(status)status.textContent='PORTRAIT OFFLINE';}
-        if(box)box.innerHTML='<span class="portrait-unavailable">PORTRAIT<br>OFFLINE</span>';
+        if(px){const status=px.querySelector('.pixel-error');if(status)status.textContent='SIGNAL INTERRUPTED · USE THE GUESS TERMINAL';}
+        if(box){const name=image.dataset.portrait||'?';const initial=(name[0]||'?').toUpperCase();box.innerHTML='<span class="portrait-unavailable" aria-label="Image unavailable"><b>'+initial+'</b><small>VISUAL SIGNAL<br>UNAVAILABLE</small></span>';}
         return;
       }
       image.src=candidates[index++];
@@ -191,6 +191,7 @@ function loadMapImages(parent=app){
       if(img.naturalWidth<180||img.naturalHeight<100){next();return;}
       frame?.classList.add('has-map-art');
       frame?.classList.toggle('recon-art',img.currentSrc.includes('/map-recon/'));
+      frame?.classList.toggle('external-reference',img.currentSrc.startsWith('https://'));
     });
     img.addEventListener('error',next);
     next();
@@ -201,8 +202,8 @@ function edgeArenaDecor(){
 }
 // The character is painted only once inside the backdrop art. No artificial gaze overlay.
 function nav(){return `<header class="top gtp2-top"><div class="gtp2-top-inner">
-  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator 2 home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>DARK PINK · REFORGED V2.3</small></span></button>
-  <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><a class="nav-item" href="./MEDIA_STUDIO.html">◫ MEDIA STUDIO</a></nav>
+  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator 2 home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>PINKSHIFT · ECLIPSE V2.4</small></span></button>
+  <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item" data-action="open" data-mode="map">⌖ MAP HUNT</button></nav>
   <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle original sound effects" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ SOUND ON':'♪ SOUND OFF'}</button><button class="gtp2-audio-preview" data-action="sound-test" title="Preview original UI sound">◖)) TEST</button><button class="gtp2-voice-toggle" data-action="announcer" title="CC0 human voice announcer" aria-pressed="${store.settings.announcer}">${store.settings.announcer?'🎙 HUMAN ON':'🎙 HUMAN OFF'}</button></div>
  </div></header>`;}
 function statCards(){
@@ -277,31 +278,31 @@ function home(){
    <img id="gtp2-backdrop" class="gtp2-backdrop" src="./assets/decor/haunted-hero.webp" alt="" aria-hidden="true" fetchpriority="high" />
    <div class="gtp2-vignette" aria-hidden="true"></div>
    <div class="gtp2-hero-content">
-    <div class="gtp2-heading"><div><span class="gtp2-kicker">✦ DARK PINK / HAUNTED OUTLANDS</span><h1>GUESS THE <span>PREDATOR.</span></h1><p>Find the legend. Crack the location. Rule the daily hunt.</p></div><div class="gtp2-progress"><small>DAILY PROGRESS · ${esc(today())}</small><strong>${done}<em>/6</em></strong><span>${done===6?'ALL CHALLENGES COMPLETED':'MISSIONS COMPLETED'}</span></div></div>
+    <div class="gtp2-heading"><div><span class="gtp2-kicker">✦ ECLIPSE / HAUNTED OUTLANDS</span><h1>GUESS THE <span>PREDATOR.</span></h1><p>Find the legend. Crack the location. Rule the daily hunt.</p></div><div class="gtp2-progress"><small>DAILY PROGRESS · ${esc(today())}</small><strong>${done}<em>/6</em></strong><span>${done===6?'ALL CHALLENGES COMPLETED':'MISSIONS COMPLETED'}</span></div></div>
     <div class="gtp2-switchline"><div class="gtp2-session" role="group" aria-label="Daily or Free Play"><button data-action="session" data-session="daily" class="${session==='daily'?'active':''}" aria-pressed="${session==='daily'}">◈ DAILY</button><button data-action="session" data-session="unlimited" class="${session==='unlimited'?'active':''}" aria-pressed="${session==='unlimited'}">∞ FREE PLAY</button></div><span>SELECT YOUR CHALLENGE ✦</span></div>
     <div class="gtp2-mode-layout"><div class="gtp2-mode-column">${MODES.slice(0,3).map((mode,i)=>modeTile(mode,i)).join('')}</div><div class="gtp2-hero-space" aria-hidden="true"></div><div class="gtp2-mode-column">${MODES.slice(3).map((mode,i)=>modeTile(mode,i+3)).join('')}</div></div>
-    <div class="gtp2-hero-footer"><span>${session==='daily'?'ONE DAILY RUN PER MODE':'UNLIMITED PRACTICE · NO STREAK RISK'}</span><button data-action="home-daily" class="gtp2-primary">${unfinished.length?'CONTINUE DAILY':'VIEW RESULTS'} <b>↗</b></button><span>6 ARENAS · 36 LOCATION RECONS · CC0 HUMAN ANNOUNCER</span></div>
+    <div class="gtp2-hero-footer"><span>${session==='daily'?'ONE DAILY RUN PER MODE':'UNLIMITED PRACTICE · NO STREAK RISK'}</span><button data-action="home-daily" class="gtp2-primary">${unfinished.length?'CONTINUE DAILY':'VIEW RESULTS'} <b>↗</b></button><span>6 ARENAS · 36 LOCATION SIGNALS · CC0 HUMAN ANNOUNCER</span></div>
    </div>
   </section>
   <div class="gtp2-bottom"><div class="gtp2-side-label"><span>BEYOND THE ARENA</span><small>CHOOSE · COLLECT · DISCOVER</small></div>
   ${dailyExtras()}${forbiddenPanel()}${statCards()}
-  <footer class="gtp2-disclaimer">This independent trivia project is not endorsed by or affiliated with EA or its licensors. Character names and gameplay references belong to their respective owners. No extracted game audio is supplied. <a href="./MEDIA_STUDIO.html">MEDIA STUDIO</a> · <a href="./MEDIA_DIAGNOSTIC.html">MEDIA CHECK</a></footer></div>
+  <footer class="gtp2-disclaimer">This independent trivia project is not endorsed by or affiliated with EA or its licensors. Character names and gameplay references belong to their respective owners. No extracted game audio is supplied. · <a href="./SOURCES_AND_RIGHTS.md" target="_blank" rel="noopener">SOURCE &amp; RIGHTS NOTES</a></footer></div>
  </main>`;
 }
 function getVisual(round,target){
   const mode=active;
   if(mode==='pixel'){
-    const effect=['mosaic','holo','fragments'].includes(store.settings.pixelStyle)?store.settings.pixelStyle:'mosaic';
+    const effect=['mosaic','holo','soft'].includes(store.settings.pixelStyle)?store.settings.pixelStyle:'mosaic';
     const step=Math.min(round.guesses.length,6);
-    const sizes=[18,25,35,51,76,118,176];
-    const blur=[18,14,10,6,3,1,0];
-    const pct=[8,20,33,48,64,82,100];
+    const sizes=[15,22,33,49,73,110,180];
+    const blur=[5,4,3,2,1,0,0];
+    const pct=[12,24,39,55,73,91,100];
     const size=sizes[step];
     return `<div class="clue-visual visual-pixel px-effect-${effect}"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
       <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted Legend portrait"></canvas>
       ${portrait(target.slug,{alt:'',cls:'pixel-source',concealed:!round.finished,eager:true})}
-      <div class="pixel-error" aria-hidden="true">WAITING FOR IMAGE SIGNAL…</div><div class="pixel-scratch scratch-a"></div><div class="pixel-scratch scratch-b"></div><div class="pixel-scan"></div><div class="pixel-vignette"></div>
-      </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div><div class="pixel-preset" role="group" aria-label="Choose pixel reveal effect">${[['mosaic','▦ MOSAIC'],['holo','⌁ HOLO'],['fragments','◇ FRAGMENTS']].map(([value,label])=>`<button class="${effect===value?'active':''}" type="button" data-action="pixel-style" data-style="${value}" aria-pressed="${effect===value}">${label}</button>`).join('')}</div></div>`;
+      <div class="pixel-fallback" role="group" aria-label="Offline character identity clues"><span class="pixel-fallback-kicker">◈ BACKUP INTEL / SIGNAL RECOVERY</span><div class="pixel-fallback-emblem">${esc((target.emoji.split(/\s+/)[0]||'◇'))}</div><strong>${step>=1?esc(target.role.toUpperCase()):'CLASSIFIED ROLE'}</strong><p>${step>=3?esc(target.title):'IDENTITY PROFILE ENCRYPTED'}</p><small>${step>=5?esc(target.signature):'ADDITIONAL INTEL UNLOCKS AFTER GUESSES'}</small></div><div class="pixel-error" aria-hidden="true"></div><div class="pixel-scratch scratch-a"></div><div class="pixel-scratch scratch-b"></div><div class="pixel-scan"></div><div class="pixel-vignette"></div>
+      </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div><div class="pixel-preset" role="group" aria-label="Choose pixel reveal effect">${[['mosaic','▦ MOSAIC'],['soft','◌ SOFT BLUR'],['holo','⌁ SIGNAL']].map(([value,label])=>`<button class="${effect===value?'active':''}" type="button" data-action="pixel-style" data-style="${value}" aria-pressed="${effect===value}">${label}</button>`).join('')}</div></div>`;
   }
   if(mode==='quote')return `<div class="clue-visual gtp2-quote-rework"><div class="gtp2-quote-lines" aria-hidden="true"></div><div class="gtp2-quote-head"><span>◈ ORIGINAL QUOTE / NO VOICE IMPERSONATION</span><span>CHANNEL 0${MODES.indexOf(active)+1}</span></div><div class="gtp2-quote-mark" aria-hidden="true">“</div><blockquote>“${esc(target.quote)}”</blockquote><div class="gtp2-quote-status"><span class="gtp2-live-dot"></span> ENCRYPTED SIGNAL · IDENTIFY THE SPEAKER</div></div>`;
   if(mode==='ability')return `<div class="clue-visual visual-ability"><div class="ability-stage" aria-label="Recognize the Apex ability icon"><div class="ability-outer-orbit"></div><div class="ability-symbol" role="img" aria-label="Unidentified in-game passive ability icon"><img data-ability="${esc(target.slug)}" alt="" loading="eager"/><span class="ability-wait">LOADING ABILITY<br>ICON…</span><span class="ability-fail">ABILITY ICON<br>UNAVAILABLE</span></div><span class="ability-tag">PASSIVE // IMAGE ONLY</span></div></div>`;
@@ -351,7 +352,7 @@ function guessBody(round,target){
   }
   return `<div class="guess-top"><div><small>YOUR NEXT MOVE</small><h2>WHO’S THAT <span style="color:#ef4895">LEGEND?</span></h2></div><span class="pill">${round.guesses.length}/${maxGuesses(round)} GUESSES · ${maxGuesses(round)-round.guesses.length} LEFT</span></div>
   <div class="search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button class="btn pink small" data-action="submit-search" title="Guess first matching Legend">↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
-  <div class="guess-tools"><button class="btn mint small" data-action="picker">◫ BROWSE LEGENDS</button><small>Filter by class · See actual portraits · Press G</small></div>
+  <div class="guess-tools"><button class="btn mint small" data-action="picker">◫ BROWSE LEGENDS</button><small>Filter by class · Guess faster · Press G</small></div>
   ${latestSignal(round,target)}${scannerMarkup(round,target)}
   <div class="tried-list" aria-label="Eliminated guesses">${round.guesses.length?round.guesses.map(name=>`<span class="used">${esc(name)}</span>`).join(''):'<span style="color:#875d91;font-size:10px;font-weight:800">No Legends eliminated yet · open Browse for faster reads</span>'}</div>`;
 }
@@ -363,10 +364,10 @@ function mapGame(){
  const used=new Set(attempted);
  const options=choices.map(choice=>`<button class="map-choice ${used.has(choice)?'eliminated':''}" data-action="map-guess" data-name="${esc(choice)}" ${round.finished||used.has(choice)?'disabled':''}>${esc(choice)}${used.has(choice)?' ×':''}</button>`).join('');
  const state=round.finished?(round.won?'✓ SECTOR CONFIRMED':'✕ SIGNAL LOST'):`STAGE ${stage} / 2 · ${stage===1?'IDENTIFY MAP':'IDENTIFY POI'}`;
- const img=`<img class="map-img-candidate" data-map-photo="${esc(entry.id)}" data-map-angle="${Number(round.mediaAngle)||0}" alt="POI-specific landmark clue illustration or owner-provided gameplay screenshot" loading="eager" decoding="async" />`;
+ const img=`<img class="map-img-candidate" data-map-photo="${esc(entry.id)}" data-map-angle="${Number(round.mediaAngle)||0}" alt="External location reference screenshot" loading="eager" decoding="async" />`;
  return `<main class="wrap game map-game gtp2-game-scene gtp2-scene-map"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${session==='daily'?'DAILY':'FREE PLAY'} / MAP RECON</span></div>
- <div class="game-titlebar"><div><span class="kicker">OUTLANDS CARTOGRAPHY / 06</span><h1>GUESS THE MAP<span style="color:#ff6ebf">.</span></h1><p>Inspect location-specific architectural clues. Real screenshots take priority when installed.</p></div><span class="game-attempts">${round.finished?'DONE':stage===1?3-attempted.length:2-attempted.length}<small> LEFT</small></span></div>
- ${modeRail()}<section class="map-challenge"><div class="map-frame"><div class="panel-top"><span>⌖ UNKNOWN LOCATION / TRANSMISSION</span><small>${state}</small></div><div class="map-photo">${img}<div class="map-offline"><b>IMAGE SIGNAL OFFLINE</b><p>Verified map image not installed yet. Use the written clue below.</p><span>${esc(entry.clue)}</span></div></div><div class="map-credit"><span class="recon-credit">ORIGINAL LANDMARK RECONSTRUCTION · NOT A GAME SCREENSHOT</span><span class="capture-credit">OWNER-PROVIDED LOCAL SCREENSHOT</span></div></div>
+ <div class="game-titlebar"><div><span class="kicker">OUTLANDS CARTOGRAPHY / 06</span><h1>GUESS THE MAP<span style="color:#ff6ebf">.</span></h1><p>Identify the location using authentic external reference images when available and honest location intel.</p></div><span class="game-attempts">${round.finished?'DONE':stage===1?3-attempted.length:2-attempted.length}<small> LEFT</small></span></div>
+ ${modeRail()}<section class="map-challenge"><div class="map-frame"><div class="panel-top"><span>⌖ UNKNOWN LOCATION / TRANSMISSION</span><small>${state}</small></div><div class="map-photo">${img}<div class="map-offline"><b>IMAGE SIGNAL OFFLINE</b><p>Image source unavailable. Use the location intelligence below.</p><span>${esc(entry.clue)}</span></div></div><div class="map-credit"><span class="recon-credit">VISUAL INTEL · LANDMARK SKETCH</span><span class="capture-credit">EXTERNAL APEX REFERENCE · OWNERS RETAIN RIGHTS</span><a class="map-source-link" href="${esc(sourceForLocation(entry))}" target="_blank" rel="noopener noreferrer">VIEW SOURCE ↗</a></div></div>
  <div class="map-terminal"><span class="kicker">${round.finished?'MISSION REPORT':state}</span><h2>${round.finished?(round.won?'TARGET LOCATED!':'TRY ANOTHER SECTOR'):(stage===1?'WHICH MAP?':'WHICH POI?')}</h2><p>${round.finished?`Answer: ${esc(entry.map)} / ${esc(entry.poi)}.`:stage===1?'You have three map attempts. Each wrong map is eliminated.':'Map confirmed. Find the exact location in two attempts.'}</p><div class="map-structural-intel"><small>⌖ LANDMARK READOUT</small><p>${esc(entry.clue)}</p></div>
  <div class="map-choices">${round.finished?'':options}</div>${round.finished?`<div class="end-actions"><button class="btn pink" data-action="next">NEXT CHALLENGE ↗</button><button class="btn mint" data-action="again">∞ FREE PLAY</button></div>`:''}
  ${attempted.length?`<div class="map-trail">Eliminated: ${attempted.filter(n=>n!==(stage===1?entry.map:entry.poi)).map(esc).join(', ')||'None'}</div>`:''}</div></section></main>`;
@@ -577,7 +578,7 @@ app.addEventListener('pointerover',event=>{
   const card=event.target.closest?.('.arena-mode');
   if(!card||!store.settings.audio)return;
   if(event.relatedTarget instanceof Node&&card.contains(event.relatedTarget))return;
-  const now=performance.now();if(now-lastModeHover<160)return;lastModeHover=now;
+  const now=performance.now();if(now-lastModeHover<210)return;lastModeHover=now;
   const mode=card.dataset.mode;
   if(MODES.includes(mode))sound('hover-'+mode);
 });

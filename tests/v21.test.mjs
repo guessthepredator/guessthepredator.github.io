@@ -10,16 +10,15 @@ const content=path=>readFileSync(resolve(root,path),'utf8');
 
 test('Pinkshift theme is deployed as a real CSS file',()=>{
  assert.ok(existsSync(resolve(root,'pinkshift.css')));
- assert.ok(content('index.html').includes('pinkshift.css?v=2.3.0'));
+ assert.ok(content('index.html').includes('pinkshift.css?v=2.4.0'));
  assert.ok(content('.github/workflows/pages.yml').includes('styles.css pinkshift.css'));
  assert.ok(content('pinkshift.css').includes('.gtp2-hero{width:100%;border:0!important'));
 });
-test('genuine local multiple-angle loader avoids external Map hotlinks',()=>{
+test('Map external references have POI-specific names and local fallbacks',()=>{
  assert.equal(LOCATIONS.length,36);
  for(const entry of LOCATIONS){
-  assert.equal(entry.kind==='Interior'||entry.kind==='Exterior',true);
-  for(const asset of mapShots(entry))assert.ok(asset.startsWith('./assets/maps/')||asset.startsWith('./assets/map-recon/'));
   assert.ok(mapShots(entry).at(-1).endsWith(entry.id+'.svg'));
+  for(const url of mapShots(entry))assert.ok(url.startsWith('https://apexlegends.wiki.gg/')||url.startsWith('./assets/map-recon/'));
  }
  assert.ok(content('src/maps.mjs').includes('mapMediaManifest'));
 });
@@ -29,14 +28,11 @@ test('14 original WAVs are present and valid files',()=>{
  assert.equal(freshStore().settings.audio,true);
  assert.ok(content('src/app.mjs').includes('data-action="sound-test"'));
 });
-test('Media Studio supports multiple local images plus rights opt-in and manifests',()=>{
- const page=content('MEDIA_STUDIO.html');
- assert.ok(page.includes('multiple></label>'));
- assert.ok(page.includes('8 capture angles'));
- assert.ok(page.includes('id="rights"'));
- assert.ok(page.includes('src/map_media_manifest.mjs'));
- assert.ok(page.includes('src/ability_media_manifest.mjs'));
- assert.ok(page.includes('src/voice_manifest.mjs'));
+test('no Media Studio UI, no dead links, and revised release sources note',()=>{
+ assert.ok(!existsSync(resolve(root,'MEDIA_STUDIO.html')));
+ assert.ok(!content('src/app.mjs').includes('MEDIA_STUDIO.html'));
+ assert.ok(content('.github/workflows/pages.yml').includes('SOURCES_AND_RIGHTS.md'));
+ assert.ok(content('SOURCES_AND_RIGHTS.md').includes('NOT confirmed'));
 });
 test('disclaimer and publication risk disclosure are present',()=>{
  assert.ok(content('RIGHTS_AND_GITHUB_AUDIT.md').includes('HIGH RISK'));

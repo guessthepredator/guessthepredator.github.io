@@ -1,13 +1,29 @@
-# Guess The Predator 2 — Dark Pink Reforged
+# Guess the Predator 2 — Pinkshift Eclipse V2.4
 
-Unofficial fan-made Apex-themed trivia prototype, not endorsed by or affiliated with EA or its licensors.
+Independent, unofficial six-mode browser trivia. English UI, no player account required.
 
-Static HTML/CSS/ES Modules. No React, no npm, no server-side code. GitHub Pages through `.github/workflows/pages.yml`.
+## Installation
 
-Modes: Classic, Pixel, Quote (text-only), Ability, Emoji, Map. Includes Daily, Unlimited, 180-second Rush, 6/5 attempt modes, hints, streak, Legend of the Day, Wheel and Forbidden Tip.
+Extract all files into the repository root (where `index.html` lives), **not** into a subfolder. Keep `.git`. Run `python3 scripts/clean_old_release.py` once in the repo root to delete old Media Studio pages, concept renders, and legacy SFX. `git add -A`, commit, push to `main`, then enable GitHub Pages via Actions.
 
-Visual rebuild: dark pink Mirage centerpiece, full-screen hero, custom six mode backdrops, local map visual clues, prominent Browse Legends cards, no synthetic eye overlays.
+Run checks locally:
 
-**Honest media status:** 36 custom local map clue SVGs, 14 original UI WAV sounds, 6 local game backgrounds, 8 legitimate game Ability icons. No real local 3D portraits/POI screenshots or human voice recordings in the ZIP. Optional CC0 HUMAN announcer downloaded during Pages deployment when available or installed manually. Quote mode does NOT claim to feature real Apex character voice lines.
+```bash
+python3 scripts/validate_release.py
+node --test tests/*.test.mjs
+python3 -m http.server 8000
+```
 
-Read `START_HERE.md` for installation, `RELEASE_NOTES.md` for changes, `RIGHTS_AND_GITHUB_AUDIT.md` for copyright limitations.
+## What you receive
+
+Six interactive modes, Daily and Free Play, 28 Legend roster records, Pixel with Mosaic / Soft Blur / Signal, text Quote, 36 Map POIs, eight locally bundled Ability icons, original 14-file short SFX deck, original local background artwork, accessibility motion toggle, Daily streaks and reward.
+
+**Map screenshots:** For POIs with documented screenshots, `src/external_map_sources.mjs` points to third-party-hosted Apex Wiki file URLs. These are not downloaded or bundled. If a link fails, the playable mode falls back to an *explicitly labeled* local schematic clue. No copyright permission is claimed for wiki files; see `SOURCES_AND_RIGHTS.md` before publishing.
+
+**Legends:** Portraits are requested from external hosts and may be blocked; the project does **not** claim to bundle 28 full official renders. Failed requests display a clean 'visual unavailable' state instead of a broken-image icon. CSS scales available art without stretching.
+
+**Voice:** Quote uses written original fan clues. The optional Kenney CC0 human announcer integration only plays existing licensed recordings; no synthetic/robotic dialogue or impersonations. When files are not available, the UI stays quiet and playable.
+
+## Policy warning
+
+EA's present content policy restricts fan games and warns against implying endorsement. A repo can still receive an IP complaint. See `SOURCES_AND_RIGHTS.md` for citations and issues. "Not endorsed by EA" is a disclosure, not a license. Do not represent these materials as officially approved for use in a fan game.

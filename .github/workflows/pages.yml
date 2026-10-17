@@ -37,13 +37,12 @@ jobs:
           python3 scripts/validate_release.py
       - name: Add optional CC0 human announcer voices
         run: python3 scripts/install_cc0_announcer.py --auto
-      - name: Add optional CC0 human announcer voices
-        run: python3 scripts/install_cc0_announcer.py --auto
       - name: Create GitHub Pages artifact
         run: |
           mkdir -p dist
-          cp index.html styles.css pinkshift.css dark-pink-v23.css MEDIA_DIAGNOSTIC.html MEDIA_STUDIO.html dist/
+          cp index.html styles.css pinkshift.css dark-pink-v23.css eclipse-v24.css dist/
           cp -r src assets dist/
+          cp SOURCES_AND_RIGHTS.md dist/
           touch dist/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
