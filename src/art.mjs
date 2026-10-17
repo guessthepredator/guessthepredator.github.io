@@ -114,7 +114,12 @@ export function portraitSourcesFor(slug,{pixel=false}={}){
  ]:[];
  const previous=artCatalog[slug]||[];
  const alternate=pixel?previous.filter(url=>!url.includes('dexerto.com')&&!url.includes('portrait.jpg')):previous;
- return [...new Set([...(direct?[direct]:[]),...knownSkin,...originals,...alternate,...(reliableIconFallbacks[slug]?[reliableIconFallbacks[slug]]:[])])];
+ // Prefer known, directly hosted icon images for the five missing-in-browser
+ // Legends. Remote Wiki Special:Redirect routes were rendering as unavailable.
+ // Tall renders remain the priority for all other Legends.
+ const missingInBrowser=new Set(['alter','ballistic','catalyst','conduit','sparrow']);
+ const safe=reliableIconFallbacks[slug];
+ return [...new Set([...(missingInBrowser.has(slug)&&safe?[safe]:[]),...(direct?[direct]:[]),...knownSkin,...originals,...alternate,...(safe?[safe]:[])])];
 }
 
 // Public artwork source catalog. Host permission and availability may change.
