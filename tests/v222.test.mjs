@@ -19,18 +19,17 @@ test('six cards orbit around a single central reward hub',()=>{
  assert.ok(home.includes('data-action="wheel"')&&home.includes('gtp222-wheel-illustration'));
  assert.ok(home.includes('data-action="intel-open"')&&home.includes('gtp222-primary-actions'));
 });
-test('full scan remembers trait matches from first guess after later mismatch',()=>{
+test('Full Scan shows latest truthful match or mismatch, never an old green override',()=>{
  const target=legends.find(l=>l.name==='Mirage');
- const first=legends.find(l=>l.name!==target.name && FIELDS.some(f=>l[f]!=null&&l[f]===target[f]));
- assert.ok(first);
- const matched=FIELDS.filter(f=>lMatch(first,target,f));
- assert.ok(matched.length);
- let round=newRound(target.name,'full');round=tryGuess(round,first.name,legends,1000);
- const second=legends.find(l=>l.name!==target.name && l.name!==first.name && matched.some(f=>l[f]!==target[f]));
- assert.ok(second);round=tryGuess(round,second.name,legends,2000);
- const state=scannerState(round,target,legends);
- for(const field of matched)assert.equal(state[field].kind,'correct');
- assert.ok(app.includes('gtp222-locked-chip')&&app.includes('gtp222-scan-history'));
+ const first=legends.find(l=>l.name!==target.name&&FIELDS.some(f=>lMatch(l,target,f)));
+ const shared=FIELDS.find(f=>lMatch(first,target,f));
+ const second=legends.find(l=>l.name!==target.name&&l.name!==first.name&&l[f]!==target[f]&&l[f]!=null);
+ let round=tryGuess(newRound(target.name,'full'),first.name,legends,1000);
+ assert.equal(scannerState(round,target,legends)[shared].kind,'correct');
+ round=tryGuess(round,second.name,legends,2000);
+ assert.equal(scannerState(round,target,legends)[shared].kind,'wrong');
+ assert.ok(app.includes('LATEST GUESS ONLY'));
+ assert.ok(!app.includes('${fullScanHistoryMarkup(round,target)}'));
 });
 function lMatch(a,b,f){return a[f]!=null&&a[f]===b[f];}
 test('saved days, stats and submission receipts survive reload',()=>{
@@ -44,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.23.0')&&html.includes('app.mjs?v=2.23.0'));
+ assert.ok(html.includes('styles.css?v=2.24.0')&&html.includes('app.mjs?v=2.24.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -92,4 +91,24 @@ test('home cards leave space for character art; game sidebars match every mode',
  assert.ok(css.includes('V2.23 · SHOWCASE'));
  assert.ok(css.includes('grid-template-columns:minmax(214px,286px)'));
  assert.ok(css.includes('.gtp222-home:after'));
+});
+
+test('V2.24 orbit, full dock art, game sessions and Trivia timeout are wired',()=>{
+ assert.ok(app.includes('gtp224-orbit-'));
+ assert.ok(app.includes('gtp224-session-banner'));
+ assert.ok(css.includes('V2.24 — true orbit'));
+ assert.ok(css.includes('.gtp222-home-dock .gtp222-wheel-illustration'));
+ assert.ok(css.includes('.gtp222-home-dock .gtp222-spotlight-art'));
+ assert.ok(css.includes('#app[data-screen="trivia"] .trivia-page'));
+ assert.ok(app.includes("requestAnimationFrame(frame)"));
+ assert.ok(app.includes('TIME’S UP · QUESTION EXPIRED'));
+});
+test('portrait catalog attempts the same vertical source on every Legend',async()=>{
+ const {portraitOriginalNames,portraitSourcesFor}=await import('../src/art.mjs');
+ assert.equal(Object.keys(portraitOriginalNames).length,28);
+ for(const legend of legends){
+  const sources=portraitSourcesFor(legend.slug);
+  assert.ok(sources[0].includes('apexlegends.wiki.gg'));
+  assert.ok(sources.length>=2);
+ }
 });
