@@ -1,37 +1,25 @@
 from pathlib import Path
 from PIL import Image
-import json, wave, re
+import wave,re
 P=Path(__file__).resolve().parents[1]
-required=['index.html','styles.css','src/app.mjs','src/engine.mjs','src/maps.mjs','src/pixel_scene.mjs','src/audio.mjs','src/data.mjs','assets/decor/haunted-hero.webp','assets/map-catalog.json','.github/workflows/pages.yml']
-for filename in required:assert (P/filename).is_file(),f'MISSING {filename}'
-locs=json.loads((P/'assets/map-catalog.json').read_text())
-assert len(locs)==36 and len({l['id'] for l in locs})==36 and len({l['map'] for l in locs})==6
+required=['index.html','styles.css','src/app.mjs','src/engine.mjs','src/scoring.mjs','src/leaderboard.mjs','src/leaderboard_config.mjs','src/pixel_scene.mjs','src/audio.mjs','src/data.mjs','LEADERBOARD_SETUP.md','supabase/migrations/202610170001_leaderboards.sql','supabase/functions/submit-score/index.ts','assets/decor/haunted-hero.webp','.github/workflows/pages.yml']
+for name in required: assert (P/name).is_file(),name
+html=(P/'index.html').read_text();js=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
+assert html.count('rel="stylesheet"')==1 and 'styles.css?v=2.7.0' in html
+assert 'app.mjs?v=2.7.0' in html
+assert 'function leaderboard()' in js and 'function howTo()' in js and 'function faq()' in js
+assert 'gtp27-mode-grid' in css and 'gtp27-classic-banner' in js
+assert "['classic', 'pixel', 'quote', 'ability', 'emoji']" in (P/'src/engine.mjs').read_text()
+assert 'mapGame(' not in js and 'data-mode="map"' not in js
+assert not any((P/name).exists() for name in ['MEDIA_STUDIO.html','src/maps.mjs','src/map_runtime.mjs','src/announcer.mjs','assets/game-bg/map.svg'])
 assert Image.open(P/'assets/decor/haunted-hero.webp').size[0]>=1200
-html=(P/'index.html').read_text();app=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
-assert html.count('rel="stylesheet"')==1 and 'styles.css?v=2.6.1' in html
-assert 'app.mjs?v=2.6.1' in html and 'NOVA' in html
-assert 'paintPixelScene' in app and 'scenePalette' in (P/'src/pixel_scene.mjs').read_text()
-assert 'id="mirage-gaze"' not in app and 'MEDIA_STUDIO' not in app
-for word in ['announcerAvailable','stopAnnouncer','voiceCue(\'ready\')','say(\'ready\')','data-action="announcer"']:
- assert word not in app,word
-assert 'gtp2-backdrop' in app and '.gtp2-hero' in css
-assert "session==='daily'?`<button data-action=\"home-daily\"" in app
-assert not any((P/name).exists() for name in ['pinkshift.css','dark-pink-v23.css','eclipse-v24.css','lightshift-v25.css','MEDIA_STUDIO.html','MEDIA_DIAGNOSTIC.html'])
-assert not (P/'src/announcer.mjs').exists()
-assert not (P/'assets/map-recon').exists()
 assert not (P/'src/concept_map_manifest.mjs').exists()
-assert len(list((P/'assets/sfx').glob('*.wav')))==14
-for path in (P/'assets/sfx').glob('*.wav'):
- with wave.open(str(path)) as wav:
-  assert wav.getnchannels()==1 and 0.03<wav.getnframes()/wav.getframerate()<.42,path
-assert 'cp index.html styles.css dist/' in workflow and 'install_cc0_announcer' not in workflow
-assert 'styles.css' in workflow
-for path in (P/'src').glob('*.mjs'):
- assert '?v=2.5.1' not in path.read_text(),path
-print('NOVA V2.6.1 release audit PASS: 36 POIs, 1 stylesheet, 14 nonverbal SFX, no announcer, no simulated Map assets')
-print('Map/portraits remain third-party: live availability and usage permissions not certified.')
-
-# Guard against accidental reintroduction of incompatible legacy tests / wildcard CI runs.
-assert 'node --test tests/gtp2.test.mjs tests/v26.test.mjs' in workflow
-assert 'tests/*.test.mjs' not in workflow
-assert not any((P/'tests'/name).is_file() for name in ('v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs'))
+assert len(list((P/'assets/sfx').glob('*.wav')))==13
+for sound in (P/'assets/sfx').glob('*.wav'):
+ with wave.open(str(sound)) as wav:assert wav.getnchannels()==1 and .03<wav.getnframes()/wav.getframerate()<.42,sound
+assert 'node --test tests/core.test.mjs tests/v27.test.mjs' in workflow
+assert 'cp index.html styles.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
+assert 'src/leaderboard_config.mjs' in workflow or 'cp -r src assets dist/' in workflow
+assert not any((P/'tests'/name).exists() for name in ['v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs','gtp2.test.mjs','v26.test.mjs'])
+print('GTP2 V2.7 release validation PASS: 5 modes, 13 nonverbal SFX, 1 CSS, 2 scoreboards, Supabase backend package')
+print('Live leaderboard requires Supabase account setup. Portrait hotlinks remain source-dependent.')

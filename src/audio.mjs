@@ -1,5 +1,5 @@
 /** Original, non-verbal UI cues only. There is no TTS/announcer or extracted game audio. */
-const events=new Set(['nav','pick','clue','wrong','correct','win','lose','reveal',...['classic','pixel','quote','ability','emoji','map'].map(mode=>'hover-'+mode)]);
+const events=new Set(['nav','pick','clue','wrong','correct','win','lose','reveal',...['classic','pixel','quote','ability','emoji'].map(mode=>'hover-'+mode)]);
 const buffers=new Map();const last=new Map();
 function getSample(name){
  const key=events.has(name)?name:'nav';
@@ -14,7 +14,7 @@ export function playSound(name,enabled=true){
  last.set(name,now);
  try{
   const a=getSample(name),player=a.paused?a:a.cloneNode(true);
-  player.volume=name.startsWith('hover-')?.12:name==='lose'?.20:.22;
+  player.volume=name.startsWith('hover-')?.085:name==='lose'?.18:.16;
   player.currentTime=0;const outcome=player.play();outcome?.catch?.(()=>{});return true;
  }catch{return false}
 }

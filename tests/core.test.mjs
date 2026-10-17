@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {MODES,puzzleAnswers,gameScore,newRound,tryGuess,scannerState,formatValue,streak} from '../src/engine.mjs';
+import {legends} from '../src/data.mjs';import {dailySummary,buildSubmission} from '../src/scoring.mjs';
+import {localAbilitySlugs} from '../src/abilities.mjs';
+test('five unique modes, no map; 28 Legends',()=>{assert.deepEqual(MODES,['classic','pixel','quote','ability','emoji']);assert.equal(legends.length,28);});
+test('daily puzzles deterministic and distinct',()=>{const a=puzzleAnswers('2026-10-17',legends);assert.equal(Object.keys(a).length,5);assert.equal(new Set(Object.values(a)).size,5);assert.deepEqual(a,puzzleAnswers('2026-10-17',legends));});
+test('ability target has a bundled actual icon',()=>{for(let day=1;day<=30;day++){const d=new Date(Date.UTC(2026,9,day)).toISOString().slice(0,10);const answer=legends.find(l=>l.name===puzzleAnswers(d,legends).ability);assert.ok(localAbilitySlugs.includes(answer.slug));}});
+test('Classic handles missing age without N/A',()=>{const unknown=legends.find(l=>l.age==null);const state=scannerState(newRound(unknown.name),unknown,legends);assert.equal(state.age.value,'UNDISCLOSED');assert.equal(formatValue(null,'age'),'UNDISCLOSED');});
+test('daily scoring is distinct from unlimited practice and respects streak',()=>{const day='2026-10-17',answers=puzzleAnswers(day,legends);const rounds=Object.fromEntries(MODES.map(m=>[m,tryGuess(newRound(answers[m]),answers[m],legends,2000)]));const days={[day]:rounds};const s=dailySummary(days,day);assert.ok(s.completed&&s.allWon);assert.ok(s.baseScore>=5*1460);assert.equal(s.bonus,Math.round(s.baseScore*.05));assert.equal(buildSubmission(days,day,'ArcadePlayer').rounds.classic.guesses[0],answers.classic);});
+test('unfinished puzzles do not submit',()=>{assert.equal(dailySummary({},'2026-10-17').completed,false);});
+test('all 28 Emoji signatures have distinct recognizable clues',()=>{const keys=new Set();for(const l of legends){const all=[...l.emoji.split(/\s+/),...l.extraEmoji];assert.ok(all.length>=5,`Too few for ${l.name}`);const k=all.slice(0,3).join(' ');assert.ok(!keys.has(k),`duplicate ${k}`);keys.add(k);}});

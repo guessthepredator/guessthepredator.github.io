@@ -30,7 +30,7 @@ jobs:
       - name: Check JavaScript modules
         run: for f in src/*.mjs; do node --check "$f"; done
       - name: Run game, catalog and asset tests
-        run: node --test tests/gtp2.test.mjs tests/v26.test.mjs
+        run: node --test tests/core.test.mjs tests/v27.test.mjs
       - name: Validate release
         run: |
           python3 -m pip install --quiet Pillow
@@ -40,7 +40,6 @@ jobs:
           mkdir -p dist
           cp index.html styles.css dist/
           cp -r src assets dist/
-          cp SOURCES_AND_RIGHTS.md dist/
           touch dist/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

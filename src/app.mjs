@@ -1,39 +1,26 @@
-import {MAPS,LOCATIONS,LEGACY_LOCATIONS,mapShots,mapRound,mapGuess,dailyMap,resolveLocation,sourceForLocation} from './maps.mjs?v=2.6.0';
-import {findVerifiedMapImages,dayMapSelection} from './map_runtime.mjs?v=2.6.0';
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.6.0';
-import {legends} from './data.mjs?v=2.6.0';
-import {artCatalog} from './art.mjs?v=2.6.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.6.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.6.0';
-import {playSound} from './audio.mjs?v=2.6.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.6.0';
-import {loadStore,saveStore} from './store.mjs?v=2.6.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.7.0';
+import {legends} from './data.mjs?v=2.7.0';
+import {artCatalog} from './art.mjs?v=2.7.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.7.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.7.0';
+import {playSound} from './audio.mjs?v=2.7.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.7.0';
+import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.7.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.7.0';
+import {loadStore,saveStore} from './store.mjs?v=2.7.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.6.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.7.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
-let mapAvailability='checking', verifiedMapPool=[], mapCheckPromise=null;
-const dailyModes=()=>mapAvailability==='ready'?MODES:MODES.filter(mode=>mode!=='map');
-const mapEntry=()=>dayMapSelection(today(),verifiedMapPool.map(item=>item.entry));
-const availableMapEntry=(id)=>verifiedMapPool.some(item=>item.entry.id===id);
-async function startMapPreflight(){
- if(mapCheckPromise)return mapCheckPromise;
- // Probe a small cross-map sample before downloading every full-size screenshot.
- const featured=['kc-caustic-exterior','kc-crypto-interior','we-lava','ol-bonsai','sp-barometer','bm-terraformer','ed-city-hall','kc-bunker'];
- const quick=featured.map(id=>LOCATIONS.find(x=>x.id===id)).filter(Boolean);
- const remaining=LOCATIONS.filter(e=>!featured.includes(e.id)&&mapShots(e).length);
- mapCheckPromise=findVerifiedMapImages(quick).then(async items=>items.length?items:findVerifiedMapImages(remaining)).then(items=>{
-   verifiedMapPool=items;mapAvailability=items.length?'ready':'offline';
-   if(screen==='home'||screen==='records')render({scroll:false});
-   return mapAvailability;
- }).catch(()=>{mapAvailability='offline';if(screen==='home')render({scroll:false});return 'offline';});
- return mapCheckPromise;
-}
-
+const dailyModes=()=>MODES;
 let screen='home';
 let session='daily';
 let active='classic';
+let boardTab='daily';
+let boardData=null;
+let boardLoading=false;
+let boardError='';
 let pickerOpen=false;
 let pickerSearch='';
 let pickerClass='All';
@@ -49,9 +36,9 @@ let wheelAngle=0;
 let wheelSpinning=false;
 let wheelChosen=null;
 let wheelDisplayList=null;
-const COLORS={classic:'#aa80f6',pixel:'#5dd9ef',quote:'#ffc88f',ability:'#8de6bf',emoji:'#dca3fe',map:'#91baff'};
-const ICONS={classic:'✦',pixel:'▦',quote:'❞',ability:'⌁',emoji:'✧',map:'⌖'};
-const TAGLINES={classic:'Deduce the Legend with five clues.',pixel:'Uncover a complete mystery scene with each guess.',quote:'Read the intercepted transmission.',ability:'Identify the real passive icon.',emoji:'Decode three mysterious symbols.',map:'Which map? Which location?'};
+const COLORS={classic:'#ff7ac8',pixel:'#5dd9ef',quote:'#ffc88f',ability:'#84decc',emoji:'#dca3fe'};
+const ICONS={classic:'❔',pixel:'▦',quote:'❞',ability:'⌁',emoji:'✧'};
+const TAGLINES={classic:'Deduce the target with every signal.',pixel:'Reveal the legend, not the background.',quote:'Who wrote this intercepted line?',ability:'Identify the passive ability icon.',emoji:'Five symbols. One legend.'};
 const params=new URLSearchParams(location.search);
 const paramDay=params.get('day');
 let sharedDay=(paramDay&&/^\d{4}-\d{2}-\d{2}$/.test(paramDay)&&!Number.isNaN(Date.parse(paramDay+'T00:00:00Z')))?paramDay:null;
@@ -87,13 +74,6 @@ function ensureRound(mode=active,playSession=session){
         sync();
       }
     }
-    if(mode==='map'&&!availableMapEntry(round.answer)){
-      const candidate=playSession==='daily'?mapEntry():verifiedMapPool[Math.floor(Math.random()*verifiedMapPool.length)]?.entry;
-      if(!candidate)return round;
-      round=mapRound(candidate);
-      if(playSession==='daily')store.days[today()][mode]=round;else store.practice[mode]=round;
-      sync();
-    }
     if(round.mode==='full'&&!round.finished&&round.guesses?.length>=5){
       round={...round,finished:true,won:false,loss:'attempts',finishedAt:Date.now()};
       if(playSession==='daily')store.days[today()][mode]=round;
@@ -101,13 +81,6 @@ function ensureRound(mode=active,playSession=session){
       sync();
     }
     return round;
-  }
-  if(mode==='map'){
-    const candidate=playSession==='daily'?mapEntry():verifiedMapPool[Math.floor(Math.random()*verifiedMapPool.length)]?.entry;
-    if(!candidate)throw Error('Map photos have not been verified');
-    round=mapRound(candidate);
-    if(playSession==='daily')store.days[today()]={...store.days[today()],[mode]:round};else store.practice[mode]=round;
-    sync();return round;
   }
   const eligible=mode==='ability'?legends.filter(l=>localAbilitySlugs.includes(l.slug)):legends;
   const answer=playSession==='daily'?answers()[mode]:eligible[Math.floor(Math.random()*eligible.length)].name;
@@ -118,7 +91,6 @@ function ensureRound(mode=active,playSession=session){
   return round;
 }
 function randomPractice(mode=active){
-  if(mode==='map'){if(mapAvailability!=='ready'){showToast('MAP IS OFFLINE · NO VERIFIED LOCATION PHOTO');return;}store.practice.map=mapRound(verifiedMapPool[Math.floor(Math.random()*verifiedMapPool.length)].entry);sync();session='unlimited';active=mode;screen='game';pickerOpen=false;render();return;}
   const last=store.practice[mode]?.answer;
   const pool=legends.filter(l=>l.name!==last&&(mode!=='ability'||localAbilitySlugs.includes(l.slug)));
   store.practice[mode]=newRound(pool[Math.floor(Math.random()*pool.length)].name,store.settings.playStyle,store.settings.rush?180:0);
@@ -156,7 +128,7 @@ function loadPortraitImages(parent=app){
   });
 }
 function paintPixel(canvas,image){
-  const result=paintPixelScene(canvas,image,{resolution:Number(canvas.dataset.resolution)||28,seed:image.dataset.portrait||'legend'});
+  const result=paintPixelScene(canvas,image,{resolution:Number(canvas.dataset.resolution)||28,seed:'neutral-arena'});
   canvas.classList.toggle('loaded',result);
 }
 
@@ -183,42 +155,14 @@ function loadAbilityImages(parent=app){
     next();
   });
 }
-function loadMapImages(parent=app){
-  parent.querySelectorAll('img[data-map-photo]:not([data-media-ready])').forEach(img=>{
-    img.dataset.mediaReady='1';
-    const entry=LOCATIONS.find(loc=>loc.id===img.dataset.mapPhoto);
-    if(!entry)return;
-    const frame=img.closest('.map-photo');
-    const certified=verifiedMapPool.find(item=>item.entry.id===entry.id);
-    const sources=certified?[certified.url]:[];
-    let nextIndex=0;
-    const next=()=>{
-      if(!img.isConnected)return;
-      frame?.classList.remove('has-map-art');
-      if(nextIndex>=sources.length){frame?.classList.add('map-unavailable');
-        document.querySelectorAll('.map-choice').forEach(button=>button.disabled=true);
-        showToast('MAP IMAGE COULD NOT LOAD. ROUND PAUSED · GO BACK TO MODES.');return;}
-      // The first candidate is a real file that can be placed in the repository.
-      img.src=sources[nextIndex++];
-    };
-    img.addEventListener('load',()=>{
-      if(img.naturalWidth<180||img.naturalHeight<100){next();return;}
-      frame?.classList.add('has-map-art');
-      frame?.classList.remove('recon-art');
-      frame?.classList.toggle('external-reference',img.currentSrc.startsWith('https://'));
-    });
-    img.addEventListener('error',next);
-    next();
-  });
-}
 function edgeArenaDecor(){
   return `<aside class="edge-arena edge-arena-left" aria-hidden="true"><div class="edge-stitch"></div><span class="edge-glyph">△</span><span class="edge-label">OUTLANDS<br>AFTER HOURS</span><span class="edge-spark">✦ ✧</span></aside><aside class="edge-arena edge-arena-right" aria-hidden="true"><div class="edge-stitch"></div><span class="edge-glyph">◈</span><span class="edge-label">MIRAGE'S<br>HAUNTED ARENA</span><span class="edge-spark">✧ ✦</span></aside>`;
 }
 // The character is painted only once inside the backdrop art. No artificial gaze overlay.
 function nav(){return `<header class="top gtp2-top"><div class="gtp2-top-inner">
-  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator 2 home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>NOVA · V2.6</small></span></button>
-  <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item" data-action="open" data-mode="map" ${mapAvailability!=='ready'?'disabled title="Map unlocks only when a real screenshot loads"':''}>⌖ MAP HUNT</button></nav>
-  <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle original sound effects" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ SOUND ON':'♪ SOUND OFF'}</button><button class="gtp2-audio-preview" data-action="sound-test" title="Preview original UI sound">♪ PREVIEW FX</button></div>
+  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>MIRAGE EDITION · V2.7</small></span></button>
+  <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='leaderboard'?'active':''}" data-action="leaderboard">♛ RANKINGS</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item ${screen==='howto'?'active':''}" data-action="howto">? HOW TO PLAY</button><button class="nav-item ${screen==='faq'?'active':''}" data-action="faq">◉ FAQ</button></nav>
+  <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
  </div></header>`;}
 function statCards(){
   const day=store.days[today()]||{};const stats=streak(store.days,utcDay(),dailyModes());
@@ -279,8 +223,8 @@ function dailyExtras(){
 }
 function modeTile(mode,i){
  const round=store.days[today()]?.[mode];
- const status=mode==='map'&&mapAvailability!=='ready'?(mapAvailability==='checking'?'CHECKING REAL IMAGES…':'OFFLINE · REAL IMAGES REQUIRED'):session==='daily'&&round?.finished?(round.won?'✓ CLEARED':'✓ COMPLETED'):'PLAY NOW ↗';
- return `<button class="arena-mode gtp2-mode-card gtp2-card-${mode} ${round?.finished&&session==='daily'?'finished':''}" data-action="open" data-mode="${mode}" ${mode==='map'&&mapAvailability!=='ready'?'disabled aria-disabled="true"':''} style="--tile:${classOf(mode)}" aria-label="Play ${MODE_NAMES[mode]}">
+ const status=session==='daily'&&round?.finished?(round.won?'✓ CLEARED':'✓ COMPLETED'):'PLAY NOW ↗';
+ return `<button class="arena-mode gtp2-mode-card gtp2-card-${mode} ${round?.finished&&session==='daily'?'finished':''}" data-action="open" data-mode="${mode}" style="--tile:${classOf(mode)}" aria-label="Play ${MODE_NAMES[mode]}">
    <span class="gtp2-mode-number">0${i+1}</span><span class="gtp2-mode-glyph" aria-hidden="true">${ICONS[mode]}</span>
    <span class="gtp2-mode-copy"><strong>${MODE_NAMES[mode]}</strong><small>${TAGLINES[mode]}</small><em>${status}</em></span><span class="gtp2-mode-arrow">❯</span>
  </button>`;
@@ -289,19 +233,24 @@ function home(){
  const unfinished=dailyModes().filter(mode=>!store.days[today()]?.[mode]?.finished);
  const done=dailyModes().length-unfinished.length;
  return `<main class="gtp2-home">
-  <section class="gtp2-hero" aria-label="Guess the Predator 2 — six game modes">
-   <img id="gtp2-backdrop" class="gtp2-backdrop" src="./assets/decor/haunted-hero.webp" alt="" aria-hidden="true" fetchpriority="high" />
+  <section class="gtp2-hero nova27-home" aria-label="Guess the Predator — five game modes">
+   <img id="gtp2-backdrop" class="gtp2-backdrop" src="./assets/decor/haunted-hero.webp" alt="" aria-hidden="true" fetchpriority="high"/>
    <div class="gtp2-vignette" aria-hidden="true"></div>
    <div class="gtp2-hero-content">
-    <div class="gtp2-heading"><div><span class="gtp2-kicker">✦ PINK MIRAGE / LIGHTSHIFT</span><h1>GUESS THE <span>PREDATOR.</span></h1><p>Find the legend. Crack the location. Rule the daily hunt.</p></div><div class="gtp2-progress"><small>DAILY PROGRESS · ${esc(today())}</small><strong>${done}<em>/${dailyModes().length}</em></strong><span>${done===dailyModes().length?'ALL CHALLENGES COMPLETED':'MISSIONS COMPLETED'}</span></div></div>
-    <div class="gtp2-switchline"><div class="gtp2-session" role="group" aria-label="Daily or Free Play"><button data-action="session" data-session="daily" class="${session==='daily'?'active':''}" aria-pressed="${session==='daily'}">◈ DAILY</button><button data-action="session" data-session="unlimited" class="${session==='unlimited'?'active':''}" aria-pressed="${session==='unlimited'}">∞ FREE PLAY</button></div><span>SELECT YOUR CHALLENGE ✦</span></div>
-    <div class="gtp2-mode-layout"><div class="gtp2-mode-column">${MODES.slice(0,3).map((mode,i)=>modeTile(mode,i)).join('')}</div><div class="gtp2-hero-space" aria-hidden="true"></div><div class="gtp2-mode-column">${MODES.slice(3).map((mode,i)=>modeTile(mode,i+3)).join('')}</div></div>
-    <div class="gtp2-hero-footer"><span>${session==='daily'?'DAILY MISSIONS · ONE ROUND EACH':'UNLIMITED PRACTICE · NO STREAK RISK'}</span>${session==='daily'?`<button data-action="home-daily" class="gtp2-primary">${unfinished.length?'CONTINUE DAILY':'VIEW RESULTS'} <b>↗</b></button>`:`<button data-action="open" data-mode="classic" class="gtp2-primary">START FREE PLAY <b>↗</b></button>`}<span>${mapAvailability==='ready'?'MAP ONLINE · VERIFIED SCREENSHOTS':mapAvailability==='checking'?'MAP: CHECKING SOURCE IMAGES':'MAP OFFLINE · NO FAKE SCREENSHOTS'}</span></div>
+     <div class="gtp2-heading"><div><span class="gtp2-kicker">✦ FIVE MISSIONS · ONE MYSTERY</span><h1>GUESS THE <span>PREDATOR.</span></h1><p>Five puzzles. A new target every day.</p></div><div class="gtp2-progress"><small>DAILY · ${esc(today())}</small><strong>${done}<em>/5</em></strong><span>MISSIONS CLEARED</span></div></div>
+     <div class="gtp2-switchline gtp27-session-picker"><div class="gtp2-session" role="group" aria-label="Play type"><button data-action="session" data-session="daily" class="${session==='daily'?'active':''}" aria-pressed="${session==='daily'}">◈ DAILY CHALLENGE</button><button data-action="session" data-session="unlimited" class="${session==='unlimited'?'active':''}" aria-pressed="${session==='unlimited'}">∞ FREE PLAY</button></div><span>${session==='daily'?'ONE SCORE PER DAY':'UNLIMITED PRACTICE'}</span></div>
+     <div class="gtp27-mode-grid">
+       <div class="gtp27-mode-left">${['classic','pixel'].map((mode,i)=>modeTile(mode,i)).join('')}</div>
+       <div class="gtp27-center"><span>YOU THINK YOU KNOW THEM?</span><b>MIRAGE’S<br/>FIVE-WAY<br/><em>CHALLENGE</em></b><span>ONE LEGEND. MANY CLUES.</span></div>
+       <div class="gtp27-mode-right">${['quote','ability','emoji'].map((mode,i)=>modeTile(mode,i+2)).join('')}</div>
+     </div>
+     <div class="gtp2-hero-footer"><span>FIVE MODES · DAILY & FREE PLAY</span>${session==='daily'?`<button data-action="home-daily" class="gtp2-primary">${unfinished.length?'CONTINUE DAILY':'VIEW YOUR SCORE'} ↗</button>`:`<button data-action="open" data-mode="classic" class="gtp2-primary">START FREE PLAY ↗</button>`}<button class="gtp27-rank-link" data-action="leaderboard">♛ GLOBAL RANKINGS</button></div>
+     <button class="gtp27-scroll" data-action="scroll-extras" type="button" aria-label="Scroll to rewards">SCROLL FOR EXTRAS <span>⌄</span></button>
    </div>
   </section>
-  <div class="gtp2-bottom"><div class="gtp2-side-label"><span>BEYOND THE ARENA</span><small>CHOOSE · COLLECT · DISCOVER</small></div>
+  <div class="gtp2-bottom" id="home-extras"><div class="gtp2-side-label"><span>THE AFTERSHOW · WHEEL / LEGEND / INTEL</span><small>BEYOND THE FIVE MISSIONS</small></div>
   ${dailyExtras()}${forbiddenPanel()}${statCards()}
-  <footer class="gtp2-disclaimer">This independent trivia project is not endorsed by or affiliated with EA or its licensors. Character names and gameplay references belong to their respective owners. No extracted game audio is supplied. · <a href="./SOURCES_AND_RIGHTS.md" target="_blank" rel="noopener">SOURCE &amp; RIGHTS NOTES</a></footer></div>
+  <footer class="gtp2-disclaimer">Independent fan trivia — not affiliated with EA. Character images are third-party references with availability and rights subject to source terms. Global score registration requires an independently connected Supabase project.</footer></div>
  </main>`;
 }
 function getVisual(round,target){
@@ -310,14 +259,14 @@ function getVisual(round,target){
     const effect=['mosaic','holo','soft'].includes(store.settings.pixelStyle)?store.settings.pixelStyle:'mosaic';
     const step=Math.min(round.guesses.length,6);
     // Pixelate and blur the FULL COMPOSITE SCENE (location, lights, character), not a lone cutout.
-    const sizes=[24,36,55,86,145,260,900];
-    const blur=effect==='soft'?[18,14,10,7,4,1.5,0]:effect==='holo'?[5,4,3,2,1,0,0]:[4,3,2,1,0.4,0,0];
+    const sizes=[15,20,28,44,72,120,900];
+    const blur=effect==='soft'?[24,20,16,12,8,4,0]:effect==='holo'?[7,6,5,4,3,1,0]:[6,5,4,3,1.8,.8,0];
     const pct=[12,28,43,59,74,90,100];
     const size=effect==='soft'?900:sizes[step];
     return `<div class="clue-visual visual-pixel px-effect-${effect} nova-pixel-scene"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
       <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted full scene featuring a Legend"></canvas>
       ${portrait(target.slug,{alt:'',cls:'pixel-source',concealed:!round.finished,eager:true})}
-      <div class="pixel-fallback" role="group" aria-label="Offline character identity clues"><span class="pixel-fallback-kicker">◈ BACKUP INTEL / SIGNAL RECOVERY</span><div class="pixel-fallback-emblem">${esc((target.emoji.split(/\s+/)[0]||'◇'))}</div><strong>${step>=1?esc(target.role.toUpperCase()):'CLASSIFIED ROLE'}</strong><p>${step>=3?esc(target.title):'IDENTITY PROFILE ENCRYPTED'}</p><small>${step>=5?esc(target.signature):'ADDITIONAL INTEL UNLOCKS AFTER GUESSES'}</small></div><div class="pixel-error" aria-hidden="true"></div><div class="pixel-scratch scratch-a"></div><div class="pixel-scratch scratch-b"></div><div class="pixel-scan"></div><div class="pixel-vignette"></div>
+      <div class="pixel-fallback" role="group" aria-label="Offline character identity clues"><span class="pixel-fallback-kicker">◈ BACKUP INTEL / SIGNAL RECOVERY</span><div class="pixel-fallback-emblem">${step>=4?esc((target.emoji.split(/\s+/)[0]||'◇')):'?'}</div><strong>${step>=3?esc(target.role.toUpperCase()):'CLASSIFIED ROLE'}</strong><p>${step>=5?esc(target.title):'IDENTITY PROFILE ENCRYPTED'}</p><small>${step>=6?esc(target.signature):'ADDITIONAL INTEL UNLOCKS AFTER GUESSES'}</small></div><div class="pixel-error" aria-hidden="true"></div><div class="pixel-scratch scratch-a"></div><div class="pixel-scratch scratch-b"></div><div class="pixel-scan"></div><div class="pixel-vignette"></div>
       </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div><div class="pixel-preset" role="group" aria-label="Choose pixel reveal effect">${[['mosaic','▦ MOSAIC'],['soft','◌ SOFT BLUR'],['holo','⌁ SIGNAL']].map(([value,label])=>`<button class="${effect===value?'active':''}" type="button" data-action="pixel-style" data-style="${value}" aria-pressed="${effect===value}">${label}</button>`).join('')}</div></div>`;
   }
   if(mode==='quote')return `<div class="clue-visual gtp2-quote-rework"><div class="gtp2-quote-lines" aria-hidden="true"></div><div class="gtp2-quote-head"><span>◈ ORIGINAL QUOTE / NO VOICE IMPERSONATION</span><span>CHANNEL 0${MODES.indexOf(active)+1}</span></div><div class="gtp2-quote-mark" aria-hidden="true">“</div><blockquote>“${esc(target.quote)}”</blockquote><div class="gtp2-quote-status"><span class="gtp2-live-dot"></span> ENCRYPTED SIGNAL · IDENTIFY THE SPEAKER</div></div>`;
@@ -327,9 +276,9 @@ function getVisual(round,target){
     const shown=Math.min(all.length,2+Math.floor(round.guesses.length/2));
     return `<div class="clue-visual visual-emoji">${all.map((symbol,i)=>`<span class="emoji-token ${i>=shown?'locked':''}">${i<shown?esc(symbol):'?'}</span>`).join('')}</div>`;
   }
-  return `<div class="clue-visual"><div class="classified-mark"><small>IDENTITY / 00</small><strong>LEGEND<br>UNKNOWN</strong><small>THE SCANNER KNOWS MORE</small></div></div>`;
+  return `<div class="clue-visual gtp27-mystery"><div class="mystery-pulse" aria-hidden="true">?</div><div class="mystery-wording"><small>IDENTITY ENCRYPTED</small><strong>WHO'S HIDING?</strong><span>YOUR GUESSES REVEAL THE TRUTH</span></div></div>`;
 }
-function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&store.days[today()]?.[mode]?.won?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" ${mode==='map'&&mapAvailability!=='ready'?'disabled title="Requires verified real location images"':''}><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
+function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&store.days[today()]?.[mode]?.won?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" ><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
 function styleStrip(round){
   const locked=round.guesses.length>0||round.finished;
   return `<div class="style-strip" aria-label="Round rules">
@@ -352,7 +301,7 @@ function scannerMarkup(round,target){
     const signal=scanner[field];const kind=signal.kind;
     const css=kind==='correct'?'good':kind==='wrong'?'bad':kind==='hint'?'hinted':kind==='unknown'?'unknown':'';
     const direction=signal.direction>0?'↑':signal.direction<0?'↓':'';
-    return `<div class="scan-cell ${css} ${field===lastField?'new':''}" title="${LABELS[field]}" aria-label="${LABELS[field]} ${kind}"><small>${LABELS[field]}</small><strong>${esc(signal.value)}${direction?' '+direction:''}</strong><span>${kind==='correct'?'✓ MATCH':kind==='wrong'?'× MISS':kind==='hint'?'✧ HINT':kind==='unknown'?'N/A':'—'}</span></div>`;
+    return `<div class="scan-cell ${css} ${field===lastField?'new':''}" title="${LABELS[field]}" aria-label="${LABELS[field]} ${kind}"><small>${LABELS[field]}</small><strong>${kind==='unknown'?'UNDISCLOSED':field==='age'&&kind==='hidden'?'ENCRYPTED':esc(signal.value)}${direction?' '+direction:''}</strong><span>${kind==='correct'?'✓ MATCH':kind==='wrong'?'× MISS':kind==='hint'?'✧ HINT':kind==='unknown'?'NOT PUBLIC':'—'}</span></div>`;
   }).join('');
   const remaining=availableHintFields(round,target,legends);
   const disabled=round.finished||round.guesses.length===0||round.hints.length>=MAX_HINTS||remaining.length===0;
@@ -364,7 +313,7 @@ function guessBody(round,target){
   if(round.finished){
     const score=gameScore(round);const rank=gameRank(score);const badges=styleBadges(round);
     return `<div class="end-panel"><span class="rank">${round.won?rank:'—'}</span><h2>${round.won?'TARGET FOUND!':round.loss==='time'?'TIME’S UP.':'NICE TRY.'}</h2><p>${round.won?`You identified ${esc(target.name)} in ${round.guesses.length} guesses. ${score} points earned.`:`Your mystery Legend was ${esc(target.name)}. Every guess counts. Try another round!`}</p>${badges.length?`<div class="medal-row">${badges.map(tag=>`<span class="medal">${esc(tag)}</span>`).join('')}</div>`:''}<div class="answer-tag">${portrait(target.slug,{alt:target.name,cls:'balanced'})}<strong>${esc(target.name)}</strong></div>
-      <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?'NEXT CHALLENGE':'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>`;
+      <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?(dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT CHALLENGE'):'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>`;
   }
   return `<div class="guess-top"><div><small>YOUR NEXT MOVE</small><h2>WHO’S THAT <span style="color:#ef4895">LEGEND?</span></h2></div><span class="pill">${round.guesses.length}/${maxGuesses(round)} GUESSES · ${maxGuesses(round)-round.guesses.length} LEFT</span></div>
   <div class="search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button class="btn pink small" data-action="submit-search" title="Guess first matching Legend">↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
@@ -372,38 +321,77 @@ function guessBody(round,target){
   ${latestSignal(round,target)}${scannerMarkup(round,target)}
   <div class="tried-list" aria-label="Eliminated guesses">${round.guesses.length?round.guesses.map(name=>`<span class="used">${esc(name)}</span>`).join(''):'<span style="color:#875d91;font-size:10px;font-weight:800">No Legends eliminated yet · open Browse for faster reads</span>'}</div>`;
 }
-function mapGame(){
- const round=ensureRound(),entry=resolveLocation(round.answer)||LOCATIONS[0];
- const stage=round.stage;
- const choices=stage===1?MAPS:(entry.legacy?LEGACY_LOCATIONS:LOCATIONS).filter(x=>x.map===entry.map).map(x=>x.poi);
- const attempted=stage===1?round.mapGuesses:round.poiGuesses;
- const used=new Set(attempted);
- const options=choices.map(choice=>`<button class="map-choice ${used.has(choice)?'eliminated':''}" data-action="map-guess" data-name="${esc(choice)}" ${round.finished||used.has(choice)?'disabled':''}>${esc(choice)}${used.has(choice)?' ×':''}</button>`).join('');
- const state=round.finished?(round.won?'✓ SECTOR CONFIRMED':'✕ SIGNAL LOST'):`STAGE ${stage} / 2 · ${stage===1?'IDENTIFY MAP':'IDENTIFY POI'}`;
- const img=`<img class="map-img-candidate" data-map-photo="${esc(entry.id)}" data-map-angle="${Number(round.mediaAngle)||0}" alt="Real screenshot of an Apex location, source verified to load before round" loading="eager" decoding="async" />`;
- return `<main class="wrap game map-game gtp2-game-scene gtp2-scene-map"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${session==='daily'?'DAILY':'FREE PLAY'} / MAP RECON</span></div>
- <div class="game-titlebar"><div><span class="kicker">OUTLANDS CARTOGRAPHY / 06</span><h1>GUESS THE MAP<span style="color:#ff6ebf">.</span></h1><p>Identify the POI using a loaded screenshot from a documented external source.</p></div><span class="game-attempts">${round.finished?'DONE':stage===1?3-attempted.length:2-attempted.length}<small> LEFT</small></span></div>
- ${modeRail()}<section class="map-challenge"><div class="map-frame"><div class="panel-top"><span>⌖ UNKNOWN LOCATION / TRANSMISSION</span><small>${state}</small></div><div class="map-photo">${img}<div class="map-offline"><b>REAL IMAGE UNAVAILABLE</b><p>The round is paused until its source works. No unrelated artwork is substituted.</p><span>${esc(entry.clue)}</span></div></div><div class="map-credit"><span class="recon-credit">MAP INTEL · VERIFIED SOURCE</span><span class="capture-credit">EXTERNAL SCREENSHOT · FAN PROTOTYPE</span><a class="map-source-link" href="${esc(sourceForLocation(entry))}" target="_blank" rel="noopener noreferrer">VIEW SOURCE ↗</a></div></div>
- <div class="map-terminal"><span class="kicker">${round.finished?'MISSION REPORT':state}</span><h2>${round.finished?(round.won?'TARGET LOCATED!':'TRY ANOTHER SECTOR'):(stage===1?'WHICH MAP?':'WHICH POI?')}</h2><p>${round.finished?`Answer: ${esc(entry.map)} / ${esc(entry.poi)}.`:stage===1?'You have three map attempts. Each wrong map is eliminated.':'Map confirmed. Find the exact location in two attempts.'}</p><div class="map-structural-intel"><small>⌖ LANDMARK READOUT</small><p>${esc(entry.clue)}</p></div>
- <div class="map-choices">${round.finished?'':options}</div>${round.finished?`<div class="end-actions"><button class="btn pink" data-action="next">NEXT CHALLENGE ↗</button><button class="btn mint" data-action="again">∞ FREE PLAY</button></div>`:''}
- ${attempted.length?`<div class="map-trail">Eliminated: ${attempted.filter(n=>n!==(stage===1?entry.map:entry.poi)).map(esc).join(', ')||'None'}</div>`:''}</div></section></main>`;
-}
 function game(){
-  if(active==='map'&&mapAvailability==='ready')return mapGame();
-  if(active==='map'){screen='home';return home();}
   const round=ensureRound();const target=legendByName(legends,round.answer);
   const timeLeft=remainingTime(round);const urgent=timeLeft!=null&&timeLeft<=25&&!round.finished;
   return `<main class="wrap game gtp2-game-scene gtp2-scene-${active}" style="--tile:${classOf(active)}"><div class="game-topline"><button class="tiny-link" data-action="home">← BACK TO MODES</button><span class="pill">${sharedDay?'◇ SHARED DAILY · '+today():session==='daily'?'◉ DAILY / '+today():'∞ FREE PLAY'}</span></div>
   <div class="game-titlebar"><div><span class="kicker">SIGNAL FILE / 0${MODES.indexOf(active)+1}</span><h1>${MODE_NAMES[active]}<span style="color:#e94499">.</span></h1><p>${TAGLINES[active]}</p></div>
   <div class="game-status">${round.timeLimit?`<div id="round-timer" class="game-timer ${urgent?'urgent':''}" aria-label="Time remaining"><i>◷</i><span>${timeLeft??180}s</span></div>`:''}<span class="game-attempts">${maxGuesses(round)-round.guesses.length}<small> LEFT</small></span></div></div>
   ${modeRail()}${styleStrip(round)}
+  ${active==='classic'?`<div class="gtp27-classic-banner"><span class="gtp27-question-symbol">?</span><div><small>CLASSIFIED IDENTITY / DAILY SIGNAL</small><strong>WHO'S THAT <em>LEGEND?</em></strong></div><span class="gtp27-banner-note">THE ANSWER IS ONE GUESS AWAY.</span></div>`:''}
   <div class="game-layout"><section class="clue-card" aria-label="Challenge clue"><div class="panel-top"><span>✧ TRANSMISSION / ${MODE_NAMES[active]}</span><small>IDENTITY HIDDEN</small></div>${getVisual(round,target)}<div class="clue-foot"><span>✧ ${active==='quote'?'ORIGINAL FAN CLUE':active==='pixel'?'PIXEL SCRAMBLER':'FIVE-TRAIT MYSTERY'}</span><span>${round.finished?'FILE DECLASSIFIED':'NO SPOILERS'}</span></div></section>
   <section class="guess-card" aria-label="Guess the Legend"><div class="panel-top"><span>⌁ GUESS TERMINAL</span><small>${round.mode==='signal'?'ONE-SIGNAL INTEL':'FULL CLASSIC INTEL'}</small></div><div class="guess-body">${guessBody(round,target)}</div></section></div>
-  ${round.signals.length?`<section class="game-bottom"><div class="bottom-card"><h3>SIGNAL HISTORY</h3><div class="signal-log">${round.signals.slice(-8).map((s,i)=>`<span class="log-item ${s.kind==='correct'?'match':'mismatch'}">${i+1}. ${esc(s.guess)} · ${LABELS[s.field]} ${s.kind==='correct'?'✓':'×'}</span>`).join('')}</div></div></section>`:''}</main>`;
+  ${round.guesses.length?`<section class="game-bottom"><div class="bottom-card"><h3>SIGNAL HISTORY</h3><div class="signal-log">${round.guesses.map((name,i)=>`<span class="log-item ${name===target.name?'match':'mismatch'}">${i+1}. ${esc(name)} ${name===target.name?'✓ TARGET FOUND':'× ELIMINATED'}</span>`).join('')}</div></div></section>`:''}</main>`;
+}
+function howTo(){return `<main class="wrap gtp27-guide" aria-labelledby="guide-title"><span class="kicker">FIELD GUIDE · FIVE WAYS TO PLAY</span><h1 id="guide-title">HOW TO <em>PLAY.</em></h1><p>Choose Daily for one shared puzzle per mode every UTC day, or Free Play for unlimited practice. Find the mystery Legend using up to six guesses (five in Full Scan).</p>
+  <div class="guide-grid">${[
+   ['❔','CLASSIC','Guess any Legend. Green means an exact match; red reveals a true mismatch. One Signal shows one comparison per guess.'],
+   ['▦','PIXEL','The same neutral background hides a Legend in stages. Guess to reveal more detail. Choose Mosaic, Soft Blur or Signal.'],
+   ['❞','QUOTE','Identify the Legend from a written character clue. No synthetic voices.'],
+   ['⌁','ABILITY','Recognize a real locally installed passive ability icon. Only verified local icons enter the mystery pool.'],
+   ['✧','EMOJI','Read themed symbols about abilities, personality and lore. More symbols unlock after guesses.']
+  ].map(([ico,title,desc])=>`<article class="guide-card"><span>${ico}</span><h2>${title}</h2><p>${desc}</p></article>`).join('')}</div>
+  <div class="guide-rule-row"><article><b>◈ ONE SIGNAL</b><p>One reliable comparison per incorrect guess; up to six attempts.</p></article><article><b>▦ FULL SCAN</b><p>All five traits per guess, but only five attempts.</p></article><article><b>◷ RUSH OFF / ON</b><p>OFF has no timer. ON starts a 180-second timer on your first guess.</p></article></div>
+  <div class="guide-cta"><button class="btn pink" data-action="open" data-mode="classic">PLAY CLASSIC ↗</button><button class="btn lilac" data-action="faq">READ FAQ</button></div></main>`;}
+function faq(){return `<main class="wrap gtp27-guide gtp27-faq" aria-labelledby="faq-title"><span class="kicker">YOUR QUESTIONS · FAST ANSWERS</span><h1 id="faq-title">FREQUENTLY <em>ASKED.</em></h1>
+ <div class="faq-stack">
+ ${[
+  ['When does Daily reset?','At 00:00 UTC. Daily has five different Legend puzzles, one per mode.'],
+  ['Does Free Play affect my leaderboard score?','No. Free Play is unlimited practice. Only completed Daily runs can be submitted.'],
+  ['How does scoring work?','Correct guesses earn points. Fewer guesses, fewer hints and optional Rush time remaining give more points. A full-win daily streak adds 5% per consecutive day, capped at 50%.'],
+  ['What is One Signal?','One honest green or red trait comparison for each incorrect guess. Six attempts.'],
+  ['What is Full Scan?','Five comparisons per guess, but only five guesses.'],
+  ['What is Rush OFF?','No timer. With Rush ON, you have 180 seconds after your first guess.'],
+  ['Is the leaderboard public?','Yes, once the owner connects Supabase. Public entries show your nickname and score, not your email. Never use a real name or contact information.'],
+  ['Why can a portrait be unavailable?','Some real Legend portraits come from third-party sources. If a source blocks access, we do not replace it with an unrelated character.'],
+  ['Is this an official Apex game?','No. It is an independent fan trivia project, not endorsed by EA.']
+ ].map(([q,a])=>`<details class="faq-item"><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
+ <div class="guide-cta"><button class="btn pink" data-action="home">BACK TO MODES ↗</button><button class="btn lilac" data-action="howto">HOW TO PLAY</button></div></main>`;}
+function leaderboard(){
+ const summary=dailySummary(store.days,today());
+ const rows=boardData?.[boardTab]||[];
+ const isTodayComplete=summary.completed && !sharedDay && today()===utcDay();
+ return `<main class="wrap gtp27-leaderboard" aria-labelledby="rank-title"><span class="kicker">PUBLIC HALL OF FAME / TWO RANKINGS</span><h1 id="rank-title">THE <em>LEADERBOARD.</em></h1><p class="lead">Daily shows today's best hunters. Overall adds all submitted daily scores and streak bonuses.</p>
+ <div class="board-switch" role="group" aria-label="Choose leaderboard"><button data-action="board-tab" data-board="daily" class="${boardTab==='daily'?'active':''}" aria-pressed="${boardTab==='daily'}">◈ DAILY · ${esc(utcDay())}</button><button data-action="board-tab" data-board="overall" class="${boardTab==='overall'?'active':''}" aria-pressed="${boardTab==='overall'}">♛ OVERALL · ALL-TIME</button></div>
+ <section class="gtp27-board"><div class="board-head"><strong>${boardTab==='daily'?'TOP DAILY HUNTERS':'OVERALL LEGENDS'}</strong><small>${leaderboardConfigured()?'LIVE · PUBLIC DATABASE':'DATABASE CONNECTION PENDING'}</small></div>
+ ${!leaderboardConfigured()?`<div class="board-empty"><b>RANKINGS NOT CONNECTED YET</b><p>The game owner must link a Supabase project first. The database and server validation code are included in this release.</p></div>`:boardLoading?'<div class="board-empty">LOADING THE LEADERBOARD…</div>':boardError?`<div class="board-empty">${esc(boardError)}</div>`:rows.length?`<div class="board-table">${rows.map((line,i)=>`<div class="board-row"><span>#${Number(line.position)||i+1}</span><strong>${esc(line.player_name)}</strong><b>${Number(line.score).toLocaleString('en-US')} PTS</b><small>${boardTab==='daily'?`✦ STREAK ${Number(line.streak)||0}`:`${Number(line.days_played)||0} DAYS · BEST ${Number(line.best_streak)||0}`}</small></div>`).join('')}</div>`:'<div class="board-empty">NO SCORES YET. BE THE FIRST!</div>'}</section>
+ <section class="gtp27-submit"><div><span class="kicker">YOUR DAILY SCORE</span><h2>${summary.score.toLocaleString('en-US')} <small>PTS (LOCAL PREVIEW)</small></h2><p>${summary.completed?'Five daily games complete. Submit once to appear in the public rankings.':'Complete all five Daily games to submit your score. Practice rounds do not count.'}</p><small>BASE ${summary.baseScore.toLocaleString('en-US')} · STREAK BONUS ${summary.bonus.toLocaleString('en-US')} · ${summary.streak} DAY STREAK</small></div>
+ <form class="board-form" id="board-submit-form"><label for="board-nickname">PUBLIC NICKNAME</label><input id="board-nickname" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Your gamer nickname" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}/><button class="btn pink" type="submit" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}>SUBMIT DAILY SCORE ↗</button><small>One submission per UTC day · nickname is visible to everyone · no real names.</small></form></section>
+ <div class="guide-cta"><button class="btn lilac" data-action="home">BACK TO FIVE MODES</button><button class="btn mint" data-action="records">MY STATS ↗</button></div></main>`;
+}
+async function refreshBoards(){
+ if(!leaderboardConfigured()||boardLoading)return;
+ boardLoading=true;boardError='';
+ // Keep the visible leaderboard while the request is pending.
+ try{boardData=await getBoards(utcDay());}catch(error){boardError=error.message||'Connection unavailable';}
+ finally{boardLoading=false;if(screen==='leaderboard')render({scroll:false});}
+}
+async function submitScores(){
+ if(!leaderboardConfigured()){showToast('Database not configured yet');return;}
+ const summary=dailySummary(store.days,today());
+ if(!summary.completed||sharedDay||today()!==utcDay()){showToast('Complete all five current Daily puzzles first');return;}
+ const input=document.getElementById('board-nickname');
+ if(!input||!input.checkValidity()){input?.reportValidity();return;}
+ const button=document.querySelector('#board-submit-form button[type=submit]');
+ if(button){button.disabled=true;button.textContent='SUBMITTING…';}
+ try{
+  const receipt=await submitDaily(buildSubmission(store.days,today(),input.value.trim()));
+  await refreshBoards();showToast(`SCORE SUBMITTED · ${receipt.totalScore} PTS · STREAK ${receipt.streak}`);
+ }catch(error){showToast(error.message||'Submission failed');if(button){button.disabled=false;button.textContent='SUBMIT DAILY SCORE ↗';}}
 }
 function records(){
   const stats=streak(store.days,utcDay(),dailyModes());const days=Object.keys(store.days).sort().reverse().slice(0,14);
-  return `<main class="wrap records"><span class="pill">PERSONAL ARCHIVE</span><h1>YOUR <span style="color:#ec4a95">SIGNAL.</span></h1><p class="lead">Records are stored in your browser. No account or public leaderboard required.</p>${statCards()}${forbiddenPanel()}<h2 class="caps" style="font-size:38px">RECENT DAYS</h2><div class="record-rows">${days.map(day=>`<div class="record-row"><span>${day}</span><span>${dayCount(store.days[day],dailyModes())}/${dailyModes().length} ${dayCount(store.days[day],dailyModes())===dailyModes().length?'✦ CLEARED':''}</span></div>`).join('')||'<p>No Daily results yet. Go start a hunt!</p>'}</div><div class="record-settings"><div><strong>ACCESSIBILITY / VISUAL EFFECTS</strong><small>Reduce background and reward animation intensity on slower devices.</small></div><button class="btn lilac small" data-action="motion">FX ${store.settings.motion?'ON':'OFF'} · CHANGE</button></div><button class="btn pink" data-action="home">BACK TO CHALLENGES ↗</button></main>`;
+  return `<main class="wrap records"><span class="pill">PERSONAL ARCHIVE</span><h1>YOUR <span style="color:#ec4a95">SIGNAL.</span></h1><p class="lead">Records are stored in your browser. Global rankings require a connected database; local stats remain in this browser.</p>${statCards()}${forbiddenPanel()}<h2 class="caps" style="font-size:38px">RECENT DAYS</h2><div class="record-rows">${days.map(day=>`<div class="record-row"><span>${day}</span><span>${dayCount(store.days[day],dailyModes())}/${dailyModes().length} ${dayCount(store.days[day],dailyModes())===dailyModes().length?'✦ CLEARED':''}</span></div>`).join('')||'<p>No Daily results yet. Go start a hunt!</p>'}</div><div class="record-settings"><div><strong>ACCESSIBILITY / VISUAL EFFECTS</strong><small>Reduce background and reward animation intensity on slower devices.</small></div><button class="btn lilac small" data-action="motion">FX ${store.settings.motion?'ON':'OFF'} · CHANGE</button></div><button class="btn pink" data-action="home">BACK TO CHALLENGES ↗</button><button class="btn mint" data-action="leaderboard">♛ GLOBAL LEADERBOARD</button></main>`;
 }
 function wheelPool(){
  return wheelChoices(legends).filter(l=>(wheelRole==='All'||l.role===wheelRole)&&!wheelExcluded.has(l.name)&&(!wheelNoRepeat||!wheelChosen||l.name!==wheelChosen.name));
@@ -525,17 +513,15 @@ function render({scroll=true}={}) {
   document.body.classList.toggle('lightshift-playing',screen==='game');
   app.className=`app ${store.settings.motion?'':'no-motion'}`;
   app.dataset.screen=screen;app.dataset.session=session;
-  app.innerHTML=nav()+(screen==='home'?home():screen==='game'?game():records());
+  app.innerHTML=nav()+(screen==='home'?home():screen==='game'?game():screen==='records'?records():screen==='howto'?howTo():screen==='faq'?faq():leaderboard());
   loadPortraitImages();
   loadAbilityImages();
-  loadMapImages();
   if(scroll)window.scrollTo({top:0,behavior:'instant'});
   if(screen==='game'&&!getRound()?.finished)updateSearchResults();
   if(pickerOpen)renderPicker();
 }
 function openMode(mode,playSession=session){
   if(!MODES.includes(mode))return;
-  if(mode==='map'&&mapAvailability!=='ready'){showToast('MAP STAYS DISABLED UNTIL A REAL LOCATION SCREENSHOT LOADS.');return;}
   active=mode;session=playSession;screen='game';pickerOpen=false;quickSearch='';ensureRound();render();sound('nav');
 }
 function submitGuess(name){
@@ -585,7 +571,7 @@ function nextMode(){
   const next=available.slice(currentIndex+1).find(mode=>!rounds[mode]?.finished)
      ||available.slice(0,currentIndex).find(mode=>!rounds[mode]?.finished);
   if(next){openMode(next,'daily');return;}
-  screen='records';pickerOpen=false;render();sound('nav');
+  screen='leaderboard';pickerOpen=false;render();void refreshBoards();sound('nav');
 }
 function showToast(message){
   document.querySelector('.toast')?.remove();
@@ -606,22 +592,25 @@ app.addEventListener('click',event=>{
   const action=button.dataset.action;
   if(action==='intel-open'){const day=store.days[today()]||{};if(!unlockedIntel(day,dailyModes())){showToast('Complete all available daily missions first.');return;}store.intelOpenedDays??={};intelFirstRevealPending=!store.intelOpenedDays[today()];store.intelOpenedDays[today()]=true;sync();intelDialog();}
   else if(action==='intel-close')closeIntelDialog();
-  else if(action==='pixel-style'){if(!['mosaic','soft','holo'].includes(button.dataset.style))return;store.settings.pixelStyle=button.dataset.style;sync();render({scroll:false});sound('pick');}
+  else if(action==='pixel-style'){if(!['mosaic','soft','holo'].includes(button.dataset.style))return;store.settings.pixelStyle=button.dataset.style;sync();document.querySelector('.visual-pixel')?.classList.remove('px-effect-mosaic','px-effect-soft','px-effect-holo');document.querySelector('.visual-pixel')?.classList.add('px-effect-'+button.dataset.style);document.querySelectorAll('[data-action=pixel-style]').forEach(el=>{el.classList.toggle('active',el.dataset.style===button.dataset.style);el.setAttribute('aria-pressed',String(el.dataset.style===button.dataset.style));});const visual=document.querySelector('.pixel-art');if(visual){const step=Math.min(getRound()?.guesses.length||0,6);visual.style.setProperty('--px-blur',(button.dataset.style==='soft'?[24,20,16,12,8,4,0]:button.dataset.style==='holo'?[7,6,5,4,3,1,0]:[6,5,4,3,1.8,.8,0])[step]+'px');}sound('pick');}
   else if(action==='wheel')showWheel();
   else if(action==='close-wheel')closeWheel();
   else if(action==='spin')spinWheel();
   else if(action==='share-wheel')void copyWheelPick();
-  else if(action==='map-guess'){const round=getRound();const entry=resolveLocation(round?.answer);if(!round||!entry)return;const updated=mapGuess(round,button.dataset.name,entry);if(updated===round)return;setRound(updated);if(updated.won){store.history.wins++;sync();sound('win');}else{sound(updated.finished?'lose':'pick');}render({scroll:false});}
   else if(action==='home'){screen='home';pickerOpen=false;render();sound('nav');}
   else if(action==='records'){screen='records';pickerOpen=false;render();sound('nav');}
+  else if(action==='howto'){screen='howto';pickerOpen=false;render();sound('nav');}
+  else if(action==='faq'){screen='faq';pickerOpen=false;render();sound('nav');}
+  else if(action==='leaderboard'){screen='leaderboard';pickerOpen=false;render();void refreshBoards();sound('nav');}
+  else if(action==='scroll-extras'){document.getElementById('home-extras')?.scrollIntoView({behavior:store.settings.motion?'smooth':'instant'});}
+  else if(action==='board-tab'){boardTab=button.dataset.board;render({scroll:false});if(!boardData)void refreshBoards();}
   else if(action==='open'){openMode(button.dataset.mode);}
   else if(action==='home-daily'){
     session='daily';const next=dailyModes().find(mode=>!store.days[today()]?.[mode]?.finished);
-    if(next)openMode(next,'daily');else{screen='records';render();}
+    if(next)openMode(next,'daily');else{screen='leaderboard';render();void refreshBoards();}
   }
-  else if(action==='session'){session=button.dataset.session;render({scroll:false});sound('nav');}
-  else if(action==='audio'){store.settings.audio=!store.settings.audio;sync();sound('pick');render({scroll:false});}
-  else if(action==='sound-test'){if(!store.settings.audio){store.settings.audio=true;sync();}sound('reveal');render({scroll:false});}
+  else if(action==='session'){session=button.dataset.session;document.querySelectorAll('[data-action=session]').forEach(el=>{el.classList.toggle('active',el.dataset.session===session);el.setAttribute('aria-pressed',String(el.dataset.session===session));});render({scroll:false});sound('nav');}
+  else if(action==='audio'){store.settings.audio=!store.settings.audio;sync();button.textContent=store.settings.audio?'♫ FX ON':'♪ FX OFF';button.setAttribute('aria-pressed',String(store.settings.audio));if(store.settings.audio)sound('pick');}
   else if(action==='motion'){store.settings.motion=!store.settings.motion;sync();render({scroll:false});}
   else if(action==='picker'){pickerOpen=true;pickerSearch='';pickerClass='All';pickerSort='az';renderPicker();sound('pick');}
   else if(action==='close-picker'){pickerOpen=false;document.getElementById('picker-backdrop')?.remove();}
@@ -645,6 +634,7 @@ app.addEventListener('click',event=>{
   else if(action==='next')nextMode();
   else if(action==='again')randomPractice(active);
 });
+app.addEventListener('submit',event=>{if(event.target.id==='board-submit-form'){event.preventDefault();void submitScores();}});
 app.addEventListener('input',event=>{
   if(event.target.id==='guess-search'){quickSearch=event.target.value;updateSearchResults();}
   if(event.target.id==='picker-search'){pickerSearch=event.target.value;renderPickerResults();}
@@ -696,11 +686,10 @@ setInterval(()=>{
   }
   if(screen!=='game')return;
   const round=getRound();if(!round)return;
-  if(active==='map')return;
   const expired=expireRound(round,Date.now());
   if(expired!==round){setRound(expired);sound('lose');render({scroll:false});return;}
   const timer=document.getElementById('round-timer');if(timer){const time=remainingTime(round);timer.querySelector('span').textContent=`${time}s`;timer.classList.toggle('urgent',time<=25&&!round.finished);}
 },500);
 render();
-void startMapPreflight();
+
 

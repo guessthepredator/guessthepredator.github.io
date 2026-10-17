@@ -1104,3 +1104,105 @@ body:has(.gtp2-game-scene) #app,body.lightshift-playing #app{min-height:100svh;b
 
 /* Mobile header brand must never disappear under SFX control. */
 @media(max-width:600px){.gtp2-top-inner{width:calc(100% - 18px)!important;gap:6px!important}.gtp2-brand .brand-icon{width:26px!important;height:28px!important}.gtp2-brand .brand-text strong{font-size:clamp(12px,3.5vw,15px)!important;white-space:nowrap!important}.gtp2-top .gtp2-audio-preview{display:none!important}.gtp2-top .gtp2-sound-switch{font-size:9px!important;padding:9px 8px!important}.gtp2-brand{min-width:0!important;overflow:hidden!important}}
+
+/* ═══ V2.7 MIRAGE EDITION / FOCUSED REVAMP ═══ */
+:root{--nv-ink:#24132e;--nv-pink:#dc368f;--nv-cyan:#36bfdb;--nv-cream:#fff5fa;--nv-violet:#8d6fc9}
+.gtp2-top{border-bottom:1px solid rgba(240,139,209,.44)!important;background:#180e29ed!important}
+.gtp2-top-inner{max-width:1700px!important;gap:13px!important}
+.gtp2-top .nav-item{color:#f8e5f6!important;font-size:10px!important;letter-spacing:.07em!important;border:1px solid transparent!important;padding:10px 9px!important}
+.gtp2-top .nav-item:hover,.gtp2-top .nav-item.active{background:linear-gradient(140deg,#e6409f,#a846e1)!important;color:white!important;border-color:#f2a7ea66!important}
+.gtp2-brand .brand-text small{color:#82eaf2!important}
+.gtp27-mode-grid{display:grid;grid-template-columns:minmax(230px,1fr) minmax(220px,.92fr) minmax(230px,1fr);gap:clamp(12px,1.8vw,30px);align-items:center;flex:1;min-height:390px;margin-top:22px}
+.gtp27-mode-left,.gtp27-mode-right{display:flex;flex-direction:column;gap:15px;justify-content:center}
+.gtp27-mode-left{padding:40px 0 22px}.gtp27-mode-right{padding:2px 0 0}
+.gtp27-center{height:100%;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;gap:10px;pointer-events:none;text-shadow:0 3px 9px #11091c,0 0 18px #1b0d2a}
+.gtp27-center>b{font-family:Impact,'Arial Narrow',sans-serif;font-size:clamp(24px,2.4vw,37px);line-height:.94;letter-spacing:.035em;color:#fff4ff;text-transform:uppercase}
+.gtp27-center em{font-style:normal;color:#73ecff}.gtp27-center>span{font-weight:900;font-size:9px;letter-spacing:.15em;color:#f5a4e2}
+.nova27-home .gtp2-mode-card{border:1px solid #e18bd599!important;min-height:108px!important;background:linear-gradient(115deg,#170f2de7,#27113ddd)!important;box-shadow:0 4px 16px #170a296f,inset 3px 0 0 var(--tile)!important;transition:transform .21s ease,background .21s ease,border-color .21s ease!important}
+.nova27-home .gtp2-mode-card:hover{transform:translateY(-5px) translateX(3px)!important;background:linear-gradient(110deg,#38204eee,#25113cea)!important;border-color:#fff!important;box-shadow:0 9px 21px #170a297b,inset 3px 0 0 var(--tile)!important}
+.nova27-home .gtp2-mode-card:active{transform:translateY(-1px) scale(.99)!important}
+.nova27-home .gtp2-mode-copy strong{font-size:clamp(24px,2vw,33px)!important}.nova27-home .gtp2-mode-arrow{background:var(--tile)!important;color:#28112e!important}
+.nova27-home .gtp2-session{background:#10091fe0!important;padding:5px!important;border:1px solid #ff7ac5!important;border-radius:15px!important;box-shadow:0 10px 26px #0d061b7d}
+.nova27-home .gtp2-session button{padding:11px 24px!important;border-radius:11px!important;font-size:12px!important;transition:transform .17s,background .17s}
+.nova27-home .gtp2-session button.active{background:linear-gradient(120deg,#fc78b8,#d553d6)!important;color:#2c1037!important;box-shadow:0 0 16px #ed64b372}
+.nova27-home .gtp2-session button:hover{transform:translateY(-1px)}
+.gtp27-session-picker{justify-content:space-between!important;margin:16px 0 5px!important;gap:20px}
+.gtp27-rank-link{background:#1e1836dc;color:#91f0f1;border:1px solid #72d6ef;border-radius:12px;padding:11px 16px;font-size:10px;font-weight:900;cursor:pointer;transition:background .2s}
+.gtp27-rank-link:hover{background:#275073}.gtp27-scroll{margin:11px auto 0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 22px;background:#160d26a8;color:#fff0f9;border:1px solid #ffa1d36e;border-radius:22px;font-size:9px;font-weight:900;letter-spacing:.2em;cursor:pointer}
+.gtp27-scroll span{font-size:21px;animation:gtp27-bounce 1.8s ease-in-out infinite}
+@keyframes gtp27-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+.nova27-home .gtp2-hero-content{padding-bottom:17px!important}
+.gtp2-bottom{scroll-margin-top:24px}
+/* App pages: dusk-pink instead of pastel-washed-out. */
+body.lightshift-playing{background:linear-gradient(135deg,#ebd3e9,#cbbde0 48%,#a5ddeb)!important;color:#321639!important}
+.gtp2-game-scene .game-titlebar h1{color:#30163e!important;text-shadow:none!important}
+.gtp2-game-scene .game-titlebar p,.gtp2-game-scene .game-topline,.gtp2-game-scene .lead{color:#583e69!important}
+.gtp2-game-scene .game-attempts{background:#fff8fd!important;color:#522860!important}
+.gtp2-game-scene .mode-rail{grid-template-columns:repeat(5,minmax(0,1fr))!important;margin:9px 0!important}
+.gtp2-game-scene .mode-tab{background:#fff6f9!important;color:#4a2d5e!important;border:1px solid #9673c3!important;box-shadow:0 2px 0 #9d7bad58!important}
+.gtp2-game-scene .mode-tab.active{background:linear-gradient(110deg,#f48bc5,#f9bfd7)!important;color:#331533!important}
+.gtp2-game-scene .style-strip{background:#f2e4f2!important;border:1px solid #ae8ac5!important;box-shadow:0 2px 0 #b39ebc6b!important;margin:9px 0 13px!important;padding:12px 16px!important;gap:8px!important}
+.gtp2-game-scene .style-options{gap:10px!important;flex-wrap:wrap}
+.gtp2-game-scene .style-options .segment{font-size:11px!important;padding:12px 16px!important;background:#fff9fc!important;color:#452047!important;border:1px solid #b175a8!important}
+.gtp2-game-scene .style-options .segment.active{background:#2a274b!important;color:#98f2ff!important;border-color:#5ecbd8!important}
+.gtp2-game-scene .guess-card,.gtp2-game-scene .clue-card{border:1px solid #805b9c!important;box-shadow:0 7px 22px #3d25453b!important;background:#fff8fc!important}
+.gtp2-game-scene .guess-card .panel-top,.gtp2-game-scene .clue-card .panel-top{background:#e9a7d2!important;color:#492153!important}
+.gtp27-classic-banner{display:flex;align-items:center;justify-content:center;position:relative;gap:20px;padding:14px 22px;margin:2px 0 14px;border-radius:17px;background:linear-gradient(105deg,#311841,#502157 64%,#343268);color:#fff5fe;box-shadow:0 8px 20px #49205440}
+.gtp27-classic-banner small{font-size:9px;font-weight:900;letter-spacing:.14em;color:#aaf4fb}
+.gtp27-classic-banner strong{display:block;line-height:1;font-family:Impact,'Arial Narrow',sans-serif;font-size:clamp(28px,4.6vw,56px);letter-spacing:.04em}
+.gtp27-classic-banner em{font-style:normal;color:#f88ecf}.gtp27-banner-note{font-size:9px;font-weight:900;letter-spacing:.11em;color:#aff9fa}
+.gtp27-question-symbol{font-family:Impact,sans-serif;font-size:42px;width:66px;height:66px;border:2px solid #fda7d6;border-radius:50%;background:#74427e;display:grid;place-items:center;box-shadow:inset 0 0 0 5px #552c67}
+.gtp2-scene-classic .game-layout{grid-template-columns:minmax(0, .74fr) minmax(0,1.26fr)!important;gap:14px!important}
+.gtp2-scene-classic .clue-visual{height:250px!important}.gtp2-scene-classic .clue-foot{padding:9px 14px!important}.gtp2-scene-classic .guess-top h2{font-size:29px!important}.gtp2-scene-classic .guess-body{padding:12px 17px!important}
+.gtp2-scene-classic .guess-top{margin-bottom:7px!important}.gtp2-scene-classic .search-wrap{margin-bottom:6px!important}.gtp2-scene-classic .scanner{gap:6px!important}.gtp2-scene-classic .scan-cell{min-height:80px!important}
+.gtp2-scene-classic .game-bottom{margin:10px 0!important}.gtp2-scene-classic .bottom-card{padding:12px!important}
+.gtp27-mystery{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:radial-gradient(circle at 50% 48%,#f8bdda 0%,#eac3e8 47%,#9d93ca 100%)!important}
+.gtp27-mystery:before{display:none!important}.mystery-pulse{width:106px;height:106px;border-radius:50%;border:3px solid #542667;background:linear-gradient(150deg,#462751,#8e4b9c);color:#fff6fe;display:grid;place-items:center;font:900 96px/1 Impact,Arial,sans-serif;box-shadow:0 0 0 9px #fff5f65e,0 12px 25px #58376640;animation:gtp27-mystery 3.2s ease-in-out infinite}
+@keyframes gtp27-mystery{50%{transform:translateY(-6px)}}
+.mystery-wording{text-align:center;display:grid;gap:3px}.mystery-wording strong{font:900 31px Impact,Arial,sans-serif;color:#3e2250}.mystery-wording small,.mystery-wording span{font-size:9px;font-weight:900;letter-spacing:.08em;color:#523763}
+.scan-cell.unknown{background:#efe7f1!important;color:#51375c!important;border-color:#aea5c7!important}.scan-cell.unknown strong{font-size:10px!important}
+.gtp2-game-scene .guess-card,.gtp2-game-scene .game-bottom{animation:none!important}
+/* Guide / FAQ / Rankings are real dedicated screens, not anchors hidden on Home. */
+.gtp27-guide,.gtp27-leaderboard{padding:38px 0 85px;color:#34213e;min-height:calc(100vh - 75px)}
+body:has(.gtp27-guide),body:has(.gtp27-leaderboard){background:radial-gradient(circle at 14% 0%,#f7c2de,#decbe7 44%,#d2e8ed 95%)!important}
+.gtp27-guide h1,.gtp27-leaderboard h1{font-family:Impact,'Arial Narrow',sans-serif;font-size:clamp(54px,7vw,110px);line-height:.92;color:#2c1b40;margin:17px 0}.gtp27-guide h1 em,.gtp27-leaderboard h1 em{font-style:normal;color:#d84091}
+.gtp27-guide>p,.gtp27-leaderboard>p{max-width:760px;font-size:15px;line-height:1.55;color:#64496c}
+.guide-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:30px 0 20px}
+.guide-card{padding:24px 16px;min-height:230px;background:#fff5fa;border-radius:17px;border:1px solid #a77fb4;box-shadow:0 6px 16px #54334e28;transition:transform .2s,border-color .2s}
+.guide-card:hover{transform:translateY(-5px);border-color:#e6549d}.guide-card>span{font-size:33px;color:#b3388c}.guide-card h2{font:900 30px Impact,Arial,sans-serif;margin:14px 0 8px;color:#3c2451}.guide-card p,.guide-rule-row p{font-size:12px;line-height:1.5;color:#644d6d}
+.guide-rule-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.guide-rule-row article{background:#272342;border:1px solid #8276b2;border-radius:14px;padding:19px;color:#fceaff}.guide-rule-row b{font-size:14px;color:#9df0f9}.guide-rule-row p{color:#efe5f4;margin:7px 0 0}
+.guide-cta{display:flex;gap:12px;flex-wrap:wrap;margin:30px 0}.faq-stack{display:grid;gap:10px;max-width:980px;margin:28px auto}
+.faq-item{background:#fff6fb;border:1px solid #a77abb;border-radius:13px;padding:17px 22px;box-shadow:0 2px 6px #6e497824}.faq-item summary{cursor:pointer;font-size:15px;font-weight:900;color:#40244e}.faq-item summary:hover{color:#cb2a88}.faq-item p{font-size:13px;line-height:1.6;color:#624a6e;margin:14px 0 0}
+.board-switch{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}.board-switch button{background:#f7e7f4;color:#4b2858;border:1px solid #aa7eb3;padding:13px 22px;border-radius:12px;font-weight:900;cursor:pointer}.board-switch button.active{background:#332044;color:#a5faff;border-color:#76ddeb}
+.gtp27-board{background:#fff8fd;border-radius:18px;border:1px solid #9475a9;overflow:hidden;box-shadow:0 9px 26px #58335430;min-height:250px}.board-head{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#342343;color:#fff5fc;padding:20px}.board-head small{font-size:10px;letter-spacing:.08em;color:#8af4ff}
+.board-row{display:grid;grid-template-columns:50px minmax(90px,1fr) 155px 200px;gap:12px;align-items:center;padding:13px 20px;border-bottom:1px solid #ddcfe2;color:#4b3055}.board-row:first-child{background:#fce0f1}.board-row>span{font-weight:900;color:#bb398e}.board-row strong{overflow-wrap:anywhere}.board-row b{color:#452452}.board-row small{text-align:right;color:#8c5892;font-weight:900}.board-empty{padding:56px 22px;text-align:center;font-size:14px;color:#7f608c}.board-empty b{font:900 28px Impact,Arial,sans-serif;color:#622e6d}.board-empty p{margin:10px auto;max-width:430px;line-height:1.5}
+.gtp27-submit{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;margin:22px 0;padding:28px;border:1px solid #ab7dab;background:linear-gradient(120deg,#fef2f9,#f7deee);border-radius:20px;color:#4a2957}
+.gtp27-submit h2{font:900 48px Impact,Arial,sans-serif;margin:10px 0;color:#c32f8b}.gtp27-submit h2 small{font:900 12px Arial,sans-serif;color:#54355e}.gtp27-submit p{font-size:13px;max-width:460px;line-height:1.5}
+.board-form{display:grid;gap:9px}.board-form label{font-size:11px;font-weight:900;color:#69346e}.board-form input{min-height:47px;border:2px solid #a27db0;background:#fffefd;border-radius:9px;padding:10px 12px;color:#382143;font-size:15px}.board-form input:focus{outline:3px solid #a5f0ed}.board-form button{min-height:43px}.board-form small{font-size:10px;color:#815d8b}
+@media(max-width:1100px){.gtp2-top .nav-item{font-size:9px!important;padding:8px 6px!important}.gtp27-mode-grid{grid-template-columns:1fr .6fr 1fr}.gtp27-center>b{font-size:25px}.guide-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:740px){.gtp2-top .topnav{display:flex!important;overflow-x:auto!important;max-width:70vw;scrollbar-width:none}.gtp2-top .nav-item{display:inline-flex!important;white-space:nowrap}.gtp2-top-inner{gap:5px!important}.gtp27-mode-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding-top:100px}.gtp27-center{display:none}.gtp27-mode-left,.gtp27-mode-right{padding:0;gap:9px}.nova27-home .gtp2-hero-content{padding-top:16px}.nova27-home .gtp2-mode-card{min-height:100px!important}.gtp27-classic-banner{gap:9px;padding:10px}.gtp27-banner-note{display:none}.gtp27-question-symbol{width:51px;height:51px;font-size:35px}.gtp2-scene-classic .game-layout{grid-template-columns:1fr!important}.gtp2-scene-classic .clue-visual{height:190px!important}.guide-grid{grid-template-columns:repeat(2,1fr)}.guide-rule-row{grid-template-columns:1fr}.gtp27-submit{grid-template-columns:1fr}.board-row{grid-template-columns:35px minmax(70px,1fr) 100px;gap:6px;font-size:12px}.board-row small{grid-column:2/-1;text-align:left}.gtp27-session-picker .gtp2-session button{padding:9px 8px!important;font-size:9px!important}}
+@media(max-width:450px){.gtp2-top .brand-text small{display:none!important}.gtp2-top-inner{gap:4px!important}.gtp2-top .topnav{max-width:44vw}.gtp2-brand .brand-text strong{font-size:12px!important}.nova27-home .gtp2-mode-copy strong{font-size:22px!important}.nova27-home .gtp2-mode-number{font-size:13px!important}.gtp27-mode-grid{padding-top:58px}.gtp27-classic-banner strong{font-size:29px}.guide-card{min-height:190px}.guide-card h2{font-size:25px}.board-head{padding:14px}}
+@media(prefers-reduced-motion:reduce){.gtp27-scroll span,.mystery-pulse{animation:none!important}}
+
+/* V2.7 visibility fixes based on desktop + mobile browser QA */
+#app:has(.gtp27-guide),#app:has(.gtp27-leaderboard){background:linear-gradient(135deg,#eed3e9,#dcd5ea 56%,#c8e5ed)!important;min-height:100vh}
+.gtp27-guide,.gtp27-leaderboard{background:transparent!important;color:#291835!important}
+.gtp27-leaderboard h1,.gtp27-guide h1{color:#2d1940!important;-webkit-text-fill-color:initial!important}
+.gtp27-leaderboard .lead{color:#574061!important}
+.gtp2-scene-classic .game-titlebar{margin:6px 0 10px!important;padding:2px 0!important}
+.gtp2-scene-classic .game-titlebar h1{font-size:clamp(52px,5vw,69px)!important;line-height:.88!important}
+.gtp2-scene-classic .game-topline{margin:5px 0 4px!important}
+.gtp2-scene-classic .mode-rail{margin:7px 0!important}
+.gtp2-scene-classic .style-strip{margin:6px 0 8px!important;min-height:65px!important}
+.gtp2-scene-classic .gtp27-classic-banner{margin:3px 0 9px!important;min-height:78px!important;padding:9px 18px!important}
+.gtp2-scene-classic .gtp27-classic-banner strong{font-size:clamp(27px,4vw,48px)!important}
+.gtp2-scene-classic .clue-visual{height:168px!important}
+.gtp2-scene-classic .mystery-pulse{height:69px!important;width:69px!important;font-size:58px!important}
+.gtp2-scene-classic .mystery-wording strong{font-size:25px!important}
+.gtp2-scene-classic .guess-top h2{display:none!important}
+.gtp2-scene-classic .guess-body{padding:10px 15px!important}
+.gtp2-scene-classic .guess-tools{margin:5px 0!important}
+.gtp2-scene-classic .scan-cell{min-height:67px!important;padding:5px 2px!important}
+.gtp2-scene-classic .guess-card,.gtp2-scene-classic .clue-card{animation:none!important;opacity:1!important;transform:none!important}
+.gtp2-game-scene .scanner .scan-cell strong{overflow-wrap:anywhere;font-size:clamp(10px,1.15vw,14px)!important}
+@media(max-width:740px){.gtp2-scene-classic .clue-visual{height:143px!important}.gtp2-scene-classic .game-titlebar h1{font-size:49px!important}.gtp2-scene-classic .gtp27-classic-banner{min-height:75px!important}}

@@ -47,3 +47,15 @@ for name in ('v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.te
     if stale.is_file():
         stale.unlink()
         print('REMOVED legacy test:',stale.relative_to(R))
+
+# V2.7: Map retired; no map UI/logic/assets ship with the new 5-mode experience.
+for name in ['maps.mjs','map_runtime.mjs','map_media_manifest.mjs','external_map_sources.mjs']:
+  old=R/'src'/name
+  if old.exists():old.unlink();print('REMOVED retired Map module:',name)
+for name in ['assets/maps','assets/map-catalog.json','assets/game-bg/map.svg','assets/sfx/hover-map.wav','SOURCES_AND_RIGHTS.md']:
+  old=R/name
+  if old.is_dir():shutil.rmtree(old);print('REMOVED retired Map folder:',name)
+  elif old.exists():old.unlink();print('REMOVED retired Map file:',name)
+for name in ['gtp2.test.mjs','v26.test.mjs']:
+  old=R/'tests'/name
+  if old.is_file():old.unlink();print('REMOVED incompatible old tests:',name)

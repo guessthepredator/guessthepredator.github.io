@@ -1,9 +1,9 @@
-import {localAbilitySlugs} from './abilities.mjs?v=2.6.0';
+import {localAbilitySlugs} from './abilities.mjs?v=2.7.0';
 /** Guess the Predator 2 · Deduction engine. No DOM, timers or network in this module. */
 export const FIELDS = Object.freeze(['role', 'gender', 'form', 'age', 'debut']);
 export const LABELS = Object.freeze({role: 'CLASS', gender: 'GENDER', form: 'FORM', age: 'AGE', debut: 'LAUNCH'});
-export const MODES = Object.freeze(['classic', 'pixel', 'quote', 'ability', 'emoji', 'map']);
-export const MODE_NAMES = Object.freeze({classic:'CLASSIC',pixel:'PIXEL',quote:'QUOTE',ability:'ABILITY',emoji:'EMOJI',map:'MAP'});
+export const MODES = Object.freeze(['classic', 'pixel', 'quote', 'ability', 'emoji']);
+export const MODE_NAMES = Object.freeze({classic:'CLASSIC',pixel:'PIXEL',quote:'QUOTE',ability:'ABILITY',emoji:'EMOJI'});
 export const MAX_GUESSES = 6;
 export const FULL_SCAN_GUESSES = 5;
 export const maxGuesses = round => round?.mode === 'full' ? FULL_SCAN_GUESSES : MAX_GUESSES;
@@ -35,7 +35,6 @@ export function puzzleAnswers(day, roster) {
   const pool=shuffle(roster.filter(l=>allowed.has(l.slug)&&!used.has(l.name)),hash('gtp:v15.2:ability:'+day));
   if(!pool.length)throw Error('Missing local Ability icon pool');
   answers.ability=pool[0].name;
-  answers.map=hash('gtp:v16:map:'+day)%36;
   return answers;
 }
 export function newRound(answer, mode='signal', timeLimit=0) {
@@ -50,7 +49,7 @@ export function compare(candidate, target, field){
   const numeric=field==='age'||field==='debut';
   return {field,kind:'wrong',value:formatValue(a,field),direction:numeric?(b>a?1:-1):0};
 }
-export function formatValue(value,field){if(value==null)return 'N/A';if(field==='debut')return value===0?'LAUNCH':`S${value}`;return String(value);}
+export function formatValue(value,field){if(value==null)return 'UNDISCLOSED';if(field==='debut')return value===0?'LAUNCH':`S${value}`;return String(value);}
 export function signalForGuess(round,candidate,target,roster){
   const locked=new Set(confirmedFields(round,target,roster));
   const seen=new Set(round.signals.map(s=>s.field));
@@ -122,7 +121,7 @@ export function scannerState(round,target,roster){
   for(const field of FIELDS){
     const last=signals.filter(s=>s.field===field).at(-1);
     const green=signals.find(s=>s.field===field&&s.kind==='correct');
-    if(target[field]==null){output[field]={field,kind:'unknown',value:'N/A',direction:0};continue;}
+    if(target[field]==null){output[field]={field,kind:'unknown',value:'UNDISCLOSED',direction:0};continue;}
     if(green){output[field]={...green,kind:'correct',value:formatValue(target[field],field)};continue;}
     if(round.hints.includes(field)){output[field]={field,kind:'hint',value:formatValue(target[field],field),direction:0};continue;}
     output[field]=last||{field,kind:'hidden',value:'—',direction:0};

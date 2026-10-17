@@ -1,13 +1,12 @@
-# Sources and distribution notes — NOVA V2.6
+# Asset rights and GitHub publication audit — V2.7
 
-This is a fan-made Apex-themed trivia prototype, not endorsed by EA/Respawn. It is NOT certified as legally safe to publish on GitHub Pages. EA content policy: https://help.ea.com/en/articles/security-and-rules/ea-content-policy/
+The game references Apex/Respawn characters and an artistic Mirage-themed homepage. It is an **unofficial fan game**, not EA/Respawn-approved. A disclaimer or small edits to copyrighted images do not automatically grant rights; EA content restrictions still apply: https://help.ea.com/en/articles/security-and-rules/ea-content-policy/
 
-**Map:** 36 catalogued POIs; zero verified Apex screenshot files bundled. `src/external_map_sources.mjs` lists wiki filenames. The browser checks their availability; successful network loading is not a reproduction license. If none loads, Map stays disabled rather than displaying unrelated art.
+- **Map**: removed entirely. No screenshot pack or unlabeled replacement artwork.
+- **Portraits**: 28 character entries, images selected from third-party external sources (`src/art.mjs`); availability and rights are **unverified**. An unavailable portrait is reported as unavailable, not replaced with a generic character.
+- **Ability**: eight legacy game-icon PNGs remain; rights must still be checked before public redistribution.
+- **UI SFX**: 13 original locally generated nonverbal sounds. No voice lines or imported game recordings.
+- **Backdrop and art**: Mirage-inspired fan artwork; not represented as rights-cleared or as official EA promotional content.
+- **Leaderboard**: player-selected public nickname and scores are visible in ranking results when connected. Do not collect emails, contact details or real names in the site. Anonymous sessions are stored in the browser. The database is in an external Supabase project that you control; secure its access and comply with relevant privacy requirements.
 
-**Legends:** 28 names but zero verified locally licensed identical-pose 3D renders. `src/art.mjs` tries third-party portrait sources, which can be unavailable or restricted. The UI treats missing portraits as unavailable; it never substitutes misleading generic characters.
-
-**Audio:** 14 local original non-verbal synthesised SFX, no EA sound recordings, no announcer, no synthetic speech.
-
-**Other:** 8 legacy Ability PNGs, permissions unverified. Six local decorative vector backgrounds, original project art. The homepage background is fan artwork, not guaranteed cleared for third-party distribution.
-
-EA's fan-content restrictions, including fan games, still apply regardless of recoloring, disclaimers or naming.
+**Publishing risks remain.** This release fixes app behavior, not IP clearance. See `LEADERBOARD_SETUP.md` for DB/auth abuse controls.

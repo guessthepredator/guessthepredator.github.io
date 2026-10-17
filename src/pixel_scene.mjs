@@ -11,7 +11,7 @@ export function paintPixelScene(canvas,portrait,{resolution=24,seed='legend'}={}
   const ctx=canvas?.getContext?.('2d');if(!ctx||!portrait?.naturalWidth||!portrait?.naturalHeight)return false;
   const w=Math.max(20,Math.min(900,Math.round(resolution))),h=Math.round(w*.72);
   canvas.width=w;canvas.height=h;
-  const {hue,variation}=scenePalette(seed);
+  const {hue,variation}=scenePalette('fixed-neutral-backdrop');
   const S=x=>x*w, T=y=>y*h;
   // Full scene: horizon sky, atmospheric depth, lit urban architecture, overhead lights and walkway.
   const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,`hsl(${hue},43%,17%)`);bg.addColorStop(.60,`hsl(${(hue+32)%360},36%,35%)`);bg.addColorStop(1,`hsl(${hue},30%,57%)`);

@@ -1,37 +1,32 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-echo GTP2 NOVA V2.6.1 - FIX GITHUB ACTIONS LEGACY TESTS
+echo GTP2 V2.7 MIRAGE EDITION - CLEAN UP OLD MAP AND TESTS
+echo This does not delete .git or your saved progress.
 echo.
-echo Removing obsolete tests from V2.1 - V2.5 (does not touch .git).
-for %%V in (21 22 23 24 25) do (
-  if exist "tests\v%%V.test.mjs" (
-    del /q "tests\v%%V.test.mjs"
-    echo REMOVED tests\v%%V.test.mjs
-  )
+for %%V in (21 22 23 24 25 26) do (
+  if exist "tests\v%%V.test.mjs" del /q "tests\v%%V.test.mjs"
 )
-for %%F in (pinkshift.css dark-pink-v23.css eclipse-v24.css lightshift-v25.css MEDIA_STUDIO.html MEDIA_DIAGNOSTIC.html) do (
-  if exist "%%F" (
-    del /q "%%F"
-    echo REMOVED %%F
-  )
+if exist "tests\gtp2.test.mjs" del /q "tests\gtp2.test.mjs"
+for %%F in (pinkshift.css dark-pink-v23.css eclipse-v24.css lightshift-v25.css MEDIA_STUDIO.html MEDIA_DIAGNOSTIC.html SOURCES_AND_RIGHTS.md) do (
+  if exist "%%F" del /q "%%F"
 )
-if exist "src\announcer.mjs" del /q "src\announcer.mjs"
-if exist "src\voice.mjs" del /q "src\voice.mjs"
-if exist "src\voice_manifest.mjs" del /q "src\voice_manifest.mjs"
+for %%F in (maps.mjs map_runtime.mjs map_media_manifest.mjs external_map_sources.mjs concept_map_manifest.mjs announcer.mjs voice.mjs voice_manifest.mjs) do (
+  if exist "src\%%F" del /q "src\%%F"
+)
+if exist "assets\maps" rmdir /s /q "assets\maps"
+if exist "assets\map-catalog.json" del /q "assets\map-catalog.json"
+if exist "assets\game-bg\map.svg" del /q "assets\game-bg\map.svg"
+if exist "assets\sfx\hover-map.wav" del /q "assets\sfx\hover-map.wav"
 where py >nul 2>nul
 if not errorlevel 1 (
   py -3 scripts\clean_old_release.py
 ) else (
   where python >nul 2>nul
-  if not errorlevel 1 (
-    python scripts\clean_old_release.py
-  ) else (
-    echo Python is optional. Legacy tests removed using Windows commands.
-    echo GitHub Actions runs any additional cleanup on the deployment runner.
-  )
+  if not errorlevel 1 python scripts\clean_old_release.py
 )
 echo.
-echo IMPORTANT: Check DELETED tests and CHANGED pages.yml in GitHub Desktop.
-echo Commit all changes and Push origin. Then check the new GitHub Actions run.
+echo Check ALL changes and deletions in GitHub Desktop.
+echo Commit then Push origin. Database setup is separate: LEADERBOARD_SETUP.md
+echo No new repository required.
 pause
