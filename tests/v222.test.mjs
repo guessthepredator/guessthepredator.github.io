@@ -23,7 +23,7 @@ test('Full Scan shows latest truthful match or mismatch, never an old green over
  const target=legends.find(l=>l.name==='Mirage');
  const first=legends.find(l=>l.name!==target.name&&FIELDS.some(f=>lMatch(l,target,f)));
  const shared=FIELDS.find(f=>lMatch(first,target,f));
- const second=legends.find(l=>l.name!==target.name&&l.name!==first.name&&l[f]!==target[f]&&l[f]!=null);
+ const second=legends.find(l=>l.name!==target.name&&l.name!==first.name&&l[shared]!==target[shared]&&l[shared]!=null);
  let round=tryGuess(newRound(target.name,'full'),first.name,legends,1000);
  assert.equal(scannerState(round,target,legends)[shared].kind,'correct');
  round=tryGuess(round,second.name,legends,2000);
