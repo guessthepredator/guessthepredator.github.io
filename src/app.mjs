@@ -1039,6 +1039,21 @@ app.addEventListener('click',event=>{
     store.settings.playStyle=changed.mode;store.settings.rush=changed.timeLimit>0;setRound(changed);
     sync();render({scroll:false});sound('pick');
   }
+  else if(action==='surrender'){
+    const current=getRound();
+    if(!current||current.finished)return;
+    if(!window.confirm('Give up this round? Your remaining guesses will be used and this round will count as a loss.'))return;
+    // Consume remaining moves as replayable wrong guesses so Daily results still
+    // validate against the server's official puzzle-answer algorithm.
+    let discarded=current;
+    const now=Date.now();
+    for(const candidate of legends){
+      if(discarded.finished)break;
+      if(candidate.name===discarded.answer||discarded.guesses.includes(candidate.name))continue;
+      discarded=tryGuess(discarded,candidate.name,legends,now);
+    }
+    if(discarded!==current){setRound(discarded);pickerOpen=false;quickSearch='';render({scroll:false});sound('lose');}
+  }
   else if(action==='hint'){
     const round=getRound();if(!round)return;
     const target=legendByName(legends,round.answer);const changed=getHint(round,target,legends);
