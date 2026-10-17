@@ -2294,3 +2294,227 @@ body.lightshift-playing:before{background:radial-gradient(ellipse at 8% 8%,#111d
 #app[data-screen="game"] .gtp2-scene-ability .gtp210-ability-icon{box-shadow:0 0 0 9px #392745,0 0 22px #ae9cfa6b!important}
 #app[data-screen="game"] .gtp2-scene-emoji .gtp210-emoji-tile{border-color:#70dac9!important}
 @media(max-width:740px){#app[data-screen="game"] .gtp2-game-scene .style-strip .style-options{width:100%;gap:5px!important}#app[data-screen="game"] .gtp2-game-scene .style-strip .segment{min-width:unset!important;flex:1!important}}
+
+
+/* Final Visual Lock · component-authored HUD over a clean character background */
+/* ================================================================
+   FINAL VISUAL LOCK · layout is real HTML, not image crop/hotspots.
+   ================================================================ */
+#app[data-screen="home"] .gtp219-home{width:100%;min-height:100svh;overflow:hidden;position:relative;background:#06091a;color:#eefbff;font-family:'DM Sans','Segoe UI',sans-serif;isolation:isolate}
+.gtp219-backdrop{position:absolute;inset:0;z-index:-2;background-image:linear-gradient(180deg,#03081675,#070b1b17 30%,#07081838 69%,#060816c8 100%),url('./assets/decor/mirage-clean-final.webp');background-position:center,center;background-size:cover,cover;background-repeat:no-repeat;pointer-events:none}
+.gtp219-home:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,#050b1b88 0%,#060a1822 30%,transparent 60%)}
+.gtp219-shell{width:min(100%,1820px);min-height:100svh;margin:0 auto;display:grid;grid-template-rows:minmax(66px,8.6svh) minmax(230px,28svh) minmax(68px,8svh) minmax(30px,4svh) minmax(170px,23.6svh) minmax(96px,12svh) minmax(24px,3.2svh);align-content:space-between;row-gap:3px;position:relative;padding-bottom:4px}
+.gtp219-shell button{font-family:inherit;color:inherit;cursor:pointer;position:relative;transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease,filter .14s ease}
+.gtp219-shell button:focus-visible{outline:3px solid #a2fff5;outline-offset:2px}
+.gtp219-header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:5px clamp(18px,4vw,68px);background:#070e1fdf;backdrop-filter:blur(9px);border-bottom:1px solid #6c9aba40;z-index:9}
+.gtp219-brand{display:flex;align-items:center;gap:8px;background:none;border:0;padding:0;text-align:left;white-space:nowrap;min-width:215px}
+.gtp219-logo-emblem{color:#fc7773;display:grid;place-items:center;width:50px;height:52px;filter:drop-shadow(0 2px 4px #13070ad9)}
+.gtp219-brand-type{font:900 clamp(15px,1.28vw,22px)/.94 'Barlow Condensed',Impact,sans-serif;display:flex;flex-direction:column;letter-spacing:.012em;color:#fff}
+.gtp219-brand-type strong{color:#ff9c7e;font-size:1.48em;font-weight:900}
+.gtp219-header nav{display:flex;align-items:center;justify-content:center;gap:4px;background:#07162bce;border:1px solid #32718c45;border-radius:11px;padding:5px;flex-shrink:1}
+.gtp219-header nav button{font-size:clamp(10px,.82vw,13px);letter-spacing:.04em;font-weight:850;background:transparent;border:1px solid transparent;border-radius:7px;padding:9px clamp(7px,1vw,16px);white-space:nowrap}
+.gtp219-header nav button.active,.gtp219-header nav button:hover{background:#0b2c43;border-color:#48d5e9;color:#bffbff}
+.gtp219-controls{display:flex;gap:7px}
+.gtp219-controls button{width:41px;height:39px;border:1px solid #477c9c;background:#092137c9;border-radius:9px;color:#aff8ff;font-size:20px}
+.gtp219-controls button:hover{background:#164763}
+.gtp219-feature{width:clamp(380px,37vw,640px);max-width:calc(100% - 20px);justify-self:center;display:flex;align-items:center;justify-content:flex-end;flex-direction:column;gap:2px;min-height:0;position:relative}
+.gtp219-chest-art{width:min(54%,270px);height:clamp(78px,11.3svh,145px);position:relative;transform:perspective(700px) rotateX(1deg);filter:drop-shadow(0 0 15px #f6635b88) drop-shadow(0 6px 12px #000);margin-bottom:-5px}
+.gtp219-chest-top{position:absolute;inset:6% 11% 60%;transform:perspective(400px) rotateX(36deg);background:linear-gradient(130deg,#8d3c53,#302a5c 44%,#b15d39 80%,#3b2844);border:3px solid #df926f;border-radius:14px 14px 3px 3px;box-shadow:inset 0 0 7px 3px #39132c,0 0 12px #ff955b}
+.gtp219-chest-face{position:absolute;inset:30% 8% 6%;display:grid;place-items:center;background:linear-gradient(145deg,#3b3068,#191d45 50%,#461b39);border:3px solid #d68b79;border-radius:10px;box-shadow:inset 0 0 0 6px #16223f,0 0 12px #fd7856}
+.gtp219-chest-face:before,.gtp219-chest-face:after{content:"";position:absolute;top:0;bottom:0;width:7%;background:linear-gradient(#f5a567,#703567,#e98959);box-shadow:inset 0 0 0 2px #523047}
+.gtp219-chest-face:before{left:20%}.gtp219-chest-face:after{right:20%}
+.gtp219-chest-rune{display:grid;place-items:center;z-index:1;width:48px;height:50px;font-size:33px;color:#ffe9aa;border:2px solid #e3af7c;border-radius:7px;background:radial-gradient(circle,#a55a77,#492457);text-shadow:0 0 14px #ffd0ab}
+.gtp219-feature h1{font:italic 900 clamp(29px,3vw,49px)/.98 'Barlow Condensed',Impact,sans-serif;letter-spacing:.01em;margin:0;color:#ffc48a;text-shadow:2px 3px 0 #75223a,0 0 22px #ed3c71;white-space:nowrap}
+.gtp219-intel{width:100%;background:#051a31f5;border:1px solid #42c9e4;border-radius:10px;padding:9px 14px;box-shadow:0 8px 22px #010311b5,inset 0 0 0 1px #ffffff10;display:grid;gap:6px}
+.gtp219-intel-head{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#e9f8ff}
+.gtp219-intel-head strong{font-size:12px;letter-spacing:.09em}.gtp219-intel-head b{font-size:16px}
+.gtp219-progress{display:flex;gap:7px;height:7px}
+.gtp219-progress span{flex:1;border:1px solid #4c779d;background:#142b48;border-radius:6px}.gtp219-progress span.cleared{background:linear-gradient(90deg,#2dd4fa,#60ffe0);box-shadow:0 0 9px #3bd9e96e}
+.gtp219-rewards{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.gtp219-rewards button{padding:5px 7px;min-width:0;min-height:34px;display:flex;align-items:center;justify-content:space-between;text-align:left;gap:8px;background:#102c47;border:1px solid #35627d;border-radius:7px}
+.gtp219-rewards button span{font-size:10px;font-weight:900;white-space:nowrap}.gtp219-rewards button small{font-size:8px;color:#b3d1e1;text-align:right}.gtp219-rewards button:not(:disabled){background:#134844;border-color:#69f8d4}
+.gtp219-rewards button:disabled{cursor:default;opacity:.86}
+.gtp219-play-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:min(780px,56%);justify-self:center;min-height:0}
+.gtp219-play-choices button{display:flex;align-items:center;gap:12px;text-align:left;background:linear-gradient(110deg,#071c34f8,#061c36ef)!important;border:1.5px solid #18cdff;border-radius:11px;padding:9px 20px;box-shadow:inset 0 1px 0 #ffffff10,0 0 10px #1089d32b;overflow:hidden}
+.gtp219-play-choices button:hover{transform:translateY(-2px);box-shadow:0 0 19px #1cddfb66}
+.gtp219-play-choices .gtp219-free-btn{border-color:#4af1cb;background:linear-gradient(110deg,#0a3137ee,#082426f7)!important}
+.gtp219-play-choices button.selected{box-shadow:inset 0 0 0 1px #ffffff18,0 0 14px #4befed60}
+.gtp219-play-symbol{font-size:29px;line-height:1;color:#a7f2ff;flex:0 0 35px;text-align:center}
+.gtp219-play-choices strong{display:block;font:900 clamp(17px,1.5vw,24px)/1 'Barlow Condensed',Impact,sans-serif;white-space:nowrap}
+.gtp219-play-choices small{display:block;color:#b8e1f2;font-size:clamp(9px,.75vw,12px);margin-top:4px;line-height:1.15}
+.gtp219-play-choices i{font:900 25px/1 sans-serif;margin-left:auto;font-style:normal;color:#83f3fa}
+.gtp219-modes-heading{display:flex;gap:12px;align-items:center;justify-content:center;font:900 clamp(12px,1.3vw,17px)/1 'DM Sans',sans-serif;letter-spacing:.20em;white-space:nowrap;color:#a3dafa;text-shadow:0 0 12px #000;background:linear-gradient(90deg,transparent,#071223cc 30%,#071223cc 70%,transparent)}
+.gtp219-modes-heading span{height:1px;width:min(18vw,200px);background:linear-gradient(90deg,transparent,#5ac7e6,#5ac7e6)}
+.gtp219-modes-heading span:last-child{transform:rotate(180deg)}
+.gtp219-modes{width:min(1450px,94%);justify-self:center;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;min-height:0}
+.gtp219-mode{--accent:#90eeff;--back1:#112e4f;--back2:#0b1229;min-width:0;min-height:0;border:1.8px solid var(--accent);border-radius:15px;background:radial-gradient(ellipse at 48% 24%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 56%),linear-gradient(160deg,var(--back1),var(--back2) 75%)!important;box-shadow:inset 0 0 0 1px #ffffff11,0 0 16px color-mix(in srgb,var(--accent) 20%,transparent);display:flex;flex-direction:column;align-items:center;justify-content:end;text-align:center;padding:11px 8px;gap:5px;isolation:isolate;overflow:hidden}
+.gtp219-mode:hover{transform:translateY(-4px);border-color:#fff;box-shadow:0 10px 24px #0009,0 0 24px color-mix(in srgb,var(--accent) 45%,transparent)}
+.gtp219-mode:before{content:"";position:absolute;inset:8px;border:1px solid color-mix(in srgb,var(--accent) 34%,transparent);clip-path:polygon(0 0,18% 0,18% 1%,100% 1%,100% 100%,82% 100%,82% 99%,0 99%);pointer-events:none;opacity:.5}
+.gtp219-mode-pattern{position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(45deg,transparent 0 16px,#ffffff05 16px 17px),radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 67%)}
+.gtp219-mode-glyph{font:900 clamp(43px,6.5svh,76px)/1 'Barlow Condensed',Impact,sans-serif;color:var(--accent);margin:auto 0 0;text-shadow:0 0 16px color-mix(in srgb,var(--accent) 55%,transparent)}
+.gtp219-mode-title{font:900 clamp(23px,2.2vw,33px)/.95 'Barlow Condensed',Impact,sans-serif;letter-spacing:.02em;color:#fff7ef;text-shadow:0 3px 4px #0009}
+.gtp219-mode small{font-size:clamp(9px,.84vw,12px);font-weight:800;color:var(--accent);line-height:1.25}
+.gtp219-mode-classic{--accent:#ffc56b;--back1:#62371e;--back2:#1a1118}.gtp219-mode-pixel{--accent:#59dcff;--back1:#133c68;--back2:#071829}.gtp219-mode-ability{--accent:#d4a3ff;--back1:#442171;--back2:#190d32}.gtp219-mode-quote{--accent:#80fff0;--back1:#0e494d;--back2:#071c25}.gtp219-mode-emoji{--accent:#ff8c96;--back1:#592035;--back2:#220f26}
+.gtp219-dock{width:min(1450px,94%);justify-self:center;display:grid;grid-template-columns:1fr 1fr;gap:min(20vw,240px)}
+.gtp219-wheel,.gtp219-spotlight{min-width:0;display:flex;align-items:center;gap:18px;border:1px solid #36b9dc;border-radius:12px;background:linear-gradient(100deg,#061527f3,#061b32ed)!important;padding:8px 15px;box-shadow:inset 0 1px 0 #ffffff18,0 7px 20px #0005;overflow:hidden;text-align:left}
+.gtp219-wheel:hover{transform:translateY(-2px);box-shadow:0 0 21px #2dc9e66b}
+.gtp219-wheel-art{height:min(102px,10svh);aspect-ratio:1;flex:0 0 auto;display:grid;place-items:center;position:relative}
+.gtp219-wheel-disc{height:100%;aspect-ratio:1;border:5px solid #d1a66b;border-radius:50%;background:conic-gradient(#fb655c 0 45deg,#5b5ade 45deg 90deg,#49d6c7 90deg 135deg,#e6bc67 135deg 180deg,#e95fa6 180deg 225deg,#3eafd9 225deg 270deg,#9a6dc6 270deg 315deg,#f39343 315deg 360deg);display:grid;place-items:center;box-shadow:0 0 0 2px #14142c,0 0 19px #c66b66}
+.gtp219-wheel-disc>span{width:44%;height:44%;border-radius:50%;background:#172a51;color:#ffdaa0;display:grid;place-items:center;border:2px solid #ffd395;font-size:25px}
+.gtp219-dock-copy{min-width:0;display:flex;flex-direction:column;gap:5px}
+.gtp219-dock-copy strong{font:900 clamp(20px,1.85vw,31px)/1 'Barlow Condensed',Impact,sans-serif;white-space:nowrap;color:#c0ecff}
+.gtp219-dock-copy small{color:#b3d9ed;font-size:clamp(9px,.85vw,13px)}
+.gtp219-wheel>b{margin-left:auto;font-size:31px;color:#86e7ff}
+.gtp219-spotlight{border-color:#4389b8;justify-self:stretch}
+.gtp219-dock-portrait{height:min(105px,10svh);width:75px;flex:0 0 75px;position:relative;overflow:hidden;background:linear-gradient(135deg,#1d3250,#0e1933);border:1px solid #3b6e9c;border-radius:8px}
+.gtp219-dock-portrait .gtp218-legend-fallback{display:grid;position:absolute;inset:0;font:900 42px/1 Impact,sans-serif;color:#c0ecff;place-items:center;background:transparent}
+.gtp219-dock-portrait .portrait-holder{position:relative;z-index:1;width:100%;height:100%;background:transparent!important;border:0!important}
+.gtp219-dock-portrait .portrait-holder img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.gtp219-dock-copy>b{font:900 18px/1 'Barlow Condensed',Impact,sans-serif;color:white}
+.gtp219-footer{display:flex;gap:15px;align-items:center;justify-content:center;font-size:11px;color:#fc829c;text-shadow:0 2px 9px #000;margin:0}
+.gtp219-footer span{font-size:9px;color:#b7c0d2}
+/* Locked-in game identities: color the entire game frame, not just punctuation */
+#app[data-screen="game"] .gtp2-game-scene{--game-neon:#ffc187;background:radial-gradient(ellipse at 18% 15%,color-mix(in srgb,var(--game-neon) 17%,transparent),transparent 46%),linear-gradient(150deg,#101827,#0b1120 65%,#0c1320)!important}
+#app[data-screen="game"] .gtp2-scene-classic{--game-neon:#fb746e!important;--tile:#fb746e!important}
+#app[data-screen="game"] .gtp2-scene-pixel{--game-neon:#44caff!important;--tile:#44caff!important}
+#app[data-screen="game"] .gtp2-scene-quote{--game-neon:#ffcb71!important;--tile:#ffcb71!important}
+#app[data-screen="game"] .gtp2-scene-ability{--game-neon:#c298ff!important;--tile:#c298ff!important}
+#app[data-screen="game"] .gtp2-scene-emoji{--game-neon:#4ae3ca!important;--tile:#4ae3ca!important}
+#app[data-screen="game"] .gtp2-game-scene .clue-card,#app[data-screen="game"] .gtp2-game-scene .guess-card{background:linear-gradient(160deg,#101a2b,#0d1221)!important;border:1.5px solid var(--game-neon)!important;box-shadow:0 0 0 1px #ffffff08,0 0 22px color-mix(in srgb,var(--game-neon) 17%,transparent),0 12px 25px #0009!important}
+#app[data-screen="game"] .gtp2-game-scene .guess-body,#app[data-screen="game"] .gtp2-game-scene .clue-foot{background:#0b1525!important;color:#dbeeff!important}
+#app[data-screen="game"] .gtp2-game-scene .panel-top{background:linear-gradient(95deg,color-mix(in srgb,var(--game-neon) 41%,#101c33),#0d1b2d)!important;border-color:var(--game-neon)!important;color:#fff!important}
+#app[data-screen="game"] .gtp2-game-scene .game-titlebar h1{color:#fff!important;text-shadow:0 0 25px color-mix(in srgb,var(--game-neon) 25%,transparent)!important}
+#app[data-screen="game"] .gtp2-game-scene .game-titlebar h1 span{color:var(--game-neon)!important}
+#app[data-screen="game"] .gtp2-game-scene .mode-tab.active{background:linear-gradient(145deg,color-mix(in srgb,var(--game-neon) 65%,#0b1525),#14213d)!important;border:2px solid var(--game-neon)!important;box-shadow:0 0 17px color-mix(in srgb,var(--game-neon) 46%,transparent)!important;color:#fff!important}
+#app[data-screen="game"] .gtp2-game-scene .style-options .segment.active{border-color:var(--game-neon)!important;box-shadow:0 0 10px color-mix(in srgb,var(--game-neon) 35%,transparent)!important;color:#fff!important}
+#app[data-screen="game"] .gtp2-game-scene .game-attempts{border-color:var(--game-neon)!important;color:#fff!important}
+#app[data-screen="game"] .gtp2-game-scene .search-wrap input:focus{border-color:var(--game-neon)!important;outline-color:var(--game-neon)!important}
+#app[data-screen="game"] .gtp2-game-scene .clue-visual{border-top:1px solid color-mix(in srgb,var(--game-neon) 45%,transparent)!important}
+/* Browse Legends: one true consistent card system; no lavender/pink backplates */
+#app .gtp2-picker .picker-grid{gap:12px!important}
+#app .gtp2-picker .picker-legend{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:space-between!important;border:1px solid #496b84!important;border-radius:13px!important;background:linear-gradient(180deg,#122337,#0b1526)!important;box-shadow:inset 0 1px 0 #ffffff12,0 5px 12px #0006!important;color:#f1f7ff!important;overflow:hidden!important;padding:8px!important}
+#app .gtp2-picker .picker-legend .portrait-holder{width:100%!important;height:clamp(128px,13vw,185px)!important;min-height:0!important;max-height:none!important;display:flex!important;justify-content:center!important;align-items:end!important;overflow:hidden!important;background:transparent!important;border:0!important;box-shadow:none!important;position:relative!important;isolation:isolate}
+#app .gtp2-picker .picker-legend .portrait-holder img{height:100%!important;width:100%!important;object-fit:contain!important;object-position:center bottom!important;display:block!important;filter:drop-shadow(0 7px 10px #0008)!important;padding:0!important;transform:none!important;max-height:none!important}
+#app .gtp2-picker .picker-legend strong{font:900 18px/1.1 'Barlow Condensed',Impact,sans-serif!important;text-align:center!important;color:#eaf5ff!important;padding-top:7px}
+#app .gtp2-picker .picker-legend small{text-align:center!important;font-weight:800!important;color:#91b4cb!important}
+#app .gtp2-picker .picker-legend:hover{border-color:#7ee9e4!important;background:linear-gradient(180deg,#18384a,#0e2333)!important;transform:translateY(-2px)!important}
+/* Disable motion-heavy glows where reduced motion is requested. */
+@media(prefers-reduced-motion:reduce){.gtp219-shell button{transition:none!important}.gtp219-shell button:hover{transform:none!important}}
+@media(max-width:1090px){.gtp219-shell{grid-template-rows:70px minmax(225px,30svh) 70px 31px minmax(170px,23svh) minmax(105px,13svh) 24px}.gtp219-header{padding-inline:18px}.gtp219-brand{min-width:173px}.gtp219-play-choices{width:65%}.gtp219-dock{gap:7%}.gtp219-dock-copy strong{font-size:23px}.gtp219-mode small{font-size:9px}}
+@media(max-width:760px){
+ #app[data-screen="home"] .gtp219-home{overflow:visible}
+ .gtp219-backdrop{background-size:auto 840px;background-position:center top}
+ .gtp219-shell{min-height:100svh;height:auto;display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:0 12px 18px}
+ .gtp219-header{margin:0 -12px;padding:10px 12px;flex-wrap:wrap;gap:8px;min-height:66px;justify-content:center}
+ .gtp219-brand{min-width:0;margin-right:auto}.gtp219-logo-emblem{width:35px;height:37px}.gtp219-logo-emblem svg{width:31px;height:36px}.gtp219-brand-type{font-size:14px}.gtp219-header nav{order:3;width:100%;justify-content:center;overflow-x:auto}.gtp219-header nav button{font-size:10px;padding:8px 9px;white-space:nowrap}.gtp219-controls button{width:36px;height:36px}
+ .gtp219-feature{width:min(100%,540px);margin:110px auto 0}.gtp219-chest-art{height:120px}.gtp219-feature h1{font-size:38px}.gtp219-intel{padding:12px}.gtp219-intel-head strong{font-size:12px}.gtp219-rewards button{min-height:48px}
+ .gtp219-play-choices{width:100%;grid-template-columns:1fr 1fr;min-height:80px;gap:8px}.gtp219-play-choices button{padding:11px 8px;gap:6px}.gtp219-play-symbol{font-size:22px;flex-basis:27px}.gtp219-play-choices strong{font-size:18px}.gtp219-play-choices small{font-size:9px}.gtp219-play-choices i{display:none}
+ .gtp219-modes-heading{margin:8px auto 0;font-size:12px;letter-spacing:.11em}
+ .gtp219-modes{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gtp219-mode{min-height:170px}.gtp219-mode:last-child{grid-column:1/-1;width:min(240px,100%);justify-self:center}.gtp219-mode-glyph{font-size:48px}.gtp219-mode-title{font-size:25px}.gtp219-mode small{font-size:10px}
+ .gtp219-dock{width:100%;grid-template-columns:1fr;gap:10px}.gtp219-wheel,.gtp219-spotlight{height:106px}.gtp219-wheel-art{height:88px}.gtp219-dock-portrait{height:90px}
+ .gtp219-footer{display:flex;flex-direction:column;gap:4px;text-align:center;margin-top:4px}
+}
+@media(max-width:390px){.gtp219-header nav button{font-size:9px;padding:8px 6px}.gtp219-feature{margin-top:80px}.gtp219-feature h1{font-size:31px}.gtp219-play-choices strong{font-size:15px}.gtp219-play-symbol{display:none}.gtp219-play-choices small{font-size:8px}.gtp219-rewards button span{font-size:8px}.gtp219-rewards button small{font-size:7px}}
+
+/* Final accent color applied to game navigation and HUD consistently. */
+#app[data-screen="game"][data-mode="classic"]{--hud-accent:#fa8874}
+#app[data-screen="game"][data-mode="pixel"]{--hud-accent:#59dcff}
+#app[data-screen="game"][data-mode="quote"]{--hud-accent:#ffcc83}
+#app[data-screen="game"][data-mode="ability"]{--hud-accent:#c4a0ff}
+#app[data-screen="game"][data-mode="emoji"]{--hud-accent:#77efd5}
+#app[data-screen="game"] .gtp2-top{border-bottom-color:var(--hud-accent)!important;box-shadow:0 5px 24px color-mix(in srgb,var(--hud-accent) 20%,transparent)!important}
+#app[data-screen="game"] .gtp2-brand .brand-text strong em{color:var(--hud-accent)!important;text-shadow:none!important}
+#app[data-screen="game"] .gtp2-top .nav-item.active{border:1px solid var(--hud-accent)!important;background:color-mix(in srgb,var(--hud-accent) 24%,#0c172b)!important;color:#fff!important}
+/* The wheel graphic occupies the entire illustrative quarter of the card. */
+.gtp219-wheel-art{background-image:url('./assets/decor/gtp218-wheel-art.webp');background-size:cover;background-position:left center;width:clamp(130px,28%,185px);height:100%;min-height:100%;aspect-ratio:auto;margin:-8px 0 -8px -15px;align-self:stretch;flex:none;border-right:1px solid #6ccfff7b}
+.gtp219-wheel-disc{display:none!important}
+@media(max-width:760px){.gtp219-wheel-art{width:112px;margin-left:-15px;margin-right:1px;min-height:106px}}
+
+/* ========== V2.20: Apex Trivia — separate timed competition ========== */
+#app[data-screen="trivia"]{background:#080d1b;color:#f0f6ff;min-height:100vh}
+#app[data-screen="trivia"]:before{content:"";position:fixed;inset:80px 0 0;pointer-events:none;background:radial-gradient(ellipse at 80% 11%,#2f1e5b66,transparent 40%),radial-gradient(ellipse at 9% 67%,#073e5a5e,transparent 55%),linear-gradient(130deg,#080d1b,#100e28 65%,#0d1526);z-index:-1}
+.trivia-page{min-height:calc(100vh - 77px);position:relative;padding:clamp(26px,4vw,50px) 24px 72px;overflow:hidden;isolation:isolate}
+.trivia-page:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#ffffff05 1px,transparent 1px),linear-gradient(0deg,#ffffff04 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(180deg,#0004,transparent 76%);pointer-events:none;z-index:-1}
+.trivia-shell{width:min(1230px,100%);margin:auto}
+.trivia-hero{text-align:center;max-width:820px;margin:0 auto 28px}
+.trivia-kicker,.trivia-tag{font-size:10px;font-weight:900;letter-spacing:.18em;color:#8bebed}
+.trivia-hero h1{font:900 clamp(56px,8vw,100px)/.92 'Barlow Condensed',Impact,sans-serif;color:#f9f8ff;margin:14px 0;text-shadow:0 7px 20px #02031266}
+.trivia-hero h1 em{font-style:normal;color:#91f5f2}
+.trivia-hero p{font-size:14px;line-height:1.6;color:#c8d8e9;margin:0 auto 19px;max-width:610px}
+.trivia-hero p b{color:#b2ffdc}
+.trivia-switch{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px;border:1px solid #37526c;border-radius:14px;background:#080e1bc9;width:max-content;max-width:100%;margin:auto}
+.trivia-switch button{border:1px solid transparent;background:transparent;color:#cad7e9;padding:12px 24px;border-radius:10px;font-size:11px;font-weight:900;letter-spacing:.06em;transition:background .2s}
+.trivia-switch button.active{color:#09212a;background:#9ce9ee;border-color:#d6f8fa}
+.trivia-switch button:hover:not(.active){background:#203751}
+.trivia-grid{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(290px,1fr);gap:20px;align-items:stretch}
+.trivia-main,.trivia-sidebar{border:1px solid #40627b;border-radius:24px;background:linear-gradient(145deg,#0b1a2cf0,#14152aed 78%);box-shadow:0 14px 46px #020913a8,inset 0 1px 0 #c6f9ff17;overflow:hidden;min-width:0}
+.trivia-main{min-height:425px;display:flex;flex-direction:column;justify-content:center;padding:clamp(19px,3vw,38px)}
+.trivia-intro,.trivia-finale{text-align:center;display:grid;justify-items:center;gap:15px;align-content:center;max-width:610px;margin:auto}
+.trivia-intro h2,.trivia-finale h2,.trivia-feedback h2{font:900 clamp(37px,4.4vw,66px)/1 'Barlow Condensed',Impact,sans-serif;color:#f7f6ff;margin:0}
+.trivia-intro p,.trivia-finale p,.trivia-feedback p{color:#c7d9e4;font-size:14px;line-height:1.65;max-width:600px;margin:0}
+.trivia-hint strong{color:#8cf7e6}
+.trivia-primary,.trivia-secondary{border:1px solid #78e4ea;border-radius:11px;background:linear-gradient(120deg,#74dbf4,#a3f6dc);color:#0a1a2a;padding:15px 23px;font-weight:900;font-size:12px;letter-spacing:.07em;box-shadow:0 5px 18px #0ca9a829;min-height:46px;cursor:pointer;transition:transform .18s,box-shadow .18s,background .18s}
+.trivia-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 7px 25px #38e9e042}
+.trivia-primary:disabled,.trivia-secondary:disabled{opacity:.6;cursor:not-allowed}
+.trivia-secondary{color:#b5fafa;background:linear-gradient(120deg,#142b43,#15273b);border-color:#48738e;font-size:11px;box-shadow:none}
+.trivia-secondary:hover{background:#24465d}
+.trivia-status{padding:12px 14px;margin-bottom:18px;color:#ffdeb3;background:#483019;border:1px solid #aa7850;border-radius:10px;font-size:12px;font-weight:700}
+.trivia-question{width:100%}
+.trivia-question-head{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.trivia-clock{color:#9cfbf1;font:900 35px 'Barlow Condensed',Impact,sans-serif;min-width:80px;text-align:right;letter-spacing:.02em}
+.trivia-clock.urgent{color:#ff9e87;animation:triviaPulse 1s ease-in-out infinite}
+@keyframes triviaPulse{50%{opacity:.65}}
+.trivia-timebar{height:7px;border-radius:100px;background:#283d52;margin:13px 0 28px;overflow:hidden}
+.trivia-timebar span{height:100%;display:block;background:linear-gradient(90deg,#76b6fb,#95eddf);border-radius:inherit;transition:width .27s linear}
+.trivia-question h2{font:800 clamp(33px,3.3vw,53px)/1.08 'Barlow Condensed',Impact,sans-serif;color:#f7f7ff;margin:0 0 28px;min-height:68px}
+.trivia-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.trivia-option{display:grid;grid-template-columns:37px minmax(0,1fr) 15px;align-items:center;gap:12px;text-align:left;border:1px solid #405b78;background:linear-gradient(130deg,#1b2a41,#101a32);border-radius:14px;color:#f5f3ff;padding:15px 13px;min-height:73px;font-size:15px;font-weight:800;cursor:pointer;transition:border-color .17s,background .17s,transform .17s}
+.trivia-option b{display:grid;place-items:center;border-radius:9px;min-width:37px;height:37px;background:#14364e;border:1px solid #4e92a9;color:#91f3ee;font-size:15px}
+.trivia-option:hover:not(:disabled){border-color:#a0f1e8;background:#1d3b4f;transform:translateY(-2px)}
+.trivia-option:disabled{opacity:.5;cursor:not-allowed}
+.trivia-type{display:grid;gap:11px}.trivia-type label{color:#a2ddea;font-weight:900;letter-spacing:.1em;font-size:11px}
+.trivia-type input{width:100%;padding:18px 17px;border-radius:12px;background:#070d1a;color:#fff;font-size:17px;font-weight:700;border:1px solid #72b4c1;outline:none}
+.trivia-type input:focus{border-color:#a4f4e7;box-shadow:0 0 0 2px #a4f4e729}
+.trivia-skip{margin-top:18px;padding:7px 0;color:#b5aecb;font-size:11px;font-weight:900;background:none;border:0;text-decoration:underline;text-underline-offset:4px}
+.trivia-note{font-size:11px;color:#a5b4ce;line-height:1.4;margin:12px 0 0}
+.trivia-feedback{width:min(680px,100%);margin:auto;display:grid;justify-items:center;text-align:center;gap:15px}
+.trivia-feedback.good h2{color:#9af5db}.trivia-feedback.bad h2{color:#ffc2bc}
+.trivia-feedback p strong{color:#fff}
+.trivia-feedback a{font-size:12px;color:#90f5e3;text-decoration:underline}
+.trivia-feedback .trivia-primary{margin-top:8px}
+.trivia-current-score{font-size:12px!important;letter-spacing:.07em;font-weight:900;color:#a4ecf7!important}
+.trivia-final-score{font:900 clamp(92px,10vw,140px)/1 'Barlow Condensed',Impact,sans-serif;background:linear-gradient(#bcfff4,#65c7fb);color:transparent;background-clip:text;display:flex;align-items:baseline;gap:6px}
+.trivia-final-score small{font-size:.26em;color:#a4c5d6}
+.trivia-final-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px}
+.trivia-sidebar{align-self:stretch;display:flex;flex-direction:column}
+.trivia-sidehead{background:#12253a;padding:18px;border-bottom:1px solid #36516d}
+.trivia-sidehead>span{font-size:11px;font-weight:900;letter-spacing:.1em;color:#a3eeed}
+.trivia-tabs{display:flex;gap:8px;margin-top:13px}
+.trivia-tabs button{background:#1a3149;border:1px solid #385976;padding:9px 14px;color:#bdd5e3;font-size:10px;font-weight:900;border-radius:8px}
+.trivia-tabs button.active{background:#68c5dc;color:#09222f;border-color:#9feee9}
+.trivia-board-rows{padding:10px 15px;display:grid;gap:5px}
+.trivia-board-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:center;padding:11px 7px;border-bottom:1px solid #58738e27;color:#e8f4ff;font-size:12px}
+.trivia-board-row b{color:#78ebde}.trivia-board-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trivia-board-row strong{color:#fff0bd;font-size:12px}
+.trivia-quiet{padding:30px 16px;font-size:13px;color:#a7c2d5;line-height:1.6}
+.trivia-aside-foot{padding:18px;background:#101d31;margin-top:auto;border-top:1px solid #34546a}
+.trivia-aside-foot>b{color:#97e4e4;letter-spacing:.08em;font-size:11px}
+.trivia-aside-foot p{color:#b0c4d5;line-height:1.55;font-size:12px;margin:9px 0 17px}
+.trivia-aside-foot .trivia-secondary{width:100%;padding:11px;font-size:10px}
+@media(max-width:830px){.trivia-grid{grid-template-columns:1fr}.trivia-main{min-height:390px}.trivia-sidebar{min-height:230px}}
+@media(max-width:520px){.trivia-page{padding:22px 12px 54px}.trivia-hero h1{font-size:59px}.trivia-hero p{font-size:12px}.trivia-switch button{padding:11px 13px;font-size:9px}.trivia-options{grid-template-columns:1fr}.trivia-question h2{font-size:33px;min-height:0}.trivia-option{min-height:58px}.trivia-main{padding:20px 17px}.trivia-finale h2{font-size:43px}}
+@media(prefers-reduced-motion:reduce){.trivia-clock.urgent{animation:none!important}}
+
+.trivia-last-explanation{display:grid;gap:5px;padding:11px 16px;border:1px solid #376877;border-radius:12px;background:#0c2033;color:#d3e5f0;font-size:12px;text-align:center;max-width:510px}
+.trivia-last-explanation strong{color:#a0efe0;font-size:11px;letter-spacing:.06em}
+.trivia-last-explanation a{color:#8ceaf3}
+
+/* Middle-width access to the same complete mobile navigation, including Trivia. */
+@media(min-width:601px) and (max-width:980px){
+ .gtp2-top .topnav{display:none!important}
+ .gtp213-mobile-menu{display:block;position:relative;z-index:45;order:3}
+ .gtp213-mobile-menu summary{list-style:none;display:grid;place-items:center;width:38px;height:38px;border:1px solid #568b9d;border-radius:9px;background:#1a3045;color:#b4f7fa;font-size:19px;cursor:pointer}
+ .gtp213-mobile-menu summary::-webkit-details-marker{display:none}
+ .gtp213-mobile-menu .gtp213-mobile-links{position:absolute;right:0;top:44px;z-index:50;width:208px;display:grid;gap:2px;background:#0f2033;border:1px solid #547891;border-radius:13px;box-shadow:0 16px 30px #050e20b3;padding:8px}
+ .gtp213-mobile-links button{text-align:left;padding:10px;border:0;background:transparent;color:#e2f8ff;border-radius:8px;font-weight:850;font-size:11px}
+ .gtp213-mobile-links button:hover{background:#205071}
+}

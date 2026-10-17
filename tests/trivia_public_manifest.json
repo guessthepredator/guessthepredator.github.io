@@ -1,0 +1,639 @@
+[
+  {
+    "id": "class-alter",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-ash",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-axle",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-ballistic",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-bangalore",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-bloodhound",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-catalyst",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-caustic",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-conduit",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-crypto",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-fuse",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-gibraltar",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-horizon",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-lifeline",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-loba",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-mad-maggie",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-mirage",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-newcastle",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-octane",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-pathfinder",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-rampart",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-revenant",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-seer",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-sparrow",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-valkyrie",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-vantage",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-wattson",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "class-wraith",
+    "category": "classes",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-bangalore",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-fuse",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-ash",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-mad-maggie",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-ballistic",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-caustic",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-wattson",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-rampart",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-catalyst",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-bloodhound",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-crypto",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-valkyrie",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-seer",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-vantage",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-sparrow",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-octane",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-pathfinder",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-wraith",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-revenant",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-horizon",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-alter",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-axle",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-gibraltar",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-lifeline",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-mirage",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-loba",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-newcastle",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "tactical-conduit",
+    "category": "abilities",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-1",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-2",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-3",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-4",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-5",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-6",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-7",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-8",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-9",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-10",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-11",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "odd-12",
+    "category": "odd-one-out",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-assault",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-controller",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-recon",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-skirmisher",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-support",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-ends-a",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-starts-b",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-starts-c",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "name-starts-v",
+    "category": "write",
+    "kind": "input",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "map-1",
+    "category": "maps",
+    "kind": "choice",
+    "source": "https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "map-2",
+    "category": "maps",
+    "kind": "choice",
+    "source": "https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "map-3",
+    "category": "maps",
+    "kind": "choice",
+    "source": "https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "map-4",
+    "category": "maps",
+    "kind": "choice",
+    "source": "https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "map-5",
+    "category": "maps",
+    "kind": "choice",
+    "source": "https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "map-6",
+    "category": "maps",
+    "kind": "choice",
+    "source": "https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "map-point",
+    "category": "maps",
+    "kind": "choice",
+    "source": "https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "map-moon",
+    "category": "maps",
+    "kind": "choice",
+    "source": "https://www.ea.com/games/apex-legends/apex-legends/game-objects/maps-hub",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "classes-count",
+    "category": "knowledge",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "recon-purpose",
+    "category": "knowledge",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "support-purpose",
+    "category": "knowledge",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "controller-purpose",
+    "category": "knowledge",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "skirmisher-purpose",
+    "category": "knowledge",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  },
+  {
+    "id": "assault-purpose",
+    "category": "knowledge",
+    "kind": "choice",
+    "source": "https://help.ea.com/sv/articles/apex-legends/abilities/",
+    "lastReviewed": "2026-10-17"
+  }
+]

@@ -26,3 +26,23 @@ export async function submitDaily(payload){
  if(!data?.ok)throw new Error(data?.error||'Invalid score submission');
  return data;
 }
+
+/** Trivia uses the SAME signed-in anonymous identity, but an independent scoring service. */
+export async function triviaRequest(payload){
+ const sb=await client();let {data:{session},error:sessionError}=await sb.auth.getSession();
+ if(sessionError)throw sessionError;
+ if(!session){const response=await sb.auth.signInAnonymously();if(response.error)throw response.error;session=response.data.session;}
+ if(!session?.access_token)throw Error('Could not start Trivia anonymous session');
+ const {data,error}=await sb.rpc('gtp_trivia_api',{p_payload:payload});
+ if(error)throw Error(error.message||'Trivia server unavailable');
+ if(!data?.ok)throw Error(data?.error||'Trivia request was not accepted');
+ return data;
+}
+export async function getTriviaBoards(day){
+ const sb=await client();
+ const [{data:daily,error:a},{data:overall,error:b}]=await Promise.all([
+  sb.rpc('get_trivia_daily_leaderboard',{p_day:day,p_limit:25}),
+  sb.rpc('get_trivia_overall_leaderboard',{p_limit:25})]);
+ if(a||b)throw Error(a?.message||b?.message||'Trivia leaderboard unavailable');
+ return {daily:daily||[],overall:overall||[]};
+}

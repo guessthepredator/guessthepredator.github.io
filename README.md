@@ -1,15 +1,28 @@
-# Guess The Predator
+# Guess The Predator — Final Visual Lock (V2.19)
 
-A five-mode Apex Legends fan guessing game, built for GitHub Pages with global Supabase rankings. Independent fan project, **Made by Sebyby**. Not affiliated with EA or Respawn.
+Final design pass built on the working V2.18 dual-Daily system. Homepage now uses a new **clean two-Mirage artwork background** (no pre-painted UI), and all buttons, progress bars, mode tiles and labels are actual responsive HTML/CSS.
 
-**Release:** V2.18 Neon Dual Daily (see `CHANGELOG_V218.md`).
+- Five independent gameplay modes: Classic, Pixel, Quote, Ability, Emoji
+- Two Daily rounds: Full Scan then One Signal, rotated through five modes
+- Two reward checkpoints, Free Play, Next Game Legend wheel
+- Global leaderboard through the already connected Supabase score function v5 (not reset)
+- On the gameplay screen, theme accents across both cards, navigation, terminal and controls
+- Browse Legends uses uniform transparent card frames and a local-first image loader
 
-**Play modes:** Classic, Pixel (Soft Blur), Quote, Ability and Emoji. **Daily:** two UTC challenges per day, Full Scan then One Signal; the underlying mode rotates between the five games. **Free Play:** unlimited attempts in all five modes.
+**Limitation:** This build does **not** include the missing ten verified full-body transparent Legend renders. See `PORTRAIT_ASSET_AUDIT.md`. No fake, misidentified or square images were relabeled as full-body. Existing authentic remote sources remain fallback.
 
-**Forbidden Intel:** Completing Daily 1 opens a useful tip; completing Daily 2 opens a more advanced tip. Both are separately claimable, including if the round was lost.
+## Deploy
+Copy the extracted *contents* into the root of `guessthepredator.github.io`, including `assets/decor/mirage-clean-final.webp`, `.github`, `src`, `tests` and `styles.css`. Commit/push once. Deployment runs on GitHub Actions; do not simply rerun the existing workflow if the files are not committed. After it succeeds, hard refresh.
 
-**Rankings:** Daily and Overall via Supabase; backend recomputes score independently. V2.18 submissions contain 2 validated rounds and are normalized to the previous five-round score range for continuity. Existing database rows are not reset.
+Local validation: `node --test tests/*.test.mjs` and `python3 scripts/validate_release.py` (requires Pillow).
 
-**Artwork:** the user-selected Mirage Halloween reference is included as a desktop background; real HTML buttons sit above it. Mobile has its own responsive layout. Some Legend portraits originate from external servers; see `assets/portraits/README.md` for the ten unverified transparent full-body files.
+Fan website, not an official EA or Respawn product. Art rights belong to their respective owners.
 
-**Build:** static ESM modules. Open with an HTTP server for local testing; do not expect module imports to work directly from `file://` in every browser. Deployment and CI details in `START_HERE.md`.
+
+## V2.20 — Timed Apex Trivia
+
+A separate TRIVIA navigation tab provides Daily Ranked and unlimited Practice. Each round has five questions at 20 seconds per question, scoring 20 points each for a maximum of 100 points. The Daily and Overall Trivia leaderboards are separate from the main deduction-game leaderboard.
+
+**Supabase status:** Project `pupdfltjeyzhnyrxutvt` already has all 91 curated questions in a private table, the scoring RPC, and separate ranking RPCs. The answer bank is deliberately **not** included in this public GitHub repository. Do not upload quiz answer keys.
+
+Apply the three Trivia migrations in `supabase/migrations/` if setting up a new Supabase project; then seed a privately held answer bank as documented in `TRIVIA_SOURCES.md`. This repository alone cannot create the private bank for an entirely new project.

@@ -26,9 +26,9 @@ test('only two completed daily rounds can submit a v218 payload',()=>{
 });
 test('home is full bleed with real buttons and not transparent overlay hit-boxes',()=>{
  const home=app.slice(app.indexOf('function home(){'),app.indexOf('function homeLegacy(){'));
- assert.ok(home.includes('gtp218-home'));assert.ok(home.includes('gtp218-wallpaper'));assert.ok(home.includes('gtp218-mode-row'));
+ assert.ok(home.includes('gtp219-home'));assert.ok(home.includes('gtp219-backdrop'));assert.ok(home.includes('gtp219-modes'));
  assert.ok(home.includes('data-action="home-daily"'));assert.ok(home.includes('data-action="session"'));assert.ok(home.includes('data-action="wheel"'));
- assert.ok(css.includes('.gtp218-shell{'));assert.ok(css.includes('width:100%'));assert.ok(css.includes('height:100svh'));
+ assert.ok(css.includes('.gtp219-shell{'));assert.ok(css.includes('width:100%'));assert.ok(css.includes('height:100svh'));
  assert.ok(!home.includes('gtp217-hit'));
 });
 test('five distinct neon UI schemes share matching game controls',()=>{
@@ -42,6 +42,6 @@ test('the ten unverified full-body portraits are not falsely treated as installe
  assert.ok(manifest.includes('localPortraitFiles=Object.freeze({})'));
 });
 test('no stale V217 entrypoint; backend protocol marker present',()=>{
- assert.ok(html.includes('2.18.0'));assert.ok(app.includes("daily218.mjs?v=2.18.0"));
+ assert.ok(html.includes('2.20.0'));assert.ok(app.includes("daily218.mjs?v=2.20.0"));
  assert.ok(read('src/scoring.mjs').includes("protocol:'v218'"));
 });

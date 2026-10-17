@@ -2,7 +2,7 @@ from pathlib import Path
 from PIL import Image
 import wave,re
 P=Path(__file__).resolve().parents[1]
-required=['index.html','styles.css','src/app.mjs','src/engine.mjs','src/scoring.mjs','src/leaderboard.mjs','src/leaderboard_config.mjs','src/pixel_scene.mjs','src/audio.mjs','src/data.mjs','LEADERBOARD_SETUP.md','supabase/migrations/202610170001_leaderboards.sql','supabase/functions/submit-score/index.ts','assets/decor/haunted-hero.webp','assets/decor/forbidden-intel-exact-v217.webp','.github/workflows/pages.yml']
+required=['index.html','styles.css','src/app.mjs','src/engine.mjs','src/scoring.mjs','src/leaderboard.mjs','src/leaderboard_config.mjs','src/pixel_scene.mjs','src/audio.mjs','src/data.mjs','LEADERBOARD_SETUP.md','supabase/migrations/202610170001_leaderboards.sql','supabase/functions/submit-score/index.ts','assets/decor/haunted-hero.webp','assets/decor/mirage-clean-final.webp','.github/workflows/pages.yml']
 for name in required: assert (P/name).is_file(),name
 html=(P/'index.html').read_text();js=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
 # Cache-busting version is allowed to advance with each deployment.
@@ -28,10 +28,21 @@ for sound in (P/'assets/sfx').glob('*.wav'):
   assert wav.getnchannels()==1 and (.03<seconds<5 if sound.name=='party.wav' else .03<seconds<.42),sound
 assert 'node --test' in workflow
 assert (P/'src/daily218.mjs').is_file(), 'CI missing Node test runner'
-for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs','v212.test.mjs','v213.test.mjs','v214.test.mjs','v215.test.mjs','v216.test.mjs','v217.test.mjs','v218.test.mjs']:
+for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs','v212.test.mjs','v213.test.mjs','v214.test.mjs','v215.test.mjs','v216.test.mjs','v217.test.mjs','v218.test.mjs','v219.test.mjs','v220.test.mjs']:
  assert test_file in workflow, f'CI missing {test_file}'
 assert 'cp index.html styles.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
 assert 'src/leaderboard_config.mjs' in workflow or 'cp -r src assets dist/' in workflow
 assert not any((P/'tests'/name).exists() for name in ['v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs','gtp2.test.mjs','v26.test.mjs'])
-print('Guess The Predator V2.18 release validation PASS: 5 play modes, 2 Daily challenges, 2 rewards, 14 SFX, 6 traits, 2 scoreboards')
+print(f'Guess The Predator V{style_match.group(1)} FINAL VISUAL LOCK validation PASS: 5 play modes, 2 Daily challenges, 2 rewards, 14 SFX, 6 traits, 2 scoreboards')
 print('Supabase project settings are preserved; live submission origin changes are deployed separately.')
+
+# V2.20 Trivia release safety: 50+ answer-key entries must stay outside GitHub Pages dist.
+import json
+trivia=json.loads((P/'tests/trivia_public_manifest.json').read_text())
+assert len(trivia)>=50 and len({q['id'] for q in trivia})==len(trivia)
+assert 'gtp_trivia_api' in (P/'src/leaderboard.mjs').read_text()
+assert (P/'TRIVIA_SOURCES.md').exists()
+assert 'tests/v220.test.mjs' in workflow
+print(f'V2.20 Trivia validation PASS: {len(trivia)} reviewed questions, private answers, 5 questions x 20s, server-verified scores')
+
+assert not (P/'supabase/functions/trivia/questions.json').exists(), 'Never commit Trivia answer keys in public repo'
