@@ -3,6 +3,7 @@
 from __future__ import annotations
 import io
 import os
+import sys
 from pathlib import Path
 import requests
 from PIL import Image
@@ -37,7 +38,7 @@ def main():
                 print(f"HTTP {r.status_code} {r.headers.get('content-type')} bytes={len(r.content)} {r.url[:170]}",flush=True)
                 r.raise_for_status()
                 img,dim=validate(r.content)
-                img.save(out/(slug+".png"))
+                img.save(out/("original-"+slug+".png"))
                 print(f"OK FULL-BODY {slug}: {dim[0]}x{dim[1]}",flush=True)
                 found.append(slug)
                 break
@@ -45,5 +46,7 @@ def main():
                 print(f"Unavailable: {str(e)[:160]}",flush=True)
         else: print(f"NO VERIFIED FULL-BODY FILE: {slug}",flush=True)
     print(f"VERIFIED {len(found)}/5: {', '.join(found)}",flush=True)
-    # probe only; do not block other releases
+    if "--strict" in sys.argv and len(found)!=len(LEGENDS):
+        raise SystemExit("ERROR: A full-body portrait is unavailable; keep the last successful site release.")
+    # Probe mode reports missing sources without blocking unrelated work.
 if __name__=="__main__":main()
