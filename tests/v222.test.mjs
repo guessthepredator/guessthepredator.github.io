@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.25.0')&&html.includes('app.mjs?v=2.25.0'));
+ assert.ok(html.includes('styles.css?v=2.26.0')&&html.includes('app.mjs?v=2.26.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -104,14 +104,17 @@ test('V2.24 orbit, full dock art, game sessions and Trivia timeout are wired',()
  assert.ok(app.includes('TIME’S UP · QUESTION EXPIRED'));
 });
 test('portrait catalog prioritizes known real vertical assets, including missing screenshot roster',async()=>{
- const {portraitOriginalNames,portraitSourcesFor,stableFanPortraits,verifiedSkinPortraits}=await import('../src/art.mjs');
+ const {portraitOriginalNames,portraitSourcesFor,stableFanPortraits,verifiedSkinPortraits,reliableIconFallbacks}=await import('../src/art.mjs');
  assert.equal(Object.keys(portraitOriginalNames).length,28);
  assert.equal(Object.keys(stableFanPortraits).length,22);
  assert.equal(Object.keys(verifiedSkinPortraits).length,6);
+ assert.equal(Object.keys(reliableIconFallbacks).length,28);
  for(const legend of legends){
   const sources=portraitSourcesFor(legend.slug);
   assert.ok(sources.length>=2);
-  if(stableFanPortraits[legend.slug])assert.equal(sources[0],stableFanPortraits[legend.slug]);
+  if(['alter','ballistic','catalyst','conduit','sparrow'].includes(legend.slug))
+   assert.equal(sources[0],reliableIconFallbacks[legend.slug]);
+  else if(stableFanPortraits[legend.slug])assert.equal(sources[0],stableFanPortraits[legend.slug]);
   else assert.ok(sources[0].includes(encodeURIComponent(verifiedSkinPortraits[legend.slug])));
  }
  for(const slug of ['loba','gibraltar'])assert.ok(portraitSourcesFor(slug)[0].includes(slug==='loba'?'0012_Loba.png':'0015_Gibraltar.png'));
@@ -124,4 +127,31 @@ test('screenshot regression: dark Browse, non-overlapping Home and original grap
  assert.ok(css.includes('.gtp222-core .gtp222-primary-actions'));
  assert.ok(css.includes('conic-gradient('));
  assert.ok(css.includes('.gtp222-home-dock .gtp222-spotlight-art'));
+});
+
+test('V2.26 missing five portraits have real hosted per-Legend GitHub fallback sources',async()=>{
+ const {portraitSourcesFor}=await import('../src/art.mjs');
+ for(const slug of ['alter','ballistic','catalyst','conduit','sparrow']){
+  const sources=portraitSourcesFor(slug);
+  assert.ok(sources[0].startsWith('https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/'));
+  assert.ok(sources[0].endsWith('/'+slug+'.png'));
+ }
+ assert.ok(app.includes('portrait-icon-fallback'));
+ assert.ok(css.includes('.portrait-holder.portrait-icon-fallback'));
+});
+test('V2.26 every incorrect Full Scan cell has a red state and summary',()=>{
+ assert.ok(app.includes('data-scan-kind="${kind}"'));
+ assert.ok(app.includes('WRONG · DIFFERENT'));
+ assert.ok(app.includes('gtp226-scan-metrics'));
+ assert.ok(app.includes('matches=FIELDS.filter'));
+ assert.ok(css.includes('.scan-cell.bad[data-scan-kind="wrong"]'));
+ assert.ok(css.includes('background:linear-gradient(150deg,#921f32'));
+});
+test('V2.26 audio supports distinct modes, visible homepage hover and valid loss feedback',()=>{
+ const audio=read('src/audio.mjs');
+ assert.ok(audio.includes("const modes=['classic','pixel','quote','ability','emoji']"));
+ assert.ok(audio.includes('audioEngine()'));
+ assert.ok(audio.includes("if(name==='wrong')"));
+ assert.ok(app.includes("closest?.('.arena-mode,.gtp222-orbit-card')"));
+ assert.ok(app.includes("if(next.finished)sound('lose');"));
 });

@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.25.0';
-import {legends} from './data.mjs?v=2.25.0';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.25.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.25.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.25.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.25.0';
-import {playSound} from './audio.mjs?v=2.25.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.25.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.25.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.25.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.25.0';
-import {loadStore,saveStore} from './store.mjs?v=2.25.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.26.0';
+import {legends} from './data.mjs?v=2.26.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.26.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.26.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.26.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.26.0';
+import {playSound} from './audio.mjs?v=2.26.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.26.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.26.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.26.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.26.0';
+import {loadStore,saveStore} from './store.mjs?v=2.26.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.25.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.26.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -149,7 +149,9 @@ function loadPortraitImages(parent=app){
         return;
       }
       const candidate=candidates[index++];
-      const isRender=candidate.includes('Original%20')||candidate.startsWith('./assets/portraits/');
+      const isIconFallback=candidate.includes('moeneri/astrbot_plugin_apexrankwatch/');
+       const isRender=!isIconFallback&&(candidate.includes('Original%20')||candidate.startsWith('./assets/portraits/'));
+       image.closest('.portrait-holder')?.classList.toggle('portrait-icon-fallback',isIconFallback);
       image.dataset.portraitSource=candidate.startsWith('./assets/portraits/')?'local':isRender?'model-render':'remote';
       image.closest('.portrait-holder')?.classList.toggle('portrait-model-render',isRender);
       image.src=candidate;
@@ -442,11 +444,13 @@ function scannerMarkup(round,target){
     const signal=scanner[field];const kind=signal.kind;
     const css=kind==='correct'?'good':kind==='wrong'?'bad':kind==='hint'?'hinted':kind==='unknown'?'unknown':'';
     const direction=signal.direction>0?'↑':signal.direction<0?'↓':'';
-    return `<div class="scan-cell ${css} ${field===lastField?'new':''}" title="${LABELS[field]}" aria-label="${LABELS[field]} ${kind}"><small>${LABELS[field]}</small><strong>${kind==='unknown'?'UNKNOWN':kind==='hidden'?'—':esc(signal.value)}${direction?' '+direction:''}</strong><span>${kind==='correct'?'✓ MATCH':kind==='wrong'?'× MISS':kind==='hint'?'✓ HINT MATCH':kind==='unknown'?'UNKNOWN':'—'}</span></div>`;
+    return `<div class="scan-cell ${css} ${field===lastField?'new':''}" data-scan-kind="${kind}" title="${LABELS[field]}" aria-label="${LABELS[field]}: ${kind==='wrong'?'does not match':kind==='correct'?'matches':kind}"><small>${LABELS[field]}</small><strong>${kind==='unknown'?'UNKNOWN':kind==='hidden'?'—':esc(signal.value)}${direction?' '+direction:''}</strong><span>${kind==='correct'?'✓ MATCH':kind==='wrong'?'✕ WRONG · DIFFERENT':kind==='hint'?'✓ HINT MATCH':kind==='unknown'?'UNKNOWN':'—'}</span></div>`;
   }).join('');
+  const matches=FIELDS.filter(field=>scanner[field]?.kind==='correct'||scanner[field]?.kind==='hint').length;
+  const misses=FIELDS.filter(field=>scanner[field]?.kind==='wrong').length;
   const remaining=availableHintFields(round,target,legends);
   const disabled=round.finished||round.guesses.length===0||round.hints.length>=MAX_HINTS||remaining.length===0;
-  return `<div class="scanner-head"><strong>◈ IDENTITY SIGNAL BOARD</strong><small>${round.mode==='full'?'LATEST GUESS ONLY · GREEN = ACTUAL MATCH · RED = MISMATCH':'ONE SIGNAL · GREEN MATCHES STAY CONFIRMED'}</small></div>
+  return `<div class="scanner-head gtp226-scanner-head"><div><strong>◈ IDENTITY SIGNAL BOARD</strong><small>${round.mode==='full'?'FULL SCAN · COMPARES THE LATEST GUESS ONLY':'ONE SIGNAL · CONFIRMED MATCHES STAY GREEN'}</small></div><div class="gtp226-scan-metrics" aria-label="${matches} matching and ${misses} different traits"><span class="matching">✓ ${matches} MATCH</span><span class="different">✕ ${misses} DIFFERENT</span></div></div>
   ${round.mode==='signal'?`<div class="gtp222-locked-intel" role="status" aria-label="Previously confirmed traits"><strong>CONFIRMED INTEL</strong><div>${chips||'<small>Correct traits will stay locked here after every new guess.</small>'}</div></div>`:''}<div class="scanner" role="group" aria-label="Legend scanner">${cells}</div>
   <div class="hint-row"><button class="btn lilac small" data-action="hint" ${disabled?'disabled':''}>✧ SMART HINT · ${MAX_HINTS-round.hints.length} LEFT</button><small>Reveals a correct trait in green</small></div>`;
 }
@@ -775,7 +779,14 @@ function submitGuess(name){
   if(justWon){
     store.history.wins=(store.history.wins||0)+1;
     store.history.bestScore=Math.max(store.history.bestScore||0,gameScore(next));sync();
-  } else {sound(next.signals.at(-1)?.kind==='correct'?'clue':'wrong');if(next.finished)sound('lose');}
+  } else {
+     if(next.finished)sound('lose');
+     else if(next.mode==='full'){
+       const target=legendByName(legends,next.answer);
+       const current=scannerState(next,target,legends);
+       sound(FIELDS.some(f=>current[f]?.kind==='correct')?'clue':'wrong');
+     }else sound(next.signals.at(-1)?.kind==='correct'?'clue':'wrong');
+   }
   pickerOpen=false;quickSearch='';render({scroll:false});
   if(session==='daily'&&next.finished)showToast('✦ FORBIDDEN INTEL READY — Open the unlocked tip below!');
   if(justWon){sound('party');if(store.settings.motion&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)triggerVictoryConfetti();}
@@ -839,12 +850,13 @@ function showToast(message){
 }
 let lastModeHover=0;
 app.addEventListener('pointerover',event=>{
-  const card=event.target.closest?.('.arena-mode');
+  const card=event.target.closest?.('.arena-mode,.gtp222-orbit-card');
   if(!card||!store.settings.audio)return;
   if(event.relatedTarget instanceof Node&&card.contains(event.relatedTarget))return;
   const now=performance.now();if(now-lastModeHover<210)return;lastModeHover=now;
   const mode=card.dataset.mode;
   if(MODES.includes(mode))sound('hover-'+mode);
+  else if(card.classList.contains('gtp222-card-trivia'))sound('hover-quote');
 });
 app.addEventListener('click',event=>{
   const button=event.target.closest('[data-action]');if(!button||button.disabled)return;

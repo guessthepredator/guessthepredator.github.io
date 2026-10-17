@@ -3012,3 +3012,117 @@ body.lightshift-playing #app[data-screen="game"]{background:radial-gradient(elli
 
 /* Keep the wheel vertically centered after legacy inset overrides. */
 .gtp222-home-dock .gtp222-wheel-illustration{top:50%!important;bottom:auto!important;left:auto!important;right:17px!important}
+
+
+/* ======================================================================
+   V2.26 — Identity Scanner visual language + Browse and terminal refinement
+   Clear wrong information must be visibly RED (not muted purple/gray).
+   ====================================================================== */
+#app[data-screen="game"] .gtp2-game-scene .gtp226-scanner-head{
+  align-items:center;gap:10px;margin:17px 0 11px!important;padding:10px 13px;
+  background:linear-gradient(110deg,#111d32,#0d1a2d);
+  border:1px solid color-mix(in srgb,var(--game-neon) 40%,#2b465d);
+  border-radius:11px;flex-wrap:wrap
+}
+#app[data-screen="game"] .gtp226-scanner-head>div:first-child{display:flex;flex-direction:column;gap:6px;min-width:190px}
+#app[data-screen="game"] .gtp226-scanner-head strong{
+ font-family:'Barlow Condensed',Impact,sans-serif;font-size:19px!important;letter-spacing:.07em;color:#f4fbff;
+}
+#app[data-screen="game"] .gtp226-scanner-head small{font-size:9px!important;color:#b6d2e8!important;letter-spacing:.045em}
+#app[data-screen="game"] .gtp226-scan-metrics{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:flex-end;margin-left:auto}
+#app[data-screen="game"] .gtp226-scan-metrics span{
+ display:inline-flex;align-items:center;white-space:nowrap;gap:4px;padding:6px 9px;border-radius:7px;
+ font-size:10px;font-weight:900;letter-spacing:.05em;border:1px solid transparent
+}
+#app[data-screen="game"] .gtp226-scan-metrics .matching{background:#113e36;color:#a9ffe1;border-color:#47c89a}
+#app[data-screen="game"] .gtp226-scan-metrics .different{background:#4d1624;color:#ffe0e4;border-color:#f56e7f}
+/* All six traits must behave as TRUE state colors, not overwritten by
+   previous generic .scanner .scan-cell and .gtp2-game-scene rules. */
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.bad[data-scan-kind="wrong"]{
+ background:linear-gradient(150deg,#921f32 0%,#5a1021 62%,#3c1224 100%)!important;
+ border:2px solid #ff7181!important;
+ box-shadow:inset 0 1px 0 #ffa6a731,0 0 0 1px #6d2734,0 3px 13px #d6325852!important;
+ color:#fff1f2!important;opacity:1!important
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.bad[data-scan-kind="wrong"] strong{
+ color:#fff!important;font-weight:900!important;text-shadow:0 1px 2px #1d0b16!important
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.bad[data-scan-kind="wrong"] small{
+ color:#ffe1e6!important;opacity:1!important;font-weight:900!important
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.bad[data-scan-kind="wrong"]>span{
+ color:#fff9f9!important;font-weight:1000!important;background:#dd3550a8!important;
+ border:1px solid #ffb0ba!important;border-radius:6px;padding:5px 3px!important;
+ width:100%!important;letter-spacing:.012em
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.good[data-scan-kind="correct"],
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.hinted[data-scan-kind="hint"]{
+ background:linear-gradient(155deg,#176b52,#104639 73%,#123b36)!important;
+ border:2px solid #66f1b2!important;box-shadow:0 2px 12px #3fdca533!important;
+ color:#e4ffed!important;opacity:1!important
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.good[data-scan-kind="correct"]>span,
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.hinted[data-scan-kind="hint"]>span{
+ background:#167756!important;border:1px solid #80f8c2!important;border-radius:6px;
+ padding:5px 3px!important;color:#effff6!important;font-weight:900!important;width:100%!important
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell[data-scan-kind="hidden"]{
+ border:1px dashed #536b84!important;background:#132034!important;color:#829bb4!important;box-shadow:none!important
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell[data-scan-kind="unknown"]{
+ background:#493b22!important;color:#ffe7a4!important;border:1px solid #e0bc71!important
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell{border-radius:11px!important;min-height:89px!important}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell>span{line-height:1.2!important;font-size:8px!important}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.new{animation:gtp226-scan-fade .28s ease-out both!important}
+@keyframes gtp226-scan-fade{from{filter:brightness(1.34);transform:translateY(4px)}to{filter:brightness(1);transform:translateY(0)}}
+#app[data-screen="game"] .gtp2-game-scene .guess-card{
+ border:1px solid color-mix(in srgb,var(--game-neon) 72%,#7c8cb1)!important;
+ box-shadow:0 14px 36px #0009,0 0 24px color-mix(in srgb,var(--game-neon) 12%,transparent)!important
+}
+#app[data-screen="game"] .gtp2-game-scene .guess-tools .btn.mint,
+#app[data-screen="game"] .gtp2-game-scene .guess-tools button[data-action="picker"]{
+ color:#dcfff7!important;background:linear-gradient(110deg,#124e50,#134054)!important;
+ border:1px solid #77e6d9!important;box-shadow:0 0 12px #38c3cf23!important;
+ font-weight:900;letter-spacing:.08em
+}
+#app[data-screen="game"] .gtp2-game-scene .guess-tools button[data-action="picker"]:hover{
+ filter:brightness(1.18)!important;box-shadow:0 0 20px #3fcde14a!important
+}
+#app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell:focus-within{
+ outline:2px solid #fff;outline-offset:2px
+}
+/* Remote square fallback is clearly recognizable as a portrait icon; it
+   never stretches to imitate a full-body render. */
+#app .gtp2-picker .portrait-holder.portrait-icon-fallback{
+ background:radial-gradient(circle at 50% 38%,#2c5a72a8,#11253a 73%)!important;
+ border:1px solid #497a95!important;align-items:center!important;justify-content:center!important
+}
+#app .gtp2-picker .portrait-holder.portrait-icon-fallback img{
+ width:95%!important;height:95%!important;object-fit:contain!important;
+ object-position:center center!important;filter:drop-shadow(0 5px 8px #0007)!important
+}
+#app .gtp2-picker .picker-legend{
+ transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease!important;
+ position:relative
+}
+#app .gtp2-picker .picker-legend:focus-visible{
+ outline:2px solid #b6ffeb!important;outline-offset:3px!important
+}
+#app .gtp2-picker .picker-legend .portrait-holder::after{
+ content:"";position:absolute;inset:2px;border-radius:7px;pointer-events:none;
+ box-shadow:inset 0 0 0 1px #ffffff15;z-index:2
+}
+#app .gtp2-picker .picker-header{background:linear-gradient(108deg,#10384a,#19203e 64%,#351943)!important}
+#app .gtp2-picker .picker-legend:hover{
+ border-color:#a4f4de!important;box-shadow:0 0 0 1px #60debe6e,0 10px 25px #000a!important
+}
+#app .gtp2-picker .picker-count{letter-spacing:.08em!important}
+@media(max-width:720px){
+ #app[data-screen="game"] .gtp226-scanner-head{align-items:stretch}
+ #app[data-screen="game"] .gtp226-scan-metrics{margin-left:0;justify-content:flex-start}
+ #app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell{min-height:77px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #app[data-screen="game"] .gtp2-game-scene .scanner .scan-cell.new{animation:none!important}
+}
