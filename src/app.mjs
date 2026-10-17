@@ -1,15 +1,15 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.8.0';
-import {legends} from './data.mjs?v=2.8.0';
-import {artCatalog} from './art.mjs?v=2.8.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.8.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.8.0';
-import {playSound} from './audio.mjs?v=2.8.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.8.0';
-import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.8.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.8.0';
-import {loadStore,saveStore} from './store.mjs?v=2.8.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.9.0';
+import {legends} from './data.mjs?v=2.9.0';
+import {artCatalog} from './art.mjs?v=2.9.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.9.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.9.0';
+import {playSound} from './audio.mjs?v=2.9.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.9.0';
+import {getBoards, submitDaily, leaderboardConfigured} from './leaderboard.mjs?v=2.9.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.9.0';
+import {loadStore,saveStore} from './store.mjs?v=2.9.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.8.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.9.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -36,6 +36,7 @@ let wheelAngle=0;
 let wheelSpinning=false;
 let wheelChosen=null;
 let wheelDisplayList=null;
+let identityPromptOpen=false;
 const COLORS={classic:'#f879bd',pixel:'#81e9e9',quote:'#ed87bc',ability:'#83e5de',emoji:'#cf7bb9'};
 const ICONS={classic:'❔',pixel:'▦',quote:'❞',ability:'⌁',emoji:'✧'};
 const TAGLINES={classic:'Deduce the target with every signal.',pixel:'Reveal the legend, not the background.',quote:'Who wrote this intercepted line?',ability:'Identify the passive ability icon.',emoji:'Five symbols. One legend.'};
@@ -54,6 +55,7 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&
 const classOf=mode=>COLORS[mode]||'#ff91b7';
 const sound=name=>playSound(name,store.settings.audio);
 const sync=()=>saveStore(store);
+const savedNickname=()=>String(store.profile?.nickname||'').trim();
 const getRound=()=>session==='daily'?store.days[today()]?.[active]:store.practice[active];
 function setRound(round){
   if(session==='daily') store.days[today()]={...store.days[today()],[active]:round};
@@ -155,14 +157,43 @@ function loadAbilityImages(parent=app){
     next();
   });
 }
+
+function identityPrompt(){
+  const value=esc(savedNickname());
+  return `<div class="identity-backdrop" id="identity-backdrop" role="presentation"><section class="identity-modal" role="dialog" aria-modal="true" aria-labelledby="identity-title"><button class="identity-close" type="button" data-action="identity-skip" aria-label="Close nickname dialog">✕</button><span class="identity-kicker">PUBLIC RANKINGS / SAVED LOCALLY</span><h2 id="identity-title">CHOOSE YOUR <em>NICKNAME.</em></h2><p>This name appears automatically when you submit Daily scores and stays saved on this device. You can change it later anytime.</p><form id="identity-form" class="identity-form"><label for="identity-name">PLAYER NICKNAME</label><input id="identity-name" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Example: MirageMain" value="${value}" required/><small>3–18 characters · letters, numbers, spaces, _ or -</small><div class="identity-actions"><button class="btn pink" type="submit">SAVE NICKNAME ↗</button><button class="btn lilac" type="button" data-action="identity-skip">MAYBE LATER</button></div><p class="identity-note">This only stores a public nickname, not personal details.</p></form></section></div>`;
+}
+function openIdentityPrompt(force=false){
+  if(identityPromptOpen)return;
+  if(!force&&store.profile?.askedName)return;
+  identityPromptOpen=true;
+  const wrapper=document.createElement('div');
+  wrapper.innerHTML=identityPrompt();
+  const node=wrapper.firstElementChild;
+  node.addEventListener('click',event=>{if(event.target===node)closeIdentityPrompt();});
+  app.appendChild(node);
+  document.getElementById('identity-name')?.focus({preventScroll:true});
+}
+function closeIdentityPrompt(markAsked=true){
+  identityPromptOpen=false;
+  if(markAsked){store.profile={...(store.profile||{}),askedName:true};sync();}
+  document.getElementById('identity-backdrop')?.remove();
+}
+function saveNickname(name,{close=true}={}){
+  const clean=String(name||'').trim().replace(/\s+/g,' ');
+  store.profile={...(store.profile||{}),nickname:clean,askedName:true};
+  sync();
+  const input=document.getElementById('board-nickname');if(input)input.value=clean;
+  if(close)closeIdentityPrompt(false);
+  return clean;
+}
 function edgeArenaDecor(){
   return `<aside class="edge-arena edge-arena-left" aria-hidden="true"><div class="edge-stitch"></div><span class="edge-glyph">△</span><span class="edge-label">OUTLANDS<br>AFTER HOURS</span><span class="edge-spark">✦ ✧</span></aside><aside class="edge-arena edge-arena-right" aria-hidden="true"><div class="edge-stitch"></div><span class="edge-glyph">◈</span><span class="edge-label">MIRAGE'S<br>HAUNTED ARENA</span><span class="edge-spark">✧ ✦</span></aside>`;
 }
 // The character is painted only once inside the backdrop art. No artificial gaze overlay.
-function nav(){return `<header class="top gtp2-top"><div class="gtp2-top-inner">
-  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>TWILIGHT PATCH · V2.8</small></span></button>
+function nav(){const nick=savedNickname();return `<header class="top gtp2-top"><div class="gtp2-top-inner">
+  <button class="brand gtp2-brand" data-action="home" aria-label="Guess the Predator home"><span class="brand-icon" aria-hidden="true"><span class="brand-apex">G</span></span><span class="brand-text"><strong>GUESS THE <em>PREDATOR</em> <sup>2</sup></strong><small>TWILIGHT PATCH · V2.9</small></span></button>
   <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='leaderboard'?'active':''}" data-action="leaderboard">♛ RANKINGS</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item ${screen==='howto'?'active':''}" data-action="howto">? HOW TO PLAY</button><button class="nav-item ${screen==='faq'?'active':''}" data-action="faq">◉ FAQ</button></nav>
-  <div class="top-actions"><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
+  <div class="top-actions"><button class="switch gtp2-profile-switch" data-action="profile" aria-label="Choose nickname">${nick?`◉ ${esc(nick)}`:'◎ NICKNAME'}</button><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
  </div></header>`;}
 function statCards(){
   const day=store.days[today()]||{};const stats=streak(store.days,utcDay(),dailyModes());
@@ -269,14 +300,14 @@ function getVisual(round,target){
       <div class="pixel-fallback" role="group" aria-label="Offline character identity clues"><span class="pixel-fallback-kicker">◈ BACKUP INTEL / SIGNAL RECOVERY</span><div class="pixel-fallback-emblem">${step>=4?esc((target.emoji.split(/\s+/)[0]||'◇')):'?'}</div><strong>${step>=3?esc(target.role.toUpperCase()):'CLASSIFIED ROLE'}</strong><p>${step>=5?esc(target.title):'IDENTITY PROFILE ENCRYPTED'}</p><small>${step>=6?esc(target.signature):'ADDITIONAL INTEL UNLOCKS AFTER GUESSES'}</small></div><div class="pixel-error" aria-hidden="true"></div><div class="pixel-scratch scratch-a"></div><div class="pixel-scratch scratch-b"></div><div class="pixel-scan"></div><div class="pixel-vignette"></div>
       </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div><div class="pixel-preset" role="group" aria-label="Choose pixel reveal effect">${[['mosaic','▦ MOSAIC'],['soft','◌ SOFT BLUR'],['holo','⌁ SIGNAL']].map(([value,label])=>`<button class="${effect===value?'active':''}" type="button" data-action="pixel-style" data-style="${value}" aria-pressed="${effect===value}">${label}</button>`).join('')}</div></div>`;
   }
-  if(mode==='quote')return `<div class="clue-visual gtp2-quote-rework"><div class="gtp2-quote-lines" aria-hidden="true"></div><div class="gtp2-quote-head"><span>◈ ORIGINAL QUOTE / NO VOICE IMPERSONATION</span><span>CHANNEL 0${MODES.indexOf(active)+1}</span></div><div class="gtp2-quote-mark" aria-hidden="true">“</div><blockquote>“${esc(target.quote)}”</blockquote><div class="gtp2-quote-status"><span class="gtp2-live-dot"></span> ENCRYPTED SIGNAL · IDENTIFY THE SPEAKER</div></div>`;
+  if(mode==='quote')return `<div class="clue-visual gtp2-quote-rework gtp29-quote-visual"><div class="gtp2-quote-lines" aria-hidden="true"></div><div class="gtp2-quote-head"><span>◈ WRITTEN CLUE / NO VOICE IMPERSONATION</span><span>CHANNEL 0${MODES.indexOf(active)+1}</span></div><div class="gtp29-quote-card"><div class="gtp2-quote-mark" aria-hidden="true">“</div><blockquote>“${esc(target.quote)}”</blockquote><div class="gtp29-quote-footer"><span class="gtp2-live-dot"></span><b>SPEAKER UNKNOWN</b><small>Use class, age and launch comparisons to narrow it down.</small></div></div></div>`;
   if(mode==='ability')return `<div class="clue-visual visual-ability"><div class="ability-stage" aria-label="Recognize the Apex ability icon"><div class="ability-outer-orbit"></div><div class="ability-symbol" role="img" aria-label="Unidentified in-game passive ability icon"><img data-ability="${esc(target.slug)}" alt="" loading="eager"/><span class="ability-wait">LOADING ABILITY<br>ICON…</span><span class="ability-fail">ABILITY ICON<br>UNAVAILABLE</span></div><span class="ability-tag">PASSIVE // IMAGE ONLY</span></div></div>`;
   if(mode==='emoji'){
     const all=[...target.emoji.split(/\s+/),...target.extraEmoji];
-    const shown=Math.min(all.length,2+Math.floor(round.guesses.length/2));
-    return `<div class="clue-visual visual-emoji">${all.map((symbol,i)=>`<span class="emoji-token ${i>=shown?'locked':''}">${i<shown?esc(symbol):'?'}</span>`).join('')}</div>`;
+    const shown=Math.min(all.length,3+Math.floor(round.guesses.length/2));
+    return `<div class="clue-visual visual-emoji gtp29-emoji-stage"><div class="gtp29-emoji-head"><span>◈ EMOJI SIGNAL</span><small>${shown}/${all.length} SYMBOLS REVEALED</small></div><div class="gtp29-emoji-grid">${all.map((symbol,i)=>`<span class="emoji-token ${i>=shown?'locked':''}"><b>${i<shown?esc(symbol):'?'}</b></span>`).join('')}</div><div class="gtp29-emoji-note">More symbols unlock as you keep guessing.</div></div>`;
   }
-  return `<div class="clue-visual gtp27-mystery"><div class="mystery-pulse" aria-hidden="true">?</div><div class="mystery-wording"><small>IDENTITY ENCRYPTED</small><strong>WHO'S HIDING?</strong><span>YOUR GUESSES REVEAL THE TRUTH</span></div></div>`;
+  return `<div class="clue-visual gtp27-mystery gtp29-classic-visual"><div class="gtp29-question-emblem" aria-hidden="true">?</div><div class="mystery-wording"><small>LEGEND UNKNOWN</small><strong>WHO’S THAT LEGEND?</strong><span>Use each guess to reveal the right identity.</span></div></div>`;
 }
 function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&store.days[today()]?.[mode]?.won?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" ><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
 function styleStrip(round){
@@ -366,7 +397,7 @@ function leaderboard(){
  <section class="gtp27-board"><div class="board-head"><strong>${boardTab==='daily'?'TOP DAILY HUNTERS':'OVERALL LEGENDS'}</strong><small>${leaderboardConfigured()?'LIVE · PUBLIC DATABASE':'DATABASE CONNECTION PENDING'}</small></div>
  ${!leaderboardConfigured()?`<div class="board-empty"><b>RANKINGS NOT CONNECTED YET</b><p>The game owner must link a Supabase project first. The database and server validation code are included in this release.</p></div>`:boardLoading?'<div class="board-empty">LOADING THE LEADERBOARD…</div>':boardError?`<div class="board-empty">${esc(boardError)}</div>`:rows.length?`<div class="board-table">${rows.map((line,i)=>`<div class="board-row"><span>#${Number(line.position)||i+1}</span><strong>${esc(line.player_name)}</strong><b>${Number(line.score).toLocaleString('en-US')} PTS</b><small>${boardTab==='daily'?`✦ STREAK ${Number(line.streak)||0}`:`${Number(line.days_played)||0} DAYS · BEST ${Number(line.best_streak)||0}`}</small></div>`).join('')}</div>`:'<div class="board-empty">NO SCORES YET. BE THE FIRST!</div>'}</section>
  <section class="gtp27-submit"><div><span class="kicker">YOUR DAILY SCORE</span><h2>${summary.score.toLocaleString('en-US')} <small>PTS (LOCAL PREVIEW)</small></h2><p>${summary.completed?'Five daily games complete. Submit once to appear in the public rankings.':'Complete all five Daily games to submit your score. Practice rounds do not count.'}</p><small>BASE ${summary.baseScore.toLocaleString('en-US')} · STREAK BONUS ${summary.bonus.toLocaleString('en-US')} · ${summary.streak} DAY STREAK</small></div>
- <form class="board-form" id="board-submit-form"><label for="board-nickname">PUBLIC NICKNAME</label><input id="board-nickname" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Your gamer nickname" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}/><button class="btn pink" type="submit" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}>SUBMIT DAILY SCORE ↗</button><small>One submission per UTC day · nickname is visible to everyone · no real names.</small><p id="board-submit-feedback" class="board-submit-feedback" role="status" aria-live="polite"></p></form></section>
+ <form class="board-form" id="board-submit-form"><label for="board-nickname">PUBLIC NICKNAME</label><input id="board-nickname" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Your gamer nickname" value="${esc(savedNickname())}" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}/><button class="btn pink" type="submit" ${isTodayComplete&&leaderboardConfigured()?'':'disabled'}>SUBMIT DAILY SCORE ↗</button><small>One submission per UTC day · nickname is visible to everyone · no real names. <button class="inline-link" type="button" data-action="profile">Change nickname</button></small><p id="board-submit-feedback" class="board-submit-feedback" role="status" aria-live="polite"></p></form></section>
  <div class="guide-cta"><button class="btn lilac" data-action="home">BACK TO FIVE MODES</button><button class="btn mint" data-action="records">MY STATS ↗</button></div></main>`;
 }
 async function refreshBoards(){
@@ -382,12 +413,14 @@ async function submitScores(){
  if(!summary.completed||sharedDay||today()!==utcDay()){showToast('Complete all five current Daily puzzles first');return;}
  const input=document.getElementById('board-nickname');
  if(!input||!input.checkValidity()){input?.reportValidity();return;}
+ const nickname=input?.value?.trim()||'';
+ if(nickname)saveNickname(nickname,{close:false});
  const button=document.querySelector('#board-submit-form button[type=submit]');
  const feedback=document.getElementById('board-submit-feedback');
  if(feedback){feedback.textContent='Checking your Daily run…';feedback.dataset.status='pending';}
  if(button){button.disabled=true;button.textContent='SUBMITTING…';}
  try{
-  const receipt=await submitDaily(buildSubmission(store.days,today(),input.value.trim()));
+  const receipt=await submitDaily(buildSubmission(store.days,today(),nickname));
   await refreshBoards();const message=`SCORE SUBMITTED · ${receipt.totalScore} PTS · STREAK ${receipt.streak}`;showToast(message);const status=document.getElementById('board-submit-feedback');if(status){status.textContent=message;status.dataset.status='success';}
  }catch(error){const message=error.message||'Submission failed';showToast(message);if(feedback){feedback.textContent=message;feedback.dataset.status='error';}if(button){button.disabled=false;button.textContent='SUBMIT DAILY SCORE ↗';}}
 }
@@ -521,7 +554,9 @@ function render({scroll=true}={}) {
   if(scroll)window.scrollTo({top:0,behavior:'instant'});
   if(screen==='game'&&!getRound()?.finished)updateSearchResults();
   if(pickerOpen)renderPicker();
+  if(!identityPromptOpen&&!savedNickname()&&!store.profile?.askedName)openIdentityPrompt();
 }
+
 function openMode(mode,playSession=session){
   if(!MODES.includes(mode))return;
   active=mode;session=playSession;screen='game';pickerOpen=false;quickSearch='';ensureRound();render();sound('nav');
@@ -624,6 +659,8 @@ app.addEventListener('click',event=>{
     document.querySelectorAll('.gtp2-mode-card').forEach(el=>{const m=el.dataset.mode;const round=session==='daily'?store.days[today()]?.[m]:store.practice[m];el.classList.toggle('finished',Boolean(session==='daily'&&round?.finished));const status=el.querySelector('.gtp2-mode-copy em');if(status)status.textContent=session==='daily'&&round?.finished?(round.won?'✓ CLEARED':'✓ COMPLETED'):'PLAY NOW ↗';});
     sound('nav');
   }
+  else if(action==='profile'){openIdentityPrompt(true);sound('pick');}
+  else if(action==='identity-skip'){closeIdentityPrompt();}
   else if(action==='audio'){store.settings.audio=!store.settings.audio;sync();button.textContent=store.settings.audio?'♫ FX ON':'♪ FX OFF';button.setAttribute('aria-pressed',String(store.settings.audio));if(store.settings.audio)sound('pick');}
   else if(action==='motion'){store.settings.motion=!store.settings.motion;sync();render({scroll:false});}
   else if(action==='picker'){pickerOpen=true;pickerSearch='';pickerClass='All';pickerSort='az';renderPicker();sound('pick');}
@@ -648,10 +685,14 @@ app.addEventListener('click',event=>{
   else if(action==='next')nextMode();
   else if(action==='again')randomPractice(active);
 });
-app.addEventListener('submit',event=>{if(event.target.id==='board-submit-form'){event.preventDefault();void submitScores();}});
+app.addEventListener('submit',event=>{
+  if(event.target.id==='board-submit-form'){event.preventDefault();void submitScores();return;}
+  if(event.target.id==='identity-form'){event.preventDefault();const form=new FormData(event.target);const nickname=String(form.get('nickname')||'').trim().replace(/\s+/g,' ');const input=document.getElementById('identity-name');if(!input?.checkValidity()){input?.reportValidity();return;}saveNickname(nickname);render({scroll:false});showToast(`Nickname saved: ${nickname}`);}
+});
 app.addEventListener('input',event=>{
   if(event.target.id==='guess-search'){quickSearch=event.target.value;updateSearchResults();}
   if(event.target.id==='picker-search'){pickerSearch=event.target.value;renderPickerResults();}
+  if(event.target.id==='board-nickname'){store.profile={...(store.profile||{}),nickname:event.target.value};sync();}
   if(event.target.id==='picker-sort'){pickerSort=event.target.value;renderPickerResults();}
 });
 app.addEventListener('change',event=>{
