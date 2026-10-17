@@ -1,0 +1,26 @@
+name: Check Full Body Art Sources
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  art-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probe five original full-body art URLs
+        run: |
+          python -m pip install -q requests pillow
+          python scripts/probe_fullbody.py
+      - name: Preserve valid render samples for review
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fullbody-probe
+          path: /tmp/gtp-fullbody-probe/*.png
+          if-no-files-found: ignore
