@@ -2650,3 +2650,78 @@ body.lightshift-playing:before{background:radial-gradient(ellipse at 8% 8%,#111d
 /* Wheel source artwork contains a neighboring headline; show wheel itself only. */
 .gtp222-wheel-illustration{width:clamp(106px,29%,170px)!important;background-size:auto 168px!important;background-position:left center!important}
 @media(max-width:480px){.gtp222-wheel-illustration{width:116px!important;background-size:auto 154px!important}}
+
+
+/* ============================================================
+   V2.23 · SHOWCASE, PER-MODE SIDE ATMOSPHERE & INTEL RECEIPTS
+   Small cards leave the Mirage backdrop and Halloween artwork visible.
+   ============================================================ */
+.gtp222-home .gtp219-backdrop{background-position:center 34%!important;opacity:1!important}
+.gtp222-home:after{background:radial-gradient(ellipse at 50% 45%,#030919c2 0%,#06102599 27%,transparent 63%),linear-gradient(180deg,#0408150c,#0508161c 69%,#040612c4)!important}
+.gtp222-layout{max-width:1600px!important;padding-inline:clamp(12px,2vw,34px)!important}
+.gtp222-arena{grid-template-columns:minmax(214px,286px) minmax(350px,460px) minmax(214px,286px)!important;justify-content:space-between!important;column-gap:clamp(15px,2.4vw,42px)!important;align-items:center!important}
+.gtp222-side{gap:clamp(12px,2.4svh,27px)!important;justify-content:space-around!important}
+.gtp222-side .gtp222-orbit-card{width:100%!important;margin-left:0!important;margin-right:0!important;min-height:clamp(85px,11svh,108px)!important;padding:9px 12px!important;border-radius:13px!important;gap:9px!important;background:linear-gradient(115deg,color-mix(in srgb,var(--accent) 18%,#0a1424ec),#060c1cde 76%)!important;backdrop-filter:blur(5px)}
+.gtp222-orbit-symbol{width:49px!important;height:55px!important;border-radius:11px!important;font-size:38px!important}
+.gtp222-orbit-copy strong{font-size:clamp(22px,2.15vw,30px)!important;line-height:1!important}
+.gtp222-orbit-copy small{font-size:clamp(9px,.82vw,11px)!important}
+.gtp222-core{gap:10px!important}
+.gtp222-core .gtp219-chest-art{width:clamp(168px,15vw,218px)!important;height:clamp(103px,13svh,135px)!important}
+.gtp222-core .gtp222-intel{background:linear-gradient(145deg,#071a2dde,#0e1027eb)!important}
+.gtp222-home-dock{gap:clamp(40px,14vw,210px)!important}
+.gtp222-core .gtp219-rewards button.gtp223-new{border-color:#ffe29b!important;background:linear-gradient(155deg,#4b332a,#173749)!important;box-shadow:0 0 13px #ffbf654a!important}
+.gtp222-core .gtp219-rewards button.gtp223-new small{color:#ffdb90!important}
+.gtp222-core .gtp219-rewards button.gtp223-read{border-color:#4faeae!important;background:linear-gradient(155deg,#173d41,#11273a)!important}
+.gtp222-core .gtp219-rewards button.gtp223-read small{color:#85dfc5!important}
+
+/* On game screens the outside gutters inherit the current mode's accent
+   and distinct bundled SVG scene rather than the same fixed purple aura. */
+#app[data-screen="game"]{--side-tone:#fb8977;--side-art:url('./assets/game-bg/classic.svg');position:relative;isolation:isolate}
+#app[data-screen="game"][data-mode="classic"]{--side-tone:#fb8977;--side-art:url('./assets/game-bg/classic.svg')}
+#app[data-screen="game"][data-mode="pixel"]{--side-tone:#4bd7ff;--side-art:url('./assets/game-bg/pixel.svg')}
+#app[data-screen="game"][data-mode="quote"]{--side-tone:#ffd078;--side-art:url('./assets/game-bg/quote.svg')}
+#app[data-screen="game"][data-mode="ability"]{--side-tone:#c0a0ff;--side-art:url('./assets/game-bg/ability.svg')}
+#app[data-screen="game"][data-mode="emoji"]{--side-tone:#65e7c9;--side-art:url('./assets/game-bg/emoji.svg')}
+#app[data-screen="game"]::before,#app[data-screen="game"]::after{content:"";position:fixed;top:75px;bottom:0;width:clamp(38px,calc((100vw - 1330px)/2 + 63px),240px);pointer-events:none;z-index:0;opacity:.82;background-image:radial-gradient(ellipse at 50% 22%,color-mix(in srgb,var(--side-tone) 47%,transparent),transparent 80%),linear-gradient(180deg,#070b1a55,#060917d0),var(--side-art);background-size:cover,cover,cover;background-position:center,center,center;background-repeat:no-repeat;background-blend-mode:screen,normal,luminosity}
+#app[data-screen="game"]::before{left:0;mask-image:linear-gradient(to right,#000 0%,#000 20%,transparent 100%)}
+#app[data-screen="game"]::after{right:0;mask-image:linear-gradient(to left,#000 0%,#000 20%,transparent 100%)}
+#app[data-screen="game"]>.gtp2-top{position:relative;z-index:4}
+#app[data-screen="game"]>.gtp2-game-scene{position:relative;z-index:1}
+#app[data-screen="game"]>.gtp2-game-scene::before{background:radial-gradient(ellipse at 18% 20%,color-mix(in srgb,var(--side-tone) 17%,transparent),transparent 52%),radial-gradient(ellipse at 82% 64%,color-mix(in srgb,var(--side-tone) 9%,transparent),transparent 60%),linear-gradient(135deg,#070e20,#131024 65%,#091527)!important}
+
+/* A visible call to action when an earned Daily reward can be opened. */
+.gtp223-intel-ready{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:14px 0;padding:14px 16px;border:1px solid #f8b968;border-radius:12px;background:linear-gradient(112deg,#4b2e2acc,#103b42df);box-shadow:0 0 25px #eaa36522;color:#fff5e2}
+.gtp223-intel-ready>div{display:flex;flex-direction:column;gap:5px;flex:1;min-width:175px}
+.gtp223-intel-ready b{font-size:13px;letter-spacing:.075em;color:#ffe2a8}
+.gtp223-intel-ready small{font-size:11px;color:#e6e7ee;line-height:1.5}
+.gtp223-intel-ready .btn{min-width:160px;white-space:nowrap}
+.gtp223-intel-ready.is-read{border-color:#5ac9b1;background:linear-gradient(110deg,#123b3a,#142a36);box-shadow:none}
+.gtp223-intel-ready.is-read b{color:#98ecd6}
+.trivia-finale .gtp223-intel-ready{margin:12px 0}
+.gtp223-intel-title{display:block;font-size:1.12em;line-height:1.3;margin-bottom:8px;color:#493020}
+.gtp223-intel-source{display:inline-block;margin:3px 0 8px;color:#62351a!important;text-decoration:underline;text-underline-offset:3px;font-size:11px;font-weight:900;letter-spacing:.055em}
+.gtp223-intel-source:focus-visible{outline:2px solid #492c10;outline-offset:3px}
+
+@media(max-width:1150px) and (min-width:831px){
+ .gtp222-arena{grid-template-columns:minmax(182px,244px) minmax(310px,390px) minmax(182px,244px)!important;column-gap:10px!important}
+ .gtp222-orbit-copy strong{font-size:23px!important}
+ .gtp222-orbit-symbol{width:42px!important;height:48px!important;font-size:32px!important}
+ .gtp222-side .gtp222-orbit-card{min-height:100px!important;padding:8px!important;gap:5px!important}
+}
+@media(max-width:830px){
+ .gtp222-arena{display:flex!important;flex-direction:column!important;gap:16px!important}
+ .gtp222-side{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important;justify-content:stretch!important}
+ .gtp222-side .gtp222-orbit-card{min-height:122px!important;padding:10px 7px!important;display:flex;flex-direction:column;text-align:center}
+ .gtp222-orbit-copy strong{font-size:24px!important}
+ .gtp222-home-dock{gap:12px!important}
+ #app[data-screen="game"]::before,#app[data-screen="game"]::after{width:36px;opacity:.42}
+}
+@media(max-width:480px){
+ .gtp222-side{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .gtp222-side-right .gtp222-orbit-card:last-child{grid-column:span 2}
+ .gtp222-side .gtp222-orbit-card{min-height:119px!important}
+ .gtp222-orbit-symbol{width:44px!important;height:42px!important;font-size:31px!important}
+ .gtp222-orbit-copy strong{font-size:24px!important}
+ .gtp223-intel-ready .btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.gtp223-intel-ready,.gtp222-orbit-card{transition:none!important}}
