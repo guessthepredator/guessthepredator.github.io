@@ -9,7 +9,7 @@ import {paintPixelScene} from './pixel_scene.mjs?v=2.22.0';
 import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.22.0';
 import {dailySummary, buildSubmission} from './scoring.mjs?v=2.22.0';
 import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor} from './daily218.mjs?v=2.22.0';
-import {loadStore,saveStore} from './store.mjs?v=2.22.0';
+import {loadStore,saveStore} from './store.mjs?v=2.23.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
   getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.22.0';
 
@@ -439,16 +439,32 @@ function scannerMarkup(round,target){
   <div class="gtp222-locked-intel" role="status" aria-label="Previously confirmed traits"><strong>CONFIRMED INTEL · PERSISTENT</strong><div>${chips||'<small>Correct traits will stay locked here after every new guess.</small>'}</div></div><div class="scanner" role="group" aria-label="Legend scanner">${cells}</div>
   <div class="hint-row"><button class="btn lilac small" data-action="hint" ${disabled?'disabled':''}>✧ SMART HINT · ${MAX_HINTS-round.hints.length} LEFT</button><small>Reveals a correct trait in green</small></div>`;
 }
+function fullScanHistoryMarkup(round,target){
+  if(round.mode!=='full'||!round.guesses.length)return '';
+  // Each row is a snapshot at that guess: future guesses cannot retroactively change it.
+  const rows=round.guesses.map((name,i)=>{
+    const snapshot={...round,guesses:round.guesses.slice(0,i+1),hints:[]};
+    const state=scannerState(snapshot,target,legends);
+    const chips=FIELDS.map(field=>{
+      const kind=state[field]?.kind;
+      const css=kind==='correct'?'locked':kind==='wrong'?'miss':'pending';
+      const marker=kind==='correct'?'✓':kind==='wrong'?'×':'·';
+      return '<small class="'+css+'">'+LABELS[field]+' '+marker+'</small>';
+    }).join('');
+    return '<div class="gtp222-scan-attempt"><b>'+(i+1)+'. '+esc(name)+'</b><span>'+chips+'</span></div>';
+  }).join('');
+  return '<div class="gtp222-scan-history" aria-label="Full Scan history, preserving previously confirmed traits">'+rows+'</div>';
+}
 function guessBody(round,target){
   if(round.finished){
     const score=gameScore(round);const rank=gameRank(score);const badges=styleBadges(round);
     return `<div class="end-panel ${round.won?'gtp212-victory':''}"><span class="rank">${round.won?rank:'—'}</span><h2>${round.won?'TARGET FOUND!':round.loss==='time'?'TIME’S UP.':'NICE TRY.'}</h2><p>${round.won?`You identified ${esc(target.name)} in ${round.guesses.length} guesses. ${score} points earned.`:`Your mystery Legend was ${esc(target.name)}. Every guess counts. Try another round!`}</p>${badges.length?`<div class="medal-row">${badges.map(tag=>`<span class="medal">${esc(tag)}</span>`).join('')}</div>`:''}<div class="answer-tag">${portrait(target.slug,{alt:target.name,cls:'balanced'})}<strong>${esc(target.name)}</strong></div>
-      <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?(dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'):'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>`;
+      <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?(dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'):'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>${fullScanHistoryMarkup(round,target)}${round.mode==='full'?scannerMarkup(round,target):''}`;
   }
   return `<div class="guess-top"><div><small>YOUR NEXT MOVE</small><h2>WHO’S THAT <span style="color:var(--tile)">LEGEND?</span></h2></div><span class="pill">${round.guesses.length}/${maxGuesses(round)} GUESSES · ${maxGuesses(round)-round.guesses.length} LEFT</span></div>
   <div class="search-wrap"><input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/><button class="btn pink small" data-action="submit-search" title="Guess first matching Legend">↗</button><div id="search-results" class="search-list" style="display:none"></div></div>
   <div class="guess-tools"><button class="btn mint small" data-action="picker">◫ BROWSE LEGENDS</button><small>Filter by class · Guess faster · Press G</small></div>
-  ${latestSignal(round,target)}${round.mode==='full'&&round.guesses.length?`<div class="gtp222-scan-history" aria-label="Full Scan history with remembered matches">${round.guesses.map((name,i)=>{const legend=legendByName(legends,name);return `<div class="gtp222-scan-attempt"><b>${i+1}. ${esc(name)}</b><span>${FIELDS.map(field=>{const state=legend?scannerState({...round,guesses:round.guesses.slice(0,i+1)},target,legends)[field]:null;const confirmed=scannerState(round,target,legends)[field]?.kind==='correct';return `<small class="${confirmed?'locked':state?.kind==='wrong'?'miss':'pending'}">${LABELS[field]} ${confirmed?'✓':state?.kind==='wrong'?'×':'·'}</small>`}).join('')}</span></div>`}).join('')}</div>`:''}${round.guesses.length?`<div class="gtp28-instant-history" aria-label="Previous attempts"><b>GUESS HISTORY</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}${scannerMarkup(round,target)}
+  ${latestSignal(round,target)}${fullScanHistoryMarkup(round,target)}${round.guesses.length?`<div class="gtp28-instant-history" aria-label="Previous attempts"><b>GUESS HISTORY</b>${round.guesses.map((name,i)=>`<span>${i+1}. ${esc(name)}</span>`).join('')}</div>`:''}${scannerMarkup(round,target)}
   <div class="tried-list" aria-label="Eliminated guesses">${round.guesses.length?round.guesses.map(name=>`<span class="used">${esc(name)}</span>`).join(''):'<span style="color:#875d91;font-size:10px;font-weight:800">No Legends eliminated yet · open Browse for faster reads</span>'}</div>`;
 }
 function game(){
@@ -827,7 +843,7 @@ app.addEventListener('click',event=>{
   else if(action==='leaderboard'){screen='leaderboard';pickerOpen=false;render();void refreshBoards();sound('nav');}
   else if(action==='scroll-extras'){document.getElementById('home-extras')?.scrollIntoView({behavior:store.settings.motion?'smooth':'instant'});}
   else if(action==='board-tab'){boardTab=button.dataset.board;render({scroll:false});if(!boardData)void refreshBoards();}
-  else if(action==='open'){openMode(button.dataset.mode);}
+  else if(action==='open'){openMode(button.dataset.mode,button.dataset.session||'unlimited');}
   else if(action==='home-daily'){
     const rounds=currentDailyRounds(store.days,today());session='daily';
     const next=DAILY_TRACKS.find(track=>!rounds[track]?.finished);
