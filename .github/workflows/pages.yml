@@ -39,7 +39,7 @@ jobs:
       - name: Check JavaScript modules
         run: for f in src/*.mjs; do node --check "$f"; done
       - name: Run game, catalog and asset tests
-        run: node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs tests/v210.test.mjs tests/v212.test.mjs tests/v213.test.mjs tests/v214.test.mjs tests/v215.test.mjs tests/v216.test.mjs tests/v217.test.mjs tests/v218.test.mjs tests/v219.test.mjs tests/v220.test.mjs tests/v222.test.mjs
+        run: node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs tests/v210.test.mjs tests/v212.test.mjs tests/v213.test.mjs tests/v214.test.mjs tests/v215.test.mjs tests/v216.test.mjs tests/v217.test.mjs tests/v218.test.mjs tests/v219.test.mjs tests/v220.test.mjs tests/v222.test.mjs tests/v238.test.mjs
       - name: Validate release
         run: |
           python3 -m pip install --quiet Pillow

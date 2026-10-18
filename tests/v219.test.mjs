@@ -11,7 +11,8 @@ test('clean character backdrop is bundled and uniquely used by live homepage',()
 });
 test('game mode cards real HTML and correct five actions, no cropped screenshot art',()=>{
  for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(home.includes(`'${m}'`));
- for(const marker of ['gtp222-orbit-card','gtp222-orbit-symbol','gtp222-orbit-copy','data-mode=','data-session='])assert.ok(home.includes(marker));
+ for(const marker of ['gtp222-orbit-card','gtp238-mode-card','gtp222-orbit-copy','data-mode=','data-session='])assert.ok(home.includes(marker));
+ assert.ok(app.includes('function modeHostBadge(mode)'));
  assert.ok(!home.includes('gtp218-mode-classic.webp'));
 });
 test('both daily checkpoints and all main interactive surfaces wired',()=>{
@@ -26,7 +27,7 @@ test('browse portraits use verified local full-body sources where available',()=
 });
 test('mode accents and stable release cache versions',()=>{
  for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(css.includes(`[data-mode="${m}"]`));
- assert.ok(html.includes('styles.css?v=2.37.0'));
- assert.ok(html.includes('app.mjs?v=2.37.0'));
+ assert.ok(html.includes('styles.css?v=2.38.0'));
+ assert.ok(html.includes('app.mjs?v=2.38.0'));
  assert.ok(app.includes("app.dataset.mode=screen==='game'?active:''"));
 });
