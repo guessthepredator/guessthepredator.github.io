@@ -370,7 +370,7 @@ function home(){
    <div class="gtp222-arena gtp239-arena" aria-label="Six featured challenges">
     <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Full Scan and Trivia">${showcase.slice(0,3).map(heroCard).join('')}</section>
     <section class="gtp222-core gtp239-core" aria-label="Forbidden Intel Supply Bin">
-      <div class="gtp239-bin-stage" role="img" aria-label="Large glowing red mythic supply bin"><span class="gtp239-bin-aura"></span><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-v238.svg" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
+      <div class="gtp239-bin-stage" role="img" aria-label="Large glowing red mythic supply bin"><span class="gtp239-bin-aura"></span><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-real-v239.webp" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
       <div class="gtp239-intel-panel"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Three classified secrets. Complete challenges to reveal them.</p>
        <button type="button" class="gtp239-open-intel" data-action="${lastUnlocked?'intel-open':'home-daily'}" ${lastUnlocked?`data-checkpoint="${intelTarget}"`:''}>◈ ${lastUnlocked?'OPEN MYTHIC INTEL':'BEGIN THE DAILY HUNT'} <span>↗</span></button>
        <details class="gtp239-reward-details"><summary>INTEL CHECKPOINTS · ${intelDone} / 3 <span aria-hidden="true">⌄</span></summary>
