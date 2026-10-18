@@ -584,7 +584,6 @@ function cinematicControls(round,target){
     <button type="button" data-action="home" class="gtp230-btn gtp230-btn-secondary">ALL MODES</button>
    </div>
    ${visibleRoundModes(round)}
-   ${triedLegendNote(round)}
    ${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}
   </section>`;
  }
@@ -604,8 +603,6 @@ function cinematicControls(round,target){
       </div>
     </div>
     ${visibleRoundModes(round)}
-    ${triedLegendNote(round)}
-    ${round.guesses.length?`<div class="gtp230-feedback">${latestSignal(round,target)}</div>`:''}
     <span class="gtp230-console-help">${remaining} guesses left · ${hintDisabled?'Start with a guess to unlock hints':'Green = matching trait · Red = different trait'}</span>
    </section>`;
 }
@@ -632,7 +629,7 @@ function game(){
     <section class="gtp230-main-clue" aria-label="Legend clue">
      ${getVisual(round,target)}
     </section>
-    ${board||side}
+    ${board||side||round.guesses.length? `<div class="gtp236-intel-column">${triedLegendNote(round)}${board||side||''}</div>` : ''}
    </div>
    ${cinematicControls(round,target)}
  </main>`;
@@ -941,7 +938,7 @@ function submitGuess(name){
    }
   pickerOpen=false;quickSearch='';render({scroll:false});
   if(session==='daily'&&next.finished)showToast('✦ FORBIDDEN INTEL READY — Open the unlocked tip below!');
-  if(justWon){sound('party');if(store.settings.motion&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)triggerVictoryConfetti();}
+  if(justWon){sound('victory');if(store.settings.motion&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)triggerVictoryConfetti();}
 }
 function triggerVictoryConfetti(){
   document.querySelector('.gtp212-confetti')?.remove();
