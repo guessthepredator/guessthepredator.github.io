@@ -10,7 +10,7 @@ export function scenePalette(seed='legend'){
 export function paintPixelScene(canvas,portrait,{resolution=24,seed='legend'}={}){
  const ctx=canvas?.getContext?.('2d');
  if(!ctx||!portrait?.naturalWidth||!portrait?.naturalHeight)return false;
- const w=Math.max(20,Math.min(900,Math.round(resolution))),h=Math.round(w*.72);
+ const w=Math.max(9,Math.min(900,Math.round(resolution))),h=Math.round(w*.72);
  canvas.width=w;canvas.height=h;
  const S=x=>x*w,T=y=>y*h;
  const bg=ctx.createLinearGradient(0,0,0,h);
