@@ -145,7 +145,8 @@ function loadPortraitImages(parent=app){
     // Host portraits need reliable direct square sources first. Mystery and pixel target art keep their own ordering.
     const hostSource=isHostArt?reliableIconFallbacks[slug]:null;
     const preferredFullBody=isSceneArt?[...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog.filter(url=>!url.includes('moeneri/astrbot_plugin_apexrankwatch/'))]:[];
-    const candidates=[...new Set([...(isSceneArt?preferredFullBody:[]),...(hostSource?[hostSource]:[]),...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog])];let index=0;
+    const fastPixelSources=inPixelPuzzle?[...(localFile?[`./assets/portraits/${localFile}`]:[]),...(reliableIconFallbacks[slug]?[reliableIconFallbacks[slug]]:[])]:[];
+    const candidates=[...new Set([...fastPixelSources,...(isSceneArt?preferredFullBody:[]),...(hostSource?[hostSource]:[]),...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog])];let index=0;
     const next=()=>{
       if(index>=candidates.length){
         const box=image.closest('.portrait-holder');
@@ -421,10 +422,10 @@ function getVisual(round,target){
     const effect='soft';
     const step=Math.min(round.guesses.length,6);
     // Pixelate and blur the FULL COMPOSITE SCENE (location, lights, character), not a lone cutout.
-    const sizes=[9,12,16,26,40,82,900];
-    const blur=effect==='soft'?[40,35,29,23,16,8,0]:effect==='holo'?[18,16,13,9,6,3,0]:[16,14,11,8,5,2,0];
+    const sizes=[9,12,17,29,48,100,900];
+    const blur=effect==='soft'?[2.4,2.0,1.5,1.1,.7,.3,0]:effect==='holo'?[18,16,13,9,6,3,0]:[16,14,11,8,5,2,0];
     const pct=[6,15,28,46,66,84,100];
-    const size=effect==='soft'?900:sizes[step];
+    const size=sizes[step];
     return `<div class="clue-visual visual-pixel px-effect-${effect} nova-pixel-scene"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
       <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted full scene featuring a Legend"></canvas>
       ${portrait(target.slug,{alt:'',cls:'pixel-source',concealed:!round.finished,eager:true})}
