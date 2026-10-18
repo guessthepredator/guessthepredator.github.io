@@ -5985,3 +5985,24 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  width:42vw!important;right:-9vw!important;height:62vh!important;opacity:.35!important
  }
 }
+
+
+/* V2.41 final screenshot correction: spotlight image must be on the RIGHT,
+   never over the Legend of the Day heading. */
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp241-spotlight-art{
+ left:auto!important;right:0!important;top:0!important;bottom:0!important;
+ width:38%!important;max-width:38%!important;
+ pointer-events:none!important;z-index:1!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp241-spotlight-art .portrait-holder{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ display:block!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp241-spotlight-art .portrait-holder img{
+ position:absolute!important;left:auto!important;right:0!important;top:0!important;bottom:0!important;
+ width:100%!important;height:100%!important;object-fit:contain!important;
+ object-position:bottom center!important;transform:none!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp222-dock-copy{
+ position:relative!important;z-index:2!important;max-width:61%!important;
+}
