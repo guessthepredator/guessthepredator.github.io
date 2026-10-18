@@ -2,7 +2,7 @@
  * studio stage. No second/background character image or busy geometry.
  * Remote image drawing is allowed without reading cross-origin pixels.
  */
-export const PIXEL_SIZES=Object.freeze([11,14,20,33,54,110,900]);
+export const PIXEL_SIZES=Object.freeze([9,12,17,29,48,100,900]);
 export function scenePalette(seed='legend'){
  const hash=Array.from(String(seed)).reduce((a,c)=>(Math.imul(a^c.charCodeAt(0),16777619))>>>0,2166136261);
  return {hue:[197,260,320,177,28,227][hash%6],variation:hash%5};
