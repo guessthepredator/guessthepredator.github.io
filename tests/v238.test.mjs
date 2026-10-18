@@ -12,10 +12,10 @@ test('V2.38 restores exactly two decorative Mirage home figures',()=>{
  assert.ok(css.includes('pointer-events:none'));
 });
 test('V2.39 photoreal mythic bin is bundled, not tiny vector outline',()=>{
- assert.ok(home.includes('mythic-bin-real-v239.webp'));
+ assert.ok(home.includes('mythic-bin-v2391.webp'));
  assert.ok(!home.includes('gtp237-mythic-bin'));
  assert.ok(home.includes('gtp239-bin-image'));
- assert.ok(statSync(new URL('../assets/decor/mythic-bin-real-v239.webp',import.meta.url)).size>3000);
+ assert.ok(statSync(new URL('../assets/decor/mythic-bin-v2391.webp',import.meta.url)).size>3000);
 });
 test('V2.38 Legend mode guides do not reveal the random answer',()=>{
  const expected={classic:'mirage',pixel:'sparrow',quote:'loba',ability:'octane',emoji:'wattson',trivia:'crypto',wheel:'pathfinder'};
@@ -39,7 +39,7 @@ test('Game headers show mode host and preserve cinematic game wallpaper',()=>{
  assert.ok(app.includes('gtp233-viewport-art'));
  assert.ok(css.includes('.gtp238-game-host'));
  assert.ok(css.includes('data-mode="classic"'));
- assert.ok(html.includes('styles.css?v=2.39.0'));
- assert.ok(html.includes('app.mjs?v=2.39.0'));
- assert.ok(app.includes("leaderboard.mjs?v=2.39.0"));
+ assert.ok(html.includes('styles.css?v=2.39.1'));
+ assert.ok(html.includes('app.mjs?v=2.39.1'));
+ assert.ok(app.includes("leaderboard.mjs?v=2.39.1"));
 });

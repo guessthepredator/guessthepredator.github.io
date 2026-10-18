@@ -5374,3 +5374,80 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  background:radial-gradient(ellipse 44% 42% at 52% 27%,#f53d343f,#851c2534 63%,transparent 100%),
  linear-gradient(180deg,#08040b25,#3208103b 59%,#11030b18)!important;
 }
+
+
+/* V2.39.1 — screenshot-based home hotfix: exactly two Mirages, crisp bin, legible portraits */
+#app[data-screen="home"] .gtp239-mirage-duo{display:none!important}
+#app[data-screen="home"] .gtp239-home .gtp219-backdrop{
+ filter:sepia(.23) saturate(1.35) brightness(.77) contrast(1.14)!important;
+ background-position:center 40%!important;
+}
+#app[data-screen="home"] .gtp239-blood-moon{display:none!important}
+#app[data-screen="home"] .gtp239-sky{
+ background:radial-gradient(ellipse at 50% 33%,#f049312c 0%,#871d2331 48%,transparent 78%),
+ linear-gradient(180deg,#09040b40,#3b0b1434 57%,#09071126)!important;
+}
+#app[data-screen="home"] .gtp239-bin-stage{
+ width:clamp(450px,38vw,620px)!important;height:clamp(205px,18vw,290px)!important;
+}
+#app[data-screen="home"] .gtp239-bin-image{
+ mask-image:none!important;-webkit-mask-image:none!important;
+ width:100%!important;height:100%!important;object-fit:contain!important;
+ transform:translateY(-3px)!important;
+ image-rendering:auto!important;
+ filter:drop-shadow(0 8px 9px #020107ef) drop-shadow(0 0 18px #ff482eaa) saturate(1.13) contrast(1.07)!important;
+}
+#app[data-screen="home"] .gtp239-core:hover .gtp239-bin-image{
+ transform:translateY(-7px) scale(1.025)!important;
+ filter:drop-shadow(0 12px 13px #000) drop-shadow(0 0 25px #ff6d43b9) saturate(1.17)!important;
+}
+#app[data-screen="home"] .gtp239-bin-aura{filter:blur(29px)!important;opacity:.55!important}
+#app[data-screen="home"] .gtp239-mode-ring{overflow:hidden!important}
+#app[data-screen="home"] .gtp239-mode-ring .portrait-holder{
+ display:block!important;position:relative!important;z-index:2!important;
+ width:100%!important;height:100%!important;min-height:0!important;
+ border-radius:50%!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp239-mode-ring .portrait-holder img,
+#app[data-screen="home"] .gtp239-mode-ring .portrait-holder img.portrait-model-render{
+ object-fit:contain!important;object-position:50% 0!important;
+ width:100%!important;height:100%!important;
+ transform:scale(1.9) translateY(16%)!important;transform-origin:center 26%!important;
+ filter:contrast(1.10) saturate(1.12) drop-shadow(0 2px 5px #07040d)!important;
+}
+#app[data-screen="home"] .gtp239-mode-caption{
+ min-height:55px!important;pointer-events:none;user-select:none;
+}
+#app[data-screen="home"] .gtp239-mode-card{user-select:none}
+#app[data-screen="home"] .gtp239-mode-caption strong{
+ text-shadow:0 2px 3px #000,0 0 8px #09040d!important;
+}
+#app[data-screen="home"] .gtp239-intel-panel{
+ background:linear-gradient(160deg,#160a13f3,#0b0812f8 73%,#200a13ec)!important;
+}
+@media(max-width:830px){
+ #app[data-screen="home"] .gtp239-bin-stage{width:min(96vw,540px)!important;height:220px!important}
+}
+@media(max-width:560px){
+ #app[data-screen="home"] .gtp239-bin-stage{height:180px!important}
+ #app[data-screen="home"] .gtp239-mode-ring .portrait-holder img{transform:scale(1.75) translateY(12%)!important}
+}
+
+
+/* QA follow-up: individual portrait crops; avoid clipping Sparrow's face */
+#app[data-screen="home"] .gtp239-mode-card[data-host="sparrow"] .gtp239-mode-ring .portrait-holder img{
+ transform:scale(1.08) translateY(0)!important;transform-origin:50% 50%!important;object-fit:cover!important;object-position:center 13%!important;
+}
+#app[data-screen="home"] .gtp239-mode-card[data-host="octane"] .gtp239-mode-ring .portrait-holder img{
+ transform:scale(1.65) translateY(11%)!important;transform-origin:center 30%!important;
+}
+#app[data-screen="home"] .gtp239-mode-card[data-host="loba"] .gtp239-mode-ring .portrait-holder img{
+ transform:scale(1.7) translateY(12%)!important;transform-origin:center 29%!important;
+}
+#app[data-screen="home"] .gtp239-mode-card[data-host="pathfinder"] .gtp239-mode-ring .portrait-holder img{
+ transform:scale(1.75) translateY(13%)!important;transform-origin:center 30%!important;
+}
+#app[data-screen="home"] .gtp239-mode-card[data-host="crypto"] .gtp239-host-fallback{
+ font-size:21px!important;letter-spacing:.08em!important;color:#b7e9ff!important;
+ background:radial-gradient(circle at 50% 40%,#24556b 0%,#0d192d 70%)!important;
+}
