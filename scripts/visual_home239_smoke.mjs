@@ -31,7 +31,7 @@ try{
  });
  assert(desktop.bodyWidth<=1659,'Home scrolls horizontally: '+JSON.stringify(desktop));
  assert(desktop.cards.length===6,'Expected six featured modes: '+desktop.cards.length);
- assert(desktop.cards.every(x=>x.width>=125&&x.portraitWidth>=92&&x.bottom<=929),'Mode cards too small or clipped at desktop viewport: '+JSON.stringify(desktop.cards));
+ assert(desktop.cards.every(x=>x.width>=125&&x.portraitWidth>=79&&x.portraitWidth<=90&&x.bottom<=929),'Home portraits should be compact (about 84px) and cards remain visible: '+JSON.stringify(desktop.cards));
  assert(desktop.bin?.width>=470&&desktop.bin?.height>=220,'Supply bin not prominent enough '+JSON.stringify(desktop.bin));
  assert(desktop.mirages===2,'Expected both original Mirage figures');
  assert(desktop.secondary===0,'Original modes must be primary, not hidden in a secondary section');
@@ -74,11 +74,13 @@ try{
  const mobile=await page.evaluate(()=>({
   viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,
   cards:document.querySelectorAll('.gtp239-mode-card').length,
+  portraitWidth:document.querySelector('.gtp239-mode-ring')?.getBoundingClientRect().width,
   stage:document.querySelector('.gtp239-bin-stage')?.getBoundingClientRect().width,
   button:document.querySelector('.gtp239-open-intel')?.getBoundingClientRect().width
  }));
  assert(mobile.scrollWidth<=391,'Horizontal mobile overflow: '+JSON.stringify(mobile));
  assert(mobile.cards===6&&mobile.stage>=325&&mobile.button>=200,'Mobile home incomplete: '+JSON.stringify(mobile));
+ assert(mobile.portraitWidth>=54&&mobile.portraitWidth<=65,'Mobile icons should be about 59px, not oversized: '+JSON.stringify(mobile));
  await page.screenshot({path:'screenshots/v239-home-mobile-390x844.png',fullPage:true});
  console.log('PASS mobile home',JSON.stringify(mobile));
 }finally{await browser?.close();server.kill()}
