@@ -4392,3 +4392,117 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
     background-position:50% 50%!important;
   }
 }
+
+
+/* =======================================================================
+   V2.34 — TRUE FULL-SCREEN WALLPAPER / FLOATING HUD
+   One wallpaper, across the ENTIRE website viewport, including navigation,
+   behind every HUD panel. Do not paint/box the image inside the game arena.
+   ======================================================================= */
+/* Disable the two old competing copies of the game wallpaper.
+   The visible photo is exclusively the fixed .gtp233-viewport-art element. */
+#app[data-screen="game"],
+body.lightshift-playing #app[data-screen="game"],
+body:has(.gtp2-game-scene) #app[data-screen="game"]{
+  background:#061021!important;
+  background-image:none!important;
+}
+#app[data-screen="game"] > .gtp233-viewport-art{
+  position:fixed!important;inset:0!important;
+  width:100vw!important;height:100dvh!important;
+  z-index:0!important;
+  background-image:
+    linear-gradient(180deg,rgba(3,8,19,.12) 0%,rgba(4,10,22,.04) 24%,rgba(4,10,22,.03) 67%,rgba(3,8,19,.26) 100%),
+    var(--gtp230-back)!important;
+  background-size:cover!important;
+  background-position:50% 50%!important;
+  background-repeat:no-repeat!important;
+  opacity:1!important;
+  filter:saturate(1.10) brightness(1.08)!important;
+  pointer-events:none!important;
+}
+/* The screenshot exposed a fully opaque navy nav strip. Make the actual
+   artwork visible THROUGH the nav, from the very top of the web viewport. */
+#app[data-screen="game"] > header.gtp2-top{
+  position:relative!important;z-index:3!important;
+  background:linear-gradient(90deg,rgba(5,12,28,.54),rgba(5,15,32,.30) 45%,rgba(4,11,29,.54))!important;
+  background-color:transparent!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  border-bottom:1px solid color-mix(in srgb,var(--gtp230-accent) 45%,#b4e1e5)!important;
+  box-shadow:0 5px 17px #02061357!important;
+}
+#app[data-screen="game"] > header.gtp2-top .gtp2-top-inner{
+  background:transparent!important;
+}
+#app[data-screen="game"] > header.gtp2-top .nav-item,
+#app[data-screen="game"] > header.gtp2-top .gtp219-brand-type{
+  text-shadow:0 2px 7px #000,0 0 6px #0008!important;
+}
+#app[data-screen="game"] > header.gtp2-top .nav-item.active{
+  background:color-mix(in srgb,var(--gtp230-accent) 21%,#07192ad4)!important;
+  border-color:var(--gtp230-accent)!important;
+}
+/* Remove the large dark plates framing the artwork as a 'middle-only'
+   rectangle. Small readable controls stay filled/solid as before. */
+#app[data-screen="game"] .gtp230-game>.gtp230-titlebar{
+  background:linear-gradient(90deg,rgba(8,16,31,.59),rgba(6,15,30,.29) 59%,rgba(6,15,30,.50))!important;
+  background-color:transparent!important;
+  box-shadow:inset 0 1px 0 #ffffff17,0 4px 13px #0004!important;
+  border-color:color-mix(in srgb,var(--gtp230-accent) 82%,#a6d8e8)!important;
+}
+#app[data-screen="game"] .gtp230-title-copy h1,
+#app[data-screen="game"] .gtp230-title-copy p{
+  text-shadow:0 2px 10px #000,0 0 6px #010914!important;
+}
+#app[data-screen="game"] .gtp230-arena{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+#app[data-screen="game"] .gtp230-main-clue{
+  background:transparent!important;
+  background-image:none!important;
+}
+#app[data-screen="game"] .gtp230-main-clue>.clue-visual,
+#app[data-screen="game"] .gtp230-main-clue>.clue-visual.gtp229-mystery-visual{
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#app[data-screen="game"] .gtp230-console,
+#app[data-screen="game"] .gtp230-finished{
+  background:linear-gradient(160deg,rgba(5,14,29,.67),rgba(6,15,32,.49))!important;
+  background-color:transparent!important;
+  border-color:color-mix(in srgb,var(--gtp230-accent) 73%,#75adca)!important;
+  border-radius:10px!important;
+  box-shadow:0 6px 22px #0308177a!important;
+}
+/* Signal board and input/buttons keep a stable contrast against the
+   character artwork. No gameplay/content changes. */
+#app[data-screen="game"] .gtp230-board,
+#app[data-screen="game"] .gtp230-side{
+  background:rgba(4,16,34,.83)!important;
+  box-shadow:0 8px 21px #0008!important;
+}
+#app[data-screen="game"] .gtp230-input-wrap input{
+  background:rgba(4,16,35,.94)!important;
+}
+#app[data-screen="game"] .gtp230-feedback .flash,
+#app[data-screen="game"] .gtp230-round-options{
+  background:rgba(6,19,37,.85)!important;
+}
+/* Preserve the dock-within-the-viewport behavior established in V2.31.
+   The full-screen wallpaper is fixed even when a very short viewport scrolls. */
+@media(max-width:700px){
+  #app[data-screen="game"] > header.gtp2-top{
+    background:linear-gradient(90deg,rgba(5,12,27,.73),rgba(5,12,27,.48))!important;
+  }
+}
+@media(prefers-reduced-transparency:reduce){
+  #app[data-screen="game"] > header.gtp2-top{background:rgba(5,12,27,.85)!important}
+  #app[data-screen="game"] .gtp230-console{background:rgba(5,12,27,.92)!important}
+}
