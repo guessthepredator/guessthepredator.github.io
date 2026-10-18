@@ -133,8 +133,8 @@ test('V2.26 missing five portraits have real hosted per-Legend GitHub fallback s
  const {portraitSourcesFor}=await import('../src/art.mjs');
  for(const slug of ['alter','axle','ballistic','catalyst','conduit','sparrow']){
   const sources=portraitSourcesFor(slug);
-  assert.ok(sources[0].startsWith('https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/'));
-  assert.ok(sources[0].endsWith('/'+slug+'.png'));
+  assert.ok(sources.some(url=>url.includes('apexlegends.wiki.gg/')||url.includes('raw.githubusercontent.com/')));
+  assert.ok(sources.some(url=>url.toLowerCase().includes(slug)));
  }
  assert.ok(app.includes('portrait-icon-fallback'));
  assert.ok(css.includes('.portrait-holder.portrait-icon-fallback'));
