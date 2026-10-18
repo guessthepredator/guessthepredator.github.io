@@ -5328,3 +5328,29 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
 #app.no-motion[data-screen="home"] .gtp239-embers,
 #app.no-motion[data-screen="home"] .gtp239-bin-aura,
 #app.no-motion[data-screen="home"] .gtp239-bin-spark{animation:none!important}
+
+
+/* V2.39 cinematic image and reliable portrait fallbacks */
+#app[data-screen="home"] .gtp239-home .gtp219-backdrop{
+ filter:sepia(.6) hue-rotate(320deg) saturate(1.55) brightness(.55) contrast(1.2)!important;
+}
+#app[data-screen="home"] .gtp239-mirage-duo .gtp238-mirage-figure{
+ filter:sepia(.12) saturate(1.22) brightness(.99) contrast(1.09) drop-shadow(0 18px 25px #000)!important;
+}
+#app[data-screen="home"] .gtp239-blood-moon{
+ mix-blend-mode:normal!important;opacity:.95!important;
+ background:radial-gradient(circle at 32% 28%,#ffc6a81b 0 8%,transparent 10%),
+ radial-gradient(circle at 70% 66%,#1e101638 0 16%,transparent 19%),
+ radial-gradient(circle at 55% 47%,#f96853 0%,#d63e33 40%,#98232a 71%,#45121a 94%)!important;
+}
+#app[data-screen="home"] .gtp239-mode-ring{isolation:isolate}
+#app[data-screen="home"] .gtp239-host-fallback{
+ position:absolute;z-index:0;inset:0;display:grid;place-items:center;
+ font:1000 27px/1 'Barlow Condensed',Impact,sans-serif;
+ color:#f3f2ff;text-shadow:0 0 9px var(--mode),0 2px 3px #000;
+ opacity:.85;
+}
+#app[data-screen="home"] .gtp239-mode-ring .portrait-holder{position:relative;z-index:1}
+#app[data-screen="home"] .gtp239-mode-ring .portrait-holder:has(.portrait-unavailable){opacity:0}
+#app[data-screen="home"] .gtp238-wheel-host .gtp239-host-fallback{font-size:22px}
+#app[data-screen="home"] .gtp238-wheel-host:has(.portrait-unavailable) .portrait-holder{opacity:0}
