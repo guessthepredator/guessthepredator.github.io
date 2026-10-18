@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.34.0')&&html.includes('app.mjs?v=2.34.0'));
+ assert.ok(html.includes('styles.css?v=2.35.0')&&html.includes('app.mjs?v=2.35.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -343,4 +343,37 @@ test('V2.34 visual regression runner inspects real Chromium viewport and screens
  assert.ok(runner.includes('gtp230-console'));
  assert.ok(runner.includes('screenshots/v234-'));
  assert.ok(ci.includes('node scripts/visual_fullscreen_smoke.mjs'));
+});
+
+test('V2.35 always-visible scan controls expose all three modes in every active game',()=>{
+ const ui=app.split('function visibleRoundModes(round){')[1].split('function triedLegendNote')[0];
+ assert.ok(ui.includes('▦ FULL SCAN'));
+ assert.ok(ui.includes('✦ ONE SIGNAL'));
+ assert.ok(ui.includes('◷ RUSH'));
+ assert.ok(ui.includes('data-action="'));
+ assert.ok(ui.includes('aria-pressed='));
+ assert.ok(ui.includes("session==='daily'||round.guesses.length>0||round.finished"));
+ assert.ok(ui.includes("DAILY RULES LOCKED"));
+ assert.ok(ui.includes("LOCKED AFTER FIRST GUESS"));
+ assert.ok(app.includes('${visibleRoundModes(round)}'));
+ assert.ok(!app.includes('<details class="gtp230-round-options">'));
+ assert.ok(css.includes('V2.35 · ALWAYS-VISIBLE SCAN RULES'));
+ assert.ok(css.includes('.gtp235-rule-choice.is-active.scan-full'));
+ assert.ok(css.includes('.gtp235-rule-choice.is-active.scan-signal'));
+ assert.ok(css.includes('.gtp235-rule-choice.is-active.scan-rush'));
+ assert.ok(css.includes('.gtp235-rule-choice:disabled'));
+});
+test('V2.35 previously guessed Legends are displayed unobtrusively with escaped names',()=>{
+ const note=app.split('function triedLegendNote(round){')[1].split('function cinematicControls')[0];
+ assert.ok(note.includes("if(!round.guesses.length)return ''"));
+ assert.ok(note.includes('ALREADY TRIED'));
+ assert.ok(note.includes('round.guesses.map('));
+ assert.ok(note.includes('esc(name)'));
+ assert.ok(app.includes('${triedLegendNote(round)}'));
+ assert.ok(css.includes('.gtp235-tried-names'));
+ assert.ok(css.includes('overflow-x:auto!important'));
+ const runner=read('scripts/visual_fullscreen_smoke.mjs');
+ assert.ok(runner.includes('Free Play settings should be editable before the first guess'));
+ assert.ok(runner.includes('Previously guessed Legend note was not updated after first attempt'));
+ assert.ok(runner.includes('Scan rules must be locked after the first guess'));
 });
