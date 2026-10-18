@@ -382,7 +382,7 @@ test('V2.36 Tried Legends sits on the right above Identity Signal Board',()=>{
  const game=app.split('function game(){')[1].split('function howTo()')[0];
  assert.ok(game.includes('gtp236-intel-column'));
  assert.ok(game.includes('${triedLegendNote(round)}'));
- assert.ok(game.includes('${board||side||'));
+ assert.ok(game.includes('${triedLegendNote(round)}${board}${side}${visibleRoundModes(round)}'), 'Tried Legends precedes the scanner, sidebar and rules in the right-side column');
  const console=app.split('function cinematicControls(round,target){')[1].split('function game(){')[0];
  assert.ok(!console.includes('latestSignal(round,target)'));
  assert.ok(!console.includes('${triedLegendNote(round)}'));
@@ -403,7 +403,7 @@ test('V2.36 uses new confetti victory tune, not generic party sample',()=>{
  const audio=read('src/audio.mjs');
  assert.ok(app.includes("if(justWon){sound('victory')"));
  assert.ok(audio.includes("if(name==='victory')"));
- assert.ok(audio.includes("if(key!=='victory')"));
+ assert.ok(audio.includes("if(key!=='victory'&&key!=='hover-trivia')"), 'Victory and Trivia hover use their own synthesized sounds, not sample playback');
  assert.ok(audio.includes('melodyNotes'));
  assert.ok(audio.includes("const events=new Set("));
 });
