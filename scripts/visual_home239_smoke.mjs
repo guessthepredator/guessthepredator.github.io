@@ -34,20 +34,41 @@ try{
  assert(desktop.cards.every(x=>x.width>=125&&x.portraitWidth>=92&&x.bottom<=929),'Mode cards too small or clipped at desktop viewport: '+JSON.stringify(desktop.cards));
  assert(desktop.bin?.width>=470&&desktop.bin?.height>=220,'Supply bin not prominent enough '+JSON.stringify(desktop.bin));
  assert(desktop.mirages===2,'Expected both original Mirage figures');
- assert(desktop.secondary===4,'Four original puzzle modes must remain available');
+ assert(desktop.secondary===0,'Original modes must be primary, not hidden in a secondary section');
+ assert(desktop.cards.map(x=>x.name).join('|')==='CLASSIC MODE|PIXEL MODE|QUOTE MODE|ABILITY MODE|EMOJI MODE|TRIVIA','Home must show original six modes in order: '+JSON.stringify(desktop.cards));
  assert(desktop.dock?.bottom<=1000,'Dock pushed too far down: '+JSON.stringify(desktop.dock));
  await page.screenshot({path:'screenshots/v239-home-desktop-1658x928.png',fullPage:true});
  console.log('PASS desktop hero geometry',JSON.stringify(desktop));
- await page.evaluate(()=>document.querySelector('.gtp239-mode-card[data-action="open"]')?.click());
- await page.waitForSelector('#app[data-screen="game"]');
- assert(await page.locator('.gtp233-viewport-art').count()===1,'Original fullscreen game wallpaper regressed');
+
+ const hosts={classic:'MIRAGE',pixel:'SPARROW',quote:'LOBA',ability:'OCTANE',emoji:'WATTSON'};
+ const accents={classic:'#ff7469',pixel:'#4ce4ee',quote:'#c993ff',ability:'#b7f95e',emoji:'#ffd27b'};
+ for(const [mode,legend] of Object.entries(hosts)){
+  await page.evaluate(mode=>document.querySelector('.gtp239-mode-card[data-action="open"][data-mode="'+mode+'"]')?.click(),mode);
+  await page.waitForSelector('#app[data-screen="game"][data-mode="'+mode+'"] .gtp240-mode-identity');
+  const actual=await page.evaluate(()=>{
+    const node=document.querySelector('#app');
+    return {legend:document.querySelector('.gtp240-mode-identity-copy b')?.textContent.trim(),
+      accent:getComputedStyle(node).getPropertyValue('--gtp230-accent').trim(),
+      banner:document.querySelector('.gtp240-themed-titlebar')?.getBoundingClientRect().height,
+      wallpaper:!!document.querySelector('.gtp233-viewport-art'),
+      modes:[...document.querySelectorAll('.gtp235-rule-choice')].map(x=>x.textContent.trim())};
+  });
+  assert(actual.legend===legend,'Game '+mode+' should be hosted by '+legend+' but got '+JSON.stringify(actual));
+  assert(actual.accent.toLowerCase()===accents[mode],mode+' missing its own theme color: '+JSON.stringify(actual));
+  assert(actual.banner>55&&actual.wallpaper,mode+' host header or full-screen wallpaper is missing');
+  assert(actual.modes.length===3,mode+' must keep Full Scan / One Signal / Rush settings');
+  await page.screenshot({path:'screenshots/v240-'+mode+'-legend-theme.png',fullPage:false});
+  await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
+  await page.waitForSelector('.gtp239-home');
+ }
+ await page.evaluate(()=>document.querySelector('.gtp239-mode-card[data-action="trivia"]')?.click());
+ await page.waitForSelector('#app[data-screen="trivia"] .gtp240-trivia-host');
+ const triviaHost=await page.evaluate(()=>document.querySelector('.gtp240-trivia-host img')?.dataset.portrait);
+ assert(triviaHost==='crypto','Trivia should have Crypto identity, got '+triviaHost);
+ await page.screenshot({path:'screenshots/v240-trivia-crypto-theme.png',fullPage:false});
  await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
  await page.waitForSelector('.gtp239-home');
- await page.evaluate(()=>document.querySelector('.gtp239-mode-card[data-action="home-full"]')?.click());
- await page.waitForSelector('#app[data-screen="game"]');
- assert(await page.locator('#app[data-session="daily"]').count()===1,'Full Scan did not launch Daily');
- await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
- await page.waitForSelector('.gtp239-home');
+ console.log('PASS six original home modes and five distinct themed games + Crypto Trivia');
  await page.setViewportSize({width:390,height:844});
  await page.waitForTimeout(250);
  const mobile=await page.evaluate(()=>({

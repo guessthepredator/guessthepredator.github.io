@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.39.1';
-import {legends} from './data.mjs?v=2.39.1';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.39.1';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.39.1';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.39.1';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.39.1';
-import {playSound} from './audio.mjs?v=2.39.1';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.39.1';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.39.1';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.39.1';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.39.1';
-import {loadStore,saveStore} from './store.mjs?v=2.39.1';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.40.0';
+import {legends} from './data.mjs?v=2.40.0';
+import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2.40.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.40.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.40.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.40.0';
+import {playSound} from './audio.mjs?v=2.40.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.40.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.40.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.40.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.40.0';
+import {loadStore,saveStore} from './store.mjs?v=2.40.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.39.1';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.40.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -139,7 +139,10 @@ function loadPortraitImages(parent=app){
     const inPixelPuzzle=Boolean(image.closest('.pixel-art'));
     const sourceCatalog=portraitSourcesFor(slug,{pixel:inPixelPuzzle});
     // Pixel mode uses the old source priority so tall renders never change its canvas composition.
-    const candidates=[...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog];let index=0;
+    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host'));
+    // Host portraits need reliable direct square sources first. Mystery and pixel target art keep their own ordering.
+    const hostSource=isHostArt?reliableIconFallbacks[slug]:null;
+    const candidates=[...new Set([...(hostSource?[hostSource]:[]),...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog])];let index=0;
     const next=()=>{
       if(index>=candidates.length){
         const box=image.closest('.portrait-holder');
@@ -352,11 +355,11 @@ function home(){
  const intelTarget=unread||lastUnlocked||1;
  const showcase=[
   {id:'classic',title:'CLASSIC MODE',host:'mirage',description:'Find the mystery Legend.',action:'open',mode:'classic',accent:'red'},
-  {id:'full',title:'FULL SCAN',host:'sparrow',description:'Deep analysis. More data.',action:'home-full',accent:'cyan'},
-  {id:'trivia',title:'TRIVIA',host:'crypto',description:'Test your Apex knowledge.',action:'trivia',accent:'blue'},
-  {id:'signal',title:'ONE SIGNAL',host:'loba',description:'One clue. One shot.',action:'home-signal',accent:'purple'},
-  {id:'rush',title:'RUSH',host:'octane',description:'Fast clues. Think quick.',action:'home-rush',accent:'lime'},
-  {id:'wheel',title:'SPIN THE WHEEL',host:'pathfinder',description:'A random Legend awaits.',action:'wheel',accent:'sky'}
+  {id:'pixel',title:'PIXEL MODE',host:'sparrow',description:'Decode the distorted silhouette.',action:'open',mode:'pixel',accent:'cyan'},
+  {id:'quote',title:'QUOTE MODE',host:'loba',description:'Recognize the intercepted voice.',action:'open',mode:'quote',accent:'purple'},
+  {id:'ability',title:'ABILITY MODE',host:'octane',description:'Read the tactical signature.',action:'open',mode:'ability',accent:'lime'},
+  {id:'emoji',title:'EMOJI MODE',host:'wattson',description:'Five symbols. One Legend.',action:'open',mode:'emoji',accent:'gold'},
+  {id:'trivia',title:'TRIVIA',host:'crypto',description:'Crack five Apex intel questions.',action:'trivia',accent:'blue'}
  ];
  const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp239-${cfg.accent}" data-host="${cfg.host}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
  <span class="gtp239-mode-ring" aria-hidden="true"><span class="gtp239-host-fallback">${cfg.host.slice(0,2).toUpperCase()}</span>${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}</span>
@@ -367,8 +370,8 @@ function home(){
   <div class="gtp238-mirage-duo gtp239-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-right"></span></div>
   <div class="gtp222-layout gtp239-layout">
    <header class="gtp239-masthead"><span>GUESS THE</span><h1>PREDATOR</h1><small>APEX LEGENDS DAILY CHALLENGE</small></header>
-   <div class="gtp222-arena gtp239-arena" aria-label="Six featured challenges">
-    <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Full Scan and Trivia">${showcase.slice(0,3).map(heroCard).join('')}</section>
+   <div class="gtp222-arena gtp239-arena" aria-label="Six original game modes with individual Legend themes">
+    <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Pixel and Quote">${showcase.slice(0,3).map(heroCard).join('')}</section>
     <section class="gtp222-core gtp239-core" aria-label="Forbidden Intel Supply Bin">
       <div class="gtp239-bin-stage" role="img" aria-label="Large glowing red mythic supply bin"><span class="gtp239-bin-aura"></span><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-v2391.webp" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
       <div class="gtp239-intel-panel"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Three classified secrets. Complete challenges to reveal them.</p>
@@ -379,13 +382,12 @@ function home(){
       </div>
       <div class="gtp222-primary-actions gtp239-primary-actions"><button data-action="home-daily" type="button" class="gtp219-daily-btn"><strong>▦ DAILY CHALLENGE</strong><small>${dailyStatus}</small></button><button data-action="session" data-session="unlimited" type="button" class="gtp219-free-btn"><strong>✧ FREE PLAY</strong><small>All five guessing modes</small></button></div>
     </section>
-    <section class="gtp222-side gtp239-side gtp239-side-right" aria-label="One Signal, Rush and Spin the Wheel">${showcase.slice(3).map(heroCard).join('')}</section>
+    <section class="gtp222-side gtp239-side gtp239-side-right" aria-label="Ability, Emoji and Trivia">${showcase.slice(3).map(heroCard).join('')}</section>
    </div>
    <div class="gtp222-home-dock gtp239-home-dock">
     <button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host" aria-hidden="true"><span class="gtp239-host-fallback">PF</span>${portrait('pathfinder',{alt:'',cls:'balanced',eager:true})}</span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
     <article class="gtp222-spotlight"><div class="gtp222-spotlight-art">${portrait(spotlight.slug,{alt:spotlight.name,cls:'balanced',eager:true})}</div><div class="gtp222-dock-copy"><strong>LEGEND OF THE DAY</strong><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)} · changes daily</small></div></article>
    </div>
-   <section class="gtp239-secondary" aria-label="Additional puzzle modes"><div><span>MORE WAYS TO PLAY</span><p>Classic puzzles remain available alongside the daily modes.</p></div><div class="gtp239-more-modes">${cards.filter(([mode])=>['pixel','quote','ability','emoji'].includes(mode)).map(card).join('')}</div></section>
    <footer class="gtp219-footer">♥ Made by Sebyby <span>Independent fan trivia · Not affiliated with EA or Respawn</span></footer>
   </div>
  </main>`;
@@ -648,10 +650,13 @@ function game(){
  const title=active.toUpperCase();
  const modeTag=round.mode==='full'?'FULL SCAN':'ONE SIGNAL';
  const host=MODE_HOSTS[active]||MODE_HOSTS.classic;
+ const signature={classic:['DECOY PROTOCOL','BAMBOOZLE THEM'],pixel:['RECON OPTICS','READ BETWEEN THE PIXELS'],quote:['BLACK MARKET COMMS','EVERY VOICE HAS A PRICE'],ability:['STIM SYSTEMS','IDENTIFY THE SIGNATURE'],emoji:['ELECTRIC CIPHER','CONNECT THE SIGNALS']}[active]||['OUTLANDS INTEL','FOLLOW THE CLUES'];
  return `<div class="gtp233-viewport-art" aria-hidden="true"></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
-   <header class="gtp230-titlebar">
+   <header class="gtp230-titlebar gtp240-themed-titlebar">
+    <span class="gtp240-header-beam" aria-hidden="true"></span>
     <div class="gtp230-title-icon gtp238-game-host" aria-hidden="true">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div>
-    <div class="gtp230-title-copy"><span class="gtp238-game-host-label">HOSTED BY ${host.name}</span><h1>${title} MODE</h1><p>${TAGLINES[active]} <span class="gtp230-scan-caption">· ${modeTag}</span></p></div>
+    <div class="gtp230-title-copy"><span class="gtp238-game-host-label">✦ ${host.name} · ${signature[0]}</span><h1>${title} MODE</h1><p>${TAGLINES[active]} <span class="gtp230-scan-caption">· ${modeTag}</span></p></div>
+    <div class="gtp240-mode-identity" aria-hidden="true"><span class="gtp240-mode-identity-copy"><b>${host.name}</b><small>${signature[1]}</small></span><span class="gtp240-mode-identity-art">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</span></div>
     <div class="gtp230-title-status">
      <span class="gtp230-session ${isDaily?'is-daily':'is-free'}">${isDaily?'DAILY':'FREE PLAY'}</span>
      <span class="gtp230-guess-count"><small>GUESSES</small><b>${round.guesses.length}/${maxGuesses(round)}</b></span>
@@ -701,7 +706,7 @@ function trivia(){
  const rows=triviaBoard?.[triviaScoreTab]||[];
  const feedback=run?.feedback;
  return `<main class="trivia-page ${run&&!run.finished?'trivia-page-active':''} ${question&&!feedback&&!run?.finished?'trivia-page-question':''} ${question?.kind==='text'?'trivia-page-written':''}" aria-label="Apex Trivia"><div class="trivia-shell">
-  <section class="trivia-hero"><span class="trivia-kicker">◈ OUTLANDS INTELLIGENCE / VERIFIED QUESTIONS</span><h1>APEX <em>TRIVIA.</em></h1><p>Five questions. 20 seconds each. Every right answer earns <b>20 points</b> — up to 100. Different from Daily Challenges.</p><div class="trivia-switch" role="group" aria-label="Trivia mode"><button data-action="trivia-mode" data-trivia-mode="daily" class="${isDaily?'active':''}">✦ DAILY RANKED</button><button data-action="trivia-mode" data-trivia-mode="practice" class="${!isDaily?'active':''}">∞ PRACTICE</button></div></section>
+  <section class="trivia-hero gtp240-trivia-hero"><span class="gtp240-trivia-host" aria-hidden="true">${portrait('crypto',{alt:'',cls:'balanced',eager:true})}</span><span class="trivia-kicker">◈ CRYPTO / ENCRYPTED OUTLANDS INTEL</span><h1>APEX <em>TRIVIA.</em></h1><p>Five questions. 20 seconds each. Every right answer earns <b>20 points</b> — up to 100. Different from Daily Challenges.</p><div class="trivia-switch" role="group" aria-label="Trivia mode"><button data-action="trivia-mode" data-trivia-mode="daily" class="${isDaily?'active':''}">✦ DAILY RANKED</button><button data-action="trivia-mode" data-trivia-mode="practice" class="${!isDaily?'active':''}">∞ PRACTICE</button></div></section>
   <div class="trivia-grid"><section class="trivia-main" id="trivia-main-content" tabindex="-1">
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}
   ${!run?`<div class="trivia-intro"><span class="trivia-tag">${isDaily?'ONE OFFICIAL RUN PER UTC DAY':'UNLIMITED UNRANKED ROUNDS'}</span><h2>${isDaily?'DAILY INTEL DROP':'TRAIN YOUR KNOWLEDGE'}</h2><p>${isDaily?'Everyone receives the same five-question selection today. Answers and timing are verified on the server; results appear on the separate Trivia leaderboard.':'Try varied sets across the question bank; recent topics are rotated when possible. Practice does not affect your global ranking.'}</p><p class="trivia-hint">Your public nickname: <strong>${esc(savedNickname()||'Not set')}</strong> · You can change it in the top navigation.</p><button type="button" data-action="trivia-start" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'CONNECTING…':isDaily?'START / RESUME DAILY →':'START PRACTICE →'}</button></div>`:''}

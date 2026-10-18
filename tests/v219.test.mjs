@@ -27,7 +27,7 @@ test('browse portraits use verified local full-body sources where available',()=
 });
 test('mode accents and stable release cache versions',()=>{
  for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(css.includes(`[data-mode="${m}"]`));
- assert.ok(html.includes('styles.css?v=2.39.1'));
- assert.ok(html.includes('app.mjs?v=2.39.1'));
+ assert.ok(html.includes('styles.css?v=2.40.0'));
+ assert.ok(html.includes('app.mjs?v=2.40.0'));
  assert.ok(app.includes("app.dataset.mode=screen==='game'?active:''"));
 });
