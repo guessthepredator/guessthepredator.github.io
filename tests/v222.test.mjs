@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.32.0')&&html.includes('app.mjs?v=2.32.0'));
+ assert.ok(html.includes('styles.css?v=2.33.0')&&html.includes('app.mjs?v=2.33.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -293,4 +293,29 @@ test('V2.32 seamless game backdrop is drawn once across the desktop',()=>{
  assert.ok(css.includes('.gtp230-trait strong'));
  assert.ok(css.includes('body.lightshift-playing #app[data-screen="game"]'));
  assert.ok(css.includes('body:has(.gtp2-game-scene) #app[data-screen="game"]'));
+});
+
+test('V2.33 adds an explicit full-screen game wallpaper node above legacy app layers',()=>{
+ const render=app.split('function game(){')[1].split('function howTo()')[0];
+ assert.ok(render.includes('<div class="gtp233-viewport-art" aria-hidden="true"></div><main'));
+ assert.ok(css.includes('V2.33 — DEDICATED FULL-VIEWPORT GAME ART'));
+ assert.ok(css.includes('#app[data-screen="game"] > .gtp233-viewport-art'));
+ assert.ok(css.includes('position:fixed!important'));
+ assert.ok(css.includes('width:100vw!important;height:100vh!important;height:100dvh!important'));
+ assert.ok(css.includes('z-index:0!important'));
+ assert.ok(css.includes('var(--gtp230-back)!important'));
+ assert.ok(css.includes('background-size:cover!important'));
+ assert.ok(css.includes('background-position:center center!important'));
+});
+test('V2.33 live game content stays above a seamless non-interactive background',()=>{
+ assert.ok(css.includes('#app[data-screen="game"] > .gtp2-top,'));
+ assert.ok(css.includes('#app[data-screen="game"] > .gtp230-game{'));
+ assert.ok(css.includes('z-index:2!important'));
+ assert.ok(css.includes('pointer-events:none!important'));
+ assert.ok(css.includes('#app[data-screen="game"] .gtp230-arena,'));
+ assert.ok(css.includes('background-image:none!important'));
+ assert.ok(css.includes('.gtp230-game.gtp2-game-scene::before'));
+ assert.ok(css.includes('.clue-visual.gtp229-mystery-visual'));
+ assert.ok(app.includes('gtp230-control-row'));
+ assert.ok(app.includes('scannerDisplayValue(field,trait)'));
 });
