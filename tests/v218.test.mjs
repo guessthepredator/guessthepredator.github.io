@@ -36,15 +36,15 @@ test('five distinct neon UI schemes share matching game controls',()=>{
  assert.ok(css.includes('#app[data-screen="game"] .style-strip'));
  assert.ok(css.includes('--game-neon:var(--tile)'));
 });
-test('only the five probed full-body renders are configured locally',()=>{
+test('the six probed full-body renders including Axle are configured locally',()=>{
  const manifest=read('src/portrait_media_manifest.mjs');const list=['vantage','sparrow','rampart','revenant','loba','gibraltar','conduit','catalyst','ballistic','alter'];
  for(const slug of list)assert.ok(manifest.includes(`'${slug}'`));
- for(const slug of ['alter','ballistic','catalyst','conduit','sparrow'])
+ for(const slug of ['alter','axle','ballistic','catalyst','conduit','sparrow'])
   assert.ok(manifest.includes(slug+":'cutout-"+slug+".png'"));
  for(const slug of ['vantage','rampart','revenant','loba','gibraltar'])
   assert.ok(!manifest.includes(slug+":'cutout-"+slug+".png'"));
 });
 test('no stale V217 entrypoint; backend protocol marker present',()=>{
- assert.ok(html.includes('2.35.0'));assert.ok(app.includes("daily218.mjs?v=2.35.0"));
+ assert.ok(html.includes('2.36.0'));assert.ok(app.includes("daily218.mjs?v=2.36.0"));
  assert.ok(read('src/scoring.mjs').includes("protocol:'v218'"));
 });
