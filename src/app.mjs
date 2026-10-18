@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.36.0';
-import {legends} from './data.mjs?v=2.36.0';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.36.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.36.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.36.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.36.0';
-import {playSound} from './audio.mjs?v=2.36.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.36.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.36.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.36.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.36.0';
-import {loadStore,saveStore} from './store.mjs?v=2.36.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.37.0';
+import {legends} from './data.mjs?v=2.37.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.37.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.37.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.37.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.37.0';
+import {playSound} from './audio.mjs?v=2.37.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.37.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.37.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.37.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.37.0';
+import {loadStore,saveStore} from './store.mjs?v=2.37.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.36.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.37.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -86,7 +86,7 @@ let intelAnimation=null;
 const styleBadges=round=>{const tags=[];if(round.won&&round.guesses.length<=3&&!round.hints.length)tags.push('FLAWLESS READ');if(round.won&&round.timeLimit&&remainingTime(round,round.finishedAt)>=90)tags.push('SPEED CLEAR');if(round.won&&round.mode==='signal')tags.push('MYSTERY CLEAR');return tags;};
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const classOf=mode=>COLORS[mode]||'#ff91b7';
-const sound=name=>playSound(name,store.settings.audio);
+const sound=name=>playSound(name,store.settings.audio,store.settings.volume);
 const sync=()=>saveStore(store);
 const savedNickname=()=>String(store.profile?.nickname||'').trim();
 const getRound=()=>session==='daily'?currentDailyRounds(store.days,today())[dailyTrack]:store.practice[active];
@@ -234,8 +234,13 @@ function nav(){const nick=savedNickname();return `<header class="top gtp2-top"><
   <button class="brand gtp2-brand gtp221-unified-brand" data-action="home" aria-label="Guess the Predator home"><span class="gtp219-logo-emblem" aria-hidden="true"><svg viewBox="0 0 64 72" width="38" height="44" fill="none"><path d="M32 3 61 64H44L31 30 20 64H3L32 3Z" fill="currentColor"/><path d="M23 51h19l5 11H18l5-11Z" fill="#071222"/></svg></span><span class="gtp219-brand-type">GUESS THE<strong>PREDATOR</strong></span></button>
   <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='trivia'?'active':''}" data-action="trivia">✦ TRIVIA</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='leaderboard'?'active':''}" data-action="leaderboard">♛ RANKINGS</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item ${screen==='howto'?'active':''}" data-action="howto">? HOW TO PLAY</button><button class="nav-item ${screen==='faq'?'active':''}" data-action="faq">◉ FAQ</button></nav>
   <details class="gtp213-mobile-menu"><summary aria-label="Open site navigation">☰</summary><div class="gtp213-mobile-links"><button data-action="home" type="button">⌂ HOME</button><button data-action="trivia" type="button">✦ TRIVIA</button><button data-action="open" data-mode="classic" type="button">◈ PLAY</button><button data-action="leaderboard" type="button">♛ RANKINGS</button><button data-action="records" type="button">▤ STATS</button><button data-action="howto" type="button">? HOW TO PLAY</button><button data-action="faq" type="button">◉ FAQ</button></div></details>
-  <div class="top-actions"><button class="switch gtp2-profile-switch" data-action="profile" aria-label="Choose nickname">${nick?`◉ ${esc(nick)}`:'◎ NICKNAME'}</button><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
+  <div class="top-actions"><button class="switch gtp237-settings-switch" type="button" data-action="settings">⚙ SETTINGS</button><button class="switch gtp2-profile-switch" data-action="profile" aria-label="Choose nickname">${nick?`◉ ${esc(nick)}`:'◎ NICKNAME'}</button><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
  </div></header>`;}
+function settingsDialog(){
+ const layer=document.createElement('div');layer.id='gtp237-settings';layer.className='gtp237-settings-backdrop';
+ layer.innerHTML=`<div class="gtp237-settings-panel" role="dialog" aria-modal="true" aria-label="Game settings"><div class="gtp237-settings-head"><div><span>OUTLANDS CONTROL PANEL</span><h2>SETTINGS</h2></div><button type="button" data-action="settings-close" aria-label="Close settings">✕</button></div><label for="gtp237-volume">MASTER FX VOLUME <output id="gtp237-volume-output">${Math.round((store.settings.volume??.7)*100)}%</output></label><input id="gtp237-volume" type="range" min="0" max="100" step="1" value="${Math.round((store.settings.volume??.7)*100)}" aria-label="Sound effects volume"/><div class="gtp237-settings-actions"><button type="button" data-action="audio">SOUND ${store.settings.audio?'ON':'OFF'}</button><button type="button" data-action="motion">ANIMATIONS ${store.settings.motion?'ON':'OFF'}</button><button type="button" data-action="sound-preview">TEST SOUND ✦</button></div><small>Preferences saved automatically.</small></div>`;
+ layer.addEventListener('click',e=>{if(e.target===layer)layer.remove()});app.appendChild(layer);layer.querySelector('[data-action="settings-close"]')?.focus();
+}
 function statCards(){
   const day=currentDailyRounds(store.days,today());const stats=dailyStats(store.days,utcDay());
   return `<section class="dash" aria-label="Player statistics">
@@ -339,7 +344,7 @@ function home(){
         ${cards.slice(0,3).map(card).join('')}
       </section>
       <section class="gtp222-core" aria-label="Forbidden Intel and daily challenges">
-        <div class="gtp219-chest-art" aria-hidden="true"><span class="gtp219-chest-top"></span><span class="gtp219-chest-face"><span class="gtp219-chest-rune">◭</span></span></div>
+        <div class="gtp237-mythic-scene" role="img" aria-label="Glowing mythic supply bin"><div class="gtp237-mythic-halo"></div><div class="gtp237-mythic-bin"><div class="gtp237-mythic-lid"><i></i><b>MYTHIC</b><i></i></div><div class="gtp237-mythic-body"><span>◭</span><strong>SUPPLY BIN</strong></div><div class="gtp237-mythic-base"></div></div><span class="gtp237-mythic-glint">✦</span></div>
         <h1>FORBIDDEN <em>INTEL</em></h1>
         <div class="gtp219-intel gtp222-intel"><div class="gtp219-intel-head"><strong>THREE DAILY REWARDS</strong><b>${intelDone} / 3</b></div>
           <div class="gtp219-progress" aria-label="${intelDone} of 3 rewards unlocked" role="progressbar" aria-valuenow="${intelDone}" aria-valuemin="0" aria-valuemax="3"><span class="${done>=1?'cleared':''}"></span><span class="${done>=2?'cleared':''}"></span><span class="${triviaRewardEarned()?'cleared':''}"></span></div>
@@ -1049,8 +1054,11 @@ app.addEventListener('click',event=>{
   }
   else if(action==='profile'){openIdentityPrompt(true);sound('pick');}
   else if(action==='identity-skip'){closeIdentityPrompt();}
-  else if(action==='audio'){store.settings.audio=!store.settings.audio;sync();button.textContent=store.settings.audio?'♫ FX ON':'♪ FX OFF';button.setAttribute('aria-pressed',String(store.settings.audio));if(store.settings.audio)sound('pick');}
-  else if(action==='motion'){store.settings.motion=!store.settings.motion;sync();render({scroll:false});}
+  else if(action==='settings'){settingsDialog();sound('nav');}
+  else if(action==='settings-close'){document.getElementById('gtp237-settings')?.remove();}
+  else if(action==='sound-preview'){sound('victory');}
+  else if(action==='audio'){store.settings.audio=!store.settings.audio;sync();document.querySelectorAll('.gtp2-sound-switch').forEach(node=>{node.textContent=store.settings.audio?'♫ FX ON':'♪ FX OFF';node.setAttribute('aria-pressed',String(store.settings.audio))});if(button.closest('.gtp237-settings-panel'))button.textContent='SOUND '+(store.settings.audio?'ON':'OFF');if(store.settings.audio)sound('pick');}
+  else if(action==='motion'){store.settings.motion=!store.settings.motion;sync();if(button.closest('.gtp237-settings-panel')){button.textContent='ANIMATIONS '+(store.settings.motion?'ON':'OFF');app.classList.toggle('no-motion',!store.settings.motion);}else render({scroll:false});}
   else if(action==='picker'){pickerOpen=true;pickerSearch='';pickerClass='All';pickerSort='az';renderPicker();sound('pick');}
   else if(action==='close-picker'){pickerOpen=false;document.getElementById('picker-backdrop')?.remove();}
   else if(action==='guess'){submitGuess(button.dataset.name);}
@@ -1103,6 +1111,7 @@ app.addEventListener('focusin',event=>{
  });
 });
 app.addEventListener('input',event=>{
+ if(event.target.id==='gtp237-volume'){const level=Number(event.target.value);store.settings.volume=Math.max(0,Math.min(1,level/100));document.getElementById('gtp237-volume-output').textContent=level+'%';sync();}
   if(event.target.id==='guess-search'){quickSearch=event.target.value;updateSearchResults();}
   if(event.target.id==='trivia-written-answer')triviaAnswerText=event.target.value;
   if(event.target.id==='picker-search'){pickerSearch=event.target.value;renderPickerResults();}
@@ -1128,6 +1137,7 @@ document.addEventListener('keydown',event=>{
     }
   }
   if(event.key==='Escape'){
+ if(document.getElementById('gtp237-settings')){document.getElementById('gtp237-settings').remove();return;}
     if(intelModalOpen){closeIntelDialog();return;}
     if(wheelOpen){closeWheel();return;}
     if(pickerOpen){pickerOpen=false;document.getElementById('picker-backdrop')?.remove();}
