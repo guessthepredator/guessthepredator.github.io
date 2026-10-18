@@ -498,7 +498,7 @@ function cinematicIdentityBoard(round,target){
   const kind=trait?.kind||'hidden';
   const status=kind==='correct'||kind==='hint'?'match':kind==='wrong'?'different':'unknown';
   // The engine's comparison already includes the disclosed actual match;
-  // never read target[field] here, as UNKNOWN/DIFFERENT must remain hidden.
+  // never read the concealed answer here, as UNKNOWN/DIFFERENT remain hidden.
   const wording=scannerDisplayValue(field,trait);
   return `<div class="gtp230-trait gtp230-trait-${status}" aria-label="${esc(LABELS[field])}: ${esc(wording)}">
       <span class="gtp230-trait-icon" aria-hidden="true">${['◈','✥','▦','⌁','✧','◷'][i%6]}</span>
