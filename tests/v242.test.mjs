@@ -23,7 +23,7 @@ test('V2.42 environmental scene is layered, readable, and compact on mobile',()=
  assert.ok(css.includes('object-fit:contain!important'));
  assert.ok(css.includes('gtp242-scene .gtp241-scene-label'));
  assert.ok(css.includes('display:none!important'));
- assert.ok(css.includes('--gtp230-back!important'));
+ assert.ok(css.includes('var(--gtp230-back)!important'));
  assert.ok(css.includes('pointer-events:none!important'));
  assert.ok(css.includes('@media(max-width:700px)'));
 });
