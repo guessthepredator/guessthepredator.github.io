@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.37.0';
-import {legends} from './data.mjs?v=2.37.0';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.37.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.37.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.37.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.37.0';
-import {playSound} from './audio.mjs?v=2.37.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.37.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.37.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.37.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.37.0';
-import {loadStore,saveStore} from './store.mjs?v=2.37.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.38.0';
+import {legends} from './data.mjs?v=2.38.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.38.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.38.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.38.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.38.0';
+import {playSound} from './audio.mjs?v=2.38.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.38.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.38.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.38.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.38.0';
+import {loadStore,saveStore} from './store.mjs?v=2.38.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.37.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.38.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -319,6 +319,17 @@ function modeTile(mode,i){
    <span class="gtp2-mode-copy"><strong>${MODE_NAMES[mode]}</strong><small>${TAGLINES[mode]}</small><em>${status}</em></span><span class="gtp2-mode-arrow">❯</span>
  </button>`;
 }
+/** Decorative mode hosts never reveal the hidden answer. */
+const MODE_HOSTS=Object.freeze({
+ classic:{slug:'mirage',name:'MIRAGE'},pixel:{slug:'sparrow',name:'SPARROW'},
+ quote:{slug:'loba',name:'LOBA'},ability:{slug:'octane',name:'OCTANE'},
+ emoji:{slug:'wattson',name:'WATTSON'},trivia:{slug:'crypto',name:'CRYPTO'},
+ wheel:{slug:'pathfinder',name:'PATHFINDER'}
+});
+function modeHostBadge(mode){
+ const host=MODE_HOSTS[mode]||MODE_HOSTS.classic;
+ return `<span class="gtp238-mode-portrait" aria-hidden="true">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</span>`;
+}
 function home(){
  const rounds=currentDailyRounds(store.days,today());
  const done=checkpointCount(store.days,today());
@@ -334,9 +345,10 @@ function home(){
    ['emoji','EMOJI','Five symbols. One Legend.','✦'],
    ['trivia','TRIVIA','Five questions · 20 seconds each.','✧']
  ];
- const card=([mode,title,description,glyph],i)=>`<button type="button" class="gtp222-orbit-card gtp222-card-${mode} gtp224-orbit-${i+1}" data-action="${mode==='trivia'?'trivia':'open'}" ${mode==='trivia'?'':`data-mode="${mode}" data-session="unlimited"`} aria-label="${mode==='trivia'?'Open Trivia':'Play '+title}"><span class="gtp222-orbit-symbol" aria-hidden="true">${glyph}</span><span class="gtp222-orbit-copy"><strong>${title}</strong><small>${description}</small></span><span class="gtp222-orbit-arrow" aria-hidden="true">↗</span></button>`;
+ const card=([mode,title,description,glyph],i)=>`<button type="button" class="gtp222-orbit-card gtp238-mode-card gtp222-card-${mode} gtp224-orbit-${i+1}" data-host="${MODE_HOSTS[mode].slug}" data-action="${mode==='trivia'?'trivia':'open'}" ${mode==='trivia'?'':`data-mode="${mode}" data-session="unlimited"`} aria-label="${mode==='trivia'?'Open Trivia':'Play '+title} hosted by ${MODE_HOSTS[mode].name}">${modeHostBadge(mode)}<span class="gtp222-orbit-copy"><span class="gtp238-host-name">✦ ${MODE_HOSTS[mode].name} · MODE GUIDE</span><strong>${title}</strong><small>${description}</small></span><span class="gtp222-orbit-arrow" aria-hidden="true">↗</span></button>`;
  return `<main class="gtp219-home gtp222-home" aria-label="Guess the Predator homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
+   <div class="gtp238-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp238-mirage-right"></span></div>
   <div class="gtp222-layout">
    <div class="gtp222-eyebrow">✦ SIX WAYS TO PLAY · ONE OUTLANDS MYSTERY · DAILY PROGRESS SAVED ON THIS DEVICE ✦</div>
    <div class="gtp222-arena" aria-label="Choose a game mode or claim daily rewards">
@@ -344,7 +356,7 @@ function home(){
         ${cards.slice(0,3).map(card).join('')}
       </section>
       <section class="gtp222-core" aria-label="Forbidden Intel and daily challenges">
-        <div class="gtp237-mythic-scene" role="img" aria-label="Glowing mythic supply bin"><div class="gtp237-mythic-halo"></div><div class="gtp237-mythic-bin"><div class="gtp237-mythic-lid"><i></i><b>MYTHIC</b><i></i></div><div class="gtp237-mythic-body"><span>◭</span><strong>SUPPLY BIN</strong></div><div class="gtp237-mythic-base"></div></div><span class="gtp237-mythic-glint">✦</span></div>
+        <div class="gtp238-mythic-stage" role="img" aria-label="Glowing red futuristic mythic supply bin"><span class="gtp238-bin-glow"></span><img class="gtp238-mythic-art" src="./assets/decor/mythic-bin-v238.svg" alt="" loading="eager" decoding="async"/><span class="gtp238-bin-shine" aria-hidden="true">✦</span></div>
         <h1>FORBIDDEN <em>INTEL</em></h1>
         <div class="gtp219-intel gtp222-intel"><div class="gtp219-intel-head"><strong>THREE DAILY REWARDS</strong><b>${intelDone} / 3</b></div>
           <div class="gtp219-progress" aria-label="${intelDone} of 3 rewards unlocked" role="progressbar" aria-valuenow="${intelDone}" aria-valuemin="0" aria-valuemax="3"><span class="${done>=1?'cleared':''}"></span><span class="${done>=2?'cleared':''}"></span><span class="${triviaRewardEarned()?'cleared':''}"></span></div>
@@ -357,7 +369,7 @@ function home(){
         ${cards.slice(3).map(card).join('')}
       </section>
    </div>
-   <div class="gtp222-home-dock"><button type="button" data-action="wheel" class="gtp222-wheel" aria-label="Spin the full Next Game Legend wheel"><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
+   <div class="gtp222-home-dock"><button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host" aria-hidden="true">${portrait('pathfinder',{alt:'',cls:'balanced',eager:true})}</span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
     <article class="gtp222-spotlight"><div class="gtp222-spotlight-art">${portrait(spotlight.slug,{alt:spotlight.name,cls:'balanced',eager:true})}</div><div class="gtp222-dock-copy"><strong>LEGEND OF THE DAY</strong><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)} · changes daily</small></div></article></div>
    <footer class="gtp219-footer">♥ Made by Sebyby <span>Independent fan trivia · Not affiliated with EA or Respawn</span></footer>
   </div>
@@ -561,9 +573,9 @@ function visibleRoundModes(round){
  return `<div class="gtp235-rules" role="group" aria-label="Full Scan, One Signal and Rush settings">
    <span class="gtp235-rules-status" title="${lockCopy}"><b>SCAN RULES</b><small>${lockCopy}</small></span>
    <div class="gtp235-rule-buttons">
-     ${button('▦ FULL SCAN','style',round.mode==='full','scan-full')}
-     ${button('✦ ONE SIGNAL','style',round.mode==='signal','scan-signal')}
-     ${button(`◷ RUSH ${round.timeLimit?round.timeLimit+'s':'OFF'}`,'rush',!!round.timeLimit,'scan-rush')}
+     ${button('▦ FULL SCAN <small>SPARROW</small>','style',round.mode==='full','scan-full')}
+     ${button('✦ ONE SIGNAL <small>LOBA</small>','style',round.mode==='signal','scan-signal')}
+     ${button(`◷ RUSH ${round.timeLimit?round.timeLimit+'s':'OFF'} <small>OCTANE</small>`,'rush',!!round.timeLimit,'scan-rush')}
    </div>
  </div>`;
 }
@@ -620,10 +632,11 @@ function game(){
  const isDaily=session==='daily';
  const title=active.toUpperCase();
  const modeTag=round.mode==='full'?'FULL SCAN':'ONE SIGNAL';
+ const host=MODE_HOSTS[active]||MODE_HOSTS.classic;
  return `<div class="gtp233-viewport-art" aria-hidden="true"></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
    <header class="gtp230-titlebar">
-    <div class="gtp230-title-icon" aria-hidden="true">${ICONS[active]}</div>
-    <div class="gtp230-title-copy"><h1>${title} MODE</h1><p>${TAGLINES[active]} <span class="gtp230-scan-caption">· ${modeTag}</span></p></div>
+    <div class="gtp230-title-icon gtp238-game-host" aria-hidden="true">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div>
+    <div class="gtp230-title-copy"><span class="gtp238-game-host-label">HOSTED BY ${host.name}</span><h1>${title} MODE</h1><p>${TAGLINES[active]} <span class="gtp230-scan-caption">· ${modeTag}</span></p></div>
     <div class="gtp230-title-status">
      <span class="gtp230-session ${isDaily?'is-daily':'is-free'}">${isDaily?'DAILY':'FREE PLAY'}</span>
      <span class="gtp230-guess-count"><small>GUESSES</small><b>${round.guesses.length}/${maxGuesses(round)}</b></span>
