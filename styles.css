@@ -5689,3 +5689,60 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  object-fit:cover!important;object-position:center 35%!important;
  transform:scale(1.03)!important;transform-origin:center center!important;
 }
+
+
+/* V2.40.1 — Home mode icons: return to mockup's compact portrait hierarchy.
+   Only affects the six Home mode cards, never game clue artwork or dropdowns. */
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card{
+  height:146px!important;min-height:146px!important;
+  gap:0!important;justify-content:flex-start!important;
+}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-ring{
+  width:84px!important;height:84px!important;min-height:84px!important;
+  flex:0 0 84px!important;border-width:3px!important;
+  box-shadow:0 0 0 2px #06121b,0 0 13px var(--mode),
+  0 0 24px color-mix(in srgb,var(--mode) 27%,transparent),
+  inset 0 0 12px #030712!important;
+}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption{
+  margin-top:-7px!important;
+  min-height:49px!important;width:min(100%,185px)!important;
+  padding:5px 7px 6px!important;
+  box-shadow:0 6px 15px #01030ac2,0 0 9px color-mix(in srgb,var(--mode) 22%,transparent)!important;
+}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption strong{
+  font-size:19px!important;letter-spacing:.042em!important;line-height:1!important;
+}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption small{
+  font-size:9px!important;line-height:1.22!important;
+}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card:hover .gtp239-mode-ring{
+  box-shadow:0 0 0 2px #06121b,0 0 18px var(--mode),
+  0 0 27px color-mix(in srgb,var(--mode) 39%,transparent)!important;
+}
+@media(min-width:831px) and (max-width:1170px){
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-ring{
+  width:76px!important;height:76px!important;min-height:76px!important;flex-basis:76px!important;
+ }
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card{height:137px!important;min-height:137px!important}
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption strong{font-size:17px!important}
+}
+@media(max-width:830px){
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-ring{
+  width:74px!important;height:74px!important;min-height:74px!important;flex-basis:74px!important;
+ }
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card{height:136px!important;min-height:136px!important}
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption strong{font-size:clamp(14px,2.3vw,17px)!important}
+}
+@media(max-width:560px){
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-ring{
+  width:59px!important;height:59px!important;min-height:59px!important;flex-basis:59px!important;
+  border-width:2px!important;
+ }
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card{height:116px!important;min-height:116px!important}
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption{
+  margin-top:-5px!important;min-height:43px!important;padding:4px 3px 5px!important;
+ }
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption strong{font-size:13px!important}
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption small{font-size:8px!important}
+}
