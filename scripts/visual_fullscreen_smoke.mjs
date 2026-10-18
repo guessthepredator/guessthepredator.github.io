@@ -104,7 +104,18 @@ try{
    fail('Rush did not become visibly selected');
  await page.locator('#guess-search').fill('Wraith');
  await page.locator('button[data-action="submit-search"]').click();
- await page.waitForFunction(()=>document.querySelector('.gtp235-tried')?.textContent?.includes('Wraith'));
+ await page.waitForFunction(()=>document.querySelector('.gtp236-intel-column .gtp235-tried')?.textContent?.includes('Wraith'));
+ const position=await page.evaluate(()=>{
+  const note=document.querySelector('.gtp236-intel-column .gtp235-tried');
+  const board=document.querySelector('.gtp236-intel-column .gtp230-board');
+  if(!note||!board)throw new Error('Missing history note or real signal board');
+  const a=note.getBoundingClientRect(),b=board.getBoundingClientRect();
+  return {above:a.bottom<=b.top+2,onRight:a.left>innerWidth*.45};
+ });
+ if(!position.above||!position.onRight)
+  fail('Already Tried must appear on right above Identity Signal Board: '+JSON.stringify(position));
+ if(await page.locator('.gtp230-feedback').count())
+  fail('Latest Full Scan Received should not appear in the control dock');
  if(await page.locator('.gtp235-tried-names span').count()!==1)
    fail('Previously guessed Legend note was not updated after first attempt');
  if(!(await one.isDisabled())||!(await full.isDisabled())||!(await rush.isDisabled()))

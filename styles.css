@@ -4618,3 +4618,160 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
   #app[data-screen="game"] .gtp235-tried{gap:5px!important}
   #app[data-screen="game"] .gtp235-tried>strong{font-size:8px!important}
 }
+
+
+/* ================================================================
+   V2.36 · Screenshot-led gameplay UI polish
+   Compact HUD, readable solid actions, tried Legends above intel.
+   ================================================================ */
+#app[data-screen="game"] .gtp230-game>.gtp230-titlebar{
+  width:min(1240px,calc(100% - 24px))!important;
+  max-width:1240px!important;
+  min-height:63px!important;
+  margin:3px auto 9px!important;
+  padding:7px 12px!important;
+  border:1px solid color-mix(in srgb,var(--gtp230-accent) 69%,#284d65)!important;
+  border-radius:13px!important;
+  background:linear-gradient(105deg,rgba(8,19,34,.77),rgba(6,17,33,.45) 62%,rgba(8,19,34,.75))!important;
+  box-shadow:0 7px 20px #02071360,inset 0 1px 0 #ffffff20!important;
+}
+#app[data-screen="game"] .gtp230-title-icon{
+  width:46px!important;height:46px!important;flex:0 0 46px!important;
+  font-size:28px!important;border-radius:9px!important;
+}
+#app[data-screen="game"] .gtp230-title-copy h1{
+  font-size:clamp(28px,3vw,39px)!important;
+  margin:0 0 3px!important;
+}
+#app[data-screen="game"] .gtp230-title-copy p{
+  font-size:11px!important;line-height:1.25!important;
+}
+#app[data-screen="game"] .gtp230-title-status .gtp230-session{
+  min-width:80px!important;min-height:35px!important;
+  padding:5px 9px!important;
+}
+#app[data-screen="game"] .gtp230-guess-count{
+  padding:5px 9px!important;min-width:68px!important;
+}
+
+/* Use a right-hand column holding the small history NOTE above intel.
+   This means the bottom bar keeps the actions without extra clutter. */
+#app[data-screen="game"] .gtp230-arena>.gtp236-intel-column{
+  align-self:center!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:8px!important;
+  min-width:0!important;
+  max-height:calc(100% - 22px)!important;
+  min-height:0!important;
+  margin:11px 12px 11px 0!important;
+  position:relative!important;z-index:2!important;
+}
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-board,
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-side{
+  flex:0 1 auto!important;
+  align-self:stretch!important;
+  min-height:0!important;
+  max-height:100%!important;
+  margin:0!important;
+  overflow-y:auto!important;
+}
+#app[data-screen="game"] .gtp236-intel-column>.gtp235-tried{
+  margin:0!important;
+  padding:8px 10px!important;
+  flex:0 0 auto!important;
+  border:1px solid #57839b99!important;
+  border-radius:8px!important;
+  background:rgba(7,20,37,.85)!important;
+  box-shadow:0 3px 12px #020b1780!important;
+  flex-wrap:wrap!important;
+}
+#app[data-screen="game"] .gtp236-intel-column>.gtp235-tried>strong{
+  color:#ecd4de!important;font-size:10px!important;
+}
+#app[data-screen="game"] .gtp236-intel-column>.gtp235-tried .gtp235-tried-names{
+  flex:1 1 160px!important;
+}
+#app[data-screen="game"] .gtp230-board h2{
+  font-size:clamp(21px,1.8vw,28px)!important;
+  margin-bottom:5px!important;
+}
+#app[data-screen="game"] .gtp230-board>small{
+  margin-bottom:9px!important;
+}
+/* Main controls: distinctly raised, high-contrast actions.
+   The upper submit remains the strongest primary action. */
+#app[data-screen="game"] .gtp230-input-wrap>.gtp230-btn-main{
+  background:linear-gradient(125deg,var(--gtp230-accent),color-mix(in srgb,var(--gtp230-accent) 70%,#fff))!important;
+  border:2px solid var(--gtp230-hi)!important;
+  color:var(--gtp230-ink)!important;
+  font-size:16px!important;
+  font-weight:1000!important;
+  letter-spacing:.04em!important;
+  min-width:153px!important;
+  box-shadow:0 5px 15px color-mix(in srgb,var(--gtp230-accent) 31%,#040c1c)!important;
+}
+#app[data-screen="game"] .gtp230-control-row>.gtp230-btn{
+  min-height:43px!important;
+  padding:9px 15px!important;
+  font-size:16px!important;
+  font-weight:1000!important;
+  line-height:1.1!important;
+  letter-spacing:.055em!important;
+  border-width:2px!important;
+  border-radius:8px!important;
+  text-shadow:0 1px 4px #0008!important;
+  box-shadow:0 4px 15px #01071195,inset 0 1px 0 #ffffff20!important;
+}
+#app[data-screen="game"] .gtp230-control-row>.gtp230-btn-blue{
+  background:linear-gradient(130deg,#096eaa,#124778)!important;
+  border-color:#67d7ff!important;
+  color:#fff!important;
+}
+#app[data-screen="game"] .gtp230-control-row>.gtp230-btn-gold{
+  background:linear-gradient(130deg,#966015,#66401a)!important;
+  border-color:#ffd46a!important;
+  color:#fff2cc!important;
+}
+#app[data-screen="game"] .gtp230-control-row>.gtp230-btn-danger{
+  background:linear-gradient(130deg,#882d45,#551c30)!important;
+  border-color:#ff778b!important;
+  color:#ffe0e7!important;
+}
+#app[data-screen="game"] .gtp230-console{
+  padding:8px 12px!important;
+}
+#app[data-screen="game"] .gtp230-console-help{
+  margin-top:4px!important;
+  opacity:.77!important;
+}
+#app[data-screen="game"] .gtp235-rules{
+  margin-top:6px!important;
+  padding:4px 7px!important;
+}
+/* On mobile keep the info panel beneath the clue, without a giant margin. */
+@media(max-width:700px){
+  #app[data-screen="game"] .gtp230-game>.gtp230-titlebar{
+    width:calc(100% - 4px)!important;
+    margin:2px auto 7px!important;
+    min-height:66px!important;
+  }
+  #app[data-screen="game"] .gtp230-arena>.gtp236-intel-column{
+    margin:0 8px 9px!important;max-height:none!important;
+  }
+  #app[data-screen="game"] .gtp230-control-row>.gtp230-btn{
+    font-size:13px!important;padding:9px 7px!important;
+  }
+}
+@media(max-width:430px){
+  #app[data-screen="game"] .gtp230-control-row>.gtp230-btn{font-size:12px!important}
+  #app[data-screen="game"] .gtp230-input-wrap>.gtp230-btn-main{
+    min-width:107px!important;font-size:12px!important;
+  }
+}
+/* Make Axle's matching alpha PNG show exactly like the other Legends. */
+.gtp2-picker .picker-legend .portrait img,
+.gtp2-picker .picker-legend img{
+  object-fit:contain!important;
+  object-position:center center!important;
+}

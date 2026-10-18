@@ -27,7 +27,7 @@ test('new cascade renders five mode cards and does not erase Mirage art',()=>{
  assert.ok(js.includes('haunted-hero.webp'));
 });
 test('victory confetti is gated by victory and motion setting',()=>{
- assert.ok(js.includes("sound('party')"));
+ assert.ok(js.includes("sound('victory')"));
  assert.ok(js.includes('triggerVictoryConfetti()'));
  assert.ok(js.includes("store.settings.motion&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches"));
  assert.ok(css.includes('@keyframes gtp212-party'));

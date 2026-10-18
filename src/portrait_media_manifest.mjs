@@ -1,4 +1,4 @@
-/** Five full-body model renders are transparently cut out at build time.
+/** Six full-body model renders are transparently cut out at build time.
  * Their original PNGs include baked-in showcase scenes. We use U2Net to
  * remove those panels and platform props, then serve local RGBA PNG files.
  * Original game art belongs to Electronic Arts / Respawn Entertainment.
@@ -6,6 +6,7 @@
  */
 export const localPortraitFiles=Object.freeze({
   alter:'cutout-alter.png',
+  axle:'cutout-axle.png',
   ballistic:'cutout-ballistic.png',
   catalyst:'cutout-catalyst.png',
   conduit:'cutout-conduit.png',
