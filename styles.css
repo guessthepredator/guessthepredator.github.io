@@ -5363,3 +5363,14 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  filter:drop-shadow(0 16px 12px #000) drop-shadow(0 0 20px #ff593b9c) saturate(1.13)!important;
 }
 #app[data-screen="home"] .gtp239-bin-image:hover{filter:drop-shadow(0 16px 12px #000) drop-shadow(0 0 26px #ff593bc7) saturate(1.24)!important}
+
+
+/* V2.39 final cinematic blend: the glow fades the bin into the red stage. */
+#app[data-screen="home"] .gtp239-bin-image{
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 69%,#000b 80%,transparent 97%)!important;
+ mask-image:linear-gradient(to bottom,#000 0%,#000 69%,#000b 80%,transparent 97%)!important;
+}
+#app[data-screen="home"] .gtp239-sky{
+ background:radial-gradient(ellipse 44% 42% at 52% 27%,#f53d343f,#851c2534 63%,transparent 100%),
+ linear-gradient(180deg,#08040b25,#3208103b 59%,#11030b18)!important;
+}
