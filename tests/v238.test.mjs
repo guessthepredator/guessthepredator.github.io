@@ -39,7 +39,7 @@ test('Game headers show mode host and preserve cinematic game wallpaper',()=>{
  assert.ok(app.includes('gtp233-viewport-art'));
  assert.ok(css.includes('.gtp238-game-host'));
  assert.ok(css.includes('data-mode="classic"'));
- assert.ok(html.includes('styles.css?v=2.40.0'));
- assert.ok(html.includes('app.mjs?v=2.40.0'));
- assert.ok(app.includes("leaderboard.mjs?v=2.40.0"));
+ assert.ok(html.includes('styles.css?v=2.40.1'));
+ assert.ok(html.includes('app.mjs?v=2.40.1'));
+ assert.ok(app.includes("leaderboard.mjs?v=2.40.1"));
 });
