@@ -6292,3 +6292,58 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  pointer-events:none;
 }
 #app[data-screen="game"][data-mode="pixel"] .nova-pixel-scene .pixel-error:empty{display:none!important}
+
+
+/* V2.42 last visual pass — three screenshot-confirmed corrections. */
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="loba"]>.portrait-holder img{
+ object-fit:cover!important;object-position:center 8%!important;
+ transform:scale(1.9)!important;transform-origin:center 22%!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp242-spotlight-art .portrait-holder img,
+#app[data-screen="home"] .gtp239-home-dock .gtp241-spotlight-art .portrait-holder img{
+ object-fit:contain!important;object-position:center bottom!important;
+ width:100%!important;height:100%!important;transform:none!important;
+}
+#app[data-screen="game"][data-mode="emoji"]>.gtp242-scene{
+ z-index:4!important;pointer-events:none!important;
+}
+#app[data-screen="game"][data-mode="emoji"]>.gtp242-scene::before,
+#app[data-screen="game"][data-mode="emoji"]>.gtp242-scene::after,
+#app[data-screen="game"][data-mode="emoji"]>.gtp242-scene .gtp242-scenery,
+#app[data-screen="game"][data-mode="emoji"]>.gtp242-scene .gtp242-atmosphere-mark{
+ display:none!important;
+}
+#app[data-screen="game"][data-mode="emoji"]>.gtp242-scene .gtp242-fullbody-host{
+ top:19vh!important;bottom:13vh!important;right:2vw!important;
+ width:min(27vw,385px)!important;opacity:.77!important;
+ -webkit-mask-image:linear-gradient(180deg,#000 0 66%,transparent 97%)!important;
+ mask-image:linear-gradient(180deg,#000 0 66%,transparent 97%)!important;
+}
+#app[data-screen="trivia"]>.gtp242-trivia-environment{
+ z-index:3!important;pointer-events:none!important;
+ background:transparent!important;
+}
+#app[data-screen="trivia"]>.gtp242-trivia-environment .gtp242-crypto-grid{
+ opacity:.27!important;right:0!important;
+}
+#app[data-screen="trivia"]>.gtp242-trivia-environment .portrait-holder{
+ right:-8vw!important;top:15vh!important;bottom:8vh!important;
+ width:min(31vw,445px)!important;opacity:.64!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-wheel,
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight{
+ min-height:118px!important;max-height:122px!important;height:122px!important;
+}
+#app[data-screen="home"] .gtp239-home-dock{margin-top:2px!important;align-items:stretch!important}
+@media(max-width:700px){
+ #app[data-screen="game"][data-mode="emoji"]>.gtp242-scene .gtp242-fullbody-host{
+ right:-13vw!important;width:40vw!important;opacity:.29!important;
+ }
+ #app[data-screen="trivia"]>.gtp242-trivia-environment .portrait-holder{
+ right:-23vw!important;width:55vw!important;opacity:.26!important;
+ }
+ #app[data-screen="home"] .gtp239-home-dock .gtp222-wheel,
+ #app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight{
+ height:118px!important;max-height:none!important;
+ }
+}
