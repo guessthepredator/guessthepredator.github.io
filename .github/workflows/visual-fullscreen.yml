@@ -18,6 +18,15 @@ jobs:
         run: |
           npm install --no-save --no-package-lock playwright@1.55.1
           npx playwright install --with-deps chromium
+      - name: Cache character cutout model
+        uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: gtp-u2net-v1
+      - name: Prepare actual full-body Legend artwork for visual QA
+        run: |
+          python3 -m pip install --quiet Pillow requests 'rembg[cpu]==2.0.67'
+          OUTPUT_DIR=assets/portraits python3 scripts/probe_fullbody.py --strict
       - name: Check five desktop wallpapers and one mobile viewport
         run: node scripts/visual_fullscreen_smoke.mjs
       - name: Verify cinematic homepage layout and take comparison screenshots
