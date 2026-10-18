@@ -291,4 +291,6 @@ test('V2.32 seamless game backdrop is drawn once across the desktop',()=>{
  assert.ok(css.includes('#app[data-screen="game"] .gtp230-arena'));
  assert.ok(css.includes('background:linear-gradient(180deg,#07162a18,#040d1b29)!important;'));
  assert.ok(css.includes('.gtp230-trait strong'));
+ assert.ok(css.includes('body.lightshift-playing #app[data-screen="game"]'));
+ assert.ok(css.includes('body:has(.gtp2-game-scene) #app[data-screen="game"]'));
 });
