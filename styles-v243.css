@@ -313,3 +313,11 @@
 @media(prefers-reduced-motion:reduce){
  #app[data-screen="home"] .gtp239-side .gtp239-mode-card{transition:none!important}
 }
+
+
+/* Loba uses the tall official-style character render, not an eye-only fallback.
+   Lift the head into the medal without turning her into a giant cropped face. */
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="loba"]>.portrait-holder img{
+ object-fit:cover!important;object-position:center 12%!important;
+ transform:scale(1.25) translateY(6%)!important;transform-origin:center 24%!important;
+}
