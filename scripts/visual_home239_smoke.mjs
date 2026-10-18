@@ -65,7 +65,25 @@ try{
   assert(await scenic.count()===1,mode+' has no character environmental scene');
   assert(await scenic.locator('img[data-portrait]').getAttribute('data-portrait')===({classic:'mirage',pixel:'sparrow',quote:'loba',ability:'octane',emoji:'wattson'})[mode],mode+' scene portrait mismatch: '+JSON.stringify(actual));
 
+  await page.waitForFunction(()=>{
+    const img=document.querySelector('#app[data-screen="game"] > .gtp242-scene .gtp242-fullbody-host img');
+    return img?.complete&&img.naturalWidth>=150&&img.naturalHeight>img.naturalWidth*1.20;
+  },null,{timeout:20000});
+  const environment=await page.evaluate(()=>{
+    const img=document.querySelector('#app[data-screen="game"] > .gtp242-scene .gtp242-fullbody-host img');
+    const icon=getComputedStyle(img.closest('.portrait-holder')).opacity;
+    return {source:img.currentSrc.split('/').slice(-1)[0],width:img.naturalWidth,height:img.naturalHeight,opacity:icon};
+  });
+  assert(environment.height>environment.width*1.2,mode+' uses a cropped square thumbnail instead of full-body artwork: '+JSON.stringify(environment));
+  console.log('PASS full-body scenic art '+mode+' '+JSON.stringify(environment));
   assert(actual.modes.length===3,mode+' must keep Full Scan / One Signal / Rush settings');
+  if(mode==='pixel'){
+    await page.waitForFunction(()=>{
+      const c=document.querySelector('#app[data-screen="game"][data-mode="pixel"] .pixel-canvas.loaded');
+      return Boolean(c&&c.width<=12&&c.height>=5);
+    },null,{timeout:20000});
+    console.log('PASS Pixel actually renders the first clue to the pixel canvas instead of blank panel');
+  }
   await page.screenshot({path:'screenshots/v240-'+mode+'-legend-theme.png',fullPage:false});
   await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
   await page.waitForSelector('.gtp239-home');
@@ -75,6 +93,12 @@ try{
  const triviaHost=await page.evaluate(()=>document.querySelector('.gtp240-trivia-host img')?.dataset.portrait);
  assert(triviaHost==='crypto','Trivia should have Crypto identity, got '+triviaHost);
  assert(await page.locator('#app[data-screen="trivia"] > .gtp241-trivia-scene img[data-portrait="crypto"]').count()===1,'Crypto environment illustration missing');
+ await page.waitForFunction(()=>{
+   const img=document.querySelector('#app[data-screen="trivia"] > .gtp242-trivia-environment img[data-portrait="crypto"]');
+   return img?.complete&&img.naturalWidth>=150&&img.naturalHeight>img.naturalWidth*1.2;
+ },null,{timeout:20000});
+ console.log('PASS Crypto full-body scene image loaded before screenshot');
+
 
  await page.screenshot({path:'screenshots/v240-trivia-crypto-theme.png',fullPage:false});
  await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
