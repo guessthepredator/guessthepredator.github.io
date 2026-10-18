@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.35.0')&&html.includes('app.mjs?v=2.35.0'));
+ assert.ok(html.includes('styles.css?v=2.36.0')&&html.includes('app.mjs?v=2.36.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -131,7 +131,7 @@ test('screenshot regression: dark Browse, non-overlapping Home and original grap
 
 test('V2.26 missing five portraits have real hosted per-Legend GitHub fallback sources',async()=>{
  const {portraitSourcesFor}=await import('../src/art.mjs');
- for(const slug of ['alter','ballistic','catalyst','conduit','sparrow']){
+ for(const slug of ['alter','axle','ballistic','catalyst','conduit','sparrow']){
   const sources=portraitSourcesFor(slug);
   assert.ok(sources[0].startsWith('https://raw.githubusercontent.com/moeneri/astrbot_plugin_apexrankwatch/main/assets/legends/'));
   assert.ok(sources[0].endsWith('/'+slug+'.png'));
@@ -376,4 +376,34 @@ test('V2.35 previously guessed Legends are displayed unobtrusively with escaped 
  assert.ok(runner.includes('Free Play settings should be editable before the first guess'));
  assert.ok(runner.includes('Previously guessed Legend note was not updated after first attempt'));
  assert.ok(runner.includes('Scan rules must be locked after the first guess'));
+});
+
+test('V2.36 Tried Legends sits on the right above Identity Signal Board',()=>{
+ const game=app.split('function game(){')[1].split('function howTo()')[0];
+ assert.ok(game.includes('gtp236-intel-column'));
+ assert.ok(game.includes('${triedLegendNote(round)}'));
+ assert.ok(game.includes('${board||side||'));
+ const console=app.split('function cinematicControls(round,target){')[1].split('function game(){')[0];
+ assert.ok(!console.includes('latestSignal(round,target)'));
+ assert.ok(!console.includes('${triedLegendNote(round)}'));
+ assert.ok(css.includes('V2.36 · Screenshot-led gameplay UI polish'));
+ assert.ok(css.includes('.gtp236-intel-column>.gtp235-tried'));
+ assert.ok(css.includes('.gtp230-control-row>.gtp230-btn'));
+});
+test('V2.36 released Axle local alpha asset is built and validated',()=>{
+ const pipeline=read('scripts/probe_fullbody.py');
+ const manifest=read('src/portrait_media_manifest.mjs');
+ const validator=read('scripts/validate_release.py');
+ assert.ok(pipeline.includes('"axle"'));
+ assert.ok(pipeline.includes('"Axle Pose Stand Tall.png"'));
+ assert.ok(manifest.includes("axle:'cutout-axle.png'"));
+ assert.ok(validator.includes("'alter','axle','ballistic'"));
+});
+test('V2.36 uses new confetti victory tune, not generic party sample',()=>{
+ const audio=read('src/audio.mjs');
+ assert.ok(app.includes("if(justWon){sound('victory')"));
+ assert.ok(audio.includes("if(name==='victory')"));
+ assert.ok(audio.includes("if(key!=='victory')"));
+ assert.ok(audio.includes('melodyNotes'));
+ assert.ok(audio.includes("const events=new Set("));
 });
