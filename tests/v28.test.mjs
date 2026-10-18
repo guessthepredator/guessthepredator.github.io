@@ -23,7 +23,7 @@ test('session switches no longer rebuild entire page',()=>{
 test('pixel is harder and canvas background is deterministic and shared',()=>{
  assert.deepEqual(PIXEL_SIZES,[9,12,17,29,48,100,900]);
  assert.ok(read('src/pixel_scene.mjs').includes("ctx.drawImage(portrait,dx,dy,dw,dh)"));
- assert.ok(app.includes('const sizes=[9,12,16,26,40,82,900]'));
+ assert.ok(app.includes('const sizes=[9,12,17,29,48,100,900]'));
 });
 test('game palette is plum and filled; no white pastel under the screenshot',()=>{
  assert.ok(style.includes('body.lightshift-playing #app[data-screen="game"]'));
