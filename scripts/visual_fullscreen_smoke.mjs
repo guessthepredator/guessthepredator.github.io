@@ -75,9 +75,42 @@ try{
    fail(mode+': stage re-paints cropped second wallpaper '+result.arena.background);
   if(result.dock.bottom>929)
    fail(mode+': Submit actions pushed below 928px desktop viewport '+result.dock.bottom);
+  const rules=await page.evaluate(()=>{
+    const buttons=[...document.querySelectorAll('.gtp235-rule-buttons button')];
+    return buttons.map(btn=>({
+      text:btn.textContent.trim(),visible:btn.getBoundingClientRect().width>50&&btn.getBoundingClientRect().height>=29,
+      enabled:!btn.disabled,pressed:btn.getAttribute('aria-pressed'),
+      inViewport:btn.getBoundingClientRect().bottom<=innerHeight
+    }));
+  });
+  if(rules.length!==3||rules.some(btn=>!btn.visible||!btn.inViewport))
+    fail(mode+': Full Scan, One Signal and Rush must all remain visible above fold '+JSON.stringify(rules));
   await page.screenshot({path:'screenshots/v234-'+mode+'-desktop.png',fullPage:false});
   console.log('PASS '+mode+': full viewport wallpaper behind nav and readable HUD, dock bottom='+result.dock.bottom);
  }
+ // Rules can be chosen in Free Play before the first guess. After a
+ // guess, settings lock but remain visible and the tried list is populated.
+ await selectMode(page,'classic');
+ const one=page.locator('.gtp235-rule-choice[data-style="signal"]');
+ const full=page.locator('.gtp235-rule-choice[data-style="full"]');
+ const rush=page.locator('.gtp235-rule-choice[data-action="rush"]');
+ if(await one.isDisabled()||await full.isDisabled()||await rush.isDisabled())
+   fail('Free Play settings should be editable before the first guess');
+ await one.click();
+ if(await one.getAttribute('aria-pressed')!=='true')
+   fail('One Signal did not become visibly selected');
+ await rush.click();
+ if(await rush.getAttribute('aria-pressed')!=='true')
+   fail('Rush did not become visibly selected');
+ await page.locator('#guess-search').fill('Wraith');
+ await page.locator('button[data-action="submit-search"]').click();
+ await page.waitForFunction(()=>document.querySelector('.gtp235-tried')?.textContent?.includes('Wraith'));
+ if(await page.locator('.gtp235-tried-names span').count()!==1)
+   fail('Previously guessed Legend note was not updated after first attempt');
+ if(!(await one.isDisabled())||!(await full.isDisabled())||!(await rush.isDisabled()))
+   fail('Scan rules must be locked after the first guess, without disappearing');
+ await page.screenshot({path:'screenshots/v235-classic-tried-legends.png',fullPage:false});
+ console.log('PASS settings interaction: signal/rush toggle before guess; locked afterwards; note displays Wraith');
  await page.setViewportSize({width:390,height:844});
  await selectMode(page,'classic');
  const mobile=await page.evaluate(()=>{
