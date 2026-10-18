@@ -6274,3 +6274,21 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  #app[data-screen="home"] .gtp242-mode-plate strong{font-size:13px!important}
  #app[data-screen="home"] .gtp242-mode-plate small{font-size:6.8px!important}
 }
+
+
+/* V2.42 Pixel clarity: each stage reveals a visibly pixelated silhouette,
+   rather than a 900px frame blurred into a blank screen. */
+#app[data-screen="game"][data-mode="pixel"] .nova-pixel-scene .pixel-canvas.loaded{
+ image-rendering:pixelated!important;
+ filter:blur(var(--px-blur,2px)) contrast(1.16) saturate(1.18)!important;
+ opacity:1!important;
+}
+#app[data-screen="game"][data-mode="pixel"] .nova-pixel-scene .pixel-art:not(:has(.pixel-canvas.loaded))::after{
+ content:"◈  ENCRYPTED VISUAL SIGNAL  ◈";
+ position:absolute;inset:0;display:grid;place-items:center;z-index:1;
+ font:900 11px/1.2 'DM Sans',Arial,sans-serif;letter-spacing:.19em;
+ color:#86dff7a8;text-shadow:0 0 15px #49cfff58;
+ background:radial-gradient(ellipse at center,#0e518d36,#0611280b 65%,transparent);
+ pointer-events:none;
+}
+#app[data-screen="game"][data-mode="pixel"] .nova-pixel-scene .pixel-error:empty{display:none!important}
