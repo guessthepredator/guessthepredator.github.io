@@ -4775,3 +4775,48 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
   object-fit:contain!important;
   object-position:center center!important;
 }
+
+
+/* V2.37 — mythic bin, sound controls, leaner gameplay and large guess portraits */
+.gtp237-settings-switch{border:1px solid #ff9e74!important;background:rgba(38,15,28,.84)!important;color:#fff3ec!important;font-weight:850!important}
+.gtp237-settings-backdrop{position:fixed;inset:0;background:rgba(2,5,16,.82);backdrop-filter:blur(11px);display:grid;place-items:center;padding:18px;z-index:99999}
+.gtp237-settings-panel{width:min(485px,100%);padding:26px;background:linear-gradient(165deg,#192438,#0a0f1d 75%);border:1px solid #dd735f;border-radius:15px;box-shadow:0 25px 75px #000b,0 0 35px #ff5e351a;color:#f4f7ff}
+.gtp237-settings-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.gtp237-settings-head span{font-size:10px;font-weight:900;letter-spacing:.16em;color:#ffa37a}
+.gtp237-settings-head h2{margin:4px 0 0;font-size:32px}
+.gtp237-settings-head button{background:#273043;border:1px solid #8390a2;color:white;border-radius:9px;padding:8px 12px}
+.gtp237-settings-panel label{display:flex;justify-content:space-between;font-weight:900;letter-spacing:.06em;font-size:13px}
+.gtp237-settings-panel output{color:#ffc4a8}
+#gtp237-volume{width:100%;margin:18px 0 25px;accent-color:#ff7253;cursor:pointer;height:8px}
+.gtp237-settings-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.gtp237-settings-actions button{background:#22334c;border:1px solid #6d849a;border-radius:8px;padding:11px 4px;color:#eef5ff;font-weight:850;font-size:10px;cursor:pointer}
+.gtp237-settings-actions button:hover{background:#ad402f;border-color:#ffa283}
+.gtp237-settings-panel>small{color:#aabbd0}
+.gtp237-mythic-scene{position:relative;width:clamp(160px,23vw,315px);height:clamp(115px,15vw,205px);margin:0 auto 5px;display:grid;place-items:center;isolation:isolate;filter:drop-shadow(0 19px 17px #050406)}
+.gtp237-mythic-halo{position:absolute;inset:4% -18%;z-index:-1;background:radial-gradient(ellipse,#ff523675 1%,#fd5b272b 36%,transparent 70%);animation:gtp237-pulse 3s ease-in-out infinite}
+.gtp237-mythic-bin{position:relative;width:94%;height:64%;transform:perspective(530px) rotateX(-6deg) rotateY(-6deg);filter:drop-shadow(0 0 12px #ff3f2b72);transition:transform .35s ease}
+.gtp222-core:hover .gtp237-mythic-bin{transform:perspective(530px) rotateX(-3deg) rotateY(0deg) translateY(-7px)}
+.gtp237-mythic-lid{position:absolute;left:4%;right:4%;top:0;height:43%;border:4px solid #2d2225;border-radius:18px 18px 5px 5px;clip-path:polygon(6% 0,94% 0,100% 28%,100% 100%,0 100%,0 28%);background:linear-gradient(180deg,#fb6851 0%,#a51b22 17%,#3a2429 38%,#f75938 48%,#72141d 70%,#1a171e);box-shadow:inset 0 2px 4px #ffd7ad,0 0 22px #f73e36}
+.gtp237-mythic-lid b{position:absolute;top:25%;left:38%;width:24%;padding:3px 0;text-align:center;background:#1b151e;color:#ffdeaa;border:1px solid #fb7a50;font-weight:1000;letter-spacing:.08em;font-size:clamp(8px,.85vw,11px)}
+.gtp237-mythic-lid i{position:absolute;top:13%;height:87%;width:9px;background:linear-gradient(90deg,#fff0ba,#f73929,#8e1023);box-shadow:0 0 14px #ff392d}
+.gtp237-mythic-lid i:first-child{left:18%;transform:skew(-14deg)}
+.gtp237-mythic-lid i:last-child{right:18%;transform:skew(14deg)}
+.gtp237-mythic-body{position:absolute;inset:37% 0 5%;background:linear-gradient(165deg,#c53b34,#541b24 35%,#201b26 47%,#aa2c2a 55%,#291c23 93%);border:4px solid #261b22;clip-path:polygon(4% 0,96% 0,100% 23%,96% 100%,4% 100%,0 23%);box-shadow:inset 0 0 15px #ff443e85;display:flex;align-items:center;justify-content:center;gap:10px}
+.gtp237-mythic-body span{font-size:clamp(20px,3vw,32px);color:#ffd9aa;text-shadow:0 0 14px #ff3c25}
+.gtp237-mythic-body strong{font-size:clamp(9px,1vw,13px);letter-spacing:.11em;color:#ffe4be;text-shadow:0 0 9px #ff512e}
+.gtp237-mythic-base{position:absolute;bottom:0;left:12%;right:12%;height:12%;background:#13131d;border:2px solid #ed583e;border-radius:3px}
+.gtp237-mythic-glint{position:absolute;right:6%;top:10%;font-size:32px;color:#ffd8af;animation:gtp237-pulse 2.6s infinite alternate}
+@keyframes gtp237-pulse{50%{opacity:.58;transform:scale(1.07)}}
+#app[data-screen="game"] .gtp230-game{--gtp237-glass:rgba(7,16,31,.75)}
+#app[data-screen="game"] .gtp230-console{background:var(--gtp237-glass)!important;border-radius:11px!important;box-shadow:0 10px 25px #0005!important}
+#app[data-screen="game"] .gtp230-titlebar{box-shadow:none!important;border-color:#728b984d!important}
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-board{background:rgba(7,17,31,.76)!important;backdrop-filter:blur(8px);border-radius:11px!important}
+#app[data-screen="game"] .gtp230-main-clue{border-color:#55718466!important}
+.search-list .search-result{min-height:78px!important;display:flex!important;align-items:center!important;gap:13px!important;padding:7px 12px!important}
+.search-list .search-result .portrait-holder{height:64px!important;min-height:64px!important;width:64px!important;min-width:64px!important;flex:0 0 64px!important;overflow:hidden!important;border-radius:9px!important}
+.search-list .search-result .portrait-holder img{height:100%!important;width:100%!important;object-fit:contain!important;object-position:center center!important}
+.search-list .search-result strong{font-size:15px!important}
+.search-list .search-result small{font-size:12px!important}
+@media(max-width:700px){.gtp237-settings-switch{padding:7px 9px!important;font-size:10px!important}.gtp237-mythic-scene{width:230px;height:135px}.search-list .search-result .portrait-holder{width:54px!important;height:54px!important;min-width:54px!important;flex-basis:54px!important}}
+@media(prefers-reduced-motion:reduce){.gtp237-mythic-halo,.gtp237-mythic-glint{animation:none}}
+.no-motion .gtp237-mythic-halo,.no-motion .gtp237-mythic-glint{animation:none!important}
