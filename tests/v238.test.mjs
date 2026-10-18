@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,statSync} from 'node:fs';
 const read=(p)=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const app=read('src/app.mjs'), css=read('styles.css'), html=read('index.html');
 const home=app.split('function home(){')[1].split('function homeLegacy(){')[0];
@@ -11,13 +11,11 @@ test('V2.38 restores exactly two decorative Mirage home figures',()=>{
  assert.ok(css.includes('.gtp238-mirage-duo{'));
  assert.ok(css.includes('pointer-events:none'));
 });
-test('V2.38 mythic bin is self-contained vector art, not the small CSS chest',()=>{
- assert.ok(home.includes('mythic-bin-v238.svg'));
+test('V2.39 photoreal mythic bin is bundled, not tiny vector outline',()=>{
+ assert.ok(home.includes('mythic-bin-real-v239.webp'));
  assert.ok(!home.includes('gtp237-mythic-bin'));
- const bin=read('assets/decor/mythic-bin-v238.svg');
- assert.ok(bin.includes('viewBox="0 0 1000 520"'));
- assert.ok(bin.includes('path d="M454 274L499 344 544 274Z"'));
- assert.ok(bin.includes('id="glow"'));
+ assert.ok(home.includes('gtp239-bin-image'));
+ assert.ok(statSync(new URL('../assets/decor/mythic-bin-real-v239.webp',import.meta.url)).size>3000);
 });
 test('V2.38 Legend mode guides do not reveal the random answer',()=>{
  const expected={classic:'mirage',pixel:'sparrow',quote:'loba',ability:'octane',emoji:'wattson',trivia:'crypto',wheel:'pathfinder'};
@@ -41,7 +39,7 @@ test('Game headers show mode host and preserve cinematic game wallpaper',()=>{
  assert.ok(app.includes('gtp233-viewport-art'));
  assert.ok(css.includes('.gtp238-game-host'));
  assert.ok(css.includes('data-mode="classic"'));
- assert.ok(html.includes('styles.css?v=2.38.0'));
- assert.ok(html.includes('app.mjs?v=2.38.0'));
- assert.ok(app.includes("leaderboard.mjs?v=2.38.0"));
+ assert.ok(html.includes('styles.css?v=2.39.0'));
+ assert.ok(html.includes('app.mjs?v=2.39.0'));
+ assert.ok(app.includes("leaderboard.mjs?v=2.39.0"));
 });

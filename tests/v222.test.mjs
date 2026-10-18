@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.38.0')&&html.includes('app.mjs?v=2.38.0'));
+ assert.ok(html.includes('styles.css?v=2.39.0')&&html.includes('app.mjs?v=2.39.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -152,7 +152,7 @@ test('V2.26 audio supports distinct modes, visible homepage hover and valid loss
  assert.ok(audio.includes("const modes=['classic','pixel','quote','ability','emoji']"));
  assert.ok(audio.includes('audioEngine()'));
  assert.ok(audio.includes("if(name==='wrong')"));
- assert.ok(app.includes("closest?.('.arena-mode,.gtp222-orbit-card')"));
+ assert.ok(app.includes("closest?.('.arena-mode,.gtp222-orbit-card,.gtp239-mode-card')"));
  assert.ok(app.includes("if(next.finished)sound('lose');"));
 });
 

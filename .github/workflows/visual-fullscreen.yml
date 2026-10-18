@@ -1,4 +1,4 @@
-name: V2.34 Fullscreen Visual QA
+name: V2.39 Cinematic Visual QA
 on:
   pull_request:
     branches: [main]
@@ -20,10 +20,12 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Check five desktop wallpapers and one mobile viewport
         run: node scripts/visual_fullscreen_smoke.mjs
+      - name: Verify cinematic homepage layout and take comparison screenshots
+        run: node scripts/visual_home239_smoke.mjs
       - name: Save visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: v234-wallpaper-screenshots
+          name: v239-cinematic-screenshots
           path: screenshots/
           if-no-files-found: ignore
