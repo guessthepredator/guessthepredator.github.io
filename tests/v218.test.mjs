@@ -45,6 +45,6 @@ test('the six probed full-body renders including Axle are configured locally',()
   assert.ok(!manifest.includes(slug+":'cutout-"+slug+".png'"));
 });
 test('no stale V217 entrypoint; backend protocol marker present',()=>{
- assert.ok(html.includes('2.40.0'));assert.ok(app.includes("daily218.mjs?v=2.40.0"));
+ assert.ok(html.includes('2.40.1'));assert.ok(app.includes("daily218.mjs?v=2.40.1"));
  assert.ok(read('src/scoring.mjs').includes("protocol:'v218'"));
 });
