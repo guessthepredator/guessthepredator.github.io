@@ -77,6 +77,13 @@ try{
   assert(environment.height>environment.width*1.2,mode+' uses a cropped square thumbnail instead of full-body artwork: '+JSON.stringify(environment));
   console.log('PASS full-body scenic art '+mode+' '+JSON.stringify(environment));
   assert(actual.modes.length===3,mode+' must keep Full Scan / One Signal / Rush settings');
+  if(mode==='pixel'){
+    await page.waitForFunction(()=>{
+      const c=document.querySelector('#app[data-screen="game"][data-mode="pixel"] .pixel-canvas.loaded');
+      return Boolean(c&&c.width<=12&&c.height>=5);
+    },null,{timeout:20000});
+    console.log('PASS Pixel actually renders the first clue to the pixel canvas instead of blank panel');
+  }
   await page.screenshot({path:'screenshots/v240-'+mode+'-legend-theme.png',fullPage:false});
   await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
   await page.waitForSelector('.gtp239-home');
