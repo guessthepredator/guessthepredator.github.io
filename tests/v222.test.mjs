@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.33.0')&&html.includes('app.mjs?v=2.33.0'));
+ assert.ok(html.includes('styles.css?v=2.34.0')&&html.includes('app.mjs?v=2.34.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -318,4 +318,29 @@ test('V2.33 live game content stays above a seamless non-interactive background'
  assert.ok(css.includes('.clue-visual.gtp229-mystery-visual'));
  assert.ok(app.includes('gtp230-control-row'));
  assert.ok(app.includes('scannerDisplayValue(field,trait)'));
+});
+
+test('V2.34 HUD shows one full wallpaper even under navbar, title and action dock',()=>{
+ assert.ok(css.includes('V2.34 — TRUE FULL-SCREEN WALLPAPER'));
+ assert.ok(css.includes('background-image:none!important'));
+ assert.ok(css.includes('#app[data-screen="game"] > .gtp233-viewport-art'));
+ assert.ok(css.includes('var(--gtp230-back)!important'));
+ assert.ok(css.includes('#app[data-screen="game"] > header.gtp2-top'));
+ assert.ok(css.includes('backdrop-filter:none!important'));
+ assert.ok(css.includes('.gtp230-game>.gtp230-titlebar'));
+ assert.ok(css.includes('.gtp230-console,'));
+ assert.ok(css.includes('rgba(5,14,29,.67)'));
+ assert.ok(css.includes('border:0!important'));
+ assert.ok(css.includes('.gtp230-board,'));
+ assert.ok(app.includes('gtp233-viewport-art'));
+});
+test('V2.34 visual regression runner inspects real Chromium viewport and screenshots',()=>{
+ const runner=read('scripts/visual_fullscreen_smoke.mjs');
+ const ci=read('.github/workflows/visual-fullscreen.yml');
+ assert.ok(runner.includes('chromium.launch'));
+ assert.ok(runner.includes('width:1658,height:928'));
+ assert.ok(runner.includes('backgroundImage'));
+ assert.ok(runner.includes('gtp230-console'));
+ assert.ok(runner.includes('screenshots/v234-'));
+ assert.ok(ci.includes('node scripts/visual_fullscreen_smoke.mjs'));
 });
