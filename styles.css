@@ -4305,3 +4305,90 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
   background-repeat:no-repeat!important;
   background-attachment:fixed!important;
 }
+
+
+/* ======================================================================
+   V2.33 — DEDICATED FULL-VIEWPORT GAME ART
+   Previous fixes put art on the app background, which remained behind older
+   opaque layers. This rendered, fixed child is ABOVE those legacy layers and
+   BELOW ALL live controls. It is not tied to the stage's crop or scroll height.
+   ====================================================================== */
+#app[data-screen="game"]{
+  position:relative!important;
+  isolation:isolate!important;
+}
+/* One continuous artwork plane at true viewport size on all five game modes. */
+#app[data-screen="game"] > .gtp233-viewport-art{
+  display:block!important;
+  position:fixed!important;
+  inset:0!important;
+  top:0!important;left:0!important;right:0!important;bottom:0!important;
+  width:100vw!important;height:100vh!important;height:100dvh!important;
+  min-width:100vw!important;max-width:none!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  opacity:1!important;visibility:visible!important;
+  transform:none!important;filter:none!important;
+  background-color:#071326!important;
+  background-image:
+    linear-gradient(90deg,rgba(3,9,22,.32),rgba(3,9,22,.07) 22%,rgba(3,9,22,.07) 78%,rgba(3,9,22,.32)),
+    linear-gradient(180deg,rgba(3,9,22,.32),rgba(4,10,24,.10) 35%,rgba(3,9,22,.44)),
+    var(--gtp230-back)!important;
+  background-size:cover!important;
+  background-position:center center!important;
+  background-repeat:no-repeat!important;
+  background-attachment:scroll!important;
+}
+/* Existing old body/app backgrounds now stay UNDER the explicit image plane. */
+#app[data-screen="game"] > .gtp2-top,
+#app[data-screen="game"] > .gtp230-game{
+  position:relative!important;
+  z-index:2!important;
+}
+#app[data-screen="game"] > .gtp2-top{
+  background:#081225e8!important;
+  backdrop-filter:blur(6px)!important;
+}
+/* Prevent a second 'wallpaper' from being painted inside the middle section.
+   Previously its independent crop made the art look fullscreen only there. */
+#app[data-screen="game"] .gtp230-arena,
+#app[data-screen="game"] .gtp230-main-clue{
+  background:transparent!important;
+  background-image:none!important;
+}
+#app[data-screen="game"] .gtp230-game.gtp2-game-scene::before,
+#app[data-screen="game"] .gtp230-game.gtp2-game-scene::after{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+}
+/* The central unknown figure and game clues float over the common image.
+   Keep contrast and mystery art; remove independent opaque scene graphics. */
+#app[data-screen="game"] .gtp230-game .gtp230-main-clue .clue-visual.gtp229-mystery-visual{
+  background:transparent!important;
+  background-image:none!important;
+}
+#app[data-screen="game"] .gtp230-game .gtp230-main-clue .clue-visual.gtp210-ability-stage,
+#app[data-screen="game"] .gtp230-game .gtp230-main-clue .clue-visual.gtp210-emoji-stage{
+  background:radial-gradient(ellipse at 50% 50%,#0b12205e,transparent 77%)!important;
+}
+#app[data-screen="game"] .gtp230-game .gtp230-main-clue .clue-visual.gtp29-quote-visual{
+  background:#090f2024!important;
+  background-image:none!important;
+}
+/* Side board must remain opaque enough to read even over bright parts of art. */
+#app[data-screen="game"] .gtp230-board,
+#app[data-screen="game"] .gtp230-side{
+  background:#061527ed!important;
+}
+/* Game logic, click targets and modal overlays stay above the wallpaper. */
+#app[data-screen="game"] > .picker-backdrop,
+#app[data-screen="game"] > .gtp2-picker-backdrop,
+#app[data-screen="game"] > .intel-backdrop{
+  z-index:90!important;
+}
+@media(max-width:700px){
+  #app[data-screen="game"] > .gtp233-viewport-art{
+    background-position:50% 50%!important;
+  }
+}

@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.32.0';
-import {legends} from './data.mjs?v=2.32.0';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.32.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.32.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.32.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.32.0';
-import {playSound} from './audio.mjs?v=2.32.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.32.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.32.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.32.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.32.0';
-import {loadStore,saveStore} from './store.mjs?v=2.32.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.33.0';
+import {legends} from './data.mjs?v=2.33.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.33.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.33.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.33.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.33.0';
+import {playSound} from './audio.mjs?v=2.33.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.33.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.33.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.33.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.33.0';
+import {loadStore,saveStore} from './store.mjs?v=2.33.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.32.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.33.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -591,7 +591,7 @@ function game(){
  const isDaily=session==='daily';
  const title=active.toUpperCase();
  const modeTag=round.mode==='full'?'FULL SCAN':'ONE SIGNAL';
- return `<main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
+ return `<div class="gtp233-viewport-art" aria-hidden="true"></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
    <header class="gtp230-titlebar">
     <div class="gtp230-title-icon" aria-hidden="true">${ICONS[active]}</div>
     <div class="gtp230-title-copy"><h1>${title} MODE</h1><p>${TAGLINES[active]} <span class="gtp230-scan-caption">· ${modeTag}</span></p></div>
