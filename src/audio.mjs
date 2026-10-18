@@ -3,7 +3,7 @@
  * WebAudio adds soft, differentiated mode chimes without network assets.
  */
 const modes=['classic','pixel','quote','ability','emoji'];
-const events=new Set(['nav','pick','clue','wrong','correct','win','party','lose','reveal',...modes.map(mode=>'hover-'+mode)]);
+const events=new Set(['nav','pick','clue','wrong','correct','win','party','victory','lose','reveal',...modes.map(mode=>'hover-'+mode)]);
 const buffers=new Map(),last=new Map();
 let ctx=null,master=null;
 function audioEngine(){
@@ -44,6 +44,22 @@ function melody(name){
   tone(325,.13,{shape:'triangle',level:.046});
   tone(252,.16,{shape:'triangle',delay:.07,level:.032});return;
  }
+ // A dedicated, original sparkling victory fanfare for successful Legend guesses.
+ // Distinct from UI success chimes; triggered alongside confetti, but audio
+ // remains available if reduced-motion accessibility disables confetti.
+ if(name==='victory'){
+  const melodyNotes=[523.25,659.25,783.99,1046.50,1318.51];
+  const offsets=[0,.095,.19,.29,.43];
+  melodyNotes.forEach((frequency,i)=>tone(frequency,i===4?.55:.20,{
+   shape:i===4?'sine':'triangle',delay:offsets[i],
+   level:i===4?.082:.055,pan:[-.4,.35,-.2,.3,0][i]
+  }));
+  // A soft shimmering double-sparkle after the ascending fanfare.
+  tone(1567.98,.24,{shape:'sine',level:.027,delay:.48,pan:-.52});
+  tone(1975.53,.36,{shape:'sine',level:.024,delay:.61,pan:.48});
+  tone(783.99,.43,{shape:'sine',level:.031,delay:.46,pan:.05});
+  return;
+ }
  if(name==='win'||name==='party'){
   tone(523,.17,{level:.06});tone(659,.21,{delay:.09,level:.05});tone(784,.29,{delay:.18,level:.045});return;
  }
@@ -66,10 +82,12 @@ export function playSound(name,enabled=true){
  if(now-(last.get(key)||0)<minGap)return false;
  last.set(key,now);
  try{
-  const a=getSample(key),player=a.paused?a:a.cloneNode(true);
-  // Avoid layered overdriven samples, particularly after a failed attempt.
-  player.volume=key==='party'?.12:key.startsWith('hover-')?.028:key==='lose'?.11:key==='wrong'?.06:key==='clue'?.08:.09;
-  player.currentTime=0;void player.play()?.catch?.(()=>{});
+  if(key!=='victory'){
+   const a=getSample(key),player=a.paused?a:a.cloneNode(true);
+   // Victory uses an ORIGINAL generated fanfare, not the old party sample.
+   player.volume=key==='party'?.12:key.startsWith('hover-')?.028:key==='lose'?.11:key==='wrong'?.06:key==='clue'?.08:.09;
+   player.currentTime=0;void player.play()?.catch?.(()=>{});
+  }
  }catch{/* Fallback to synthesized sound */ }
  melody(key);return true;
 }
