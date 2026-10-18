@@ -5867,7 +5867,7 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  background-image:
  radial-gradient(ellipse 58% 77% at 80% 45%,var(--gtp241-scene-glow),transparent 76%),
  linear-gradient(100deg,#06101c92 0%,var(--gtp241-scene-ink) 100%),
- url('./assets/decor/haunted-hero.webp')!important;
+ var(--gtp230-back)!important;
  background-size:cover!important;background-position:center center!important;
 }
 #app[data-screen="game"]>.gtp241-mode-scene{
