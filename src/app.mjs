@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.41.0';
-import {legends} from './data.mjs?v=2.41.0';
-import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2.41.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.41.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.41.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.41.0';
-import {playSound} from './audio.mjs?v=2.41.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.41.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.41.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.41.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.41.0';
-import {loadStore,saveStore} from './store.mjs?v=2.41.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.42.0';
+import {legends} from './data.mjs?v=2.42.0';
+import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2.42.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.42.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.42.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.42.0';
+import {playSound} from './audio.mjs?v=2.42.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.42.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.42.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.42.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.42.0';
+import {loadStore,saveStore} from './store.mjs?v=2.42.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.41.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.42.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -139,10 +139,13 @@ function loadPortraitImages(parent=app){
     const inPixelPuzzle=Boolean(image.closest('.pixel-art'));
     const sourceCatalog=portraitSourcesFor(slug,{pixel:inPixelPuzzle});
     // Pixel mode uses the old source priority so tall renders never change its canvas composition.
-    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host,.gtp241-spotlight-art'));
+    const isSceneArt=Boolean(image.closest('.gtp241-scene-host,.gtp241-trivia-scene'));
+    const isHomeLoba=Boolean(image.closest('.gtp239-mode-ring[data-host="loba"]'));
+    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host,.gtp241-spotlight-art'))&&!isHomeLoba;
     // Host portraits need reliable direct square sources first. Mystery and pixel target art keep their own ordering.
     const hostSource=isHostArt?reliableIconFallbacks[slug]:null;
-    const candidates=[...new Set([...(hostSource?[hostSource]:[]),...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog])];let index=0;
+    const preferredFullBody=isSceneArt?[...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog.filter(url=>!url.includes('moeneri/astrbot_plugin_apexrankwatch/'))]:[];
+    const candidates=[...new Set([...(isSceneArt?preferredFullBody:[]),...(hostSource?[hostSource]:[]),...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog])];let index=0;
     const next=()=>{
       if(index>=candidates.length){
         const box=image.closest('.portrait-holder');
@@ -362,8 +365,8 @@ function home(){
   {id:'trivia',title:'TRIVIA',host:'crypto',description:'Crack five Apex intel questions.',action:'trivia',accent:'blue'}
  ];
  const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp239-${cfg.accent}" data-host="${cfg.host}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
- <span class="gtp239-mode-ring" aria-hidden="true"><span class="gtp239-host-fallback">${cfg.host.slice(0,2).toUpperCase()}</span>${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}</span>
- <span class="gtp239-mode-caption"><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
+ <span class="gtp239-mode-ring gtp242-mode-medallion" data-host="${cfg.host}" aria-hidden="true"><span class="gtp242-ring-detail"></span><span class="gtp239-host-fallback">${cfg.host.slice(0,2).toUpperCase()}</span>${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}<span class="gtp242-ring-notch"></span></span>
+ <span class="gtp239-mode-caption gtp242-mode-plate"><span class="gtp242-host-name">${cfg.host.toUpperCase()} · MODE GUIDE</span><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
  return `<main class="gtp219-home gtp222-home gtp239-home" aria-label="Guess the Predator homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
   <div class="gtp239-sky" aria-hidden="true"><span class="gtp239-blood-moon"></span><span class="gtp239-embers"></span></div>
@@ -651,7 +654,7 @@ function game(){
  const modeTag=round.mode==='full'?'FULL SCAN':'ONE SIGNAL';
  const host=MODE_HOSTS[active]||MODE_HOSTS.classic;
  const signature={classic:['DECOY PROTOCOL','BAMBOOZLE THEM'],pixel:['RECON OPTICS','READ BETWEEN THE PIXELS'],quote:['BLACK MARKET COMMS','EVERY VOICE HAS A PRICE'],ability:['STIM SYSTEMS','IDENTIFY THE SIGNATURE'],emoji:['ELECTRIC CIPHER','CONNECT THE SIGNALS']}[active]||['OUTLANDS INTEL','FOLLOW THE CLUES'];
- return `<div class="gtp233-viewport-art" aria-hidden="true"></div><div class="gtp241-mode-scene gtp241-scene-${active}" aria-hidden="true"><div class="gtp241-scene-halo"></div><div class="gtp241-scene-host">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div><span class="gtp241-scene-label">${host.name} · ${signature[0]}</span></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
+ return `<div class="gtp233-viewport-art" aria-hidden="true"></div><div class="gtp241-mode-scene gtp241-scene-${active} gtp242-scene" aria-hidden="true"><div class="gtp242-scenery"><i></i><i></i><i></i></div><div class="gtp241-scene-halo"></div><div class="gtp241-scene-host gtp242-fullbody-host">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div><span class="gtp241-scene-label">${host.name} · ${signature[0]}</span><span class="gtp242-atmosphere-mark">◈ ${signature[0]}</span></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
    <header class="gtp230-titlebar gtp240-themed-titlebar">
     <span class="gtp240-header-beam" aria-hidden="true"></span>
     <div class="gtp230-title-icon gtp238-game-host" aria-hidden="true">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div>
@@ -709,7 +712,7 @@ function trivia(){
  const isDaily=triviaMode==='daily';
  const rows=triviaBoard?.[triviaScoreTab]||[];
  const feedback=run?.feedback;
- return `<div class="gtp241-trivia-scene" aria-hidden="true">${portrait('crypto',{alt:'',cls:'balanced',eager:true})}</div><main class="trivia-page ${run&&!run.finished?'trivia-page-active':''} ${question&&!feedback&&!run?.finished?'trivia-page-question':''} ${question?.kind==='text'?'trivia-page-written':''}" aria-label="Apex Trivia"><div class="trivia-shell">
+ return `<div class="gtp241-trivia-scene gtp242-trivia-environment" aria-hidden="true"><span class="gtp242-crypto-grid"></span>${portrait('crypto',{alt:'',cls:'balanced',eager:true})}</div><main class="trivia-page ${run&&!run.finished?'trivia-page-active':''} ${question&&!feedback&&!run?.finished?'trivia-page-question':''} ${question?.kind==='text'?'trivia-page-written':''}" aria-label="Apex Trivia"><div class="trivia-shell">
   <section class="trivia-hero gtp240-trivia-hero"><span class="gtp240-trivia-host" aria-hidden="true">${portrait('crypto',{alt:'',cls:'balanced',eager:true})}</span><span class="trivia-kicker">◈ CRYPTO / ENCRYPTED OUTLANDS INTEL</span><h1>APEX <em>TRIVIA.</em></h1><p>Five questions. 20 seconds each. Every right answer earns <b>20 points</b> — up to 100. Different from Daily Challenges.</p><div class="trivia-switch" role="group" aria-label="Trivia mode"><button data-action="trivia-mode" data-trivia-mode="daily" class="${isDaily?'active':''}">✦ DAILY RANKED</button><button data-action="trivia-mode" data-trivia-mode="practice" class="${!isDaily?'active':''}">∞ PRACTICE</button></div></section>
   <div class="trivia-grid"><section class="trivia-main" id="trivia-main-content" tabindex="-1">
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}
