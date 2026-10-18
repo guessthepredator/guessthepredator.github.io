@@ -93,6 +93,12 @@ try{
  const triviaHost=await page.evaluate(()=>document.querySelector('.gtp240-trivia-host img')?.dataset.portrait);
  assert(triviaHost==='crypto','Trivia should have Crypto identity, got '+triviaHost);
  assert(await page.locator('#app[data-screen="trivia"] > .gtp241-trivia-scene img[data-portrait="crypto"]').count()===1,'Crypto environment illustration missing');
+ await page.waitForFunction(()=>{
+   const img=document.querySelector('#app[data-screen="trivia"] > .gtp242-trivia-environment img[data-portrait="crypto"]');
+   return img?.complete&&img.naturalWidth>=150&&img.naturalHeight>img.naturalWidth*1.2;
+ },null,{timeout:20000});
+ console.log('PASS Crypto full-body scene image loaded before screenshot');
+
 
  await page.screenshot({path:'screenshots/v240-trivia-crypto-theme.png',fullPage:false});
  await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
