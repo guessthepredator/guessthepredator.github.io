@@ -1,0 +1,315 @@
+/* V2.43 - visual correction pass
+   Screenshot-informed composition fixes; all game mechanics stay in app.mjs.
+   Separate stylesheet deliberately isolates these overrides from the legacy CSS stack. */
+#app[data-screen="home"] .gtp239-home .gtp219-backdrop{
+ filter:saturate(.74) brightness(.78) contrast(1.07)!important;
+}
+#app[data-screen="home"] .gtp239-sky{
+ background:radial-gradient(ellipse 38% 30% at 50% 33%,#d7554033,transparent 84%),
+ linear-gradient(180deg,#02040b12,#03020b20 70%,#03050db5)!important;
+}
+#app[data-screen="home"] .gtp239-layout{gap:14px!important}
+#app[data-screen="home"] .gtp239-mode-card .gtp242-mode-medallion{
+ width:82px!important;height:82px!important;
+ min-width:82px!important;min-height:82px!important;max-width:82px!important;max-height:82px!important;
+ flex-basis:82px!important;
+ box-shadow:0 0 0 3px #090b12,0 0 0 5px color-mix(in srgb,var(--mode) 30%,transparent),
+ 0 0 13px color-mix(in srgb,var(--mode) 40%,transparent),0 7px 13px #000a!important;
+}
+#app[data-screen="home"] .gtp242-mode-medallion>.portrait-holder{
+ inset:3px!important;background:#121a2a!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp242-mode-medallion>.portrait-holder img,
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="loba"]>.portrait-holder img{
+ width:100%!important;height:100%!important;object-fit:cover!important;
+ object-position:center 34%!important;transform:scale(1.035)!important;transform-origin:center center!important;
+ filter:contrast(1.06) saturate(.95)!important;
+}
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="sparrow"]>.portrait-holder img{
+ object-position:center 27%!important;
+}
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="loba"]>.portrait-holder img{
+ object-position:center 40%!important;
+}
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="crypto"]>.portrait-holder img{
+ object-position:center 29%!important;
+}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card{
+ min-height:148px!important;height:148px!important;justify-content:center!important;
+}
+#app[data-screen="home"] .gtp239-side .gtp242-mode-plate{
+ min-height:56px!important;max-height:56px!important;width:180px!important;
+ margin-top:-5px!important;justify-content:center!important;
+ background:linear-gradient(180deg,#19202bcc,#080c15f9 90%)!important;
+ border-color:color-mix(in srgb,var(--mode) 68%,#394457)!important;
+ border-radius:9px!important;
+}
+#app[data-screen="home"] .gtp242-mode-plate .gtp242-host-name{font-size:8px!important;letter-spacing:.09em!important}
+#app[data-screen="home"] .gtp242-mode-plate strong{font-size:19px!important;line-height:1.02!important}
+#app[data-screen="home"] .gtp242-mode-plate small{font-size:9px!important;color:#cbd2db!important}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card:hover{
+ transform:translateY(-3px)!important;
+}
+#app[data-screen="home"] .gtp239-bin-aura{opacity:.40!important;filter:blur(19px)!important}
+#app[data-screen="home"] .gtp239-bin-image{
+ filter:drop-shadow(0 17px 13px #05040bbd) drop-shadow(0 0 11px #dd543f75) saturate(.94)!important;
+}
+#app[data-screen="home"] .gtp239-intel-panel{
+ background:linear-gradient(160deg,rgba(23,14,24,.95),rgba(11,11,23,.97))!important;
+ box-shadow:0 12px 28px #000a,0 0 14px #9f46374d!important;
+}
+#app[data-screen="home"] .gtp239-open-intel{
+ background:linear-gradient(180deg,#f16650,#b52e2f 54%,#84202a)!important;
+ box-shadow:0 7px 16px #0009,0 0 12px #e9685469,inset 0 1px 0 #ffbeab85!important;
+}
+#app[data-screen="home"] .gtp239-home-dock{
+ width:min(100%,1030px)!important;gap:14px!important;margin:2px auto 0!important;
+}
+#app[data-screen="home"] .gtp239-home-dock>.gtp222-wheel,
+#app[data-screen="home"] .gtp239-home-dock>.gtp222-spotlight{
+ height:107px!important;min-height:107px!important;max-height:111px!important;
+ border-radius:9px!important;background:linear-gradient(108deg,#0b1527f5,#0d1f32ed 73%,#171127f4)!important;
+ border:1px solid #588cad8a!important;box-shadow:0 8px 23px #0009!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-dock-copy strong{
+ font-size:clamp(22px,2vw,29px)!important;line-height:1!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-dock-copy small{
+ color:#cbd9e1!important;font-size:10px!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp241-mystery-badge{
+ width:66px!important;height:66px!important;flex:0 0 66px!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp241-spotlight-art{
+ right:0!important;left:auto!important;width:37%!important;height:100%!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp241-spotlight-art img{
+ object-fit:contain!important;object-position:center bottom!important;transform:none!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp222-dock-copy{
+ max-width:62%!important;
+}
+
+/* One shared cinematic visual system.  Contrasting panels are above decoration. */
+#app[data-screen="game"]{
+ --v243-accent:#fb8978;--v243-shadow:#653240;--v243-fog:rgba(134,46,58,.35);--v243-dark:#090c17;
+}
+#app[data-screen="game"][data-mode="pixel"]{
+ --v243-accent:#79e6ed;--v243-shadow:#135869;--v243-fog:rgba(29,109,129,.25);--v243-dark:#071727;
+}
+#app[data-screen="game"][data-mode="quote"]{
+ --v243-accent:#d4a6f9;--v243-shadow:#533064;--v243-fog:rgba(104,51,131,.28);--v243-dark:#140d22;
+}
+#app[data-screen="game"][data-mode="ability"]{
+ --v243-accent:#c8ec88;--v243-shadow:#436b42;--v243-fog:rgba(80,117,49,.26);--v243-dark:#0e1b18;
+}
+#app[data-screen="game"][data-mode="emoji"]{
+ --v243-accent:#f8d88d;--v243-shadow:#80683d;--v243-fog:rgba(142,109,49,.26);--v243-dark:#1a1719;
+}
+#app[data-screen="game"]>.gtp233-viewport-art{
+ background-image:
+ linear-gradient(180deg,#030816af 0%,transparent 26%,#05071394 100%),
+ radial-gradient(ellipse 50% 65% at 76% 39%,var(--v243-fog),transparent 78%),
+ linear-gradient(93deg,#07101fbd 0%,var(--v243-dark) 57%,#07111eb8 100%),
+ var(--gtp230-back)!important;
+ background-size:cover!important;background-position:center center!important;
+ filter:saturate(.84) brightness(.8)!important;
+}
+#app[data-screen="game"]>.gtp242-scene{
+ z-index:1!important;pointer-events:none!important;overflow:hidden!important;
+}
+#app[data-screen="game"]>.gtp242-scene::before{
+ background:radial-gradient(ellipse 43% 63% at 78% 45%,var(--v243-fog),transparent 75%),
+ linear-gradient(90deg,transparent 59%,#04071351 93%)!important;
+}
+#app[data-screen="game"]>.gtp242-scene .gtp242-fullbody-host{
+ right:clamp(10px,4vw,68px)!important;top:18vh!important;bottom:12vh!important;
+ width:min(29vw,420px)!important;opacity:.76!important;
+ filter:drop-shadow(-15px 16px 18px #030511ae) drop-shadow(0 0 11px var(--v243-shadow))!important;
+ -webkit-mask-image:linear-gradient(180deg,#000 0 73%,transparent 100%)!important;
+ mask-image:linear-gradient(180deg,#000 0 73%,transparent 100%)!important;
+}
+#app[data-screen="game"]>.gtp242-scene .gtp242-scenery{
+ opacity:.5!important;
+}
+#app[data-screen="game"]>.gtp242-scene .gtp242-atmosphere-mark{
+ font-size:9px!important;letter-spacing:.13em!important;right:10px!important;opacity:.45!important;
+}
+#app[data-screen="game"] .gtp230-titlebar{
+ background:linear-gradient(100deg,color-mix(in srgb,var(--v243-dark) 78%,#19324a),#090f1de8 82%)!important;
+ border:1px solid color-mix(in srgb,var(--v243-accent) 62%,#183044)!important;
+ box-shadow:0 8px 20px #000a,inset 0 1px 0 #ffffff20!important;
+}
+#app[data-screen="game"] .gtp230-arena{
+ gap:clamp(10px,1.2vw,20px)!important;
+}
+#app[data-screen="game"] .gtp230-main-clue{
+ background:radial-gradient(ellipse 66% 84% at 47% 47%,color-mix(in srgb,var(--v243-shadow) 18%,transparent),transparent 85%),
+ linear-gradient(120deg,rgba(7,14,27,.24),rgba(8,15,28,.11))!important;
+ border:1px solid color-mix(in srgb,var(--v243-accent) 24%,transparent)!important;
+ border-radius:13px!important;
+ box-shadow:inset 0 0 24px #0307104f,0 0 0 1px #ffffff07!important;
+}
+#app[data-screen="game"] .gtp230-arena>.gtp236-intel-column{
+ align-self:flex-start!important;
+ margin:clamp(26px,6vh,58px) 10px 10px 0!important;
+ gap:9px!important;
+}
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-board,
+#app[data-screen="game"] .gtp230-side{
+ background:linear-gradient(140deg,rgba(8,20,35,.93),rgba(7,16,30,.88))!important;
+ border:1px solid color-mix(in srgb,var(--v243-accent) 47%,#223850)!important;
+ border-radius:11px!important;
+ box-shadow:0 10px 26px #0009,0 0 0 1px #f6fbff08!important;
+ backdrop-filter:blur(9px)!important;
+}
+#app[data-screen="game"] .gtp230-console,
+#app[data-screen="game"] .gtp230-finished{
+ background:linear-gradient(140deg,#0b1425f3,#070e1ff1)!important;
+ border:1px solid color-mix(in srgb,var(--v243-accent) 51%,#284158)!important;
+ box-shadow:0 -9px 26px #0007,inset 0 1px 0 #ffffff20!important;
+ border-radius:12px!important;
+}
+#app[data-screen="game"] .gtp230-board h2,
+#app[data-screen="game"] .gtp230-side h2{
+ color:#fcf4e8!important;text-shadow:0 1px 4px #0008!important;
+}
+#app[data-screen="game"] .gtp230-main-clue:focus-within{
+ border-color:var(--v243-accent)!important;
+}
+
+/* Classic: Mirage and clue share a red moon stage, not pink flaming gradients. */
+#app[data-screen="game"][data-mode="classic"]>.gtp233-viewport-art{
+ filter:saturate(.64) brightness(.64)!important;
+ background-image:
+ linear-gradient(90deg,#06070ecb 0%,#150e1b85 45%,#0908158a 100%),
+ radial-gradient(circle 230px at 78% 32%,#e0795a38 0 68%,transparent 86%),
+ var(--gtp230-back)!important;
+}
+#app[data-screen="game"][data-mode="classic"]>.gtp242-scene .gtp242-scenery{
+ background:radial-gradient(circle at 77% 31%,transparent 0 175px,#d7795840 178px 180px,transparent 183px),
+ linear-gradient(90deg,transparent 65%,#b957391a)!important;
+ opacity:.42!important;
+}
+#app[data-screen="game"][data-mode="classic"]>.gtp242-scene .gtp242-fullbody-host{
+ width:min(25vw,365px)!important;right:6vw!important;top:20vh!important;opacity:.7!important;
+}
+#app[data-screen="game"][data-mode="classic"] .gtp230-main-clue{
+ background:radial-gradient(circle at 47% 42%,#6c455523,transparent 63%),
+ linear-gradient(155deg,rgba(9,16,34,.76),rgba(21,12,29,.64))!important;
+ box-shadow:inset 0 0 65px #100c1d7a,0 0 0 1px #e2907a2d!important;
+}
+
+/* Pixel: scouting readout and silhouette front-and-centre, Sparrow recedes. */
+#app[data-screen="game"][data-mode="pixel"]>.gtp242-scene .gtp242-fullbody-host{
+ width:min(23vw,330px)!important;right:5vw!important;top:20vh!important;opacity:.53!important;
+}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue{
+ background:linear-gradient(150deg,#071b35a6,#080e23ad)!important;
+ border-color:#59b9d966!important;
+}
+#app[data-screen="game"][data-mode="pixel"] .nova-pixel-scene{
+ box-shadow:0 0 0 1px #67b5cf57,inset 0 0 38px #08081d!important;
+ border-radius:10px!important;overflow:hidden!important;
+}
+#app[data-screen="game"][data-mode="pixel"] .pixel-canvas.loaded{
+ filter:blur(var(--px-blur,2px)) contrast(1.07) saturate(1.06)!important;
+}
+
+/* Quote: purple intelligence archive, Loba framed but not cropped. */
+#app[data-screen="game"][data-mode="quote"]>.gtp242-scene .gtp242-fullbody-host{
+ width:min(26vw,380px)!important;top:19vh!important;right:5vw!important;opacity:.68!important;
+}
+#app[data-screen="game"][data-mode="quote"]>.gtp242-scene .gtp242-scenery{
+ background:linear-gradient(120deg,transparent 62%,#9a6ac01b),
+ repeating-linear-gradient(0deg,transparent 0 69px,#a577e60d 70px 71px)!important;
+}
+
+/* Ability: Octane slightly smaller and behind the clue/type panel. */
+#app[data-screen="game"][data-mode="ability"]>.gtp242-scene .gtp242-fullbody-host{
+ width:min(25vw,362px)!important;top:20vh!important;bottom:11vh!important;right:5.5vw!important;
+ opacity:.61!important;
+}
+#app[data-screen="game"][data-mode="ability"]>.gtp242-scene .gtp242-scenery{
+ background:repeating-linear-gradient(135deg,transparent 0 85px,#b5df7f0f 86px 88px,transparent 89px 175px),
+ radial-gradient(ellipse 35% 57% at 77% 39%,#82b15c22,transparent 82%)!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp230-arena>.gtp236-intel-column{
+ margin-top:clamp(24px,5vh,52px)!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp230-main-clue{
+ background:linear-gradient(120deg,#101227c7,#0b1f24ba)!important;
+}
+
+/* Emoji: Wattson warm circuitry kept behind the content rather than covering it. */
+#app[data-screen="game"][data-mode="emoji"]>.gtp242-scene .gtp242-fullbody-host{
+ width:min(24vw,342px)!important;right:6vw!important;top:19vh!important;opacity:.62!important;
+}
+#app[data-screen="game"][data-mode="emoji"]>.gtp242-scene .gtp242-scenery{
+ display:block!important;opacity:.27!important;
+ background:repeating-linear-gradient(0deg,transparent 0 49px,#d6b87a19 50px 51px),
+ radial-gradient(ellipse 36% 64% at 74% 34%,#edd19023,transparent 82%)!important;
+}
+
+/* Trivia: a Crypto cyber command centre with strong content hierarchy. */
+#app[data-screen="trivia"]>.gtp242-trivia-environment{
+ z-index:1!important;opacity:.72!important;
+ background:radial-gradient(ellipse 40% 64% at 80% 35%,#32aacc26,transparent 76%)!important;
+}
+#app[data-screen="trivia"]>.gtp242-trivia-environment .portrait-holder{
+ top:19vh!important;bottom:8vh!important;width:min(25vw,355px)!important;
+ right:4vw!important;opacity:.62!important;
+}
+#app[data-screen="trivia"] .trivia-page{position:relative!important;z-index:3!important}
+#app[data-screen="trivia"] .trivia-hero,
+#app[data-screen="trivia"] .trivia-main,
+#app[data-screen="trivia"] .trivia-sidebar{
+ border-color:#53c4dd81!important;box-shadow:0 11px 25px #0008!important;
+ background:linear-gradient(155deg,#0b263af0,#091523f0)!important;
+}
+@media(min-width:1440px){
+ #app[data-screen="game"] .gtp230-arena>.gtp236-intel-column{
+  margin-right:clamp(12px,1.4vw,25px)!important;
+ }
+}
+@media(max-width:830px){
+ #app[data-screen="home"] .gtp239-side .gtp242-mode-medallion{
+  width:73px!important;height:73px!important;min-width:73px!important;min-height:73px!important;
+  max-width:73px!important;max-height:73px!important;flex-basis:73px!important;
+ }
+ #app[data-screen="home"] .gtp239-side .gtp242-mode-plate{
+  width:100%!important;min-height:52px!important;max-height:52px!important;
+ }
+ #app[data-screen="home"] .gtp242-mode-plate strong{font-size:16px!important}
+ #app[data-screen="home"] .gtp239-home-dock{gap:9px!important}
+ #app[data-screen="game"] .gtp230-arena>.gtp236-intel-column{
+  align-self:stretch!important;margin:8px 8px 12px!important;
+ }
+ #app[data-screen="game"]>.gtp242-scene .gtp242-fullbody-host{
+  width:40vw!important;right:-8vw!important;top:24vh!important;opacity:.31!important;
+ }
+}
+@media(max-width:560px){
+ #app[data-screen="home"] .gtp239-side .gtp242-mode-medallion{
+  width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;
+  max-width:58px!important;max-height:58px!important;flex-basis:58px!important;
+ }
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card{height:118px!important;min-height:118px!important}
+ #app[data-screen="home"] .gtp239-side .gtp242-mode-plate{
+  min-height:46px!important;max-height:46px!important;padding:4px 3px!important;
+ }
+ #app[data-screen="home"] .gtp242-mode-plate .gtp242-host-name{font-size:6.7px!important}
+ #app[data-screen="home"] .gtp242-mode-plate strong{font-size:13px!important}
+ #app[data-screen="home"] .gtp242-mode-plate small{font-size:7px!important}
+ #app[data-screen="home"] .gtp239-home-dock>.gtp222-wheel,
+ #app[data-screen="home"] .gtp239-home-dock>.gtp222-spotlight{
+  height:115px!important;min-height:115px!important;max-height:none!important;
+ }
+ #app[data-screen="game"]>.gtp242-scene .gtp242-fullbody-host{
+  width:55vw!important;right:-24vw!important;opacity:.22!important;
+ }
+ #app[data-screen="trivia"]>.gtp242-trivia-environment .portrait-holder{opacity:.22!important;width:55vw!important;right:-22vw!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card{transition:none!important}
+}
