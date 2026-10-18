@@ -591,7 +591,7 @@ function game(){
  const isDaily=session==='daily';
  const title=active.toUpperCase();
  const modeTag=round.mode==='full'?'FULL SCAN':'ONE SIGNAL';
- return `<main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
+ return `<div class="gtp233-viewport-art" aria-hidden="true"></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
    <header class="gtp230-titlebar">
     <div class="gtp230-title-icon" aria-hidden="true">${ICONS[active]}</div>
     <div class="gtp230-title-copy"><h1>${title} MODE</h1><p>${TAGLINES[active]} <span class="gtp230-scan-caption">· ${modeTag}</span></p></div>
