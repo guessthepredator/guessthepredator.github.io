@@ -65,6 +65,17 @@ try{
   assert(await scenic.count()===1,mode+' has no character environmental scene');
   assert(await scenic.locator('img[data-portrait]').getAttribute('data-portrait')===({classic:'mirage',pixel:'sparrow',quote:'loba',ability:'octane',emoji:'wattson'})[mode],mode+' scene portrait mismatch: '+JSON.stringify(actual));
 
+  await page.waitForFunction(()=>{
+    const img=document.querySelector('#app[data-screen="game"] > .gtp242-scene .gtp242-fullbody-host img');
+    return img?.complete&&img.naturalWidth>=150&&img.naturalHeight>img.naturalWidth*1.20;
+  },null,{timeout:20000});
+  const environment=await page.evaluate(()=>{
+    const img=document.querySelector('#app[data-screen="game"] > .gtp242-scene .gtp242-fullbody-host img');
+    const icon=getComputedStyle(img.closest('.portrait-holder')).opacity;
+    return {source:img.currentSrc.split('/').slice(-1)[0],width:img.naturalWidth,height:img.naturalHeight,opacity:icon};
+  });
+  assert(environment.height>environment.width*1.2,mode+' uses a cropped square thumbnail instead of full-body artwork: '+JSON.stringify(environment));
+  console.log('PASS full-body scenic art '+mode+' '+JSON.stringify(environment));
   assert(actual.modes.length===3,mode+' must keep Full Scan / One Signal / Rush settings');
   await page.screenshot({path:'screenshots/v240-'+mode+'-legend-theme.png',fullPage:false});
   await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
