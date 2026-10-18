@@ -321,3 +321,14 @@
  object-fit:cover!important;object-position:center 12%!important;
  transform:scale(1.25) translateY(6%)!important;transform-origin:center 24%!important;
 }
+
+
+/* Do not enlarge the dependable square Loba portrait into a cropped eye.
+   Contain the full source and put a violet backing behind any transparent edges. */
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="loba"]>.portrait-holder{
+ background:radial-gradient(circle at 50% 20%,#6d3b86,#150d27 80%)!important;
+}
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="loba"]>.portrait-holder img{
+ width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;
+ transform:scale(.93)!important;transform-origin:center center!important;
+}
