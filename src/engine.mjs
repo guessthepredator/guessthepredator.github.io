@@ -137,6 +137,23 @@ export function scannerState(round,target,roster){
   }
   return output;
 }
+/**
+ * Present only information legitimately disclosed by the scanner.
+ * A correct/hinted comparison carries its already formatted, verified value;
+ * a wrong or unknown comparison must never reveal the hidden target.
+ * Pure display-only helper; does not change round state or leaderboard scores.
+ */
+export function scannerDisplayValue(field, signal) {
+  const kind=signal?.kind;
+  if(kind==='correct'||kind==='hint'){
+    const value=String(signal.value??'').trim();
+    if(!value||value==='—'||value.toUpperCase()==='UNKNOWN')return '? UNKNOWN';
+    return '✓ '+value.toUpperCase()+(field==='age'?' EXACT':'');
+  }
+  if(kind==='wrong')return '✕ DIFFERENT';
+  return '? UNKNOWN';
+}
+
 export function filteredRoster(roster,{search='',role='All',sort='az',excluded=[]}={}){
   const term=search.trim().toLocaleLowerCase();const excludedSet=new Set(excluded);
   const result=roster.filter(legend=>(role==='All'||legend.role===role)&&!excludedSet.has(legend.name)&&
