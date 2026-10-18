@@ -31,6 +31,6 @@ test('V2.42 keeps separate Crypto scene, Mystery Wheel and saved progress',()=>{
  assert.ok(js.includes('gtp242-trivia-environment'));
  assert.ok(js.includes('gtp241-mystery-badge'));
  assert.ok(js.includes('loadStore()')&&!js.includes('localStorage.clear()'));
- assert.ok(html.includes('styles.css?v=2.42.0')&&html.includes('app.mjs?v=2.42.0'));
- assert.ok(js.includes('leaderboard.mjs?v=2.42.0'));
+ assert.ok(html.includes('styles.css?v=2.43.0')&&html.includes('app.mjs?v=2.43.0'));
+ assert.ok(js.includes('leaderboard.mjs?v=2.43.0'));
 });

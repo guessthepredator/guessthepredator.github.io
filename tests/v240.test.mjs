@@ -45,8 +45,8 @@ test('V2.40: full scan, one signal and rush remain rule choices; Daily preserved
  assert.ok(js.includes('data-action="home-daily"'));
 });
 test('V2.40: version parity, no reset/mutation of user progress',()=>{
- assert.ok(html.includes('styles.css?v=2.42.0')&&html.includes('app.mjs?v=2.42.0'));
- assert.ok(js.includes('leaderboard.mjs?v=2.42.0'));
+ assert.ok(html.includes('styles.css?v=2.43.0')&&html.includes('app.mjs?v=2.43.0'));
+ assert.ok(js.includes('leaderboard.mjs?v=2.43.0'));
  assert.ok(js.includes('loadStore('));
  assert.ok(!js.includes('localStorage.clear()'));
 });

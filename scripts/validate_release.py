@@ -7,7 +7,9 @@ for name in required: assert (P/name).is_file(),name
 html=(P/'index.html').read_text();js=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
 # Cache-busting version is allowed to advance with each deployment.
 # Both entry assets must use the same release version; never hardcode an older one.
-assert html.count('rel="stylesheet"')==1, 'Expected exactly one stylesheet tag'
+assert html.count('rel="stylesheet"')==2, 'Expected core CSS and isolated V2.43 visual stylesheet'
+assert (P/'styles-v243.css').is_file(), 'Missing visual correction stylesheet'
+assert 'styles-v243.css?v=2.43.0' in html, 'Visual correction stylesheet has stale version'
 style_match=re.search(r'href="\./styles\.css\?v=(\d+\.\d+\.\d+)"', html)
 app_match=re.search(r'src="\./src/app\.mjs\?v=(\d+\.\d+\.\d+)"', html)
 assert style_match is not None, 'Versioned styles.css link missing'
