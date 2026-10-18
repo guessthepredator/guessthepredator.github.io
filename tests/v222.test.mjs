@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {newRound,tryGuess,scannerState,FIELDS,compare} from '../src/engine.mjs';
+import {newRound,tryGuess,scannerState,scannerDisplayValue,FIELDS,compare} from '../src/engine.mjs';
 import {legends} from '../src/data.mjs';
 import {freshStore,loadStore,saveStore} from '../src/store.mjs';
 const read=x=>readFileSync(new URL('../'+x,import.meta.url),'utf8');
@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.31.0')&&html.includes('app.mjs?v=2.31.0'));
+ assert.ok(html.includes('styles.css?v=2.32.0')&&html.includes('app.mjs?v=2.32.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -255,4 +255,40 @@ test('V2.31 short and mobile viewports retain scrollable game controls',()=>{
  assert.ok(css.includes('position:relative!important'));
  assert.ok(app.includes('gtp230-control-row'));
  assert.ok(app.includes('data-action="surrender"'));
+});
+
+test('V2.32 green scanner cells reveal only confirmed values with exact age',()=>{
+ const target=legends.find(l=>l.name==='Bangalore');
+ assert.equal(scannerDisplayValue('gender',compare(target,target,'gender')),'✓ FEMALE');
+ assert.equal(scannerDisplayValue('role',compare(target,target,'role')),'✓ ASSAULT');
+ assert.equal(scannerDisplayValue('age',compare(target,target,'age')),'✓ 40 EXACT');
+ assert.equal(scannerDisplayValue('debut',compare(target,target,'debut')),'✓ LAUNCH');
+ assert.equal(scannerDisplayValue('form',compare(target,target,'form')),'✓ HUMAN');
+ const incorrect=legends.find(l=>l.gender==='Male');
+ assert.equal(scannerDisplayValue('gender',compare(incorrect,target,'gender')),'✕ DIFFERENT');
+ assert.equal(scannerDisplayValue('age',{kind:'wrong',value:'64',direction:-1}),'✕ DIFFERENT');
+ assert.equal(scannerDisplayValue('age',{kind:'hidden',value:'40'}),'? UNKNOWN');
+ assert.equal(scannerDisplayValue('origin',{kind:'unknown',value:'Secret planet'}),'? UNKNOWN');
+ assert.equal(scannerDisplayValue('age',{kind:'hint',value:'40'}),'✓ 40 EXACT');
+ const alter=legends.find(l=>l.name==='Alter');
+ assert.equal(scannerDisplayValue('age',compare(target,alter,'age')),'? UNKNOWN');
+});
+test('V2.32 cinema board uses signal values, never unconfirmed target data',()=>{
+ assert.ok(app.includes('scannerDisplayValue(field,trait)'));
+ assert.ok(app.includes('const trait=state?.[field]'));
+ assert.ok(app.includes('esc(wording)'));
+ const board=app.split('function cinematicIdentityBoard(round,target){')[1].split('function cinematicStageAside')[0];
+ assert.ok(!board.includes("target[field]"));
+ assert.ok(board.includes('gtp230-trait-match'));
+});
+test('V2.32 seamless game backdrop is drawn once across the desktop',()=>{
+ assert.ok(css.includes('V2.32 · ONE CONTINUOUS FULL-VIEWPORT BACKDROP'));
+ assert.ok(css.includes('#app[data-screen="game"]::before,'));
+ assert.ok(css.includes('#app[data-screen="game"]::after'));
+ assert.ok(css.includes('content:none!important;display:none!important;'));
+ assert.ok(css.includes('background-attachment:fixed!important;'));
+ assert.ok(css.includes('var(--gtp230-back)!important;'));
+ assert.ok(css.includes('#app[data-screen="game"] .gtp230-arena'));
+ assert.ok(css.includes('background:linear-gradient(180deg,#07162a18,#040d1b29)!important;'));
+ assert.ok(css.includes('.gtp230-trait strong'));
 });
