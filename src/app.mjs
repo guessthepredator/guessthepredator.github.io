@@ -359,7 +359,7 @@ function home(){
   {id:'wheel',title:'SPIN THE WHEEL',host:'pathfinder',description:'A random Legend awaits.',action:'wheel',accent:'sky'}
  ];
  const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp239-${cfg.accent}" data-host="${cfg.host}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
- <span class="gtp239-mode-ring" aria-hidden="true">${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}</span>
+ <span class="gtp239-mode-ring" aria-hidden="true"><span class="gtp239-host-fallback">${cfg.host.slice(0,2).toUpperCase()}</span>${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}</span>
  <span class="gtp239-mode-caption"><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
  return `<main class="gtp219-home gtp222-home gtp239-home" aria-label="Guess the Predator homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
@@ -382,7 +382,7 @@ function home(){
     <section class="gtp222-side gtp239-side gtp239-side-right" aria-label="One Signal, Rush and Spin the Wheel">${showcase.slice(3).map(heroCard).join('')}</section>
    </div>
    <div class="gtp222-home-dock gtp239-home-dock">
-    <button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host" aria-hidden="true">${portrait('pathfinder',{alt:'',cls:'balanced',eager:true})}</span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
+    <button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host" aria-hidden="true"><span class="gtp239-host-fallback">PF</span>${portrait('pathfinder',{alt:'',cls:'balanced',eager:true})}</span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
     <article class="gtp222-spotlight"><div class="gtp222-spotlight-art">${portrait(spotlight.slug,{alt:spotlight.name,cls:'balanced',eager:true})}</div><div class="gtp222-dock-copy"><strong>LEGEND OF THE DAY</strong><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)} · changes daily</small></div></article>
    </div>
    <section class="gtp239-secondary" aria-label="Additional puzzle modes"><div><span>MORE WAYS TO PLAY</span><p>Classic puzzles remain available alongside the daily modes.</p></div><div class="gtp239-more-modes">${cards.filter(([mode])=>['pixel','quote','ability','emoji'].includes(mode)).map(card).join('')}</div></section>
