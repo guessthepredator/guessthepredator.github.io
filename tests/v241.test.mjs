@@ -47,6 +47,6 @@ test('V2.41 How To and FAQ cover all six modes, updated rules and reward progres
 });
 test('V2.41 keeps progress and private game answers intact',()=>{
  assert.ok(app.includes('loadStore()'));assert.ok(!app.includes('localStorage.clear()'));
- assert.ok(html.includes('styles.css?v=2.41.0')&&html.includes('app.mjs?v=2.41.0'));
- assert.ok(app.includes("leaderboard.mjs?v=2.41.0"));
+ assert.ok(html.includes('styles.css?v=2.42.0')&&html.includes('app.mjs?v=2.42.0'));
+ assert.ok(app.includes("leaderboard.mjs?v=2.42.0"));
 });
