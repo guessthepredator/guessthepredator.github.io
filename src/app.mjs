@@ -364,20 +364,20 @@ function home(){
   {id:'emoji',title:'EMOJI MODE',host:'wattson',description:'Five symbols. One Legend.',action:'open',mode:'emoji',accent:'gold'},
   {id:'trivia',title:'TRIVIA',host:'crypto',description:'Crack five Apex intel questions.',action:'trivia',accent:'blue'}
  ];
- const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp239-${cfg.accent}" data-host="${cfg.host}" data-sound="${cfg.id}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
+ const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp246-orbit-mode gtp239-${cfg.accent}" data-host="${cfg.host}" data-sound="${cfg.id}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
  <span class="gtp239-mode-ring gtp242-mode-medallion" data-host="${cfg.host}" aria-hidden="true"><span class="gtp242-ring-detail"></span><span class="gtp239-host-fallback">${cfg.host.slice(0,2).toUpperCase()}</span>${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}<span class="gtp242-ring-notch"></span></span>
- <span class="gtp239-mode-caption gtp242-mode-plate"><span class="gtp242-host-name">${cfg.host.toUpperCase()} · MODE GUIDE</span><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
- return `<main class="gtp219-home gtp222-home gtp239-home" aria-label="Guess the Predator homepage">
+ <span class="gtp239-mode-caption gtp242-mode-plate"><span class="gtp242-host-name">${cfg.host.toUpperCase()} · YOUR HOST</span><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
+ return `<main class="gtp219-home gtp222-home gtp239-home gtp246-outlands-home" aria-label="Guess the Predator homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
   <div class="gtp239-sky" aria-hidden="true"><span class="gtp239-blood-moon"></span><span class="gtp239-embers"></span></div>
   <div class="gtp238-mirage-duo gtp239-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-right"></span></div>
   <div class="gtp222-layout gtp239-layout">
    <header class="gtp239-masthead"><span>GUESS THE</span><h1>PREDATOR</h1><small>APEX LEGENDS DAILY CHALLENGE</small></header>
-   <div class="gtp222-arena gtp239-arena" aria-label="Six original game modes with individual Legend themes">
+   <div class="gtp222-arena gtp239-arena gtp246-home-arena" aria-label="Six original game modes with individual Legend themes">
     <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Pixel and Quote">${showcase.slice(0,3).map(heroCard).join('')}</section>
-    <section class="gtp222-core gtp239-core" aria-label="Forbidden Intel Supply Bin">
+    <section class="gtp222-core gtp239-core gtp246-home-core" aria-label="Forbidden Intel Supply Bin">
       <div class="gtp239-bin-stage" role="img" aria-label="Large glowing red mythic supply bin"><span class="gtp239-bin-aura"></span><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-v2391.webp" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
-      <div class="gtp239-intel-panel"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Three classified secrets. Complete challenges to reveal them.</p>
+      <div class="gtp239-intel-panel gtp246-intel-hub"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Three classified secrets. Complete challenges to reveal them.</p>
        <button type="button" class="gtp239-open-intel" data-action="${lastUnlocked?'intel-open':'home-daily'}" ${lastUnlocked?`data-checkpoint="${intelTarget}"`:''}>◈ ${lastUnlocked?'OPEN MYTHIC INTEL':'BEGIN THE DAILY HUNT'} <span>↗</span></button>
        <details class="gtp239-reward-details"><summary>INTEL CHECKPOINTS · ${intelDone} / 3 <span aria-hidden="true">⌄</span></summary>
         <div class="gtp219-rewards gtp239-reward-grid">${[1,2,3].map(n=>{const {unlocked,read}=intelState(n);return `<button type="button" class="${unlocked?(read?'gtp223-read':'gtp223-new'):''}" data-action="intel-open" data-checkpoint="${n}" ${unlocked?'':'disabled'}><span>${unlocked?(read?'✓':'✦'):'◇'} ${n===1?'FULL SCAN':n===2?'ONE SIGNAL':'DAILY TRIVIA'}</span><small>${unlocked?(read?'READ ✓':'NEW · OPEN ↗'):'LOCKED'}</small></button>`}).join('')}</div>

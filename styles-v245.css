@@ -2,37 +2,162 @@
 /* A deliberately scoped single visual authority for Home, gameplay, picker and Trivia. */
 #app .top.gtp2-top{background:linear-gradient(100deg,#050b17f2,#101420ec 48%,#070c18f3)!important;border-bottom:1px solid #cd594c9e!important;box-shadow:0 9px 22px #0009!important;backdrop-filter:blur(16px)!important}
 #app button:focus-visible{outline:2px solid #ffd0a7!important;outline-offset:3px!important}
-/* HERO: crimson moon, two Mirages, six neon rings and a real mythic supply bin. */
-#app[data-screen="home"] .gtp239-home{min-height:max(800px,calc(100svh - 75px))!important;isolation:isolate!important}
-#app[data-screen="home"] .gtp239-home .gtp219-backdrop{filter:saturate(1.16) brightness(.65) contrast(1.21)!important;background-position:center 40%!important}
-#app[data-screen="home"] .gtp239-home::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,#05070bc9,transparent 23%,transparent 77%,#05070bcb),linear-gradient(180deg,transparent 15%,#17090d32 57%,#030910d8 100%)}
-#app[data-screen="home"] .gtp239-mirage-duo{display:block!important;z-index:1!important;opacity:.82!important}
-#app[data-screen="home"] .gtp239-mirage-duo .gtp238-mirage-figure{opacity:.57!important;filter:saturate(1.07) brightness(.86) contrast(1.16) drop-shadow(0 16px 27px #000e)!important}
-#app[data-screen="home"] .gtp239-sky{z-index:0!important}
-#app[data-screen="home"] .gtp239-blood-moon{display:block!important;top:64px!important;width:clamp(220px,26vw,370px)!important;opacity:.9!important;mix-blend-mode:normal!important;background:radial-gradient(circle at 28% 34%,#ffc6a41a 0 9%,transparent 11%),radial-gradient(circle at 66% 64%,#390a234b 0 14%,transparent 17%),radial-gradient(circle at 50% 45%,#ff9b7a,#da4540 50%,#94242d 79%,#360d1b)!important;box-shadow:0 0 45px #f34a435e,0 0 125px #d92d3944,0 0 220px #b71c3440!important}
-#app[data-screen="home"] .gtp239-layout{width:min(1320px,calc(100% - 26px))!important;position:relative!important;z-index:3!important;gap:12px!important}
-#app[data-screen="home"] .gtp239-masthead{margin:9px auto 15px!important;filter:drop-shadow(0 7px 15px #000e)}
-#app[data-screen="home"] .gtp239-masthead>span{color:#fff0dd!important}
-#app[data-screen="home"] .gtp239-masthead h1{color:#ff735c!important;text-shadow:0 3px 0 #661622,0 6px 0 #310e1b,0 9px 25px #000f,0 0 32px #f03e3b80!important}
-#app[data-screen="home"] .gtp239-masthead small{color:#ffe0ce!important;letter-spacing:.22em!important}
-#app[data-screen="home"] .gtp239-arena{display:grid!important;grid-template-columns:minmax(185px,220px) minmax(360px,1fr) minmax(185px,220px)!important;max-width:1190px!important;min-height:525px!important;gap:clamp(10px,2vw,25px)!important;align-items:center!important;margin:0 auto!important}
-#app[data-screen="home"] .gtp239-side{gap:12px!important;z-index:4!important}
-#app[data-screen="home"] .gtp239-side .gtp239-mode-card{height:151px!important;min-height:151px!important;justify-content:center!important;gap:2px!important;border-radius:13px!important;background:linear-gradient(140deg,#111726af,#050b14ae)!important;box-shadow:0 10px 24px #0009!important}
-#app[data-screen="home"] .gtp239-side .gtp239-mode-card:is(:hover,:focus-visible){transform:translateY(-4px)!important;box-shadow:0 0 20px color-mix(in srgb,var(--mode) 50%,transparent),0 11px 25px #000b!important}
-#app[data-screen="home"] .gtp239-side .gtp242-mode-medallion{width:90px!important;height:90px!important;min-width:90px!important;min-height:90px!important;max-width:90px!important;max-height:90px!important;flex:0 0 90px!important;border-width:3px!important;box-shadow:0 0 0 3px #070a12,0 0 0 6px color-mix(in srgb,var(--mode) 65%,transparent),0 0 23px color-mix(in srgb,var(--mode) 66%,transparent)!important}
-#app[data-screen="home"] .gtp242-mode-medallion>.portrait-holder{inset:3px!important;border-radius:50%!important;overflow:hidden!important;background:radial-gradient(circle at 50% 24%,#374b66,#121626 83%)!important}
-#app[data-screen="home"] .gtp242-mode-medallion>.portrait-holder img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;transform:scale(.97)!important;filter:contrast(1.12) saturate(1.08)!important}
-#app[data-screen="home"] .gtp242-mode-medallion[data-host="loba"]>.portrait-holder img{object-fit:contain!important;transform:scale(.93)!important}
-#app[data-screen="home"] .gtp242-mode-medallion[data-host="sparrow"]>.portrait-holder img{object-fit:cover!important;object-position:center 27%!important;transform:scale(1.06)!important}
-#app[data-screen="home"] .gtp239-side .gtp242-mode-plate{width:195px!important;max-width:100%!important;min-height:56px!important;max-height:61px!important;border-radius:10px!important;margin-top:-5px!important;border:1px solid color-mix(in srgb,var(--mode) 67%,#314456)!important;background:linear-gradient(170deg,#111726ed,#060b15fc)!important;box-shadow:0 6px 21px #000d,0 0 10px color-mix(in srgb,var(--mode) 25%,transparent)!important}
-#app[data-screen="home"] .gtp242-mode-plate strong{font-size:20px!important}
-#app[data-screen="home"] .gtp242-mode-plate small{color:#eaded3!important}
-#app[data-screen="home"] .gtp239-core{z-index:3!important;justify-content:center!important}
-#app[data-screen="home"] .gtp239-bin-stage{width:min(100%,610px)!important;min-height:255px!important;filter:drop-shadow(0 14px 23px #000d)!important}
-#app[data-screen="home"] .gtp239-bin-image{filter:drop-shadow(0 0 25px #f15440a2) drop-shadow(0 15px 10px #000e)!important}
-#app[data-screen="home"] .gtp239-intel-panel{width:min(100%,530px)!important;border:1px solid #ed746891!important;border-radius:11px!important;background:linear-gradient(155deg,#180d15f2,#070b17f6)!important;box-shadow:0 15px 34px #000c,0 0 20px #d942363a!important}
-#app[data-screen="home"] .gtp239-open-intel{min-height:52px!important;background:linear-gradient(180deg,#ff654f,#b9212a 70%,#71111e)!important;border:1px solid #ffb495!important;box-shadow:0 0 22px #ff3f4273,0 8px 16px #000a!important;letter-spacing:.08em!important}
-#app[data-screen="home"] .gtp239-home-dock{max-width:1070px!important;z-index:4!important}
+/* HOME — V2.46: photographic Halloween scene and actual floating orbit buttons.
+   The existing hero photo ALREADY contains two Mirage characters. Never stack another pair.
+   Six game modes remain real buttons with their previous actions. */
+#app[data-screen="home"] .gtp246-outlands-home{
+ position:relative!important;isolation:isolate!important;
+ width:100%!important;min-height:calc(100svh - 72px)!important;
+ background:#07070e!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp246-outlands-home .gtp219-backdrop{
+ position:absolute!important;inset:0!important;opacity:1!important;
+ background-image:url("./assets/decor/mirage-clean-final.webp")!important;
+ background-size:cover!important;background-position:center 42%!important;
+ filter:sepia(.90) saturate(1.55) hue-rotate(325deg) brightness(.68) contrast(1.17)!important;
+}
+#app[data-screen="home"] .gtp246-outlands-home::before{
+ content:"";position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;
+ background:linear-gradient(90deg,#08070aca,transparent 23%,transparent 77%,#08070ac8),
+ linear-gradient(180deg,#10070a41 0%,#10070a08 20%,#09030b29 60%,#030407d9 100%)!important;
+}
+#app[data-screen="home"] .gtp239-mirage-duo{display:none!important} /* Mirages are already in the backdrop */
+#app[data-screen="home"] .gtp239-sky{
+ position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;
+ background:radial-gradient(circle at 51% 22%,#a7121329,transparent 35%)!important;
+}
+#app[data-screen="home"] .gtp239-blood-moon{
+ display:block!important;position:absolute!important;left:50%!important;
+ top:clamp(60px,8vw,112px)!important;width:clamp(220px,24vw,365px)!important;
+ aspect-ratio:1!important;height:auto!important;border-radius:50%!important;
+ opacity:.91!important;mix-blend-mode:screen!important;filter:blur(.2px)!important;
+ background:radial-gradient(circle at 33% 25%,#ffe1b633 0 5%,transparent 6%),
+ radial-gradient(circle at 66% 58%,#510d223d 0 15%,transparent 17%),
+ radial-gradient(circle at 35% 68%,#41111b37 0 12%,transparent 14%),
+ radial-gradient(circle at 47% 44%,#e76f59,#c13531 52%,#5e1020 92%)!important;
+ box-shadow:0 0 55px #f44a4760,0 0 142px #ce252957,0 0 240px #ff6a302d!important;
+ transform:translateX(-50%)!important;
+}
+#app[data-screen="home"] .gtp246-outlands-home .gtp239-layout{
+ position:relative!important;z-index:3!important;width:min(1350px,calc(100% - 22px))!important;
+ max-width:none!important;margin:0 auto!important;padding:0 0 20px!important;gap:0!important;
+}
+#app[data-screen="home"] .gtp239-masthead{z-index:3!important;position:relative!important;
+ margin:clamp(8px,2vh,17px) auto 6px!important;filter:drop-shadow(0 5px 15px #000f)!important}
+#app[data-screen="home"] .gtp239-masthead>span{font-size:clamp(13px,1.25vw,20px)!important;letter-spacing:.12em!important;color:#fff0d9!important}
+#app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(58px,6.3vw,106px)!important;
+ line-height:.82!important;letter-spacing:.015em!important;color:#f3624c!important;
+ text-shadow:0 3px 0 #6b1b20,0 7px 2px #26070b,0 10px 28px #000e,0 0 26px #e83937a0!important}
+#app[data-screen="home"] .gtp239-masthead small{font-size:9px!important;color:#ffd2b7!important;letter-spacing:.27em!important}
+#app[data-screen="home"] .gtp246-home-arena{
+ position:relative!important;display:grid!important;
+ grid-template-columns:minmax(146px,1fr) minmax(380px,540px) minmax(146px,1fr)!important;
+ width:min(1180px,100%)!important;min-height:548px!important;max-width:none!important;
+ margin:0 auto!important;gap:10px!important;align-items:center!important;
+ border:0!important;background:transparent!important;box-shadow:none!important;
+}
+#app[data-screen="home"] .gtp246-home-arena>.gtp239-side{
+ position:relative!important;display:flex!important;flex-direction:column!important;
+ align-items:center!important;justify-content:space-between!important;
+ gap:10px!important;width:100%!important;min-height:535px!important;margin:0!important;
+ padding:0!important;z-index:5!important;
+}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode{
+ display:flex!important;flex-direction:column!important;align-items:center!important;
+ justify-content:center!important;position:relative!important;
+ width:min(100%,174px)!important;height:170px!important;min-height:170px!important;
+ padding:0!important;gap:6px!important;border:0!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;overflow:visible!important;
+ transform:none!important;transition:transform .22s ease,filter .22s ease!important;
+}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode::before,
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode::after{display:none!important}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode:is(:hover,:focus-visible){
+ transform:translateY(-5px) scale(1.045)!important;filter:brightness(1.2)!important}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-medallion{
+ display:block!important;position:relative!important;flex:0 0 101px!important;
+ width:101px!important;height:101px!important;min-width:101px!important;min-height:101px!important;
+ max-width:101px!important;max-height:101px!important;aspect-ratio:1!important;
+ margin:0!important;padding:0!important;border:3px solid var(--mode)!important;border-radius:50%!important;
+ background:#101620!important;overflow:hidden!important;
+ box-shadow:0 0 0 4px #080813,0 0 0 6px color-mix(in srgb,var(--mode) 56%,transparent),
+ 0 0 24px color-mix(in srgb,var(--mode) 72%,transparent),inset 0 0 18px #000b,0 9px 25px #000e!important;
+}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-medallion>.portrait-holder{
+ display:block!important;position:absolute!important;inset:3px!important;width:auto!important;height:auto!important;
+ border-radius:50%!important;overflow:hidden!important;opacity:1!important;background:#151726!important;
+}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-medallion>.portrait-holder img{
+ display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;
+ object-fit:cover!important;object-position:center 25%!important;transform:scale(1.02)!important;opacity:1!important;
+ filter:saturate(1.02) contrast(1.13)!important;
+}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode[data-host="loba"] .portrait-holder img{
+ object-fit:contain!important;object-position:center!important;transform:scale(.95)!important}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode[data-host="sparrow"] .portrait-holder img{
+ object-fit:cover!important;object-position:center 29%!important;transform:scale(1.06)!important}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-plate{
+ display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ position:relative!important;width:100%!important;max-width:100%!important;min-height:50px!important;max-height:none!important;
+ padding:5px 8px!important;gap:1px!important;margin:0!important;
+ border:1px solid color-mix(in srgb,var(--mode) 67%,#413540)!important;
+ border-radius:8px!important;background:linear-gradient(180deg,#0f1118ea,#07090deb)!important;
+ box-shadow:0 2px 10px #000c,0 0 16px color-mix(in srgb,var(--mode) 23%,transparent)!important;
+ text-align:center!important;
+}
+#app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate .gtp242-host-name{
+ display:block!important;font-size:8px!important;font-weight:800!important;line-height:1.1!important;letter-spacing:.10em!important;color:var(--mode)!important}
+#app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate strong{
+ font-size:clamp(13px,1.2vw,17px)!important;line-height:1.08!important;white-space:nowrap!important;color:#fff6ec!important}
+#app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate small{
+ display:block!important;font-size:9px!important;line-height:1.1!important;white-space:nowrap!important;
+ overflow:hidden!important;text-overflow:ellipsis!important;color:#ded6d4!important}
+#app[data-screen="home"] .gtp246-home-core{
+ position:relative!important;z-index:3!important;display:flex!important;flex-direction:column!important;
+ align-items:center!important;justify-content:center!important;gap:0!important;
+ width:100%!important;min-width:0!important;max-width:none!important;min-height:535px!important;
+ padding:6px 4px 0!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important;
+}
+#app[data-screen="home"] .gtp246-home-core .gtp239-bin-stage{
+ position:relative!important;width:min(100%,530px)!important;height:248px!important;min-height:0!important;
+ margin:0 auto -9px!important;overflow:visible!important;transform:none!important;z-index:4!important}
+#app[data-screen="home"] .gtp246-home-core .gtp239-bin-image{
+ width:100%!important;height:100%!important;object-fit:contain!important;transform:none!important;
+ filter:drop-shadow(0 0 14px #e72327dd) drop-shadow(0 9px 14px #000e)!important;
+}
+#app[data-screen="home"] .gtp246-home-core .gtp239-bin-floor{opacity:.56!important}
+#app[data-screen="home"] .gtp246-intel-hub{
+ width:min(100%,465px)!important;margin:0 auto!important;padding:13px 14px!important;
+ min-height:0!important;border:1px solid #d95446aa!important;border-radius:10px!important;
+ background:linear-gradient(145deg,#110b0fe8,#060911ed)!important;backdrop-filter:blur(8px)!important;
+ box-shadow:0 0 22px #e6383338,0 10px 23px #000d!important;
+}
+#app[data-screen="home"] .gtp246-intel-hub h2{
+ font-size:clamp(21px,2.35vw,33px)!important;margin:2px 0!important;color:#fff0e2!important;
+ letter-spacing:.06em!important;text-shadow:0 2px 8px #000d!important}
+#app[data-screen="home"] .gtp246-intel-hub p{font-size:10px!important;line-height:1.3!important;color:#e6cfc6!important}
+#app[data-screen="home"] .gtp246-intel-hub .gtp239-open-intel{
+ display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;
+ width:min(100%,315px)!important;max-width:315px!important;height:48px!important;min-height:48px!important;
+ margin:9px auto!important;padding:8px 13px!important;
+ background:linear-gradient(180deg,#ff654d,#b91e25 72%,#840f1e)!important;
+ border:1px solid #ffbd9a!important;border-radius:8px!important;
+ box-shadow:0 0 21px #fb3e3e90,0 6px 15px #000e!important;
+ font-size:13px!important;letter-spacing:.07em!important}
+#app[data-screen="home"] .gtp246-home-core .gtp239-primary-actions{
+ display:flex!important;width:min(100%,450px)!important;max-width:450px!important;
+ margin:9px auto!important;gap:9px!important}
+#app[data-screen="home"] .gtp246-home-core .gtp239-primary-actions button{
+ flex:1 1 0!important;min-width:0!important;min-height:48px!important;height:auto!important;padding:8px 10px!important;
+ border-radius:9px!important;border:1px solid #8c6663a9!important;
+ background:linear-gradient(170deg,#112136eb,#050d1aef)!important;box-shadow:0 8px 16px #0009!important}
+#app[data-screen="home"] .gtp246-home-core .gtp239-primary-actions button strong{font-size:12px!important}
+#app[data-screen="home"] .gtp246-home-core .gtp239-primary-actions button small{font-size:9px!important}
+#app[data-screen="home"] .gtp239-home-dock{
+ position:relative!important;z-index:4!important;width:min(950px,100%)!important;max-width:950px!important;
+ margin:4px auto!important}
+#app[data-screen="home"] .gtp219-footer{position:relative!important;z-index:5!important}
+
 /* GAME: functional two-rail layout, not a thin boxed screenshot. */
 #app[data-screen="game"]{--gtp245-accent:var(--v243-accent,#f37b61)}
 #app[data-screen="game"] .gtp230-game{width:min(1520px,calc(100vw - 32px))!important;max-width:1520px!important;min-height:calc(100svh - 84px)!important;margin:0 auto!important;padding:10px 0 18px!important;display:flex!important;flex-direction:column!important;gap:10px!important}
@@ -156,3 +281,80 @@
  #app[data-screen="trivia"] .trivia-options{gap:6px!important}
 }
 @media(prefers-reduced-motion:reduce){#app .gtp245-picker-item{transition:none!important}#app[data-screen="home"] .gtp239-mode-card{transition:none!important}}
+
+
+/* GAME — V2.46: left image+actions share one continuous frame; right always-visible Intel column.
+   This fixes the previous blank gap under the game image. */
+@media(min-width:901px){
+ #app[data-screen="game"] .gtp230-arena{
+  grid-template-columns:minmax(0,1fr) minmax(268px,310px)!important;
+  grid-template-rows:minmax(535px,calc(100svh - 175px))!important;
+  grid-template-areas:"clue intel"!important;min-height:535px!important;align-items:stretch!important;
+ }
+ #app[data-screen="game"] .gtp230-main-clue{
+  grid-area:clue!important;grid-row:1!important;grid-column:1!important;min-height:535px!important;
+  background:linear-gradient(180deg,#07101e0d 0%,#080b1461 57%,#050a12ad 100%)!important;
+ }
+ #app[data-screen="game"] .gtp230-arena>.gtp230-console,
+ #app[data-screen="game"] .gtp230-arena>.gtp230-finished{
+  grid-area:clue!important;grid-row:1!important;grid-column:1!important;
+  align-self:end!important;justify-self:center!important;z-index:10!important;
+  width:calc(100% - 38px)!important;max-width:760px!important;
+  margin:0 0 18px!important;padding:14px 17px!important;
+  background:linear-gradient(180deg,#050c17a3,#070c17df)!important;
+  backdrop-filter:blur(8px)!important;
+  border:1px solid #ef6859a6!important;box-shadow:0 0 28px #b52a2d4c,0 9px 20px #000d!important;
+ }
+ #app[data-screen="game"] .gtp233-viewport-art{filter:saturate(.92) contrast(1.08) brightness(.75)!important}
+ #app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{
+  left:0!important;right:auto!important;width:clamp(210px,29vw,450px)!important;
+  height:min(73vh,700px)!important;bottom:-5vh!important;opacity:.77!important;
+  filter:drop-shadow(0 5px 17px #000c)!important;pointer-events:none!important;
+ }
+ #app[data-screen="game"] .gtp236-intel-column>.gtp235-rules{margin-top:auto!important}
+ #app[data-screen="game"] .gtp230-trait{min-height:40px!important}
+}
+@media(max-width:900px){
+ #app[data-screen="game"] .gtp230-arena{grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(300px,auto) auto auto!important;
+  grid-template-areas:"clue" "controls" "intel"!important;min-height:0!important}
+ #app[data-screen="game"] .gtp230-main-clue{grid-area:clue!important}
+ #app[data-screen="game"] .gtp230-arena>.gtp230-console,#app[data-screen="game"] .gtp230-arena>.gtp230-finished{
+  grid-area:controls!important;margin:0!important}
+ #app[data-screen="game"] .gtp236-intel-column{grid-area:intel!important}
+}
+/* Home responsive: circle modes become a 3x2 matrix without any phantom rectangles. */
+@media(max-width:900px){
+ #app[data-screen="home"] .gtp246-home-arena{
+  display:flex!important;flex-direction:column!important;gap:13px!important;
+  min-height:0!important;max-width:680px!important}
+ #app[data-screen="home"] .gtp246-home-core{order:-1!important;min-height:0!important;max-width:600px!important;padding-top:0!important}
+ #app[data-screen="home"] .gtp246-home-arena>.gtp239-side{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:9px!important;min-height:0!important;max-width:660px!important}
+ #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode{
+  width:100%!important;height:154px!important;min-height:154px!important}
+ #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-medallion{
+  width:85px!important;height:85px!important;min-width:85px!important;min-height:85px!important;
+  max-width:85px!important;max-height:85px!important;flex-basis:85px!important}
+ #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-plate{
+  width:100%!important;max-height:54px!important;min-height:51px!important}
+}
+@media(max-width:560px){
+ #app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(51px,14vw,78px)!important}
+ #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode{height:135px!important;min-height:135px!important;gap:4px!important}
+ #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-medallion{
+  width:65px!important;height:65px!important;min-width:65px!important;min-height:65px!important;
+  max-width:65px!important;max-height:65px!important;flex-basis:65px!important}
+ #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-plate{padding:5px 2px!important;min-height:52px!important}
+ #app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate strong{font-size:11px!important}
+ #app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate .gtp242-host-name{font-size:6.5px!important}
+ #app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate small{font-size:7px!important}
+ #app[data-screen="home"] .gtp246-home-core .gtp239-bin-stage{height:180px!important}
+ #app[data-screen="home"] .gtp246-intel-hub{padding:10px!important}
+ #app[data-screen="home"] .gtp246-home-core .gtp239-primary-actions button strong{font-size:10px!important}
+ #app[data-screen="home"] .gtp246-home-core .gtp239-primary-actions button small{font-size:8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode{transition:none!important}
+}
