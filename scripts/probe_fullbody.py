@@ -19,7 +19,7 @@ from urllib.parse import quote
 import requests
 from PIL import Image, ImageChops, ImageFilter
 
-LEGENDS = ("alter", "ballistic", "catalyst", "conduit", "sparrow")
+LEGENDS = ("alter", "axle", "ballistic", "catalyst", "conduit", "sparrow")
 HEADERS = {
     "User-Agent": "GuessThePredatorFanSite/2.28 (verified noncommercial character-art cutout)",
     "Accept": "image/png,image/webp,image/*;q=0.8",
@@ -28,9 +28,10 @@ HEADERS = {
 
 def urls(slug):
     name = slug.title()
-    original = f"Original {name}.png"
+    original = "Axle Pose Stand Tall.png" if slug == "axle" else f"Original {name}.png"
     skins = {
         "alter": "Crimson Dynasty Alter.png",
+        "axle": "Cyber Racer Axle.png",
         "ballistic": "Earl Grey Ballistic.png",
         "catalyst": "Crimson Goddess Catalyst.png",
         "conduit": "Clearwater Conduit.png",
@@ -124,7 +125,7 @@ def main():
                 print(f"Unavailable/invalid: {str(error)[:180]}", flush=True)
         else:
             print(f"NO VERIFIED FULL-BODY FILE: {slug}", flush=True)
-    print(f"VERIFIED {len(found)}/5: {', '.join(found)}", flush=True)
+    print(f"VERIFIED {len(found)}/{len(LEGENDS)}: {', '.join(found)}", flush=True)
     if strict and len(found) != len(LEGENDS):
         raise SystemExit("ERROR: A full-body portrait cutout failed; protect the previous live release.")
 
