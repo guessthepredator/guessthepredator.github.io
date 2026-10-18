@@ -30,7 +30,7 @@ try{
  });
  assert(desktop.bodyWidth<=1659,'Home scrolls horizontally: '+JSON.stringify(desktop));
  assert(desktop.cards.length===6,'Expected six featured modes: '+desktop.cards.length);
- assert(desktop.cards.every(x=>x.width>=125&&x.portraitWidth>=92&&x.bottom<=929)),'Mode cards too small or clipped at user's viewport: '+JSON.stringify(desktop.cards));
+ assert(desktop.cards.every(x=>x.width>=125&&x.portraitWidth>=92&&x.bottom<=929),'Mode cards too small or clipped at desktop viewport: '+JSON.stringify(desktop.cards));
  assert(desktop.bin?.width>=470&&desktop.bin?.height>=220,'Supply bin not prominent enough '+JSON.stringify(desktop.bin));
  assert(desktop.mirages===2,'Expected both original Mirage figures');
  assert(desktop.secondary===4,'Four original puzzle modes must remain available');
