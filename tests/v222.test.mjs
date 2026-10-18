@@ -149,7 +149,7 @@ test('V2.26 every incorrect Full Scan cell has a red state and summary',()=>{
 });
 test('V2.26 audio supports distinct modes, visible homepage hover and valid loss feedback',()=>{
  const audio=read('src/audio.mjs');
- assert.ok(audio.includes("const modes=['classic','pixel','quote','ability','emoji']"));
+ assert.ok(audio.includes("const modes=['classic','pixel','quote','ability','emoji','trivia']"));
  assert.ok(audio.includes('audioEngine()'));
  assert.ok(audio.includes("if(name==='wrong')"));
  assert.ok(app.includes("closest?.('.arena-mode,.gtp222-orbit-card,.gtp239-mode-card')"));
