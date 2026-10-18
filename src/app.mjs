@@ -545,6 +545,30 @@ function cinematicStageAside(round,target){
  }
  return '';
 }
+/** Always-visible compact scan controls in gameplay.
+ * Daily rounds and rounds in progress show their active settings but lock
+ * changes; free-play rules are editable before the first guess only.
+ */
+function visibleRoundModes(round){
+ const locked=session==='daily'||round.guesses.length>0||round.finished;
+ const lockCopy=session==='daily'?'DAILY RULES LOCKED':round.finished?'ROUND FINISHED':round.guesses.length?'LOCKED AFTER FIRST GUESS':'SELECT BEFORE FIRST GUESS';
+ const button=(label,action,activeMode,extra='')=>`<button type="button" class="gtp235-rule-choice ${activeMode?'is-active':''} ${extra}" data-action="${action}" ${action==='style'?`data-style="${extra==='scan-full'?'full':'signal'}"`:''} aria-pressed="${activeMode?'true':'false'}" ${locked?'disabled':''}>${label}</button>`;
+ return `<div class="gtp235-rules" role="group" aria-label="Full Scan, One Signal and Rush settings">
+   <span class="gtp235-rules-status" title="${lockCopy}"><b>SCAN RULES</b><small>${lockCopy}</small></span>
+   <div class="gtp235-rule-buttons">
+     ${button('▦ FULL SCAN','style',round.mode==='full','scan-full')}
+     ${button('✦ ONE SIGNAL','style',round.mode==='signal','scan-signal')}
+     ${button(`◷ RUSH ${round.timeLimit?round.timeLimit+'s':'OFF'}`,'rush',!!round.timeLimit,'scan-rush')}
+   </div>
+ </div>`;
+}
+function triedLegendNote(round){
+ if(!round.guesses.length)return '';
+ return `<div class="gtp235-tried" role="note" aria-label="Legends you already tried this round">
+  <strong>✕ ALREADY TRIED</strong>
+  <div class="gtp235-tried-names">${round.guesses.map((name,i)=>`<span title="Guess ${i+1}: ${esc(name)}">× ${esc(name)}</span>`).join('')}</div>
+ </div>`;
+}
 function cinematicControls(round,target){
  if(round.finished){
   const score=gameScore(round);
@@ -559,6 +583,8 @@ function cinematicControls(round,target){
     <button type="button" data-action="again" class="gtp230-btn gtp230-btn-blue">FREE PLAY</button>
     <button type="button" data-action="home" class="gtp230-btn gtp230-btn-secondary">ALL MODES</button>
    </div>
+   ${visibleRoundModes(round)}
+   ${triedLegendNote(round)}
    ${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}
   </section>`;
  }
@@ -577,8 +603,9 @@ function cinematicControls(round,target){
        <button class="gtp230-btn gtp230-btn-danger" type="button" data-action="surrender">◷ GIVE UP</button>
       </div>
     </div>
+    ${visibleRoundModes(round)}
+    ${triedLegendNote(round)}
     ${round.guesses.length?`<div class="gtp230-feedback">${latestSignal(round,target)}</div>`:''}
-    ${session==='unlimited'?`<details class="gtp230-round-options"><summary>⚙ SCAN SETTINGS · ${round.mode==='full'?'FULL SCAN':'ONE SIGNAL'} · ${round.timeLimit?'RUSH ON':'RUSH OFF'}</summary>${styleStrip(round)}</details>`:''}
     <span class="gtp230-console-help">${remaining} guesses left · ${hintDisabled?'Start with a guess to unlock hints':'Green = matching trait · Red = different trait'}</span>
    </section>`;
 }
