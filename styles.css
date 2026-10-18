@@ -4289,3 +4289,19 @@ html,body{overflow-x:hidden}
     border-left:0!important;border-top:1px solid #355674!important;
   }
 }
+
+
+/* Override the *more-specific* legacy lightshift-playing rule as well.
+   Without this selector the old opaque purple gradient wins over #app alone. */
+body.lightshift-playing #app[data-screen="game"],
+body:has(.gtp2-game-scene) #app[data-screen="game"]{
+  background-color:#061022!important;
+  background-image:
+    linear-gradient(90deg,rgba(3,8,21,.56) 0%,rgba(5,11,24,.18) 20%,rgba(5,11,24,.12) 78%,rgba(3,8,21,.56) 100%),
+    linear-gradient(180deg,rgba(3,8,19,.42) 0%,rgba(4,9,21,.09) 45%,rgba(3,7,19,.53) 100%),
+    var(--gtp230-back)!important;
+  background-position:center center!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
+}
