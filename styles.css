@@ -4820,3 +4820,130 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
 @media(max-width:700px){.gtp237-settings-switch{padding:7px 9px!important;font-size:10px!important}.gtp237-mythic-scene{width:230px;height:135px}.search-list .search-result .portrait-holder{width:54px!important;height:54px!important;min-width:54px!important;flex-basis:54px!important}}
 @media(prefers-reduced-motion:reduce){.gtp237-mythic-halo,.gtp237-mythic-glint{animation:none}}
 .no-motion .gtp237-mythic-halo,.no-motion .gtp237-mythic-glint{animation:none!important}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   V2.38 — MIRAGE RETURNS · MYTHIC SUPPLY BIN · LEGEND MODE GUIDES
+   The artwork / mode hosts are presentation ONLY, never target spoilers.
+   ═══════════════════════════════════════════════════════════════════ */
+.gtp222-home{isolation:isolate!important;position:relative!important}
+.gtp222-home .gtp219-backdrop{filter:saturate(.94) brightness(.83)!important}
+.gtp222-home .gtp222-layout{z-index:3!important;position:relative!important}
+.gtp238-mirage-duo{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.gtp238-mirage-figure{display:block;position:absolute;top:4%;height:min(75svh,710px);width:clamp(265px,39vw,630px);
+ background-image:url('./assets/decor/mirage-duo-side.webp');background-position:center;background-repeat:no-repeat;background-size:100% 100%;
+ opacity:.76;filter:drop-shadow(0 18px 24px #02050ab0) saturate(.95) contrast(1.08);
+ -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 68%,transparent 99%);
+ mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 68%,transparent 99%);
+}
+.gtp238-mirage-left{left:max(-7vw,-110px)}
+.gtp238-mirage-right{right:max(-7vw,-110px);transform:scaleX(-1)}
+/* Do not let the Mirage figures obscure the mode-card content */
+.gtp222-home .gtp222-arena,.gtp222-home .gtp222-home-dock{position:relative;z-index:3!important}
+.gtp222-home .gtp222-orbit-card,.gtp222-home .gtp222-core{isolation:isolate}
+.gtp222-home .gtp222-orbit-card{backdrop-filter:blur(8px)}
+/* New self-contained front illustration, narrower and more angular than V2.37 CSS chest */
+.gtp238-mythic-stage{position:relative;width:min(100%,355px);height:clamp(115px,17svh,190px);margin:-8px auto -4px;
+ display:flex;justify-content:center;align-items:center;isolation:isolate;pointer-events:none}
+.gtp238-bin-glow{position:absolute;z-index:0;inset:24% 0 -9%;background:radial-gradient(ellipse at 50% 58%,#ff3b266a 2%,#fa692e2a 44%,transparent 72%);
+ filter:blur(9px);animation:gtp238-bin-halo 3s ease-in-out infinite}
+.gtp238-mythic-art{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:contain;
+ filter:drop-shadow(0 12px 8px #07060bce) drop-shadow(0 0 13px #ff563a7a);
+ transition:transform .38s cubic-bezier(.16,.76,.24,1),filter .35s}
+.gtp222-core:hover .gtp238-mythic-art{transform:translateY(-7px) scale(1.045);filter:drop-shadow(0 18px 12px #000c) drop-shadow(0 0 22px #ff6a47bf)}
+.gtp238-bin-shine{position:absolute;z-index:2;right:7%;top:8%;color:#ffe1b1;text-shadow:0 0 16px #ffba76;
+ font-size:22px;animation:gtp238-star 3s ease-in-out infinite}
+@keyframes gtp238-bin-halo{50%{opacity:.55;transform:scale(1.09)}}
+@keyframes gtp238-star{0%,100%{opacity:.22;transform:scale(.75)}50%{opacity:1;transform:scale(1.16)}}
+.gtp222-home .gtp222-core h1 em{color:#ff9773!important;text-shadow:0 0 19px #c93b2e65}
+/* Each genuinely playable mode keeps its own interaction and mystery target. */
+.gtp222-home .gtp238-mode-card[data-host="mirage"]{--accent:#ff7272!important}
+.gtp222-home .gtp238-mode-card[data-host="sparrow"]{--accent:#4ce4ef!important}
+.gtp222-home .gtp238-mode-card[data-host="loba"]{--accent:#c296ff!important}
+.gtp222-home .gtp238-mode-card[data-host="octane"]{--accent:#bcff61!important}
+.gtp222-home .gtp238-mode-card[data-host="wattson"]{--accent:#ffca76!important}
+.gtp222-home .gtp238-mode-card[data-host="crypto"]{--accent:#6bceff!important}
+.gtp222-home .gtp222-side .gtp238-mode-card{display:flex!important;flex-direction:row!important;align-items:center!important;
+ justify-content:flex-start!important;text-align:left!important;gap:10px!important;
+ min-height:100px!important;overflow:hidden!important;background:
+ linear-gradient(118deg,color-mix(in srgb,var(--accent) 20%,#0a111e),#080c18ed 77%)!important}
+.gtp238-mode-portrait{display:grid;place-items:center;position:relative;z-index:1;flex:0 0 69px;width:69px;height:75px;overflow:hidden;
+ border:2px solid var(--accent);border-radius:13px;
+ box-shadow:0 0 16px color-mix(in srgb,var(--accent) 42%,transparent),inset 0 0 0 2px #071121;
+ background:radial-gradient(circle at 50% 25%,color-mix(in srgb,var(--accent) 42%,#131728),#0c101c 73%)}
+.gtp238-mode-portrait>.portrait-holder{display:block!important;width:100%!important;height:100%!important;min-height:0!important;
+ background:transparent!important;padding:0!important;border:0!important;overflow:hidden!important}
+.gtp238-mode-portrait img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 18%!important;
+ transform:none!important;filter:drop-shadow(0 2px 4px #000b)}
+.gtp238-mode-portrait img[data-portrait="sparrow"],
+.gtp238-mode-portrait img[data-portrait="wattson"]{object-fit:contain!important;object-position:center 14%!important}
+.gtp238-mode-card .gtp222-orbit-copy{display:flex!important;flex-direction:column!important;gap:2px!important;
+ flex:1 1 auto!important;min-width:0!important;position:relative;z-index:1}
+.gtp238-mode-card .gtp222-orbit-copy strong{color:#fff!important;font-size:clamp(20px,1.65vw,26px)!important;
+ line-height:1.02!important;text-shadow:0 2px 6px #0009}
+.gtp238-mode-card .gtp222-orbit-copy small{line-height:1.2!important;font-size:10px!important;color:#d9e5f1!important;white-space:normal!important}
+.gtp238-host-name{color:var(--accent);font-size:9px;font-weight:1000;line-height:1.1;letter-spacing:.1em}
+.gtp238-mode-card .gtp222-orbit-arrow{align-self:center!important;margin-left:auto;position:relative;z-index:1;color:var(--accent)!important}
+.gtp238-pathfinder-wheel{--accent:#5baaff!important;border-color:#3385cd!important}
+.gtp238-wheel-host{position:absolute;z-index:2;right:188px;top:50%;transform:translateY(-50%);
+ display:grid;place-items:center;width:94px;height:94px;overflow:hidden;pointer-events:none;
+ border:2px solid #64c6ff;border-radius:50%;
+ background:radial-gradient(circle at 50% 45%,#3165a2,#07182d 80%);box-shadow:0 0 20px #34b5ff65}
+.gtp238-wheel-host .portrait-holder{display:block;width:100%;height:100%;min-height:0;background:transparent!important;padding:0!important}
+.gtp238-wheel-host img{height:100%!important;width:100%!important;object-fit:contain!important;object-position:center center!important}
+.gtp238-wheel-guide{display:block!important;color:#83cfff!important;font-size:10px!important;font-weight:900!important;
+ letter-spacing:.1em!important;margin:3px 0!important}
+.gtp222-home .gtp222-home-dock .gtp238-pathfinder-wheel{background:linear-gradient(110deg,#0b1b32,#10375a 65%,#10162b)!important}
+/* Gameplay title guides are small, readable and cannot be mistaken for mystery answers. */
+#app[data-screen="game"][data-mode="classic"]{--gtp238-host-color:#ff7776}
+#app[data-screen="game"][data-mode="pixel"]{--gtp238-host-color:#50e1e9}
+#app[data-screen="game"][data-mode="quote"]{--gtp238-host-color:#cba9ff}
+#app[data-screen="game"][data-mode="ability"]{--gtp238-host-color:#bafb62}
+#app[data-screen="game"][data-mode="emoji"]{--gtp238-host-color:#ffcb76}
+#app[data-screen="game"] .gtp238-game-host{display:grid!important;place-items:center!important;overflow:hidden!important;
+ border:2px solid var(--gtp238-host-color)!important;background:#101a2b!important;
+ box-shadow:0 0 11px color-mix(in srgb,var(--gtp238-host-color) 45%,transparent)!important}
+#app[data-screen="game"] .gtp238-game-host .portrait-holder{width:100%!important;height:100%!important;min-height:0!important;
+ padding:0!important;background:transparent!important;display:block!important}
+#app[data-screen="game"] .gtp238-game-host img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 16%!important}
+#app[data-screen="game"] .gtp238-game-host-label{display:block;color:var(--gtp238-host-color);letter-spacing:.12em;
+ font-size:9px;font-weight:950;margin-bottom:2px}
+#app[data-screen="game"] .gtp230-game>.gtp230-titlebar{border-color:color-mix(in srgb,var(--gtp238-host-color) 67%,#152940)!important}
+#app[data-screen="game"] .gtp235-rule-choice small{display:block!important;color:#d1edf3!important;
+ font:800 8px/1 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.14em!important;opacity:.75!important}
+#app[data-screen="game"] .gtp235-rule-choice.scan-full small{color:#7ff2fb!important}
+#app[data-screen="game"] .gtp235-rule-choice.scan-signal small{color:#dfbaff!important}
+#app[data-screen="game"] .gtp235-rule-choice.scan-rush small{color:#d8ff83!important}
+#app[data-screen="game"] .gtp235-rule-choice{min-height:43px!important;flex-direction:column!important;gap:3px!important;
+ padding:5px 7px!important;line-height:1.12!important}
+#app[data-screen="game"] .gtp235-rule-choice.is-active.scan-rush{background:#4b6324!important;border-color:#aeff76!important}
+@media(min-width:831px) and (max-width:1170px){
+ .gtp238-mirage-figure{opacity:.48!important;width:32vw!important;top:8%!important}
+ .gtp238-mode-portrait{flex-basis:54px;width:54px;height:66px}
+ .gtp238-mode-card .gtp222-orbit-copy strong{font-size:19px!important}
+ .gtp238-wheel-host{width:70px;height:70px;right:162px}
+}
+@media(max-width:830px){
+ .gtp238-mirage-figure{top:0;height:470px;opacity:.32;width:46vw!important}
+ .gtp238-mirage-left{left:-16vw}
+ .gtp238-mirage-right{right:-16vw}
+ .gtp222-home .gtp222-side .gtp238-mode-card{flex-direction:row!important;text-align:left!important;min-height:116px!important}
+ .gtp238-mode-portrait{width:66px;height:76px;flex-basis:66px}
+ .gtp238-mythic-stage{height:155px}
+ .gtp238-wheel-host{right:149px;width:76px;height:76px}
+}
+@media(max-width:470px){
+ .gtp238-mirage-figure{height:345px!important;opacity:.25!important}
+ .gtp222-home .gtp222-side .gtp238-mode-card{gap:6px!important;min-height:112px!important;padding:8px!important}
+ .gtp238-mode-portrait{width:51px;flex-basis:51px;height:62px}
+ .gtp238-mode-card .gtp222-orbit-copy strong{font-size:17px!important}
+ .gtp238-mode-card .gtp222-orbit-copy small{font-size:9px!important}
+ .gtp238-host-name{font-size:8px}
+ .gtp238-mode-card .gtp222-orbit-arrow{display:none!important}
+ .gtp238-wheel-host{display:none}
+ .gtp238-mythic-stage{height:135px}
+}
+@media(prefers-reduced-motion:reduce){.gtp238-bin-glow,.gtp238-bin-shine{animation:none!important}
+ .gtp238-mythic-art{transition:none!important}}
+.no-motion .gtp238-bin-glow,.no-motion .gtp238-bin-shine{animation:none!important}
+.no-motion .gtp238-mythic-art{transition:none!important}
