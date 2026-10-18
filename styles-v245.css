@@ -1,0 +1,158 @@
+/* GUESS THE PREDATOR — V2.45 CINEMATIC HALLOWEEN OVERHAUL */
+/* A deliberately scoped single visual authority for Home, gameplay, picker and Trivia. */
+#app .top.gtp2-top{background:linear-gradient(100deg,#050b17f2,#101420ec 48%,#070c18f3)!important;border-bottom:1px solid #cd594c9e!important;box-shadow:0 9px 22px #0009!important;backdrop-filter:blur(16px)!important}
+#app button:focus-visible{outline:2px solid #ffd0a7!important;outline-offset:3px!important}
+/* HERO: crimson moon, two Mirages, six neon rings and a real mythic supply bin. */
+#app[data-screen="home"] .gtp239-home{min-height:max(800px,calc(100svh - 75px))!important;isolation:isolate!important}
+#app[data-screen="home"] .gtp239-home .gtp219-backdrop{filter:saturate(1.16) brightness(.65) contrast(1.21)!important;background-position:center 40%!important}
+#app[data-screen="home"] .gtp239-home::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,#05070bc9,transparent 23%,transparent 77%,#05070bcb),linear-gradient(180deg,transparent 15%,#17090d32 57%,#030910d8 100%)}
+#app[data-screen="home"] .gtp239-mirage-duo{display:block!important;z-index:1!important;opacity:.82!important}
+#app[data-screen="home"] .gtp239-mirage-duo .gtp238-mirage-figure{opacity:.57!important;filter:saturate(1.07) brightness(.86) contrast(1.16) drop-shadow(0 16px 27px #000e)!important}
+#app[data-screen="home"] .gtp239-sky{z-index:0!important}
+#app[data-screen="home"] .gtp239-blood-moon{display:block!important;top:64px!important;width:clamp(220px,26vw,370px)!important;opacity:.9!important;mix-blend-mode:normal!important;background:radial-gradient(circle at 28% 34%,#ffc6a41a 0 9%,transparent 11%),radial-gradient(circle at 66% 64%,#390a234b 0 14%,transparent 17%),radial-gradient(circle at 50% 45%,#ff9b7a,#da4540 50%,#94242d 79%,#360d1b)!important;box-shadow:0 0 45px #f34a435e,0 0 125px #d92d3944,0 0 220px #b71c3440!important}
+#app[data-screen="home"] .gtp239-layout{width:min(1320px,calc(100% - 26px))!important;position:relative!important;z-index:3!important;gap:12px!important}
+#app[data-screen="home"] .gtp239-masthead{margin:9px auto 15px!important;filter:drop-shadow(0 7px 15px #000e)}
+#app[data-screen="home"] .gtp239-masthead>span{color:#fff0dd!important}
+#app[data-screen="home"] .gtp239-masthead h1{color:#ff735c!important;text-shadow:0 3px 0 #661622,0 6px 0 #310e1b,0 9px 25px #000f,0 0 32px #f03e3b80!important}
+#app[data-screen="home"] .gtp239-masthead small{color:#ffe0ce!important;letter-spacing:.22em!important}
+#app[data-screen="home"] .gtp239-arena{display:grid!important;grid-template-columns:minmax(185px,220px) minmax(360px,1fr) minmax(185px,220px)!important;max-width:1190px!important;min-height:525px!important;gap:clamp(10px,2vw,25px)!important;align-items:center!important;margin:0 auto!important}
+#app[data-screen="home"] .gtp239-side{gap:12px!important;z-index:4!important}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card{height:151px!important;min-height:151px!important;justify-content:center!important;gap:2px!important;border-radius:13px!important;background:linear-gradient(140deg,#111726af,#050b14ae)!important;box-shadow:0 10px 24px #0009!important}
+#app[data-screen="home"] .gtp239-side .gtp239-mode-card:is(:hover,:focus-visible){transform:translateY(-4px)!important;box-shadow:0 0 20px color-mix(in srgb,var(--mode) 50%,transparent),0 11px 25px #000b!important}
+#app[data-screen="home"] .gtp239-side .gtp242-mode-medallion{width:90px!important;height:90px!important;min-width:90px!important;min-height:90px!important;max-width:90px!important;max-height:90px!important;flex:0 0 90px!important;border-width:3px!important;box-shadow:0 0 0 3px #070a12,0 0 0 6px color-mix(in srgb,var(--mode) 65%,transparent),0 0 23px color-mix(in srgb,var(--mode) 66%,transparent)!important}
+#app[data-screen="home"] .gtp242-mode-medallion>.portrait-holder{inset:3px!important;border-radius:50%!important;overflow:hidden!important;background:radial-gradient(circle at 50% 24%,#374b66,#121626 83%)!important}
+#app[data-screen="home"] .gtp242-mode-medallion>.portrait-holder img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;transform:scale(.97)!important;filter:contrast(1.12) saturate(1.08)!important}
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="loba"]>.portrait-holder img{object-fit:contain!important;transform:scale(.93)!important}
+#app[data-screen="home"] .gtp242-mode-medallion[data-host="sparrow"]>.portrait-holder img{object-fit:cover!important;object-position:center 27%!important;transform:scale(1.06)!important}
+#app[data-screen="home"] .gtp239-side .gtp242-mode-plate{width:195px!important;max-width:100%!important;min-height:56px!important;max-height:61px!important;border-radius:10px!important;margin-top:-5px!important;border:1px solid color-mix(in srgb,var(--mode) 67%,#314456)!important;background:linear-gradient(170deg,#111726ed,#060b15fc)!important;box-shadow:0 6px 21px #000d,0 0 10px color-mix(in srgb,var(--mode) 25%,transparent)!important}
+#app[data-screen="home"] .gtp242-mode-plate strong{font-size:20px!important}
+#app[data-screen="home"] .gtp242-mode-plate small{color:#eaded3!important}
+#app[data-screen="home"] .gtp239-core{z-index:3!important;justify-content:center!important}
+#app[data-screen="home"] .gtp239-bin-stage{width:min(100%,610px)!important;min-height:255px!important;filter:drop-shadow(0 14px 23px #000d)!important}
+#app[data-screen="home"] .gtp239-bin-image{filter:drop-shadow(0 0 25px #f15440a2) drop-shadow(0 15px 10px #000e)!important}
+#app[data-screen="home"] .gtp239-intel-panel{width:min(100%,530px)!important;border:1px solid #ed746891!important;border-radius:11px!important;background:linear-gradient(155deg,#180d15f2,#070b17f6)!important;box-shadow:0 15px 34px #000c,0 0 20px #d942363a!important}
+#app[data-screen="home"] .gtp239-open-intel{min-height:52px!important;background:linear-gradient(180deg,#ff654f,#b9212a 70%,#71111e)!important;border:1px solid #ffb495!important;box-shadow:0 0 22px #ff3f4273,0 8px 16px #000a!important;letter-spacing:.08em!important}
+#app[data-screen="home"] .gtp239-home-dock{max-width:1070px!important;z-index:4!important}
+/* GAME: functional two-rail layout, not a thin boxed screenshot. */
+#app[data-screen="game"]{--gtp245-accent:var(--v243-accent,#f37b61)}
+#app[data-screen="game"] .gtp230-game{width:min(1520px,calc(100vw - 32px))!important;max-width:1520px!important;min-height:calc(100svh - 84px)!important;margin:0 auto!important;padding:10px 0 18px!important;display:flex!important;flex-direction:column!important;gap:10px!important}
+#app[data-screen="game"] .gtp230-titlebar{width:100%!important;max-width:none!important;min-height:64px!important;margin:0!important;padding:9px 15px!important;border-radius:9px!important;border:1px solid color-mix(in srgb,var(--gtp245-accent) 60%,#34485b)!important;background:linear-gradient(95deg,#060d19ea,#0a1725e2,#070e1bec)!important;box-shadow:0 8px 22px #0009!important}
+#app[data-screen="game"] .gtp230-title-copy h1{font-size:clamp(25px,3vw,43px)!important}
+#app[data-screen="game"] .gtp230-arena{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(278px,320px)!important;grid-template-rows:minmax(340px,1fr) auto!important;grid-template-areas:"clue intel" "controls intel"!important;align-items:stretch!important;gap:11px!important;width:100%!important;max-width:none!important;min-height:585px!important;height:auto!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+#app[data-screen="game"] .gtp230-main-clue{grid-area:clue!important;width:100%!important;height:100%!important;min-width:0!important;min-height:345px!important;margin:0!important;padding:0!important;overflow:hidden!important;border:1px solid color-mix(in srgb,var(--gtp245-accent) 48%,#445a68)!important;border-radius:11px!important;background:linear-gradient(140deg,#090f1b29,#050a1231)!important;box-shadow:0 9px 23px #0009!important}
+#app[data-screen="game"] .gtp230-main-clue .clue-visual{height:100%!important;min-height:345px!important;max-height:none!important;border-radius:10px!important}
+#app[data-screen="game"] .gtp230-arena>.gtp236-intel-column{grid-area:intel!important;display:flex!important;flex-direction:column!important;align-self:stretch!important;gap:9px!important;margin:0!important;padding:0!important;width:100%!important;min-width:0!important;max-width:none!important;overflow:visible!important}
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-board,#app[data-screen="game"] .gtp236-intel-column>.gtp230-side{margin:0!important;padding:11px!important;min-width:0!important;border:1px solid #4b728ca8!important;border-radius:9px!important;background:linear-gradient(150deg,#070f1eeb,#0b1729ef)!important;box-shadow:0 7px 17px #0009!important}
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-board{flex:1 1 auto!important}
+#app[data-screen="game"] .gtp230-trait-list{gap:6px!important}
+#app[data-screen="game"] .gtp230-trait{min-height:35px!important;padding:5px 7px!important}
+#app[data-screen="game"] .gtp230-trait strong{font-size:12px!important}
+#app[data-screen="game"] .gtp245-tried{margin:0!important;padding:9px!important;min-height:67px!important;border:1px solid #62788d99!important;border-radius:9px!important;background:#080f1def!important}
+#app[data-screen="game"] .gtp245-tried>strong{font-size:10px!important;letter-spacing:.11em!important;color:#ffccb4!important}
+#app[data-screen="game"] .gtp245-tried .gtp235-tried-names{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:5px!important;max-height:104px!important;overflow:auto!important;margin-top:7px!important}
+#app[data-screen="game"] .gtp245-tried .gtp235-tried-names>span{display:flex!important;align-items:center!important;gap:4px!important;padding:3px 6px!important;border:1px solid #53728d9c!important;border-radius:7px!important;background:#172639ef!important}
+#app[data-screen="game"] .gtp245-tried .portrait-holder{position:relative!important;display:inline-block!important;width:25px!important;height:25px!important;min-width:25px!important;overflow:hidden!important;border-radius:5px!important;background:#203249!important}
+#app[data-screen="game"] .gtp245-tried .portrait-holder img{width:100%!important;height:100%!important;object-fit:cover!important;transform:none!important}
+#app[data-screen="game"] .gtp245-tried small{font-size:9px!important;white-space:nowrap!important}
+#app[data-screen="game"] .gtp236-intel-column>.gtp235-rules{display:flex!important;flex-direction:column!important;gap:7px!important;flex:0 0 auto!important;margin:0!important;padding:10px!important;border:1px solid #6485a0a8!important;border-radius:9px!important;background:linear-gradient(140deg,#070f1de8,#0b1829ee)!important;box-shadow:0 7px 18px #0009!important}
+#app[data-screen="game"] .gtp235-rule-buttons{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;width:100%!important}
+#app[data-screen="game"] .gtp235-rule-choice{width:100%!important;min-width:0!important;max-width:none!important;min-height:62px!important;padding:7px 3px!important;border-radius:8px!important}
+#app[data-screen="game"] .gtp235-rule-choice small{font-size:8px!important;letter-spacing:0!important}
+#app[data-screen="game"] .gtp235-rule-choice.is-active{box-shadow:0 0 14px color-mix(in srgb,var(--gtp245-accent) 55%,transparent)!important}
+#app[data-screen="game"] .gtp230-arena>.gtp230-console,#app[data-screen="game"] .gtp230-arena>.gtp230-finished{grid-area:controls!important;width:100%!important;max-width:none!important;min-width:0!important;min-height:0!important;height:auto!important;max-height:none!important;margin:0!important;padding:10px 12px!important;display:flex!important;flex-direction:column!important;overflow:visible!important;border:1px solid #d9615c9f!important;border-radius:9px!important;background:linear-gradient(145deg,#070f1eeb,#0b1427ef)!important;box-shadow:0 9px 21px #000b!important}
+#app[data-screen="game"] .gtp230-console-main{display:flex!important;flex-direction:column!important;gap:7px!important;width:100%!important}
+#app[data-screen="game"] .gtp230-input-wrap{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;gap:6px!important;width:100%!important;position:relative!important;overflow:visible!important}
+#app[data-screen="game"] .gtp230-input-wrap #guess-search{width:100%!important;min-width:0!important;height:44px!important;padding:10px 15px!important;border-radius:8px!important;border:1px solid #bb6d6c!important;background:#081525f5!important;color:#fff!important;box-shadow:inset 0 2px 6px #0007!important}
+#app[data-screen="game"] .gtp230-input-wrap>.gtp230-btn-main{display:block!important;width:100%!important;min-height:46px!important;height:46px!important;font-size:15px!important;letter-spacing:.1em!important;border-radius:7px!important;color:#fff4e9!important;background:linear-gradient(180deg,#fe5b4e,#ac1c2a)!important;border:1px solid #ffaf8d!important;box-shadow:0 0 18px #ed403e77!important}
+#app[data-screen="game"] .gtp230-input-wrap #search-results{position:absolute!important;top:49px!important;left:0!important;width:100%!important;z-index:100!important;max-height:290px!important;box-shadow:0 15px 30px #000d!important}
+#app[data-screen="game"] .gtp230-control-row{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;margin:0!important}
+#app[data-screen="game"] .gtp230-control-row .gtp230-btn{width:100%!important;min-width:0!important;min-height:38px!important;padding:9px 4px!important;font-size:clamp(9px,.8vw,12px)!important}
+#app[data-screen="game"] .gtp230-btn-blue{background:linear-gradient(180deg,#1b579d,#092854)!important;border:1px solid #65bdff!important;color:#edf9ff!important}
+#app[data-screen="game"] .gtp230-btn-gold{background:linear-gradient(180deg,#9b610f,#633909)!important;border:1px solid #eabc70!important;color:#fff2cc!important}
+/* THE PICKER: search/list on the left, genuine large live portrait on the right. */
+#app .picker-backdrop{background:#050816ed!important;backdrop-filter:blur(14px)!important}
+#app .picker.gtp2-picker{display:flex!important;flex-direction:column!important;width:min(1010px,calc(100vw - 26px))!important;max-width:1010px!important;height:min(730px,calc(100dvh - 30px))!important;max-height:730px!important;min-height:0!important;padding:12px!important;overflow:hidden!important;border:1px solid #ce6259b4!important;border-radius:13px!important;background:linear-gradient(150deg,#090f1d,#0c1625)!important;box-shadow:0 0 42px #b43f3f4f,0 22px 65px #000d!important}
+#app .picker-header{flex:0 0 auto!important;padding:7px!important}
+#app .picker-search{flex:0 0 auto!important;margin:4px 6px!important}
+#app .picker-search input{min-height:44px!important;background:#071321ef!important;border-color:#9c5362!important;color:#f8f0e9!important}
+#app .class-filters{flex:0 0 auto!important;margin:5px 6px!important;max-height:55px!important;flex-wrap:nowrap!important;overflow-x:auto!important}
+#app .gtp245-picker-layout{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(280px,.87fr)!important;gap:11px!important;flex:1!important;min-height:0!important;padding:5px!important}
+#app .gtp245-picker-list{display:flex!important;flex-direction:column!important;min-height:0!important;border-radius:9px!important;border:1px solid #5c7083a8!important;background:#081421f7!important;overflow:hidden!important}
+#app .gtp245-picker-list .picker-count{min-height:30px!important;padding:8px 11px!important;flex:0 0 auto!important;color:#ffc3a3!important}
+#app .gtp245-picker-list .picker-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(55px,auto)!important;align-content:start!important;gap:6px!important;min-height:0!important;flex:1!important;overflow-y:auto!important;padding:8px!important;scrollbar-color:#ae5451 #0b1829!important}
+#app .gtp245-picker-item{display:grid!important;grid-template-columns:49px minmax(0,1fr) auto!important;grid-template-rows:54px!important;align-items:center!important;gap:9px!important;height:56px!important;min-height:56px!important;max-height:56px!important;width:100%!important;margin:0!important;padding:4px 9px!important;border:1px solid #556e85b3!important;border-radius:8px!important;background:linear-gradient(110deg,#111d2c,#07111e)!important;box-shadow:none!important;text-align:left!important;transform:none!important}
+#app .gtp245-picker-item:is(:hover,:focus-visible,.is-preview){background:linear-gradient(110deg,#65232c,#180f1b 85%)!important;border-color:#ff977a!important;box-shadow:inset 0 0 0 1px #fa634d95,0 0 14px #e959423a!important}
+#app .gtp245-picker-item .portrait-holder{grid-row:1!important;grid-column:1!important;display:block!important;position:relative!important;width:46px!important;height:46px!important;margin:0!important;overflow:hidden!important;border-radius:7px!important;background:#21324b!important}
+#app .gtp245-picker-item .portrait-holder img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 25%!important;transform:none!important}
+#app .gtp245-picker-item strong{grid-column:2!important;grid-row:1!important;align-self:center!important;font-size:clamp(13px,1.2vw,19px)!important;color:#fff6e9!important;white-space:nowrap!important}
+#app .gtp245-picker-item small{grid-column:3!important;grid-row:1!important;align-self:center!important;font-size:9px!important;color:#8db7d4!important;white-space:nowrap!important}
+#app .gtp245-picker-preview{display:flex!important;flex-direction:column!important;min-height:0!important;overflow:hidden!important;border:1px solid #c3646fa4!important;border-radius:9px!important;background:radial-gradient(ellipse at 50% 30%,#48294e,#101c31 75%,#070d19)!important}
+#app .gtp245-preview-art{height:57%!important;min-height:185px!important;width:100%!important;overflow:hidden!important;display:grid!important;place-items:center!important;background:radial-gradient(ellipse at 50% 55%,#9250894a,transparent 72%)!important}
+#app .gtp245-preview-art .portrait-holder{display:block!important;position:relative!important;width:100%!important;height:100%!important;margin:0!important}
+#app .gtp245-preview-art img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;transform:none!important;filter:drop-shadow(0 12px 13px #000c) saturate(1.14)!important}
+#app .gtp245-preview-copy{flex:1!important;display:flex!important;flex-direction:column!important;gap:7px!important;padding:12px 17px 16px!important;min-height:0!important;background:linear-gradient(0deg,#070e19f5,#081322dd)!important}
+#app .gtp245-preview-copy>small{font-size:10px!important;letter-spacing:.14em!important;color:#faa78e!important}
+#app .gtp245-preview-copy h3{font-size:clamp(29px,3vw,49px)!important;line-height:1!important;margin:0!important;color:#fff2e6!important}
+#app .gtp245-preview-copy p{font-size:11px!important;color:#d2c6d1!important;margin:0!important}
+#app .gtp245-preview-tags{display:flex!important;flex-wrap:wrap!important;gap:5px!important}
+#app .gtp245-preview-tags span{border:1px solid #8197a999!important;border-radius:20px!important;padding:4px 8px!important;font-size:9px!important;color:#e1e6ef!important}
+#app .gtp245-preview-select{margin-top:auto!important;width:100%!important;min-height:45px!important;font-size:14px!important;letter-spacing:.12em!important;border:1px solid #ffa37e!important;border-radius:7px!important;background:linear-gradient(180deg,#f9594c,#a91f26)!important;box-shadow:0 0 18px #f1594d7c!important}
+/* TRIVIA: separate Crypto command-room identity; no changes to the server scoring. */
+#app[data-screen="trivia"] .trivia-shell{width:min(1200px,calc(100% - 28px))!important;max-width:1200px!important}
+#app[data-screen="trivia"] .trivia-hero{border-color:#49c3e5a4!important;border-radius:9px!important;background:linear-gradient(110deg,#061d2bfa,#081220ed)!important;box-shadow:0 7px 20px #000a!important}
+#app[data-screen="trivia"] .trivia-grid{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(230px,270px)!important;align-items:start!important;gap:14px!important;max-width:none!important;width:100%!important}
+#app[data-screen="trivia"] .trivia-main{min-height:480px!important;padding:15px!important;border:1px solid #50c0e1ab!important;border-radius:10px!important;background:linear-gradient(145deg,#071221f5,#061e2ce9)!important;box-shadow:0 10px 25px #0009!important}
+#app[data-screen="trivia"] .trivia-sidebar{border:1px solid #4e93b2a3!important;border-radius:10px!important;background:linear-gradient(145deg,#081729f2,#050f1deb)!important}
+#app[data-screen="trivia"] .gtp245-trivia-progress{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important;width:100%!important;height:7px!important;margin-bottom:16px!important}
+#app[data-screen="trivia"] .gtp245-trivia-progress span{display:block!important;background:#304b5c!important;border-radius:6px!important}
+#app[data-screen="trivia"] .gtp245-trivia-progress span.complete{background:#47d2c8!important}
+#app[data-screen="trivia"] .gtp245-trivia-progress span.current{background:#f46f50!important;box-shadow:0 0 13px #f87551a0!important}
+#app[data-screen="trivia"] .trivia-question{position:relative!important;padding:19px!important;overflow:hidden!important;border:1px solid #668fa9ba!important;border-radius:10px!important;background:linear-gradient(130deg,#061323ed,#06182bd5),url('./assets/decor/haunted-hero.webp') center/cover!important}
+#app[data-screen="trivia"] .trivia-question h2{font-size:clamp(20px,2.5vw,32px)!important;color:#fff8ed!important;text-shadow:0 2px 12px #000e!important}
+#app[data-screen="trivia"] .trivia-options{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+#app[data-screen="trivia"] .trivia-option{min-height:60px!important;border:1px solid #688199ad!important;border-radius:8px!important;background:linear-gradient(150deg,#071422ef,#0b2230ec)!important;color:#fff5eb!important;box-shadow:0 5px 11px #0007!important}
+#app[data-screen="trivia"] .trivia-option:is(:hover,:focus-visible){background:linear-gradient(145deg,#70242c,#24101f)!important;border-color:#ff9476!important;box-shadow:0 0 14px #fc63518a!important}
+#app[data-screen="trivia"] .trivia-primary{background:linear-gradient(180deg,#f95b4d,#a9232c)!important;border:1px solid #ffa88d!important;box-shadow:0 0 16px #ee4e4c69!important}
+/* Responsive without squeezed rings or offscreen scanner. */
+@media(max-width:1000px){
+ #app[data-screen="home"] .gtp239-arena{grid-template-columns:minmax(135px,172px) minmax(270px,1fr) minmax(135px,172px)!important;gap:8px!important}
+ #app[data-screen="home"] .gtp239-side .gtp242-mode-medallion{width:74px!important;height:74px!important;min-width:74px!important;min-height:74px!important;max-width:74px!important;max-height:74px!important;flex:0 0 74px!important}
+ #app[data-screen="game"] .gtp230-arena{grid-template-columns:minmax(0,1fr) 280px!important}
+ #app .gtp245-picker-layout{grid-template-columns:minmax(0,1fr) minmax(235px,.75fr)!important}
+}
+@media(max-width:830px){
+ #app[data-screen="home"] .gtp239-mirage-duo{display:none!important}
+ #app[data-screen="home"] .gtp239-arena{display:flex!important;flex-direction:column!important;min-height:0!important;max-width:650px!important;gap:12px!important}
+ #app[data-screen="home"] .gtp239-core{order:-1!important;width:100%!important}
+ #app[data-screen="home"] .gtp239-side{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;gap:8px!important}
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card{width:100%!important;height:127px!important;min-height:127px!important}
+ #app[data-screen="home"] .gtp239-side .gtp242-mode-plate{width:100%!important}
+ #app[data-screen="game"] .gtp230-arena{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(290px,auto) auto auto!important;grid-template-areas:"clue" "controls" "intel"!important}
+ #app[data-screen="game"] .gtp230-arena>.gtp236-intel-column{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:start!important}
+ #app[data-screen="game"] .gtp236-intel-column>.gtp230-board{grid-row:span 2!important}
+ #app[data-screen="trivia"] .trivia-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(max-width:560px){
+ #app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(45px,14vw,73px)!important}
+ #app[data-screen="home"] .gtp239-side{gap:5px!important}
+ #app[data-screen="home"] .gtp239-side .gtp239-mode-card{height:115px!important;min-height:115px!important}
+ #app[data-screen="home"] .gtp239-side .gtp242-mode-medallion{width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;max-width:54px!important;max-height:54px!important;flex:0 0 54px!important}
+ #app[data-screen="home"] .gtp242-mode-plate strong{font-size:12px!important}
+ #app[data-screen="home"] .gtp242-mode-plate small{font-size:7px!important}
+ #app[data-screen="game"] .gtp230-game{width:calc(100vw - 12px)!important}
+ #app[data-screen="game"] .gtp230-arena>.gtp236-intel-column{display:flex!important;flex-direction:column!important}
+ #app[data-screen="game"] .gtp230-control-row .gtp230-btn{font-size:9px!important}
+ #app .picker.gtp2-picker{width:calc(100vw - 10px)!important;height:calc(100dvh - 10px)!important}
+ #app .gtp245-picker-layout{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(190px,1fr) 190px!important}
+ #app .gtp245-picker-preview{display:grid!important;grid-template-columns:108px 1fr!important;min-height:190px!important}
+ #app .gtp245-preview-art{height:100%!important;min-height:190px!important}
+ #app .gtp245-preview-copy{padding:10px!important;gap:5px!important}
+ #app .gtp245-preview-copy h3{font-size:23px!important}
+ #app .gtp245-preview-copy p{font-size:9px!important}
+ #app .gtp245-preview-copy>small{font-size:8px!important}
+ #app .gtp245-preview-tags{display:none!important}
+ #app .gtp245-preview-select{min-height:37px!important;font-size:11px!important}
+ #app[data-screen="trivia"] .trivia-question{padding:11px!important}
+ #app[data-screen="trivia"] .trivia-options{gap:6px!important}
+}
+@media(prefers-reduced-motion:reduce){#app .gtp245-picker-item{transition:none!important}#app[data-screen="home"] .gtp239-mode-card{transition:none!important}}

@@ -7,13 +7,15 @@ for name in required: assert (P/name).is_file(),name
 html=(P/'index.html').read_text();js=(P/'src/app.mjs').read_text();css=(P/'styles.css').read_text();workflow=(P/'.github/workflows/pages.yml').read_text()
 # Cache-busting version is allowed to advance with each deployment.
 # Both entry assets must use the same release version; never hardcode an older one.
-assert html.count('rel="stylesheet"')==3, 'Expected base CSS and V2.43/V2.44 visual stylesheets'
+assert html.count('rel="stylesheet"')==4, 'Expected base CSS and V2.43/V2.44/V2.45 visual layers'
 assert (P/'styles-v243.css').is_file(), 'Missing visual correction stylesheet'
 assert 'styles-v243.css?v=2.43.0' in html, 'Visual correction stylesheet has stale version'
 assert (P/'styles-v244.css').is_file(), 'Missing V2.44 visual stylesheet'
 assert 'styles-v244.css?v=2.44.0' in html, 'Missing V2.44 cache-busted stylesheet'
+assert (P/'styles-v245.css').is_file(), 'V2.45 stylesheet missing'
+assert 'styles-v245.css?v=2.45.0' in html, 'V2.45 cache-busted link missing'
 style_match=re.search(r'href="\./styles\.css\?v=(\d+\.\d+\.\d+)"', html)
-app_match=re.search(r'src="\./src/app\.mjs\?v=(\d+\.\d+\.\d+)(?:&amp;release=2\.44\.0)?"', html)
+app_match=re.search(r'src="\./src/app\.mjs\?v=(\d+\.\d+\.\d+)(?:&amp;release=2\.44\.0(?:&amp;rev=2\.45\.0)?)?"', html)
 assert style_match is not None, 'Versioned styles.css link missing'
 assert app_match is not None, 'Versioned app.mjs script missing'
 assert style_match.group(1)==app_match.group(1), 'CSS and JavaScript cache versions differ'
@@ -49,7 +51,7 @@ assert 'node --test' in workflow
 assert (P/'src/daily218.mjs').is_file(), 'CI missing Node test runner'
 for test_file in ['core.test.mjs','v27.test.mjs','v28.test.mjs','v210.test.mjs','v212.test.mjs','v213.test.mjs','v214.test.mjs','v215.test.mjs','v216.test.mjs','v217.test.mjs','v218.test.mjs','v219.test.mjs','v220.test.mjs']:
  assert test_file in workflow, f'CI missing {test_file}'
-assert 'cp index.html styles.css styles-v243.css styles-v244.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
+assert 'cp index.html styles.css styles-v243.css styles-v244.css styles-v245.css dist/' in workflow and 'SOURCES_AND_RIGHTS.md' not in workflow
 assert 'src/leaderboard_config.mjs' in workflow or 'cp -r src assets dist/' in workflow
 assert not any((P/'tests'/name).exists() for name in ['v21.test.mjs','v22.test.mjs','v23.test.mjs','v24.test.mjs','v25.test.mjs','gtp2.test.mjs','v26.test.mjs'])
 # V2.28: cutout masks must have real, meaningfully transparent backgrounds.

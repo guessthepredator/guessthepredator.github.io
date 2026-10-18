@@ -601,9 +601,9 @@ function visibleRoundModes(round){
 }
 function triedLegendNote(round){
  if(!round.guesses.length)return '';
- return `<div class="gtp235-tried" role="note" aria-label="Legends you already tried this round">
-  <strong>✕ ALREADY TRIED</strong>
-  <div class="gtp235-tried-names">${round.guesses.map((name,i)=>`<span title="Guess ${i+1}: ${esc(name)}">× ${esc(name)}</span>`).join('')}</div>
+ return `<div class="gtp235-tried gtp245-tried" role="note" aria-label="Legends you already tried this round">
+  <strong>✕ ALREADY TRIED · ${round.guesses.length}</strong>
+  <div class="gtp235-tried-names">${round.guesses.map((name,i)=>{const legend=legends.find(l=>l.name===name);return `<span title="Guess ${i+1}: ${esc(name)}">${legend?portrait(legend.slug,{alt:'',cls:'balanced'}):''}<small>${esc(name)}</small></span>`}).join('')}</div>
  </div>`;
 }
 function cinematicControls(round,target){
@@ -620,7 +620,6 @@ function cinematicControls(round,target){
     <button type="button" data-action="again" class="gtp230-btn gtp230-btn-blue">FREE PLAY</button>
     <button type="button" data-action="home" class="gtp230-btn gtp230-btn-secondary">ALL MODES</button>
    </div>
-   ${visibleRoundModes(round)}
    ${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}
   </section>`;
  }
@@ -639,15 +638,14 @@ function cinematicControls(round,target){
        <button class="gtp230-btn gtp230-btn-danger" type="button" data-action="surrender">◷ GIVE UP</button>
       </div>
     </div>
-    ${visibleRoundModes(round)}
     <span class="gtp230-console-help">${remaining} guesses left · ${hintDisabled?'Start with a guess to unlock hints':'Green = matching trait · Red = different trait'}</span>
    </section>`;
 }
 function game(){
  const round=ensureRound();const target=legendByName(legends,round.answer);
  const timeLeft=remainingTime(round),urgent=timeLeft!=null&&timeLeft<=25&&!round.finished;
- const showBoard=round.mode==='full'||round.mode==='signal'&&round.guesses.length>0;
- const board=showBoard?cinematicIdentityBoard(round,target):'';
+ const showBoard=true;
+ const board=cinematicIdentityBoard(round,target);
  const side=cinematicStageAside(round,target);
  const isDaily=session==='daily';
  const title=active.toUpperCase();
@@ -670,9 +668,9 @@ function game(){
     <section class="gtp230-main-clue" aria-label="Legend clue">
      ${getVisual(round,target)}
     </section>
-    ${board||side||round.guesses.length? `<div class="gtp236-intel-column">${triedLegendNote(round)}${board||side||''}</div>` : ''}
+    ${cinematicControls(round,target)}
+    <div class="gtp236-intel-column" aria-label="Scanner, rule choices and guess history">${triedLegendNote(round)}${board}${side}${visibleRoundModes(round)}</div>
    </div>
-   ${cinematicControls(round,target)}
  </main>`;
 }
 function howTo(){return `<main class="wrap gtp27-guide gtp241-guide" aria-labelledby="guide-title">
@@ -719,7 +717,7 @@ function trivia(){
   ${!run?`<div class="trivia-intro"><span class="trivia-tag">${isDaily?'ONE OFFICIAL RUN PER UTC DAY':'UNLIMITED UNRANKED ROUNDS'}</span><h2>${isDaily?'DAILY INTEL DROP':'TRAIN YOUR KNOWLEDGE'}</h2><p>${isDaily?'Everyone receives the same five-question selection today. Answers and timing are verified on the server; results appear on the separate Trivia leaderboard.':'Try varied sets across the question bank; recent topics are rotated when possible. Practice does not affect your global ranking.'}</p><p class="trivia-hint">Your public nickname: <strong>${esc(savedNickname()||'Not set')}</strong> · You can change it in the top navigation.</p><button type="button" data-action="trivia-start" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'CONNECTING…':isDaily?'START / RESUME DAILY →':'START PRACTICE →'}</button></div>`:''}
   ${run?.finished?`<div class="trivia-finale"><span class="trivia-tag">${isDaily?'DAILY SUBMITTED':'PRACTICE COMPLETE'}</span><h2>RUN COMPLETE.</h2><div class="trivia-final-score">${Number(run.score)||0}<small> / 100</small></div><p>${run.score===100?'PERFECT INTEL. FIVE FOR FIVE.':'You answered '+Math.floor(run.score/20)+' of 5 questions correctly.'} ${isDaily?'Your score is stored in the separate Trivia rankings.':'Practice rounds never change the leaderboard.'}</p>${run.feedback?`<div class="trivia-last-explanation"><strong>${run.feedback.correct?'✓ FINAL ANSWER CORRECT':'FINAL QUESTION REVIEW'}</strong><span>${esc(run.feedback.explanation||'')}</span>${run.feedback.source?`<a href="${esc(run.feedback.source)}" target="_blank" rel="noopener noreferrer">Official EA source ↗</a>`:''}</div>`:''}${isDaily&&triviaRewardEarned()?intelReadyMarkup(3):''}<div class="trivia-final-actions"><button type="button" class="trivia-primary" data-action="trivia-mode" data-trivia-mode="practice">∞ PRACTICE AGAIN</button><button type="button" class="trivia-secondary" data-action="trivia-board-refresh">VIEW RANKINGS ↗</button></div></div>`:''}
   ${run&&!run.finished&&feedback?`<div class="trivia-feedback ${feedback.correct?'good':'bad'}"><span class="trivia-tag">QUESTION ${Math.min(run.number-1,5)} / 5</span><h2>${feedback.correct?'✓ CORRECT · +20':feedback.timedOut?'⌛ TIME’S UP · QUESTION EXPIRED':'✕ NOT QUITE'}</h2><p><strong>Accepted answer${feedback.acceptedAnswers?.length>1?'s':''}:</strong> ${esc((feedback.acceptedAnswers||[]).join(' · '))}</p><p>${esc(feedback.explanation||'')}</p>${feedback.source?`<a href="${esc(feedback.source)}" target="_blank" rel="noopener noreferrer">Verify with EA ↗</a>`:''}<p class="trivia-current-score">RUN SCORE: ${run.score} / 100</p><button data-action="trivia-next" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'LOADING…':'NEXT QUESTION →'}</button></div>`:''}
-  ${run&&!run.finished&&!feedback&&question?`<div class="trivia-question"><div class="trivia-question-head"><span class="trivia-tag">QUESTION ${run.number} / 5 · ${['CADET','SCOUT','OPERATIVE','SPECIALIST','APEX MASTER'][Math.max(0,Math.min(4,run.number-1))]} · ${esc(question.category.replace(/-/g,' ').toUpperCase())}</span><strong class="trivia-clock ${remaining<=6?'urgent':''}" id="trivia-clock"><span id="trivia-seconds">${remaining}</span>s</strong></div><div class="trivia-timebar"><span id="trivia-timefill" style="width:${Math.max(0,Math.min(100,remaining*5))}%"></span></div><h2>${esc(question.prompt)}</h2><form id="trivia-answer-form">${question.kind==='choice'?`<div class="trivia-options">${question.options.map((v,i)=>`<button class="trivia-option" type="button" data-action="trivia-choice" data-value="${esc(v)}" ${triviaBusy?'disabled':''}><b>${String.fromCharCode(65+i)}</b><span>${esc(v)}</span><span>↗</span></button>`).join('')}</div>`:`<div class="trivia-type"><label for="trivia-written-answer">YOUR ANSWER</label><input id="trivia-written-answer" name="answer" spellcheck="false" autocomplete="off" placeholder="Type a Legend name…" maxlength="70" value="${esc(triviaAnswerText)}" ${triviaBusy?'disabled':''}/><button class="trivia-primary" type="submit" ${triviaBusy?'disabled':''}>SUBMIT ANSWER ↗</button></div>`}</form><button type="button" class="trivia-skip" data-action="trivia-skip" ${triviaBusy?'disabled':''}>SKIP / NO ANSWER</button><p class="trivia-note">The clock continues even when you switch tabs. Answers are evaluated server-side.</p></div>`:''}
+  ${run&&!run.finished&&!feedback&&question?`<div class="trivia-question"><div class="gtp245-trivia-progress" role="progressbar" aria-label="Completed Trivia questions" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${Math.max(0,run.number-1)}">${Array.from({length:5},(_,i)=>`<span class="${i<run.number-1?'complete':i===run.number-1?'current':''}"></span>`).join('')}</div><div class="trivia-question-head"><span class="trivia-tag">QUESTION ${run.number} / 5 · ${['CADET','SCOUT','OPERATIVE','SPECIALIST','APEX MASTER'][Math.max(0,Math.min(4,run.number-1))]} · ${esc(question.category.replace(/-/g,' ').toUpperCase())}</span><strong class="trivia-clock ${remaining<=6?'urgent':''}" id="trivia-clock"><span id="trivia-seconds">${remaining}</span>s</strong></div><div class="trivia-timebar"><span id="trivia-timefill" style="width:${Math.max(0,Math.min(100,remaining*5))}%"></span></div><h2>${esc(question.prompt)}</h2><form id="trivia-answer-form">${question.kind==='choice'?`<div class="trivia-options">${question.options.map((v,i)=>`<button class="trivia-option" type="button" data-action="trivia-choice" data-value="${esc(v)}" ${triviaBusy?'disabled':''}><b>${String.fromCharCode(65+i)}</b><span>${esc(v)}</span><span>↗</span></button>`).join('')}</div>`:`<div class="trivia-type"><label for="trivia-written-answer">YOUR ANSWER</label><input id="trivia-written-answer" name="answer" spellcheck="false" autocomplete="off" placeholder="Type a Legend name…" maxlength="70" value="${esc(triviaAnswerText)}" ${triviaBusy?'disabled':''}/><button class="trivia-primary" type="submit" ${triviaBusy?'disabled':''}>SUBMIT ANSWER ↗</button></div>`}</form><button type="button" class="trivia-skip" data-action="trivia-skip" ${triviaBusy?'disabled':''}>SKIP / NO ANSWER</button><p class="trivia-note">The clock continues even when you switch tabs. Answers are evaluated server-side.</p></div>`:''}
   </section><aside class="trivia-sidebar"><div class="trivia-sidehead"><span>✦ SEPARATE TRIVIA RANKINGS</span><div class="trivia-tabs"><button data-action="trivia-board-tab" data-tab="daily" class="${triviaScoreTab==='daily'?'active':''}">TODAY</button><button data-action="trivia-board-tab" data-tab="overall" class="${triviaScoreTab==='overall'?'active':''}">ALL TIME</button></div></div>${triviaBoardBusy?'<p class="trivia-quiet">LOADING SCORES…</p>':triviaBoardError?`<p class="trivia-quiet">${esc(triviaBoardError)}</p>`:rows.length?`<div class="trivia-board-rows">${rows.map((r,i)=>`<div class="trivia-board-row"><b>#${Number(r.position)||i+1}</b><span>${esc(r.player_name||'Player')}</span><strong>${Number(r.score)||0} ${triviaScoreTab==='overall'?'PTS':'/100'}</strong></div>`).join('')}</div>`:'<p class="trivia-quiet">No daily submissions yet. Be the first!</p>'}<div class="trivia-aside-foot"><b>CURATED QUESTION BANK</b><p>Progressive difficulty, varied topics, and fewer repeated questions. Source: official EA game information.</p><button class="trivia-secondary" data-action="trivia-board-refresh">↻ REFRESH LEADERBOARD</button></div></aside></div>
   </div></main>`;
 }
@@ -1019,16 +1017,30 @@ function renderPicker(){
     <div class="picker-header"><div><span class="kicker">28 LEGENDS / ONE TARGET</span><h2>BROWSE LEGENDS</h2><p>Search, filter and pick. Incorrect guesses are hidden automatically.</p></div><button class="btn flat small" data-action="close-picker" aria-label="Close Legend picker">✕ CLOSE</button></div>
     <div class="picker-search"><input id="picker-search" type="search" autocomplete="off" placeholder="Search a Legend or class…" value="${esc(pickerSearch)}" aria-label="Search Legend roster"/><select id="picker-sort" aria-label="Sort Legends"><option value="az" ${pickerSort==='az'?'selected':''}>A → Z</option><option value="za" ${pickerSort==='za'?'selected':''}>Z → A</option></select></div>
     <div class="class-filters" role="group" aria-label="Filter Legends by class">${CLASS_NAMES.map(cls=>`<button class="filter-btn ${pickerClass===cls?'active':''}" data-action="filter" data-class="${cls}">${cls.toUpperCase()}</button>`).join('')}</div>
-    <div class="picker-count" id="picker-count"></div><div class="picker-visual-note">CHARACTER PORTRAITS · ORIGINAL GAME SOURCES WHEN AVAILABLE · NO GENERIC REPLACEMENTS</div><div class="picker-grid" id="picker-grid"></div></div>`;
+    <div class="gtp245-picker-layout"><div class="gtp245-picker-list"><div class="picker-count" id="picker-count"></div><div class="picker-grid" id="picker-grid"></div></div><aside class="gtp245-picker-preview" id="gtp245-picker-preview" aria-label="Selected Legend preview"></aside></div></div>`;
   overlay.addEventListener('click',event=>{if(event.target===overlay){pickerOpen=false;overlay.remove();}});
+  const previewFromEvent=event=>{const card=event.target.closest?.('[data-preview-slug]');if(card)showLegendPreview(card.dataset.previewSlug);};
+  overlay.addEventListener('pointerover',previewFromEvent);
+  overlay.addEventListener('focusin',previewFromEvent);
   app.appendChild(overlay);renderPickerResults();document.getElementById('picker-search')?.focus({preventScroll:true});
 }
 function renderPickerResults(){
   const grid=document.getElementById('picker-grid'),count=document.getElementById('picker-count');if(!grid||!count)return;
   const results=filteredRoster(legends,{search:pickerSearch,role:pickerClass,sort:pickerSort,excluded:getRound()?.guesses||[]});
   count.textContent=`${results.length} AVAILABLE · ${(getRound()?.guesses.length||0)} ELIMINATED`;
-  grid.innerHTML=results.length?results.map(l=>`<button class="picker-legend gtp2-legend-card" data-action="guess" data-name="${esc(l.name)}">${portrait(l.slug,{alt:l.name,cls:'balanced'})}<strong>${esc(l.name)}</strong><small>${esc(l.role)}</small></button>`).join(''):'<div class="picker-empty">No Legends match these filters.</div>';
+  grid.innerHTML=results.length?results.map(l=>`<button class="picker-legend gtp2-legend-card gtp245-picker-item" data-action="guess" data-preview-slug="${esc(l.slug)}" data-name="${esc(l.name)}">${portrait(l.slug,{alt:'',cls:'balanced'})}<strong>${esc(l.name)}</strong><small>${esc(l.role)}</small></button>`).join(''):'<div class="picker-empty">No Legends match these filters.</div>';
   loadPortraitImages(grid);
+  showLegendPreview(results[0]?.slug);
+}
+function showLegendPreview(slug){
+ const panel=document.getElementById('gtp245-picker-preview');if(!panel)return;
+ if(!slug){panel.innerHTML='<p class="picker-empty">No Legend matches these filters.</p>';panel.dataset.slug='';return;}
+ if(panel.dataset.slug===slug)return;
+ const legend=legends.find(l=>l.slug===slug);if(!legend)return;
+ panel.dataset.slug=slug;
+ panel.innerHTML=`<div class="gtp245-preview-art">${portrait(legend.slug,{alt:legend.name,cls:'balanced',eager:true})}</div><div class="gtp245-preview-copy"><small>◈ OUTLANDS DOSSIER</small><h3>${esc(legend.name)}</h3><p>${esc(legend.title||legend.signature||'Apex Legend')}</p><div class="gtp245-preview-tags"><span>${esc(legend.role)}</span><span>${esc(legend.signature||'Legend')}</span></div><button type="button" class="gtp230-btn gtp230-btn-main gtp245-preview-select" data-action="guess" data-name="${esc(legend.name)}">SELECT LEGEND ↗</button></div>`;
+ document.querySelectorAll('.gtp245-picker-item').forEach(card=>card.classList.toggle('is-preview',card.dataset.previewSlug===slug));
+ loadPortraitImages(panel);
 }
 function nextMode(){
  if(session==='unlimited'){randomPractice(active);return;}

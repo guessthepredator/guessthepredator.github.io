@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
+const app=read('src/app.mjs'),html=read('index.html'),css=read('styles-v245.css'),workflow=read('.github/workflows/pages.yml');
+test('V2.45 CSS is shipped by Pages, not only referenced',()=>{assert.ok(html.includes('styles-v245.css?v=2.45.0'));assert.ok(workflow.includes('cp index.html styles.css styles-v243.css styles-v244.css styles-v245.css dist/'));});
+test('Game scanner and controls are two-column and always visible',()=>{assert.ok(app.includes('const board=cinematicIdentityBoard(round,target)'));assert.ok(app.includes('Scanner, rule choices and guess history'));assert.ok(css.includes('grid-template-areas:"clue intel" "controls intel"'));});
+test('Live two-pane picker includes large preview and selection',()=>{assert.ok(app.includes('function showLegendPreview(slug)'));assert.ok(app.includes('gtp245-picker-preview'));assert.ok(app.includes('data-preview-slug'));assert.ok(css.includes('.gtp245-preview-select'));});
+test('Trivia is five question progressive and on its own color identity',()=>{assert.ok(app.includes('gtp245-trivia-progress'));assert.ok(css.includes('grid-template-columns:repeat(5,minmax(0,1fr))'));assert.ok(css.includes('trivia-options'));});
+test('Existing modes and progress are preserved',()=>{for(const needle of ['loadStore()','function trivia(){','function visibleRoundModes(round)','function cinematicIdentityBoard('])assert.ok(app.includes(needle));assert.ok(!app.includes('localStorage.clear()'));});
