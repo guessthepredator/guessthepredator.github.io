@@ -10,7 +10,7 @@ test('V2.42 preserves six original modes and makes six matching branded medallio
  assert.ok(css.includes('.gtp242-mode-plate')&&css.includes('gtp242-mode-medallion[data-host="loba"]'));
 });
 test('V2.42 prioritizes actual full-body Legend artwork for environment, never square icon art first',()=>{
- assert.ok(js.includes("const isSceneArt=Boolean(image.closest('.gtp241-scene-host,.gtp241-trivia-scene'))"));
+ assert.ok(js.includes("const isSceneArt=Boolean(image.closest('.gtp241-scene-host,.gtp241-trivia-scene,.gtp241-spotlight-art'))"));
  assert.ok(js.includes('const preferredFullBody=isSceneArt'));
  assert.ok(js.includes("sourceCatalog.filter(url=>!url.includes('moeneri/astrbot_plugin_apexrankwatch/'))"));
  assert.ok(js.includes("localFile?[`./assets/portraits/${localFile}`]"));
