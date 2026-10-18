@@ -140,7 +140,8 @@ function loadPortraitImages(parent=app){
     const sourceCatalog=portraitSourcesFor(slug,{pixel:inPixelPuzzle});
     // Pixel mode uses the old source priority so tall renders never change its canvas composition.
     const isSceneArt=Boolean(image.closest('.gtp241-scene-host,.gtp241-trivia-scene,.gtp241-spotlight-art'));
-    const isHomeLoba=Boolean(image.closest('.gtp239-mode-ring[data-host="loba"]'));\n    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host'))&&!isHomeLoba;
+    const isHomeLoba=Boolean(image.closest('.gtp239-mode-ring[data-host="loba"]'));
+    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host'))&&!isHomeLoba;
     // Host portraits need reliable direct square sources first. Mystery and pixel target art keep their own ordering.
     const hostSource=isHostArt?reliableIconFallbacks[slug]:null;
     const preferredFullBody=isSceneArt?[...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog.filter(url=>!url.includes('moeneri/astrbot_plugin_apexrankwatch/'))]:[];
