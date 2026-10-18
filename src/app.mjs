@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.42.0';
-import {legends} from './data.mjs?v=2.42.0';
-import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2.42.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.42.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.42.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.42.0';
-import {playSound} from './audio.mjs?v=2.42.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.42.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.42.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.42.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.42.0';
-import {loadStore,saveStore} from './store.mjs?v=2.42.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.43.0';
+import {legends} from './data.mjs?v=2.43.0';
+import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2.43.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.43.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.43.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.43.0';
+import {playSound} from './audio.mjs?v=2.43.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.43.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.43.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.43.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.43.0';
+import {loadStore,saveStore} from './store.mjs?v=2.43.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.42.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.43.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -140,8 +140,7 @@ function loadPortraitImages(parent=app){
     const sourceCatalog=portraitSourcesFor(slug,{pixel:inPixelPuzzle});
     // Pixel mode uses the old source priority so tall renders never change its canvas composition.
     const isSceneArt=Boolean(image.closest('.gtp241-scene-host,.gtp241-trivia-scene,.gtp241-spotlight-art'));
-    const isHomeLoba=Boolean(image.closest('.gtp239-mode-ring[data-host="loba"]'));
-    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host'))&&!isHomeLoba;
+    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host'));
     // Host portraits need reliable direct square sources first. Mystery and pixel target art keep their own ordering.
     const hostSource=isHostArt?reliableIconFallbacks[slug]:null;
     const preferredFullBody=isSceneArt?[...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog.filter(url=>!url.includes('moeneri/astrbot_plugin_apexrankwatch/'))]:[];
