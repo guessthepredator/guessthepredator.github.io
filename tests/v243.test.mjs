@@ -12,7 +12,7 @@ test('V2.43 restores a consistent set of 6 Home portrait cards without touching 
   assert.deepEqual([...cardList.matchAll(/id:'([^']+)'/g)].map(x=>x[1]),[...modes.slice(0,2),'quote','ability','emoji','trivia']);
   assert.ok(home.includes('gtp242-mode-medallion'));
   assert.ok(style.includes('.gtp242-mode-medallion[data-host="loba"]'));
-  assert.ok(app.includes('isHomeLoba'),'Loba must avoid the unusably zoomed eye-only icon source');
+  assert.ok(app.includes('reliableIconFallbacks'),'Loba must keep the verified fallback icon source');
   assert.ok(style.includes('object-fit:cover!important'));
 });
 test('V2.43 styles are maintained in a separate, cache-busted stylesheet',()=>{
