@@ -35,6 +35,11 @@ try{
  assert(desktop.bin?.width>=470&&desktop.bin?.height>=220,'Supply bin not prominent enough '+JSON.stringify(desktop.bin));
  assert(desktop.mirages===2,'Expected both original Mirage figures');
  assert(desktop.secondary===0,'Original modes must be primary, not hidden in a secondary section');
+ assert(await page.locator('.gtp241-mystery-badge').count()===1,'Next Game Legend must use the new question-mark icon');
+ assert((await page.locator('.gtp219-footer').innerText()).trim().includes('Made by Sebyby'),'Footer credit missing');
+ assert(!(await page.locator('.gtp219-footer').innerText()).includes('Not affiliated'),'Footer must show only the creator credit');
+ assert(await page.locator('.gtp241-spotlight-art').count()===1,'Legend of the Day full-figure art missing');
+
  assert(desktop.cards.map(x=>x.name).join('|')==='CLASSIC MODE|PIXEL MODE|QUOTE MODE|ABILITY MODE|EMOJI MODE|TRIVIA','Home must show original six modes in order: '+JSON.stringify(desktop.cards));
  assert(desktop.dock?.bottom<=1000,'Dock pushed too far down: '+JSON.stringify(desktop.dock));
  await page.screenshot({path:'screenshots/v239-home-desktop-1658x928.png',fullPage:true});
@@ -56,6 +61,10 @@ try{
   assert(actual.legend===legend,'Game '+mode+' should be hosted by '+legend+' but got '+JSON.stringify(actual));
   assert(actual.accent.toLowerCase()===accents[mode],mode+' missing its own theme color: '+JSON.stringify(actual));
   assert(actual.banner>55&&actual.wallpaper,mode+' host header or full-screen wallpaper is missing');
+  const scenic=await page.locator('#app[data-screen="game"] > .gtp241-mode-scene');
+  assert(await scenic.count()===1,mode+' has no character environmental scene');
+  assert(await scenic.locator('img[data-portrait]').getAttribute('data-portrait')===({classic:'mirage',pixel:'sparrow',quote:'loba',ability:'octane',emoji:'wattson'})[mode],mode+' scene portrait mismatch: '+JSON.stringify(actual));
+
   assert(actual.modes.length===3,mode+' must keep Full Scan / One Signal / Rush settings');
   await page.screenshot({path:'screenshots/v240-'+mode+'-legend-theme.png',fullPage:false});
   await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
@@ -65,6 +74,8 @@ try{
  await page.waitForSelector('#app[data-screen="trivia"] .gtp240-trivia-host');
  const triviaHost=await page.evaluate(()=>document.querySelector('.gtp240-trivia-host img')?.dataset.portrait);
  assert(triviaHost==='crypto','Trivia should have Crypto identity, got '+triviaHost);
+ assert(await page.locator('#app[data-screen="trivia"] > .gtp241-trivia-scene img[data-portrait="crypto"]').count()===1,'Crypto environment illustration missing');
+
  await page.screenshot({path:'screenshots/v240-trivia-crypto-theme.png',fullPage:false});
  await page.evaluate(()=>document.querySelector('button[data-action="home"]')?.click());
  await page.waitForSelector('.gtp239-home');

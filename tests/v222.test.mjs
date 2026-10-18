@@ -43,7 +43,7 @@ test('priority 10 legends try Original model renders before square portraits',()
  assert.ok(css.includes('.portrait-model-render'));
 });
 test('release assets share updated cache version and old Supabase APIs remain',()=>{
- assert.ok(html.includes('styles.css?v=2.40.1')&&html.includes('app.mjs?v=2.40.1'));
+ assert.ok(html.includes('styles.css?v=2.41.0')&&html.includes('app.mjs?v=2.41.0'));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('get_overall_leaderboard'"));
  assert.ok(read('src/leaderboard.mjs').includes("sb.rpc('gtp_trivia_api'"));
 });
@@ -297,7 +297,7 @@ test('V2.32 seamless game backdrop is drawn once across the desktop',()=>{
 
 test('V2.33 adds an explicit full-screen game wallpaper node above legacy app layers',()=>{
  const render=app.split('function game(){')[1].split('function howTo()')[0];
- assert.ok(render.includes('<div class="gtp233-viewport-art" aria-hidden="true"></div><main'));
+ assert.ok(render.includes('<div class="gtp233-viewport-art" aria-hidden="true"></div><div class="gtp241-mode-scene'));;
  assert.ok(css.includes('V2.33 — DEDICATED FULL-VIEWPORT GAME ART'));
  assert.ok(css.includes('#app[data-screen="game"] > .gtp233-viewport-art'));
  assert.ok(css.includes('position:fixed!important'));

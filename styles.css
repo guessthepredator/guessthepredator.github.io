@@ -5746,3 +5746,263 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption strong{font-size:13px!important}
  #app[data-screen="home"] .gtp239-side .gtp239-mode-card .gtp239-mode-caption small{font-size:8px!important}
 }
+
+
+/* ==========================================================
+   V2.41  - themed character artwork in every GAME scene.
+   Hosts are aesthetic only; never derived from puzzle answer.
+   ========================================================== */
+#app[data-screen="home"] .gtp219-backdrop{
+ filter:sepia(.09) saturate(.89) brightness(.78) contrast(1.07)!important;
+ background-position:center 43%!important;
+}
+#app[data-screen="home"] .gtp239-sky{
+ background:radial-gradient(ellipse 45% 35% at 52% 29%,#c8482d19,transparent 75%),linear-gradient(180deg,#0a061021,#13071928 70%,#08060c44)!important;
+}
+#app[data-screen="home"] .gtp239-bin-aura{
+ background:radial-gradient(ellipse at center,#fa9b5359 0%,#d95d3c26 35%,transparent 75%)!important;
+ filter:blur(14px)!important;
+}
+#app[data-screen="home"] .gtp239-bin-stage{
+ perspective:900px!important;overflow:visible!important;
+}
+#app[data-screen="home"] .gtp239-bin-stage::before{
+ content:"";position:absolute;left:12%;right:12%;top:9%;bottom:13%;z-index:-1;pointer-events:none;
+ border-radius:46%;border:1px solid #f2a78234;box-shadow:0 0 30px #fc8b4a35,inset 0 0 28px #f690421f;
+ transform:perspective(550px) rotateX(11deg);
+}
+#app[data-screen="home"] .gtp239-bin-image{
+ transform:translateY(0) rotateX(0deg)!important;
+ filter:drop-shadow(0 16px 15px #020308db) drop-shadow(0 0 12px #f66c46a2) saturate(1.03) contrast(1.10)!important;
+ transition:transform .35s ease, filter .35s ease!important;
+}
+#app[data-screen="home"] .gtp239-core:hover .gtp239-bin-image{
+ transform:translateY(-6px) rotateX(3deg) scale(1.03)!important;
+ filter:drop-shadow(0 22px 18px #000e) drop-shadow(0 0 19px #ef6447b1) saturate(1.10)!important;
+}
+#app[data-screen="home"] .gtp239-open-intel{
+ background:linear-gradient(180deg,#ff7958 0%,#bd2b2a 35%,#761821 100%)!important;
+ border:1px solid #ffc29a!important;border-radius:8px!important;
+ box-shadow:inset 0 1px 0 #ffe2bc9a,inset 0 -3px 0 #2c0913b8,0 6px 16px #000c,0 0 16px #f85c4274!important;
+ text-shadow:0 2px 3px #420a0d!important;
+}
+#app[data-screen="home"] .gtp239-primary-actions button{
+ background:linear-gradient(165deg,#223346eb,#0b1628ed 83%)!important;
+ border-color:#a0cee582!important;
+ min-height:58px!important;border-radius:8px!important;
+ box-shadow:0 0 0 1px #ffffff10,inset 0 1px 0 #ffffff18,0 8px 19px #0009!important;
+}
+#app[data-screen="home"] .gtp239-primary-actions button:first-child{
+ background:linear-gradient(165deg,#512325e8,#190d1be9 83%)!important;
+ border-color:#e19c7c94!important;
+}
+#app[data-screen="home"] .gtp239-primary-actions button:focus-visible,
+#app[data-screen="home"] .gtp239-primary-actions button:hover{
+ outline-offset:2px!important;transform:translateY(-2px)!important;
+ box-shadow:0 0 0 1px #fbc9a840,0 12px 24px #000b,0 0 22px #ff975e5a!important;
+}
+/* One consistent six-ring system, no mode can outgrow its neighbours. */
+#app[data-screen="home"] .gtp239-mode-card .gtp239-mode-ring{
+ width:84px!important;height:84px!important;min-height:84px!important;
+ max-width:84px!important;max-height:84px!important;
+ flex:0 0 84px!important;overflow:hidden!important;aspect-ratio:1!important;
+}
+#app[data-screen="home"] .gtp239-mode-card .gtp239-mode-ring img{
+ object-fit:cover!important;object-position:center 37%!important;
+ transform:scale(1.02)!important;
+}
+#app[data-screen="home"] .gtp241-mystery-badge{
+ display:grid!important;place-items:center!important;
+ border:2px solid #80ddff!important;background:radial-gradient(circle at 43% 30%,#305474,#09111e 75%)!important;
+ color:#d6f3ff!important;box-shadow:inset 0 0 14px #55aeff56,0 0 16px #5cceff68!important;
+ overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp241-mystery-badge>span{
+ display:block;font:1000 clamp(44px,5vw,66px)/1 'Barlow Condensed',Impact,sans-serif!important;
+ text-shadow:0 0 16px #5fbeff!important;transform:rotate(-8deg);
+}
+#app[data-screen="home"] .gtp241-spotlight-art{
+ position:absolute!important;right:0!important;top:0!important;bottom:0!important;
+ width:40%!important;pointer-events:none!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp241-spotlight-art .portrait-holder{
+ position:absolute!important;inset:0!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp241-spotlight-art .portrait-holder img{
+ position:absolute!important;right:3%!important;bottom:0!important;
+ width:93%!important;height:100%!important;max-width:100%!important;
+ object-fit:contain!important;object-position:center bottom!important;
+ transform:none!important;filter:drop-shadow(0 0 10px #8bd7fc3e)!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp222-dock-copy{
+ position:relative!important;z-index:2!important;max-width:66%!important;
+}
+#app[data-screen="home"] .gtp219-footer{letter-spacing:.025em!important}
+@media(max-width:830px){
+ #app[data-screen="home"] .gtp239-mode-card .gtp239-mode-ring{
+ width:72px!important;height:72px!important;min-height:72px!important;
+ max-height:72px!important;max-width:72px!important;flex-basis:72px!important;
+ }
+}
+@media(max-width:560px){
+ #app[data-screen="home"] .gtp239-mode-card .gtp239-mode-ring{
+ width:58px!important;height:58px!important;min-height:58px!important;
+ max-width:58px!important;max-height:58px!important;flex-basis:58px!important;
+ }
+ #app[data-screen="home"] .gtp241-spotlight-art{width:40%!important}
+}
+/* Full-screen Legend-scenes: each mode has a dedicated host, lighting and
+   photographic depth. Full body is preferred; a square portrait gracefully
+   falls back when a third-party image is unavailable. */
+#app[data-screen="game"]{
+ --gtp241-scene-ink:#070f1d;--gtp241-scene-glow:#ff7a5975;
+}
+#app[data-screen="game"][data-mode="classic"]{--gtp241-scene-glow:#f76e5e80;--gtp241-scene-ink:#210c16}
+#app[data-screen="game"][data-mode="pixel"]{--gtp241-scene-glow:#45d5ee75;--gtp241-scene-ink:#051c2d}
+#app[data-screen="game"][data-mode="quote"]{--gtp241-scene-glow:#be79f278;--gtp241-scene-ink:#210e34}
+#app[data-screen="game"][data-mode="ability"]{--gtp241-scene-glow:#bbef5b6b;--gtp241-scene-ink:#112318}
+#app[data-screen="game"][data-mode="emoji"]{--gtp241-scene-glow:#ffd87570;--gtp241-scene-ink:#2c2417}
+#app[data-screen="game"]>.gtp233-viewport-art{
+ filter:saturate(.78) brightness(.70)!important;
+ background-image:
+ radial-gradient(ellipse 58% 77% at 80% 45%,var(--gtp241-scene-glow),transparent 76%),
+ linear-gradient(100deg,#06101c92 0%,var(--gtp241-scene-ink) 100%),
+ var(--gtp230-back)!important;
+ background-size:cover!important;background-position:center center!important;
+}
+#app[data-screen="game"]>.gtp241-mode-scene{
+ position:fixed!important;inset:0!important;z-index:1!important;
+ pointer-events:none!important;overflow:hidden!important;
+ opacity:.84!important;isolation:isolate!important;
+}
+#app[data-screen="game"]>.gtp241-mode-scene::before{
+ content:"";position:absolute;inset:0;z-index:0;
+ background:
+ radial-gradient(ellipse 45% 85% at 78% 52%,var(--gtp241-scene-glow),transparent 77%),
+ linear-gradient(90deg,transparent 47%,#070f1d19 70%,#070c1775 100%);
+}
+#app[data-screen="game"]>.gtp241-mode-scene::after{
+ content:"";position:absolute;inset:0;z-index:2;
+ background:linear-gradient(0deg,#030914 0%,transparent 28%,transparent 70%,#05091260 100%);
+}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{
+ position:absolute;right:clamp(-50px,3vw,42px);bottom:-9vh;
+ width:min(39vw,545px);height:90vh;z-index:1;
+ opacity:.85!important;
+ filter:drop-shadow(-12px 10px 20px #040610ac) drop-shadow(0 0 24px var(--gtp241-scene-glow))!important;
+ -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 10%,#000 75%,transparent 100%);
+ mask-image:linear-gradient(180deg,transparent 0%,#000 10%,#000 75%,transparent 100%);
+}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host .portrait-holder{
+ position:absolute!important;inset:0!important;display:block!important;
+ width:100%!important;height:100%!important;min-height:0!important;
+ border:0!important;background:none!important;overflow:hidden!important;
+}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host img{
+ display:block!important;width:100%!important;height:100%!important;
+ object-fit:contain!important;object-position:bottom center!important;
+ transform:none!important;
+}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-label{
+ position:absolute;right:25px;bottom:14vh;color:#ffffff38;
+ font:1000 clamp(33px,5.3vw,82px)/.9 'Barlow Condensed',Impact,sans-serif;
+ letter-spacing:.08em;text-shadow:0 2px 7px #000a;transform:rotate(-90deg) translateX(100%);
+ transform-origin:100% 100%;z-index:0;
+}
+#app[data-screen="game"]>.gtp241-scene-classic .gtp241-scene-host{
+ filter:drop-shadow(0 0 8px #c56b67a4) saturate(.9)!important;opacity:.65!important;
+}
+#app[data-screen="game"]>.gtp241-scene-pixel .gtp241-scene-host{right:-4vw;opacity:.80!important}
+#app[data-screen="game"]>.gtp241-scene-quote .gtp241-scene-host{right:-1vw;opacity:.76!important}
+#app[data-screen="game"]>.gtp241-scene-ability .gtp241-scene-host{right:1vw;opacity:.84!important}
+#app[data-screen="game"]>.gtp241-scene-emoji .gtp241-scene-host{right:-1vw;opacity:.81!important}
+/* Dim intense red-pink flames and shift foreground panels to neutral black. */
+#app[data-screen="game"][data-mode="classic"]>.gtp233-viewport-art{
+ filter:saturate(.67) brightness(.62)!important;
+}
+#app[data-screen="game"][data-mode="classic"] .gtp230-titlebar,
+#app[data-screen="game"][data-mode="classic"] .gtp230-console{
+ box-shadow:0 8px 20px #000a,0 0 13px #f36f5a2a!important;
+}
+#app[data-screen="game"] .gtp230-game{position:relative!important;z-index:2!important}
+/* Trivia now has a Crypto host as its own environmental image, not only a header. */
+#app[data-screen="trivia"]>.gtp241-trivia-scene{
+ position:fixed;inset:0;pointer-events:none;z-index:1;isolation:isolate;
+ background:radial-gradient(ellipse 54% 62% at 83% 42%,#39cced28,transparent 78%),
+ linear-gradient(100deg,transparent 40%,#0422345e),url('./assets/decor/haunted-hero.webp') center center/cover no-repeat;
+ opacity:.6!important;
+}
+#app[data-screen="trivia"]>.gtp241-trivia-scene .portrait-holder{
+ position:absolute;right:0;bottom:-8vh;height:86vh;width:min(36vw,510px);
+ display:block;overflow:hidden;
+ -webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 75%,transparent);
+ mask-image:linear-gradient(180deg,transparent,#000 12%,#000 75%,transparent);
+}
+#app[data-screen="trivia"]>.gtp241-trivia-scene img{
+ width:100%!important;height:100%!important;object-fit:contain!important;object-position:bottom center!important;
+}
+#app[data-screen="trivia"]>.trivia-page{position:relative!important;z-index:2!important;background:#04111d94!important}
+@media(max-width:950px){
+ #app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{width:47vw;right:-8vw;opacity:.46!important}
+ #app[data-screen="trivia"]>.gtp241-trivia-scene .portrait-holder{width:43vw;right:-8vw}
+}
+@media(max-width:700px){
+ #app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{width:65vw;right:-18vw;opacity:.32!important}
+ #app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-label{display:none}
+ #app[data-screen="trivia"]>.gtp241-trivia-scene .portrait-holder{width:65vw;right:-18vw;opacity:.35}
+}
+@media(prefers-reduced-motion:reduce){
+ #app[data-screen="home"] .gtp239-bin-aura{animation:none!important}
+ #app[data-screen="home"] .gtp239-bin-image{transition:none!important}
+}
+
+
+/* V2.41 screenshot follow-up: don't enlarge portrait head crops to wallpaper size.
+   Keep characters readable at the edge, never over the puzzle clue. */
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{
+ width:min(30vw,400px)!important;height:73vh!important;bottom:-11vh!important;
+ right:3vw!important;opacity:.60!important;
+}
+#app[data-screen="game"]>.gtp241-scene-pixel .gtp241-scene-host{
+ width:min(26vw,350px)!important;height:65vh!important;
+ right:-1vw!important;opacity:.46!important;
+}
+#app[data-screen="game"]>.gtp241-scene-classic .gtp241-scene-host{opacity:.52!important}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host img{
+ object-fit:contain!important;object-position:center bottom!important;transform:none!important;
+}
+#app[data-screen="home"] .gtp241-spotlight-art{
+ z-index:2!important;
+ width:41%!important;opacity:1!important;
+}
+#app[data-screen="home"] .gtp241-spotlight-art .portrait-holder img{
+ width:100%!important;height:100%!important;
+ object-fit:contain!important;object-position:center bottom!important;
+ filter:drop-shadow(0 0 8px #77bbdf52)!important;opacity:1!important;
+}
+@media(max-width:800px){
+ #app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{
+ width:42vw!important;right:-9vw!important;height:62vh!important;opacity:.35!important
+ }
+}
+
+
+/* V2.41 final screenshot correction: spotlight image must be on the RIGHT,
+   never over the Legend of the Day heading. */
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp241-spotlight-art{
+ left:auto!important;right:0!important;top:0!important;bottom:0!important;
+ width:38%!important;max-width:38%!important;
+ pointer-events:none!important;z-index:1!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp241-spotlight-art .portrait-holder{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ display:block!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp241-spotlight-art .portrait-holder img{
+ position:absolute!important;left:auto!important;right:0!important;top:0!important;bottom:0!important;
+ width:100%!important;height:100%!important;object-fit:contain!important;
+ object-position:bottom center!important;transform:none!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-spotlight .gtp222-dock-copy{
+ position:relative!important;z-index:2!important;max-width:61%!important;
+}

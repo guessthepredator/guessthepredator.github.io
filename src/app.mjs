@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.40.1';
-import {legends} from './data.mjs?v=2.40.1';
-import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2.40.1';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.40.1';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.40.1';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.40.1';
-import {playSound} from './audio.mjs?v=2.40.1';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.40.1';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.40.1';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.40.1';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.40.1';
-import {loadStore,saveStore} from './store.mjs?v=2.40.1';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.41.0';
+import {legends} from './data.mjs?v=2.41.0';
+import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2.41.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.41.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.41.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.41.0';
+import {playSound} from './audio.mjs?v=2.41.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.41.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.41.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.41.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.41.0';
+import {loadStore,saveStore} from './store.mjs?v=2.41.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.40.1';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.41.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -139,7 +139,7 @@ function loadPortraitImages(parent=app){
     const inPixelPuzzle=Boolean(image.closest('.pixel-art'));
     const sourceCatalog=portraitSourcesFor(slug,{pixel:inPixelPuzzle});
     // Pixel mode uses the old source priority so tall renders never change its canvas composition.
-    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host'));
+    const isHostArt=Boolean(image.closest('.gtp239-mode-ring,.gtp238-game-host,.gtp240-mode-identity-art,.gtp240-trivia-host,.gtp238-wheel-host,.gtp241-spotlight-art'));
     // Host portraits need reliable direct square sources first. Mystery and pixel target art keep their own ordering.
     const hostSource=isHostArt?reliableIconFallbacks[slug]:null;
     const candidates=[...new Set([...(hostSource?[hostSource]:[]),...(localFile?[`./assets/portraits/${localFile}`]:[]),...sourceCatalog])];let index=0;
@@ -385,10 +385,10 @@ function home(){
     <section class="gtp222-side gtp239-side gtp239-side-right" aria-label="Ability, Emoji and Trivia">${showcase.slice(3).map(heroCard).join('')}</section>
    </div>
    <div class="gtp222-home-dock gtp239-home-dock">
-    <button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host" aria-hidden="true"><span class="gtp239-host-fallback">PF</span>${portrait('pathfinder',{alt:'',cls:'balanced',eager:true})}</span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
-    <article class="gtp222-spotlight"><div class="gtp222-spotlight-art">${portrait(spotlight.slug,{alt:spotlight.name,cls:'balanced',eager:true})}</div><div class="gtp222-dock-copy"><strong>LEGEND OF THE DAY</strong><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)} · changes daily</small></div></article>
+    <button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host gtp241-mystery-badge" aria-hidden="true"><span>?</span></span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
+    <article class="gtp222-spotlight"><div class="gtp222-spotlight-art gtp241-spotlight-art">${portrait(spotlight.slug,{alt:spotlight.name,cls:'balanced',eager:true})}</div><div class="gtp222-dock-copy"><strong>LEGEND OF THE DAY</strong><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)} · changes daily</small></div></article>
    </div>
-   <footer class="gtp219-footer">♥ Made by Sebyby <span>Independent fan trivia · Not affiliated with EA or Respawn</span></footer>
+   <footer class="gtp219-footer">♥ Made by Sebyby</footer>
   </div>
  </main>`;
 }
@@ -651,7 +651,7 @@ function game(){
  const modeTag=round.mode==='full'?'FULL SCAN':'ONE SIGNAL';
  const host=MODE_HOSTS[active]||MODE_HOSTS.classic;
  const signature={classic:['DECOY PROTOCOL','BAMBOOZLE THEM'],pixel:['RECON OPTICS','READ BETWEEN THE PIXELS'],quote:['BLACK MARKET COMMS','EVERY VOICE HAS A PRICE'],ability:['STIM SYSTEMS','IDENTIFY THE SIGNATURE'],emoji:['ELECTRIC CIPHER','CONNECT THE SIGNALS']}[active]||['OUTLANDS INTEL','FOLLOW THE CLUES'];
- return `<div class="gtp233-viewport-art" aria-hidden="true"></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
+ return `<div class="gtp233-viewport-art" aria-hidden="true"></div><div class="gtp241-mode-scene gtp241-scene-${active}" aria-hidden="true"><div class="gtp241-scene-halo"></div><div class="gtp241-scene-host">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div><span class="gtp241-scene-label">${host.name} · ${signature[0]}</span></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
    <header class="gtp230-titlebar gtp240-themed-titlebar">
     <span class="gtp240-header-beam" aria-hidden="true"></span>
     <div class="gtp230-title-icon gtp238-game-host" aria-hidden="true">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div>
@@ -672,29 +672,33 @@ function game(){
    ${cinematicControls(round,target)}
  </main>`;
 }
-function howTo(){return `<main class="wrap gtp27-guide" aria-labelledby="guide-title"><span class="kicker">FIELD GUIDE · FIVE WAYS TO PLAY</span><h1 id="guide-title">HOW TO <em>PLAY.</em></h1><p>Choose Daily for two shared puzzles each UTC day: Full Scan first, then One Signal, or Free Play for unlimited practice. Find the mystery Legend using up to six guesses (five in Full Scan).</p>
-  <div class="guide-grid">${[
-   ['❔','CLASSIC','Guess any Legend. Green means a matching trait, not necessarily the correct Legend. Pink means a different trait. One Signal shows one comparison per guess.'],
-   ['▦','PIXEL','The same neutral background hides a Legend in stages. Guess to reveal more detail. Soft Blur progressively reveals the Legend.'],
-   ['❞','QUOTE','Identify the Legend from a written character clue. No synthetic voices.'],
-   ['⌁','ABILITY','Recognize a real locally installed passive ability icon. Verified local icons enter the mystery pool.'],
-   ['✧','EMOJI','Read themed symbols about abilities, personality and lore. More symbols unlock after guesses.']
-  ].map(([ico,title,desc])=>`<article class="guide-card"><span>${ico}</span><h2>${title}</h2><p>${desc}</p></article>`).join('')}</div>
-  <div class="guide-rule-row"><article><b>◈ ONE SIGNAL</b><p>One neutral comparison banner per incorrect guess; up to six attempts. The green scanner cells confirm individual traits, not the entire Legend.</p></article><article><b>▦ FULL SCAN</b><p>All six traits per guess, but only five attempts.</p></article><article><b>◷ RUSH OFF / ON</b><p>OFF has no timer. ON starts a 120-second timer on your first guess.</p></article></div>
-  <div class="guide-cta"><button class="btn pink" data-action="open" data-mode="classic">PLAY CLASSIC ↗</button><button class="btn lilac" data-action="faq">READ FAQ</button></div></main>`;}
-function faq(){return `<main class="wrap gtp27-guide gtp27-faq" aria-labelledby="faq-title"><span class="kicker">YOUR QUESTIONS · FAST ANSWERS</span><h1 id="faq-title">FREQUENTLY <em>ASKED.</em></h1>
- <div class="faq-stack">
- ${[
-  ['When does Daily reset?','At 00:00 UTC. Daily has two different Legend puzzles: Full Scan first, One Signal second. All five modes rotate across days.'],
-  ['Does Free Play affect my leaderboard score?','No. Free Play is unlimited practice. Only completed Daily runs can be submitted.'],
- ['How does Trivia work?','Open the separate Trivia tab. Answer five questions, with 20 seconds per question and 20 points each. Trivia Daily scores use their own rankings; Trivia Practice is unranked.'],
-  ['How does scoring work?','Correct guesses earn points. Fewer guesses, fewer hints and optional Rush time remaining give more points. A full-win daily streak adds 5% per consecutive day, capped at 50%.'],
-  ['What is One Signal?','One informative trait comparison for each incorrect guess. Six attempts.'],
-  ['What is Full Scan?','Six comparisons per guess, but only five guesses.'],
-  ['What is Rush OFF?','No timer. With Rush ON, you have 120 seconds after your first guess.'],
-  ['Is the leaderboard public?','Yes. Rankings are connected to Supabase. Public entries display nicknames and scores only. Do not use a real name or contact details.'],
-  ['Why can a portrait be unavailable?','Some real Legend portraits come from third-party sources. If a source blocks access, we do not replace it with an unrelated character.'],
-  ['Is this an official Apex game?','No. It is an independent fan trivia project, not endorsed by EA.']
+function howTo(){return `<main class="wrap gtp27-guide gtp241-guide" aria-labelledby="guide-title">
+<span class="kicker">OUTLANDS FIELD MANUAL · SIX MODES</span><h1 id="guide-title">HOW TO <em>PLAY.</em></h1>
+<p>Choose one of six modes on Home. Each mode has its own Legend host and visual theme; your host is NOT the hidden answer. Daily is a two-stage challenge that resets at 00:00 UTC. Free Play is unlimited practice.</p>
+<div class="guide-grid">${[
+ ['◈','CLASSIC · MIRAGE','Identify the mystery Legend from clues and compare traits after each guess.'],
+ ['▦','PIXEL · SPARROW','Recognize a heavily pixelated Legend. Each incorrect guess reveals a clearer stage.'],
+ ['❞','QUOTE · LOBA','Identify the Legend from a character quote or voice-line clue.'],
+ ['⌁','ABILITY · OCTANE','Identify the Legend from an ability icon and its type.'],
+ ['✦','EMOJI · WATTSON','Decode five thematic symbols about a Legend, their abilities and story.'],
+ ['◈','TRIVIA · CRYPTO','Five timed Apex questions per run, 20 seconds each, 20 points per correct answer. Daily Ranked and unranked Practice are separate.']
+].map(([ico,title,desc])=>`<article class="guide-card"><span>${ico}</span><h2>${title}</h2><p>${desc}</p></article>`).join('')}</div>
+<div class="guide-rule-row"><article><b>▦ FULL SCAN</b><p>Six trait comparisons after an incorrect guess. Five guesses total; first Daily checkpoint.</p></article><article><b>◈ ONE SIGNAL</b><p>One informative comparison per incorrect guess. Six guesses; unlocked in Daily after Full Scan.</p></article><article><b>◷ RUSH</b><p>Optional 120-second timer, starting at your first guess. Choose before beginning a round.</p></article></div>
+<div class="guide-rule-row"><article><b>◈ FORBIDDEN INTEL</b><p>Unlock up to three daily secrets by completing Full Scan, One Signal and Daily Trivia.</p></article><article><b>✧ NEXT GAME LEGEND</b><p>The mystery '?' wheel draws a random Legend. It does not reveal or alter your current puzzle answer.</p></article><article><b>⚙ SETTINGS</b><p>Change sound FX volume and animations from Settings; progress and preferences are remembered on this device.</p></article></div>
+<div class="guide-cta"><button class="btn pink" data-action="open" data-mode="classic">PLAY CLASSIC ↗</button><button class="btn lilac" data-action="faq">READ FAQ</button></div></main>`;}
+function faq(){return `<main class="wrap gtp27-guide gtp27-faq gtp241-guide" aria-labelledby="faq-title"><span class="kicker">OUTLANDS SUPPORT · UPDATED FOR SIX MODES</span><h1 id="faq-title">FREQUENTLY <em>ASKED.</em></h1>
+ <div class="faq-stack">${[
+ ['What are the six modes?','Classic (Mirage), Pixel (Sparrow), Quote (Loba), Ability (Octane), Emoji (Wattson) and Trivia (Crypto). Their hosts are decorative, not mystery answers.'],
+ ['How do Daily Challenges work?','The daily challenges reset at 00:00 UTC. Finish Full Scan before unlocking One Signal. Daily Trivia has its own separate daily ranked run.'],
+ ['What are Full Scan, One Signal and Rush?','These are gameplay rule options, not additional modes. Full Scan shows six trait comparisons per guess and allows five guesses. One Signal shows one trait and allows six guesses. Rush adds a two-minute timer beginning with the first guess.'],
+ ['How do I unlock Forbidden Intel?','Complete the daily Full Scan, One Signal and Trivia checkpoints. Open any unlocked Intel rewards from the Home centerpiece.'],
+ ['What does the Next Game Legend question mark do?','The spinning wheel chooses a random Legend. It does not give away the answer to a running puzzle.'],
+ ['What makes Pixel Mode difficult?','The Legend starts heavily pixelated, with more detail revealed after each guess. You must identify the figure from visual information, not the host portrait.'],
+ ['How does Trivia scoring work?','Answer five questions in 20 seconds each. Each right answer is worth 20 points (up to 100). Daily Ranked and unlimited Practice have separate scores. Easy giveaway questions have been removed from the active pool.'],
+ ['Does Free Play affect my rankings?','No. Free Play is unlimited practice. Only supported completed ranked Daily runs can be submitted.'],
+ ['Where are my settings and progress stored?','Game progress and preferences are saved in the browser on this device. Settings includes sound volume and animation preferences. Clearing browser data or changing devices may change what is available locally.'],
+ ['Why might some Legend art be unavailable?','Some images load from third-party fan-art and asset sources. If a source refuses access, the site uses a fallback instead of an unrelated character.'],
+ ['Is Guess The Predator official?','No. This is an independent Apex Legends fan project and is not affiliated with EA or Respawn.']
  ].map(([q,a])=>`<details class="faq-item"><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
  <div class="guide-cta"><button class="btn pink" data-action="home">BACK TO MODES ↗</button><button class="btn lilac" data-action="howto">HOW TO PLAY</button></div></main>`;}
 
@@ -705,7 +709,7 @@ function trivia(){
  const isDaily=triviaMode==='daily';
  const rows=triviaBoard?.[triviaScoreTab]||[];
  const feedback=run?.feedback;
- return `<main class="trivia-page ${run&&!run.finished?'trivia-page-active':''} ${question&&!feedback&&!run?.finished?'trivia-page-question':''} ${question?.kind==='text'?'trivia-page-written':''}" aria-label="Apex Trivia"><div class="trivia-shell">
+ return `<div class="gtp241-trivia-scene" aria-hidden="true">${portrait('crypto',{alt:'',cls:'balanced',eager:true})}</div><main class="trivia-page ${run&&!run.finished?'trivia-page-active':''} ${question&&!feedback&&!run?.finished?'trivia-page-question':''} ${question?.kind==='text'?'trivia-page-written':''}" aria-label="Apex Trivia"><div class="trivia-shell">
   <section class="trivia-hero gtp240-trivia-hero"><span class="gtp240-trivia-host" aria-hidden="true">${portrait('crypto',{alt:'',cls:'balanced',eager:true})}</span><span class="trivia-kicker">◈ CRYPTO / ENCRYPTED OUTLANDS INTEL</span><h1>APEX <em>TRIVIA.</em></h1><p>Five questions. 20 seconds each. Every right answer earns <b>20 points</b> — up to 100. Different from Daily Challenges.</p><div class="trivia-switch" role="group" aria-label="Trivia mode"><button data-action="trivia-mode" data-trivia-mode="daily" class="${isDaily?'active':''}">✦ DAILY RANKED</button><button data-action="trivia-mode" data-trivia-mode="practice" class="${!isDaily?'active':''}">∞ PRACTICE</button></div></section>
   <div class="trivia-grid"><section class="trivia-main" id="trivia-main-content" tabindex="-1">
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}
