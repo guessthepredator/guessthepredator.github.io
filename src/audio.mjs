@@ -64,11 +64,11 @@ function melody(name){
   tone(523,.17,{level:.06});tone(659,.21,{delay:.09,level:.05});tone(784,.29,{delay:.18,level:.045});return;
  }
  if(name==='reveal'){
-  tone(392,.21,{level:.033});tone(587,.3,{delay:.08,level:.04});tone(880,.36,{delay:.18,level:.036});return;
+  tone(196,.24,{shape:'sawtooth',level:.038});tone(392,.28,{delay:.06,level:.04});tone(587,.3,{delay:.18,level:.045,pan:-.3});tone(880,.44,{delay:.33,level:.058,pan:.3});tone(1174.66,.55,{delay:.44,level:.031});return;
  }
  if(name==='lose'){tone(330,.14,{shape:'triangle',level:.038});tone(262,.21,{delay:.11,shape:'triangle',level:.03});return;}
- if(name==='pick'){tone(622,.07,{level:.036});return;}
- if(name==='nav'){tone(470,.065,{level:.028});}
+ if(name==='pick'){tone(622,.07,{level:.036});tone(930,.12,{delay:.04,level:.017});return;}
+ if(name==='nav'){tone(470,.065,{level:.028});tone(705,.09,{delay:.035,level:.016});}
 }
 function getSample(name){
  const key=events.has(name)?name:'nav';
