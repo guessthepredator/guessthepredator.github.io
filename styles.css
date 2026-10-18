@@ -5955,3 +5955,33 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  #app[data-screen="home"] .gtp239-bin-aura{animation:none!important}
  #app[data-screen="home"] .gtp239-bin-image{transition:none!important}
 }
+
+
+/* V2.41 screenshot follow-up: don't enlarge portrait head crops to wallpaper size.
+   Keep characters readable at the edge, never over the puzzle clue. */
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{
+ width:min(30vw,400px)!important;height:73vh!important;bottom:-11vh!important;
+ right:3vw!important;opacity:.60!important;
+}
+#app[data-screen="game"]>.gtp241-scene-pixel .gtp241-scene-host{
+ width:min(26vw,350px)!important;height:65vh!important;
+ right:-1vw!important;opacity:.46!important;
+}
+#app[data-screen="game"]>.gtp241-scene-classic .gtp241-scene-host{opacity:.52!important}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host img{
+ object-fit:contain!important;object-position:center bottom!important;transform:none!important;
+}
+#app[data-screen="home"] .gtp241-spotlight-art{
+ z-index:2!important;
+ width:41%!important;opacity:1!important;
+}
+#app[data-screen="home"] .gtp241-spotlight-art .portrait-holder img{
+ width:100%!important;height:100%!important;
+ object-fit:contain!important;object-position:center bottom!important;
+ filter:drop-shadow(0 0 8px #77bbdf52)!important;opacity:1!important;
+}
+@media(max-width:800px){
+ #app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{
+ width:42vw!important;right:-9vw!important;height:62vh!important;opacity:.35!important
+ }
+}
