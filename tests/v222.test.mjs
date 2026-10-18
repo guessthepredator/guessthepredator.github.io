@@ -279,7 +279,7 @@ test('V2.32 cinema board uses signal values, never unconfirmed target data',()=>
  assert.ok(app.includes('esc(wording)'));
  const board=app.split('function cinematicIdentityBoard(round,target){')[1].split('function cinematicStageAside')[0];
  assert.ok(!board.includes("target[field]"));
- assert.ok(board.includes('gtp230-trait-match'));
+ assert.ok(board.includes('gtp230-trait-${status}'));
 });
 test('V2.32 seamless game backdrop is drawn once across the desktop',()=>{
  assert.ok(css.includes('V2.32 · ONE CONTINUOUS FULL-VIEWPORT BACKDROP'));
