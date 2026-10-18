@@ -5672,3 +5672,20 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
 @media(prefers-reduced-motion:reduce){
  #app[data-screen="home"] .gtp239-mode-card{transition:none!important}
 }
+
+
+/* V2.40 screenshot QA: whole recognizable faces rather than extreme eye crops.
+   Host icons are square portraits, not full-body silhouettes. */
+#app[data-screen="home"] .gtp239-mode-ring img[data-portrait],
+#app[data-screen="home"] .gtp239-mode-ring img[data-portrait="sparrow"],
+#app[data-screen="home"] .gtp239-mode-ring img[data-portrait="octane"],
+#app[data-screen="home"] .gtp239-mode-ring img[data-portrait="wattson"]{
+ object-fit:cover!important;object-position:50% 38%!important;
+ transform:scale(1.04)!important;transform-origin:center center!important;
+}
+#app[data-screen="game"] .gtp238-game-host img,
+#app[data-screen="game"] .gtp240-mode-identity-art img,
+#app[data-screen="trivia"] .gtp240-trivia-host img{
+ object-fit:cover!important;object-position:center 35%!important;
+ transform:scale(1.03)!important;transform-origin:center center!important;
+}
