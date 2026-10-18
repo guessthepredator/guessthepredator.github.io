@@ -5,13 +5,13 @@
 const modes=['classic','pixel','quote','ability','emoji'];
 const events=new Set(['nav','pick','clue','wrong','correct','win','party','victory','lose','reveal',...modes.map(mode=>'hover-'+mode)]);
 const buffers=new Map(),last=new Map();
-let ctx=null,master=null;
+let ctx=null,master=null;let currentVolume=.7;
 function audioEngine(){
   if(ctx)return ctx;
   const Ctor=globalThis.AudioContext||globalThis.webkitAudioContext;
   if(!Ctor)return null;
   try{
-    ctx=new Ctor();master=ctx.createGain();master.gain.value=.34;
+    ctx=new Ctor();master=ctx.createGain();master.gain.value=.34*currentVolume;
     master.connect(ctx.destination);return ctx;
   }catch{return null;}
 }
@@ -64,11 +64,11 @@ function melody(name){
   tone(523,.17,{level:.06});tone(659,.21,{delay:.09,level:.05});tone(784,.29,{delay:.18,level:.045});return;
  }
  if(name==='reveal'){
-  tone(392,.21,{level:.033});tone(587,.3,{delay:.08,level:.04});tone(880,.36,{delay:.18,level:.036});return;
+  tone(196,.24,{shape:'sawtooth',level:.038});tone(392,.28,{delay:.06,level:.04});tone(587,.3,{delay:.18,level:.045,pan:-.3});tone(880,.44,{delay:.33,level:.058,pan:.3});tone(1174.66,.55,{delay:.44,level:.031});return;
  }
  if(name==='lose'){tone(330,.14,{shape:'triangle',level:.038});tone(262,.21,{delay:.11,shape:'triangle',level:.03});return;}
- if(name==='pick'){tone(622,.07,{level:.036});return;}
- if(name==='nav'){tone(470,.065,{level:.028});}
+ if(name==='pick'){tone(622,.07,{level:.036});tone(930,.12,{delay:.04,level:.017});return;}
+ if(name==='nav'){tone(470,.065,{level:.028});tone(705,.09,{delay:.035,level:.016});}
 }
 function getSample(name){
  const key=events.has(name)?name:'nav';
@@ -76,8 +76,10 @@ function getSample(name){
  return buffers.get(key);
 }
 export function preloadSoundDeck(){['nav','pick','reveal','party'].forEach(getSample)}
-export function playSound(name,enabled=true){
- if(!enabled)return false;
+export function playSound(name,enabled=true,volume=.7){
+ currentVolume=Math.max(0,Math.min(1,Number(volume)||0));
+ if(master&&ctx)master.gain.setTargetAtTime(.34*currentVolume,ctx.currentTime,.015);
+ if(!enabled||currentVolume<=0)return false;
  const now=performance.now(),key=events.has(name)?name:'nav',minGap=key.startsWith('hover-')?310:95;
  if(now-(last.get(key)||0)<minGap)return false;
  last.set(key,now);
@@ -86,7 +88,7 @@ export function playSound(name,enabled=true){
    const a=getSample(key),player=a.paused?a:a.cloneNode(true);
    // Victory uses an ORIGINAL generated fanfare, not the old party sample.
    player.volume=key==='party'?.12:key.startsWith('hover-')?.028:key==='lose'?.11:key==='wrong'?.06:key==='clue'?.08:.09;
-   player.currentTime=0;void player.play()?.catch?.(()=>{});
+   player.volume*=currentVolume;player.currentTime=0;void player.play()?.catch?.(()=>{});
   }
  }catch{/* Fallback to synthesized sound */ }
  melody(key);return true;
