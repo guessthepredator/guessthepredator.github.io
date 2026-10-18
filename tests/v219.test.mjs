@@ -11,7 +11,7 @@ test('clean character backdrop is bundled and uniquely used by live homepage',()
 });
 test('game mode cards real HTML and correct five actions, no cropped screenshot art',()=>{
  for(const m of ['classic','pixel','quote','ability','emoji'])assert.ok(home.includes(`'${m}'`));
- for(const marker of ['gtp222-orbit-card','gtp222-orbit-symbol','gtp222-orbit-copy','data-mode=','data-session='])assert.ok(home.includes(marker));
+ for(const marker of ['gtp222-orbit-card','gtp238-mode-portrait','gtp222-orbit-copy','data-mode=','data-session='])assert.ok(home.includes(marker));
  assert.ok(!home.includes('gtp218-mode-classic.webp'));
 });
 test('both daily checkpoints and all main interactive surfaces wired',()=>{
