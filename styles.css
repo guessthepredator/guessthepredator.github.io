@@ -5432,3 +5432,22 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  #app[data-screen="home"] .gtp239-bin-stage{height:180px!important}
  #app[data-screen="home"] .gtp239-mode-ring .portrait-holder img{transform:scale(1.75) translateY(12%)!important}
 }
+
+
+/* QA follow-up: individual portrait crops; avoid clipping Sparrow's face */
+#app[data-screen="home"] .gtp239-mode-card[data-host="sparrow"] .gtp239-mode-ring .portrait-holder img{
+ transform:scale(1.08) translateY(0)!important;transform-origin:50% 50%!important;object-fit:cover!important;object-position:center 13%!important;
+}
+#app[data-screen="home"] .gtp239-mode-card[data-host="octane"] .gtp239-mode-ring .portrait-holder img{
+ transform:scale(1.65) translateY(11%)!important;transform-origin:center 30%!important;
+}
+#app[data-screen="home"] .gtp239-mode-card[data-host="loba"] .gtp239-mode-ring .portrait-holder img{
+ transform:scale(1.7) translateY(12%)!important;transform-origin:center 29%!important;
+}
+#app[data-screen="home"] .gtp239-mode-card[data-host="pathfinder"] .gtp239-mode-ring .portrait-holder img{
+ transform:scale(1.75) translateY(13%)!important;transform-origin:center 30%!important;
+}
+#app[data-screen="home"] .gtp239-mode-card[data-host="crypto"] .gtp239-host-fallback{
+ font-size:21px!important;letter-spacing:.08em!important;color:#b7e9ff!important;
+ background:radial-gradient(circle at 50% 40%,#24556b 0%,#0d192d 70%)!important;
+}
