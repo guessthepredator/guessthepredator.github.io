@@ -5451,3 +5451,224 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
  font-size:21px!important;letter-spacing:.08em!important;color:#b7e9ff!important;
  background:radial-gradient(circle at 50% 40%,#24556b 0%,#0d192d 70%)!important;
 }
+
+
+/* ===============================================================
+   V2.40 · RESTORED ORIGINAL MODES / FULL LEGEND THEME SYSTEM
+   Six main destinations are Classic, Pixel, Quote, Ability,
+   Emoji, Trivia. Full Scan, One Signal, Rush remain rule modifiers.
+   =============================================================== */
+#app[data-screen="home"] .gtp239-mode-card.gtp239-gold{--mode:#ffd37c!important}
+#app[data-screen="home"] .gtp239-mode-card{cursor:pointer!important}
+#app[data-screen="home"] .gtp239-mode-caption{
+ background:linear-gradient(180deg,color-mix(in srgb,var(--mode) 12%,#10101c),#05070f 88%)!important;
+}
+#app[data-screen="home"] .gtp239-mode-ring{
+ width:clamp(105px,7.9vw,124px)!important;
+ height:clamp(105px,7.9vw,124px)!important;
+ min-height:clamp(105px,7.9vw,124px)!important;
+ box-shadow:0 0 0 3px #07121b,0 0 21px var(--mode),0 0 36px color-mix(in srgb,var(--mode) 42%,transparent),inset 0 0 18px #000!important;
+}
+#app[data-screen="home"] .gtp239-mode-ring .portrait-holder{
+ display:block!important;position:relative!important;width:100%!important;height:100%!important;min-height:0!important;
+ padding:0!important;margin:0!important;border-radius:50%!important;overflow:hidden!important;background:transparent!important;
+}
+#app[data-screen="home"] .gtp239-mode-ring img[data-portrait]{
+ display:block!important;height:100%!important;width:100%!important;
+ object-fit:contain!important;object-position:center 30%!important;
+ transform:translateY(18%) scale(2.12)!important;transform-origin:50% 30%!important;
+ filter:saturate(1.12) contrast(1.12) drop-shadow(0 2px 6px #000c)!important;
+}
+/* Sparrow's tall cutout needs a more pronounced crop */
+#app[data-screen="home"] .gtp239-mode-ring img[data-portrait="sparrow"]{
+ transform:translateY(14%) scale(2.32)!important;object-position:center top!important;
+}
+#app[data-screen="home"] .gtp239-mode-ring img[data-portrait="wattson"]{
+ transform:translateY(15%) scale(1.97)!important;
+}
+#app[data-screen="home"] .gtp239-mode-ring img[data-portrait="octane"]{
+ transform:translateY(12%) scale(2.02)!important;
+}
+#app[data-screen="home"] .gtp239-mode-card .gtp239-mode-caption strong{
+ font-size:clamp(18px,1.6vw,24px)!important;
+ letter-spacing:.04em!important;
+}
+#app[data-screen="home"] .gtp239-mode-caption small{font-size:10px!important}
+#app[data-screen="home"] .gtp239-home-dock{margin-top:10px!important}
+#app[data-screen="home"] .gtp239-side{gap:10px!important}
+#app[data-screen="home"] .gtp239-mode-card{height:160px!important;min-height:160px!important}
+#app[data-screen="home"] .gtp239-arena{min-height:498px!important}
+/* Distinct mode palettes permeate the existing fullscreen art and HUD. */
+#app[data-screen="game"][data-mode="classic"]{
+ --gtp230-accent:#ff7469!important;--gtp230-hi:#ffc1aa!important;--gtp230-aura:#7d2434!important;
+ --gtp230-ink:#24050b!important;--gtp238-host-color:#ff7469!important;--gtp240-glow:rgba(255,77,61,.28);
+}
+#app[data-screen="game"][data-mode="pixel"]{
+ --gtp230-accent:#4ce4ee!important;--gtp230-hi:#b2f8ff!important;--gtp230-aura:#076b8b!important;
+ --gtp230-ink:#031b28!important;--gtp238-host-color:#4ce4ee!important;--gtp240-glow:rgba(45,212,240,.25);
+}
+#app[data-screen="game"][data-mode="quote"]{
+ --gtp230-accent:#c993ff!important;--gtp230-hi:#e8d0ff!important;--gtp230-aura:#683489!important;
+ --gtp230-ink:#1d0b30!important;--gtp238-host-color:#c993ff!important;--gtp240-glow:rgba(192,125,255,.26);
+}
+#app[data-screen="game"][data-mode="ability"]{
+ --gtp230-accent:#b7f95e!important;--gtp230-hi:#e4ffad!important;--gtp230-aura:#385f20!important;
+ --gtp230-ink:#0d2109!important;--gtp238-host-color:#b7f95e!important;--gtp240-glow:rgba(161,241,84,.25);
+}
+#app[data-screen="game"][data-mode="emoji"]{
+ --gtp230-accent:#ffd27b!important;--gtp230-hi:#fff0bd!important;--gtp230-aura:#846024!important;
+ --gtp230-ink:#30200c!important;--gtp238-host-color:#ffd27b!important;--gtp240-glow:rgba(255,196,92,.26);
+}
+/* Background art is still truly fullscreen. Accent lighting changes per host. */
+#app[data-screen="game"]{
+ background-image:
+ linear-gradient(90deg,rgba(2,8,18,.79),rgba(4,9,20,.26) 30%,rgba(4,9,20,.26) 69%,rgba(2,8,18,.78)),
+ radial-gradient(ellipse 62% 65% at 52% 20%,var(--gtp240-glow),transparent 80%),
+ linear-gradient(180deg,rgba(2,8,19,.47),rgba(2,6,19,.64)),
+ var(--gtp230-back)!important;
+}
+#app[data-screen="game"] .gtp240-themed-titlebar{
+ position:relative!important;isolation:isolate!important;overflow:hidden!important;
+ background:linear-gradient(101deg,color-mix(in srgb,var(--gtp230-aura) 68%,#0c1726),#08111ce8 70%,#060d19dd)!important;
+ border:1px solid var(--gtp230-accent)!important;
+ box-shadow:inset 0 0 0 1px #fff1,0 0 25px var(--gtp240-glow)!important;
+}
+#app[data-screen="game"] .gtp240-header-beam{
+ position:absolute;pointer-events:none;z-index:-1;left:0;right:0;bottom:0;height:4px;
+ background:linear-gradient(90deg,transparent,var(--gtp230-accent) 25%,var(--gtp230-hi) 54%,transparent 96%);
+ box-shadow:0 0 16px var(--gtp230-accent);
+}
+#app[data-screen="game"] .gtp238-game-host{
+ flex:0 0 70px!important;width:70px!important;height:70px!important;border-radius:14px!important;
+ box-shadow:0 0 20px var(--gtp240-glow)!important;
+}
+#app[data-screen="game"] .gtp238-game-host .portrait-holder{
+ display:block!important;width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important;
+}
+#app[data-screen="game"] .gtp238-game-host img{
+ width:100%!important;height:100%!important;object-fit:contain!important;
+ transform:translateY(17%) scale(1.94)!important;
+ object-position:center 16%!important;
+}
+#app[data-screen="game"] .gtp238-game-host-label{
+ color:var(--gtp230-accent)!important;font-size:11px!important;font-weight:1000!important;
+ letter-spacing:.14em!important;text-shadow:0 0 12px var(--gtp240-glow)!important;
+}
+#app[data-screen="game"] .gtp230-title-copy h1{
+ color:#fff3ee!important;text-shadow:0 1px 2px #000,0 0 16px var(--gtp240-glow)!important;
+}
+#app[data-screen="game"] .gtp240-mode-identity{
+ display:flex;align-items:center;gap:10px;flex:0 0 auto;min-width:0;
+ margin-left:12px;padding:3px 7px 3px 14px;align-self:stretch;
+ border-left:1px solid color-mix(in srgb,var(--gtp230-accent) 58%,transparent);
+ background:radial-gradient(ellipse at right center,var(--gtp240-glow),transparent 76%);
+}
+#app[data-screen="game"] .gtp240-mode-identity-copy{
+ display:flex;flex-direction:column;gap:5px;text-align:right;white-space:nowrap;
+}
+#app[data-screen="game"] .gtp240-mode-identity-copy b{
+ color:var(--gtp230-hi);font:1000 19px/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:.11em;
+}
+#app[data-screen="game"] .gtp240-mode-identity-copy small{
+ font:800 9px/1.15 'DM Sans',Arial,sans-serif;letter-spacing:.05em;color:#dfe6ef;
+}
+#app[data-screen="game"] .gtp240-mode-identity-art{
+ display:block;width:74px;height:69px;overflow:hidden;position:relative;
+ border-radius:10px;border:1px solid var(--gtp230-accent);
+ box-shadow:0 0 16px var(--gtp240-glow);background:#050b16;
+}
+#app[data-screen="game"] .gtp240-mode-identity-art .portrait-holder{
+ display:block!important;width:100%!important;height:100%!important;min-height:0!important;padding:0!important;
+ background:radial-gradient(circle at 50% 20%,var(--gtp240-glow),transparent 70%)!important;
+}
+#app[data-screen="game"] .gtp240-mode-identity-art img{
+ display:block!important;width:100%!important;height:100%!important;
+ object-fit:contain!important;object-position:center 15%!important;
+ transform:translateY(16%) scale(2.02)!important;
+}
+#app[data-screen="game"] .gtp230-main-clue,
+#app[data-screen="game"] .gtp230-console,
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-board{
+ border-color:color-mix(in srgb,var(--gtp230-accent) 53%,#152e45)!important;
+ box-shadow:0 0 16px var(--gtp240-glow),0 8px 26px rgba(0,0,0,.28)!important;
+}
+#app[data-screen="game"] .gtp230-console{
+ background:linear-gradient(120deg,color-mix(in srgb,var(--gtp230-aura) 19%,rgba(7,15,30,.90)),rgba(5,11,23,.89))!important;
+}
+#app[data-screen="game"] .gtp230-btn-main{
+ background:linear-gradient(125deg,var(--gtp230-accent),var(--gtp230-hi))!important;
+ border-color:var(--gtp230-hi)!important;color:var(--gtp230-ink)!important;
+ box-shadow:0 4px 17px var(--gtp240-glow)!important;
+}
+#app[data-screen="game"] .gtp230-input-wrap:focus-within input{
+ border-color:var(--gtp230-hi)!important;
+ box-shadow:0 0 0 2px var(--gtp240-glow)!important;
+}
+#app[data-screen="game"] .gtp235-rule-choice.is-active{
+ border-color:var(--gtp230-accent)!important;
+ box-shadow:0 0 10px var(--gtp240-glow)!important;
+}
+/* Trivia is its own mode and gets Crypto's cyan/blue security console. */
+#app[data-screen="trivia"]{
+ --gtp240-crypto:#62daff;--gtp240-crypto-glow:rgba(36,181,255,.24);
+ background-image:radial-gradient(ellipse at 55% 13%,#0d55704a,transparent 65%),linear-gradient(160deg,#07101f,#0b1023)!important;
+}
+#app[data-screen="trivia"] .gtp240-trivia-hero{
+ position:relative!important;overflow:hidden!important;
+ background:linear-gradient(105deg,rgba(5,24,39,.96),rgba(9,13,31,.87) 78%)!important;
+ border:1px solid #3dc8ed88!important;border-radius:15px!important;
+ box-shadow:0 0 23px var(--gtp240-crypto-glow)!important;
+ padding:10px 24px 10px 105px!important;
+ min-height:89px!important;
+}
+#app[data-screen="trivia"] .gtp240-trivia-host{
+ position:absolute;left:13px;top:6px;width:79px;height:79px;overflow:hidden;
+ border:2px solid var(--gtp240-crypto);border-radius:13px;
+ background:radial-gradient(circle at 45% 20%,#1881b2,#051523 75%);
+ box-shadow:0 0 18px var(--gtp240-crypto-glow);
+}
+#app[data-screen="trivia"] .gtp240-trivia-host .portrait-holder{
+ width:100%!important;height:100%!important;min-height:0!important;display:block!important;padding:0!important;background:transparent!important;
+}
+#app[data-screen="trivia"] .gtp240-trivia-host img{
+ display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;
+ transform:translateY(16%) scale(2)!important;
+}
+#app[data-screen="trivia"] .trivia-kicker{color:#78dfff!important}
+#app[data-screen="trivia"] .trivia-page .trivia-main,
+#app[data-screen="trivia"] .trivia-page .trivia-sidebar{
+ border-color:#389fc0aa!important;background:linear-gradient(155deg,#092538e8,#091428f2)!important;
+ box-shadow:0 0 18px rgba(22,146,206,.12)!important;
+}
+#app[data-screen="trivia"] .trivia-primary,
+#app[data-screen="trivia"] .trivia-choice:focus-visible{
+ border-color:#8aeaff!important;box-shadow:0 0 13px var(--gtp240-crypto-glow)!important;
+}
+@media(max-width:1150px){
+ #app[data-screen="game"] .gtp240-mode-identity-copy{display:none}
+ #app[data-screen="game"] .gtp240-mode-identity{padding:3px 5px!important;margin-left:2px}
+ #app[data-screen="game"] .gtp240-mode-identity-art{width:60px;height:61px}
+}
+@media(max-width:760px){
+ #app[data-screen="game"] .gtp240-mode-identity{display:none!important}
+ #app[data-screen="game"] .gtp238-game-host{width:53px!important;height:53px!important;flex-basis:53px!important}
+ #app[data-screen="trivia"] .gtp240-trivia-hero{padding:9px 10px 9px 81px!important;min-height:72px!important}
+ #app[data-screen="trivia"] .gtp240-trivia-host{width:59px;height:59px;left:8px;top:7px}
+}
+@media(max-width:830px){
+ #app[data-screen="home"] .gtp239-mode-ring{
+  width:90px!important;height:90px!important;min-height:90px!important;
+ }
+ #app[data-screen="home"] .gtp239-mode-card{height:150px!important;min-height:150px!important}
+}
+@media(max-width:560px){
+ #app[data-screen="home"] .gtp239-mode-ring{
+  width:71px!important;height:71px!important;min-height:71px!important;
+ }
+ #app[data-screen="home"] .gtp239-mode-card{height:123px!important;min-height:123px!important}
+ #app[data-screen="home"] .gtp239-mode-caption strong{font-size:14px!important}
+ #app[data-screen="home"] .gtp239-mode-caption small{font-size:8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #app[data-screen="home"] .gtp239-mode-card{transition:none!important}
+}
