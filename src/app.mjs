@@ -364,7 +364,7 @@ function home(){
  return `<main class="gtp219-home gtp222-home gtp239-home" aria-label="Guess the Predator homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
   <div class="gtp239-sky" aria-hidden="true"><span class="gtp239-blood-moon"></span><span class="gtp239-embers"></span></div>
-  <div class="gtp238-mirage-duo gtp239-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp238-mirage-right"></span></div>
+  <div class="gtp238-mirage-duo gtp239-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-right"></span></div>
   <div class="gtp222-layout gtp239-layout">
    <header class="gtp239-masthead"><span>GUESS THE</span><h1>PREDATOR</h1><small>APEX LEGENDS DAILY CHALLENGE</small></header>
    <div class="gtp222-arena gtp239-arena" aria-label="Six featured challenges">
