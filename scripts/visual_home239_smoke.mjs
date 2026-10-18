@@ -14,6 +14,7 @@ try{
  const page=await browser.newPage({viewport:{width:1658,height:928},deviceScaleFactor:1});
  await page.goto(host,{waitUntil:'domcontentloaded'});
  await page.waitForSelector('.gtp239-home');
+ await page.evaluate(()=>document.querySelector('#identity-backdrop [data-action="identity-skip"]')?.click());
  await page.waitForTimeout(750);
  const desktop=await page.evaluate(()=>{
   const rect=s=>{const n=document.querySelector(s);if(!n)return null;const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};
