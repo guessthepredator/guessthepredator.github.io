@@ -1,17 +1,17 @@
-import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.38.0';
-import {legends} from './data.mjs?v=2.38.0';
-import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.38.0';
-import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.38.0';
-import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.38.0';
-import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.38.0';
-import {playSound} from './audio.mjs?v=2.38.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.38.0';
-import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.38.0';
-import {dailySummary, buildSubmission} from './scoring.mjs?v=2.38.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.38.0';
-import {loadStore,saveStore} from './store.mjs?v=2.38.0';
+import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.39.0';
+import {legends} from './data.mjs?v=2.39.0';
+import {artCatalog,portraitSourcesFor} from './art.mjs?v=2.39.0';
+import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.39.0';
+import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.39.0';
+import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.39.0';
+import {playSound} from './audio.mjs?v=2.39.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.39.0';
+import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.39.0';
+import {dailySummary, buildSubmission} from './scoring.mjs?v=2.39.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.39.0';
+import {loadStore,saveStore} from './store.mjs?v=2.39.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.38.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.39.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -346,31 +346,46 @@ function home(){
    ['trivia','TRIVIA','Five questions · 20 seconds each.','✧']
  ];
  const card=([mode,title,description,glyph],i)=>`<button type="button" class="gtp222-orbit-card gtp238-mode-card gtp222-card-${mode} gtp224-orbit-${i+1}" data-host="${MODE_HOSTS[mode].slug}" data-action="${mode==='trivia'?'trivia':'open'}" ${mode==='trivia'?'':`data-mode="${mode}" data-session="unlimited"`} aria-label="${mode==='trivia'?'Open Trivia':'Play '+title} hosted by ${MODE_HOSTS[mode].name}">${modeHostBadge(mode)}<span class="gtp222-orbit-copy"><span class="gtp238-host-name">✦ ${MODE_HOSTS[mode].name} · MODE GUIDE</span><strong>${title}</strong><small>${description}</small></span><span class="gtp222-orbit-arrow" aria-hidden="true">↗</span></button>`;
- return `<main class="gtp219-home gtp222-home" aria-label="Guess the Predator homepage">
+
+ const unread=[1,2,3].find(n=>intelState(n).unlocked&&!intelState(n).read);
+ const lastUnlocked=[3,2,1].find(n=>intelState(n).unlocked);
+ const intelTarget=unread||lastUnlocked||1;
+ const showcase=[
+  {id:'classic',title:'CLASSIC MODE',host:'mirage',description:'Find the mystery Legend.',action:'open',mode:'classic',accent:'red'},
+  {id:'full',title:'FULL SCAN',host:'sparrow',description:'Deep analysis. More data.',action:'home-full',accent:'cyan'},
+  {id:'trivia',title:'TRIVIA',host:'crypto',description:'Test your Apex knowledge.',action:'trivia',accent:'blue'},
+  {id:'signal',title:'ONE SIGNAL',host:'loba',description:'One clue. One shot.',action:'home-signal',accent:'purple'},
+  {id:'rush',title:'RUSH',host:'octane',description:'Fast clues. Think quick.',action:'home-rush',accent:'lime'},
+  {id:'wheel',title:'SPIN THE WHEEL',host:'pathfinder',description:'A random Legend awaits.',action:'wheel',accent:'sky'}
+ ];
+ const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp239-${cfg.accent}" data-host="${cfg.host}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
+ <span class="gtp239-mode-ring" aria-hidden="true">${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}</span>
+ <span class="gtp239-mode-caption"><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
+ return `<main class="gtp219-home gtp222-home gtp239-home" aria-label="Guess the Predator homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
-   <div class="gtp238-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp238-mirage-right"></span></div>
-  <div class="gtp222-layout">
-   <div class="gtp222-eyebrow">✦ SIX WAYS TO PLAY · ONE OUTLANDS MYSTERY · DAILY PROGRESS SAVED ON THIS DEVICE ✦</div>
-   <div class="gtp222-arena" aria-label="Choose a game mode or claim daily rewards">
-      <section class="gtp222-side gtp222-side-left" aria-label="Classic, Pixel and Quote">
-        ${cards.slice(0,3).map(card).join('')}
-      </section>
-      <section class="gtp222-core" aria-label="Forbidden Intel and daily challenges">
-        <div class="gtp238-mythic-stage" role="img" aria-label="Glowing red futuristic mythic supply bin"><span class="gtp238-bin-glow"></span><img class="gtp238-mythic-art" src="./assets/decor/mythic-bin-v238.svg" alt="" loading="eager" decoding="async"/><span class="gtp238-bin-shine" aria-hidden="true">✦</span></div>
-        <h1>FORBIDDEN <em>INTEL</em></h1>
-        <div class="gtp219-intel gtp222-intel"><div class="gtp219-intel-head"><strong>THREE DAILY REWARDS</strong><b>${intelDone} / 3</b></div>
-          <div class="gtp219-progress" aria-label="${intelDone} of 3 rewards unlocked" role="progressbar" aria-valuenow="${intelDone}" aria-valuemin="0" aria-valuemax="3"><span class="${done>=1?'cleared':''}"></span><span class="${done>=2?'cleared':''}"></span><span class="${triviaRewardEarned()?'cleared':''}"></span></div>
-          <div class="gtp219-rewards">${[1,2,3].map(n=>{const {unlocked,read}=intelState(n);return `<button type="button" class="${unlocked?(read?'gtp223-read':'gtp223-new'):''}" data-action="intel-open" data-checkpoint="${n}" ${unlocked?'':'disabled'}><span>${unlocked?(read?'✓':'✦'):'◇'} ${n===1?'FULL SCAN':n===2?'ONE SIGNAL':'DAILY TRIVIA'}</span><small>${unlocked?(read?'READ ✓':'NEW · OPEN ↗'):'LOCKED'}</small></button>`}).join('')}</div>
-        </div>
-        <div class="gtp222-primary-actions"><button data-action="home-daily" type="button" class="gtp219-daily-btn"><strong>▦ DAILY CHALLENGE</strong><small>${dailyStatus} · ${MODE_NAMES[rounds.full?.finished?scheduled.signal:scheduled.full]}</small></button>
-        <button data-action="session" data-session="unlimited" type="button" class="gtp219-free-btn"><strong>✧ FREE PLAY</strong><small>Unlimited practice · all five modes</small></button></div>
-      </section>
-      <section class="gtp222-side gtp222-side-right" aria-label="Ability, Emoji and Trivia">
-        ${cards.slice(3).map(card).join('')}
-      </section>
+  <div class="gtp239-sky" aria-hidden="true"><span class="gtp239-blood-moon"></span><span class="gtp239-embers"></span></div>
+  <div class="gtp238-mirage-duo gtp239-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp238-mirage-right"></span></div>
+  <div class="gtp222-layout gtp239-layout">
+   <header class="gtp239-masthead"><span>GUESS THE</span><h1>PREDATOR</h1><small>APEX LEGENDS DAILY CHALLENGE</small></header>
+   <div class="gtp222-arena gtp239-arena" aria-label="Six featured challenges">
+    <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Full Scan and Trivia">${showcase.slice(0,3).map(heroCard).join('')}</section>
+    <section class="gtp222-core gtp239-core" aria-label="Forbidden Intel Supply Bin">
+      <div class="gtp239-bin-stage" role="img" aria-label="Large glowing red mythic supply bin"><span class="gtp239-bin-aura"></span><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-v238.svg" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
+      <div class="gtp239-intel-panel"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Three classified secrets. Complete challenges to reveal them.</p>
+       <button type="button" class="gtp239-open-intel" data-action="${lastUnlocked?'intel-open':'home-daily'}" ${lastUnlocked?`data-checkpoint="${intelTarget}"`:''}>◈ ${lastUnlocked?'OPEN MYTHIC INTEL':'BEGIN THE DAILY HUNT'} <span>↗</span></button>
+       <details class="gtp239-reward-details"><summary>INTEL CHECKPOINTS · ${intelDone} / 3 <span aria-hidden="true">⌄</span></summary>
+        <div class="gtp219-rewards gtp239-reward-grid">${[1,2,3].map(n=>{const {unlocked,read}=intelState(n);return `<button type="button" class="${unlocked?(read?'gtp223-read':'gtp223-new'):''}" data-action="intel-open" data-checkpoint="${n}" ${unlocked?'':'disabled'}><span>${unlocked?(read?'✓':'✦'):'◇'} ${n===1?'FULL SCAN':n===2?'ONE SIGNAL':'DAILY TRIVIA'}</span><small>${unlocked?(read?'READ ✓':'NEW · OPEN ↗'):'LOCKED'}</small></button>`}).join('')}</div>
+       </details>
+      </div>
+      <div class="gtp222-primary-actions gtp239-primary-actions"><button data-action="home-daily" type="button" class="gtp219-daily-btn"><strong>▦ DAILY CHALLENGE</strong><small>${dailyStatus}</small></button><button data-action="session" data-session="unlimited" type="button" class="gtp219-free-btn"><strong>✧ FREE PLAY</strong><small>All five guessing modes</small></button></div>
+    </section>
+    <section class="gtp222-side gtp239-side gtp239-side-right" aria-label="One Signal, Rush and Spin the Wheel">${showcase.slice(3).map(heroCard).join('')}</section>
    </div>
-   <div class="gtp222-home-dock"><button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host" aria-hidden="true">${portrait('pathfinder',{alt:'',cls:'balanced',eager:true})}</span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
-    <article class="gtp222-spotlight"><div class="gtp222-spotlight-art">${portrait(spotlight.slug,{alt:spotlight.name,cls:'balanced',eager:true})}</div><div class="gtp222-dock-copy"><strong>LEGEND OF THE DAY</strong><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)} · changes daily</small></div></article></div>
+   <div class="gtp222-home-dock gtp239-home-dock">
+    <button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host" aria-hidden="true">${portrait('pathfinder',{alt:'',cls:'balanced',eager:true})}</span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
+    <article class="gtp222-spotlight"><div class="gtp222-spotlight-art">${portrait(spotlight.slug,{alt:spotlight.name,cls:'balanced',eager:true})}</div><div class="gtp222-dock-copy"><strong>LEGEND OF THE DAY</strong><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)} · changes daily</small></div></article>
+   </div>
+   <section class="gtp239-secondary" aria-label="Additional puzzle modes"><div><span>MORE WAYS TO PLAY</span><p>Classic puzzles remain available alongside the daily modes.</p></div><div class="gtp239-more-modes">${cards.filter(([mode])=>['pixel','quote','ability','emoji'].includes(mode)).map(card).join('')}</div></section>
    <footer class="gtp219-footer">♥ Made by Sebyby <span>Independent fan trivia · Not affiliated with EA or Respawn</span></footer>
   </div>
  </main>`;
@@ -1017,7 +1032,7 @@ function showToast(message){
 }
 let lastModeHover=0;
 app.addEventListener('pointerover',event=>{
-  const card=event.target.closest?.('.arena-mode,.gtp222-orbit-card');
+  const card=event.target.closest?.('.arena-mode,.gtp222-orbit-card,.gtp239-mode-card');
   if(!card||!store.settings.audio)return;
   if(event.relatedTarget instanceof Node&&card.contains(event.relatedTarget))return;
   const now=performance.now();if(now-lastModeHover<210)return;lastModeHover=now;
@@ -1055,6 +1070,18 @@ app.addEventListener('click',event=>{
   else if(action==='scroll-extras'){document.getElementById('home-extras')?.scrollIntoView({behavior:store.settings.motion?'smooth':'instant'});}
   else if(action==='board-tab'){boardTab=button.dataset.board;render({scroll:false});if(!boardData)void refreshBoards();}
   else if(action==='open'){openMode(button.dataset.mode,button.dataset.session||'unlimited');}
+  else if(action==='home-full'){dailyTrack='full';openMode(dailySchedule(today()).full,'daily');}
+  else if(action==='home-signal'){
+    if(!currentDailyRounds(store.days,today()).full?.finished){showToast('Complete Full Scan first to unlock One Signal.');return;}
+    dailyTrack='signal';openMode(dailySchedule(today()).signal,'daily');
+  }
+  else if(action==='home-rush'){
+    store.settings.rush=true;store.settings.playStyle='signal';
+    const saved=store.practice.classic;
+    if(saved&&!saved.finished&&!saved.guesses?.length)store.practice.classic={...saved,mode:'signal',timeLimit:120};
+    sync();openMode('classic','unlimited');
+    if(saved&&!saved.finished&&saved.guesses?.length&&!saved.timeLimit)showToast('Your in-progress Classic round was preserved. Rush will apply next round.');
+  }
   else if(action==='home-daily'){
     const rounds=currentDailyRounds(store.days,today());session='daily';
     const next=DAILY_TRACKS.find(track=>!rounds[track]?.finished);
