@@ -11,7 +11,7 @@ import {dailySummary, buildSubmission} from './scoring.mjs?v=2.31.0';
 import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.31.0';
 import {loadStore,saveStore} from './store.mjs?v=2.31.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.31.0';
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.31.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -497,12 +497,13 @@ function cinematicIdentityBoard(round,target){
   const trait=state?.[field];
   const kind=trait?.kind||'hidden';
   const status=kind==='correct'||kind==='hint'?'match':kind==='wrong'?'different':'unknown';
-  const wording=status==='match'?'✓ MATCH':status==='different'?'✕ DIFFERENT':'? UNKNOWN';
-  // In one-signal mode, only previously disclosed facts are shown.
-  return `<div class="gtp230-trait gtp230-trait-${status}" aria-label="${esc(LABELS[field])}: ${wording}">
+  // The engine's comparison already includes the disclosed actual match;
+  // never read target[field] here, as UNKNOWN/DIFFERENT must remain hidden.
+  const wording=scannerDisplayValue(field,trait);
+  return `<div class="gtp230-trait gtp230-trait-${status}" aria-label="${esc(LABELS[field])}: ${esc(wording)}">
       <span class="gtp230-trait-icon" aria-hidden="true">${['◈','✥','▦','⌁','✧','◷'][i%6]}</span>
       <span class="gtp230-trait-name">${esc(names[field]||LABELS[field])}</span>
-      <strong>${wording}</strong>
+      <strong title="${esc(wording)}">${esc(wording)}</strong>
     </div>`;
  }).join('');
  const description=round.mode==='full'?'LATEST GUESS · ALL SIX TRAITS':'ONE SIGNAL · REVEALED TRAITS ONLY';
