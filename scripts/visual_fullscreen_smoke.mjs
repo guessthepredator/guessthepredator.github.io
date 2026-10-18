@@ -20,9 +20,14 @@ async function waitForServer(){
 }
 async function selectMode(page,mode){
  await page.evaluate(mode=>{
+  // Gameplay uses a compact nav with only one PLAY entry. Return Home for
+  // the complete mode selection rather than assuming in-game mode buttons.
+  if(document.querySelector('#app')?.dataset.screen==='game'){
+   document.querySelector('button[data-action="home"]')?.click();
+  }
   const selector='button[data-action="open"][data-mode="'+mode+'"]';
   const button=document.querySelector(selector);
-  if(!button)throw new Error('Could not find mode navigation: '+mode);
+  if(!button)throw new Error('Could not find mode selection on Home: '+mode);
   button.click();
  },mode);
  await page.waitForFunction(mode=>document.querySelector('#app[data-screen="game"][data-mode="'+mode+'"] .gtp233-viewport-art')!==null,mode);
