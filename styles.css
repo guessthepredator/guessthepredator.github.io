@@ -5354,3 +5354,12 @@ body:has(.gtp2-game-scene) #app[data-screen="game"]{
 #app[data-screen="home"] .gtp239-mode-ring .portrait-holder:has(.portrait-unavailable){opacity:0}
 #app[data-screen="home"] .gtp238-wheel-host .gtp239-host-fallback{font-size:22px}
 #app[data-screen="home"] .gtp238-wheel-host:has(.portrait-unavailable) .portrait-holder{opacity:0}
+
+/* V2.39 photoreal supply bin final placement */
+#app[data-screen="home"] .gtp239-bin-stage{height:clamp(220px,18vw,286px)!important;}
+#app[data-screen="home"] .gtp239-bin-image{
+ width:100%!important;height:100%!important;object-fit:contain!important;
+ image-rendering:auto!important;
+ filter:drop-shadow(0 16px 12px #000) drop-shadow(0 0 20px #ff593b9c) saturate(1.13)!important;
+}
+#app[data-screen="home"] .gtp239-bin-image:hover{filter:drop-shadow(0 16px 12px #000) drop-shadow(0 0 26px #ff593bc7) saturate(1.24)!important}
