@@ -4,7 +4,7 @@ import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2
 import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.43.0';
 import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.43.0';
 import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.43.0';
-import {playSound} from './audio.mjs?v=2.43.0';
+import {playSound} from './audio.mjs?v=2.43.0&release=2.44.0';
 import {paintPixelScene} from './pixel_scene.mjs?v=2.43.0';
 import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.43.0';
 import {dailySummary, buildSubmission} from './scoring.mjs?v=2.43.0';
@@ -265,7 +265,7 @@ function intelDialog(){
   const dialog=document.createElement('div');dialog.className='intel-backdrop';dialog.id='intel-dialog';dialog.setAttribute('role','presentation');
   dialog.innerHTML=`<div class="intel-modal" role="dialog" aria-modal="true" aria-label="Forbidden Intel reward"><button class="intel-close" data-action="intel-close" type="button" aria-label="Close reward">✕</button>
       <div class="intel-reveal-scene"><span class="reward-spark s1">✦</span><span class="reward-spark s2">✧</span><span class="reward-spark s3">✦</span><span class="reward-spark s4">✧</span>
-      <div class="reward-chest"><div class="reward-lid">◆</div><div class="reward-base">✦</div></div>
+      <div class="reward-chest gtp244-mythic-reward" role="img" aria-label="Mythic Supply Bin"><img src="./assets/decor/mythic-bin-v2391.webp" alt="" loading="eager"/></div>
       <div class="gold-paper"><div class="paper-stamp">✦ OUTLANDS / DAILY REWARD ✦</div><h2>${intelCheckpoint===1?'FIELD<br>INTEL':intelCheckpoint===2?'RARE<br>INTEL':'TRIVIA<br>INTEL'}</h2><span class="paper-legend">CHECKPOINT ${intelCheckpoint} · ${esc(tip.category)}</span><p><strong class="gtp223-intel-title">${esc(tip.title)}</strong> ${esc(tip.tip)}</p><a class="gtp223-intel-source" href="${esc(tip.source)}" target="_blank" rel="noopener noreferrer">VERIFIED EA GUIDE ↗</a><small>INTEL DECLASSIFIED · ${esc(today())}</small></div>
       <span class="reveal-boozle">BAMBOOZLED! ✦</span></div><div class="intel-dialog-footer"><button class="btn mint" data-action="intel-close" type="button">TAKE THE INTEL ✓</button></div></div>`;
   dialog.addEventListener('click',ev=>{if(ev.target===dialog){closeIntelDialog();render({scroll:false});}});
@@ -364,7 +364,7 @@ function home(){
   {id:'emoji',title:'EMOJI MODE',host:'wattson',description:'Five symbols. One Legend.',action:'open',mode:'emoji',accent:'gold'},
   {id:'trivia',title:'TRIVIA',host:'crypto',description:'Crack five Apex intel questions.',action:'trivia',accent:'blue'}
  ];
- const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp239-${cfg.accent}" data-host="${cfg.host}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
+ const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp239-${cfg.accent}" data-host="${cfg.host}" data-sound="${cfg.id}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
  <span class="gtp239-mode-ring gtp242-mode-medallion" data-host="${cfg.host}" aria-hidden="true"><span class="gtp242-ring-detail"></span><span class="gtp239-host-fallback">${cfg.host.slice(0,2).toUpperCase()}</span>${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}<span class="gtp242-ring-notch"></span></span>
  <span class="gtp239-mode-caption gtp242-mode-plate"><span class="gtp242-host-name">${cfg.host.toUpperCase()} · MODE GUIDE</span><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
  return `<main class="gtp219-home gtp222-home gtp239-home" aria-label="Guess the Predator homepage">
@@ -989,8 +989,8 @@ function triggerVictoryConfetti(){
   document.querySelector('.gtp212-confetti')?.remove();
   const layer=document.createElement('div');layer.className='gtp212-confetti';
   layer.setAttribute('aria-hidden','true');
-  const palette=['#ff7dba','#ab9cff','#82eadc','#f9c56c','#fdf4ff'];
-  for(let i=0;i<72;i++){
+  const palette=['#ff744d','#ffd18a','#fff0d2','#82d7ec','#db9ef9','#ec5149'];
+  for(let i=0;i<96;i++){
     const bit=document.createElement('i');
     bit.style.setProperty('--left',`${(i*47+17)%100}%`);
     bit.style.setProperty('--delay',`${((i*37)%100)/140}s`);
@@ -1048,9 +1048,9 @@ app.addEventListener('pointerover',event=>{
   if(!card||!store.settings.audio)return;
   if(event.relatedTarget instanceof Node&&card.contains(event.relatedTarget))return;
   const now=performance.now();if(now-lastModeHover<210)return;lastModeHover=now;
-  const mode=card.dataset.mode;
+  const mode=card.dataset.mode||card.dataset.sound;
   if(MODES.includes(mode))sound('hover-'+mode);
-  else if(card.classList.contains('gtp222-card-trivia'))sound('hover-quote');
+  else if(mode==='trivia'||card.classList.contains('gtp222-card-trivia'))sound('hover-trivia');
 });
 app.addEventListener('click',event=>{
   const button=event.target.closest('[data-action]');if(!button||button.disabled)return;

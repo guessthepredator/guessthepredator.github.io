@@ -2,7 +2,7 @@
  * Sample playback stays compatible with the existing 14 .wav files.
  * WebAudio adds soft, differentiated mode chimes without network assets.
  */
-const modes=['classic','pixel','quote','ability','emoji'];
+const modes=['classic','pixel','quote','ability','emoji','trivia'];
 const events=new Set(['nav','pick','clue','wrong','correct','win','party','victory','lose','reveal',...modes.map(mode=>'hover-'+mode)]);
 const buffers=new Map(),last=new Map();
 let ctx=null,master=null;let currentVolume=.7;
@@ -33,7 +33,7 @@ function tone(frequency,duration=.12,{shape='sine',level=.045,delay=0,pan=0}={})
 function melody(name){
  const hover=modes.indexOf(name.replace('hover-',''));
  if(name.startsWith('hover-')&&hover>=0){
-  const pitch=[440,523.25,392,587.33,659.25][hover];
+  const pitch=[440,523.25,392,587.33,659.25,739.99][hover];
   tone(pitch,.075,{shape:'sine',level:.030,pan:(hover-2)*.14});return;
  }
  if(name==='clue'||name==='correct'){
@@ -84,7 +84,7 @@ export function playSound(name,enabled=true,volume=.7){
  if(now-(last.get(key)||0)<minGap)return false;
  last.set(key,now);
  try{
-  if(key!=='victory'){
+  if(key!=='victory'&&key!=='hover-trivia'){
    const a=getSample(key),player=a.paused?a:a.cloneNode(true);
    // Victory uses an ORIGINAL generated fanfare, not the old party sample.
    player.volume=key==='party'?.12:key.startsWith('hover-')?.028:key==='lose'?.11:key==='wrong'?.06:key==='clue'?.08:.09;
