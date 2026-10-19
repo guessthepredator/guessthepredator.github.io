@@ -454,7 +454,7 @@ function getVisual(round,target){
       <div class="gtp210-clue-bottom"><strong>${shown===all.length?'ALL FIVE CLUES REVEALED':'DECRYPT THE REMAINING CLUES.'}</strong><span>${shown===all.length?'You have every symbol — make your final guess.':'More symbols unlock as you make guesses.'}</span></div>
     </div>`;
   }
-  return `<div class="clue-visual gtp27-mystery gtp29-classic-visual gtp229-mystery-visual"><div class="gtp229-mystery-stage"><img class="gtp229-unknown-portrait" src="./assets/decor/unknown-legend.svg" alt="Unknown Legend: an armored silhouette with a glowing question mark" width="680" height="760" loading="eager" decoding="async"/><span class="gtp229-classified-stamp" aria-hidden="true">IDENTITY CLASSIFIED</span></div><div class="mystery-wording"><small>01 · UNKNOWN LEGEND</small><strong>WHO'S THAT LEGEND?</strong><span>Compare clues to uncover the identity.</span></div></div>`;
+  return `<div class="clue-visual gtp27-mystery gtp29-classic-visual gtp229-mystery-visual"><div class="mystery-wording"><small>01 · UNKNOWN LEGEND</small><strong>WHO'S THAT LEGEND?</strong><span>Compare clues to uncover the identity.</span></div></div>`;
 }
 function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&Object.values(currentDailyRounds(store.days,today())).some(r=>r?.won&&r.answer===answers()[mode])?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" ><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
 function styleStrip(round){
@@ -669,7 +669,7 @@ function game(){
      ${getVisual(round,target)}
     </section>
     ${cinematicControls(round,target)}
-    <div class="gtp236-intel-column" aria-label="Scanner, rule choices and guess history">${triedLegendNote(round)}${board}${side}${visibleRoundModes(round)}</div>
+    <div class="gtp236-intel-column gtp248-inline-intel" aria-label="Scanner, rule choices and guess history"><details class="gtp248-scan-details"><summary>◈ SCAN INTEL / PREVIOUS GUESSES ⌄</summary><div class="gtp248-scan-content">${triedLegendNote(round)}${board}${side}</div></details>${visibleRoundModes(round)}</div>
    </div>
  </main>`;
 }

@@ -513,3 +513,87 @@
     width:94%!important;height:94%!important;max-width:94%!important;max-height:94%!important;
   }
 }
+
+/* V2.48 - no heavy central frame / no permanent side panels */
+#app[data-screen="game"] .gtp230-arena{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ grid-template-rows:minmax(460px,calc(100svh - 190px)) auto!important;
+ grid-template-areas:"clue" "intel"!important;
+ gap:7px!important;border:0!important;box-shadow:none!important;
+ background:transparent!important;height:auto!important;min-height:0!important;overflow:visible!important}
+#app[data-screen="game"] .gtp230-arena>.gtp230-main-clue{
+ grid-area:clue!important;grid-row:1!important;grid-column:1!important;
+ border:none!important;border-radius:0!important;box-shadow:none!important;
+ background:transparent!important;overflow:visible!important;
+ margin:0!important;padding:0!important;min-height:400px!important}
+#app[data-screen="game"] .gtp230-main-clue .clue-visual{
+ border:none!important;border-radius:0!important;
+ box-shadow:none!important;background-color:transparent!important}
+#app[data-screen="game"] .gtp230-arena>.gtp230-console,
+#app[data-screen="game"] .gtp230-arena>.gtp230-finished{
+ grid-area:clue!important;grid-row:1!important;grid-column:1!important;z-index:10!important;
+ align-self:end!important;justify-self:center!important;
+ width:min(790px,calc(100% - 18px))!important;
+ max-width:790px!important;margin:0 0 8px!important;
+ padding:10px 12px!important;background:#0a1420e5!important;
+ border:1px solid #ac7f7452!important;box-shadow:0 7px 20px #0008!important}
+#app[data-screen="game"] .gtp230-main-clue .gtp229-mystery-visual .mystery-wording{
+ position:relative!important;inset:auto!important;transform:none!important;
+ margin:8vh auto 0!important;padding:6px!important;
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ text-align:center!important;max-width:580px!important}
+#app[data-screen="game"] .gtp230-arena>.gtp248-inline-intel{
+ grid-area:intel!important;grid-row:2!important;grid-column:1!important;
+ display:flex!important;flex-direction:column!important;gap:6px!important;
+ width:min(990px,100%)!important;height:auto!important;max-height:none!important;
+ min-height:0!important;margin:0 auto!important;padding:0 0 12px!important;
+ border:0!important;box-shadow:none!important;background:transparent!important;
+ overflow:visible!important}
+#app[data-screen="game"] .gtp248-scan-details{
+ background:#0a1824b0!important;border:1px solid #67818d43!important;
+ border-radius:7px!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp248-scan-details>summary{
+ display:block!important;cursor:pointer!important;
+ list-style:none!important;padding:9px 12px!important;
+ font-size:11px!important;font-weight:800!important;color:#e1eaf6!important}
+#app[data-screen="game"] .gtp248-scan-details>summary::-webkit-details-marker{display:none!important}
+#app[data-screen="game"] .gtp248-scan-content{
+ display:grid!important;grid-template-columns:minmax(0,1fr) minmax(190px,.45fr)!important;
+ gap:7px!important;padding:9px!important;align-items:start!important}
+#app[data-screen="game"] .gtp248-scan-content>.gtp230-board{grid-column:1!important;grid-row:span 2!important}
+#app[data-screen="game"] .gtp248-scan-content>.gtp235-tried,
+#app[data-screen="game"] .gtp248-scan-content>.gtp230-side{grid-column:2!important}
+#app[data-screen="game"] .gtp248-scan-content>.gtp230-board,
+#app[data-screen="game"] .gtp248-scan-content>.gtp235-tried,
+#app[data-screen="game"] .gtp248-scan-content>.gtp230-side{
+ position:static!important;display:block!important;
+ width:100%!important;max-width:none!important;min-width:0!important;
+ height:auto!important;max-height:none!important;min-height:0!important;
+ margin:0!important;padding:7px!important;border:0!important;
+ box-shadow:none!important;background:#0a1c2ae1!important}
+#app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules{
+ position:static!important;display:flex!important;flex-direction:row!important;
+ justify-content:center!important;align-items:center!important;gap:10px!important;
+ width:100%!important;min-height:0!important;margin:0!important;padding:4px!important;
+ border:0!important;background:none!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules .gtp235-rule-buttons{
+ display:flex!important;gap:5px!important;width:auto!important}
+#app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules .gtp235-rule-choice{
+ width:auto!important;min-width:105px!important;min-height:36px!important;
+ padding:5px 10px!important;border:1px solid #71818c6e!important;
+ border-radius:5px!important;background:#142638bf!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules .gtp235-rule-choice small{display:none!important}
+@media(max-width:830px){
+ #app[data-screen="game"] .gtp230-arena{grid-template-rows:minmax(380px,auto) auto!important}
+ #app[data-screen="game"] .gtp248-scan-content{grid-template-columns:1fr!important}
+ #app[data-screen="game"] .gtp248-scan-content>.gtp230-board,
+ #app[data-screen="game"] .gtp248-scan-content>.gtp235-tried,
+ #app[data-screen="game"] .gtp248-scan-content>.gtp230-side{
+ grid-column:1!important;grid-row:auto!important}
+ #app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules{flex-direction:column!important}
+}
+@media(max-width:560px){
+ #app[data-screen="game"] .gtp230-arena{grid-template-rows:minmax(350px,auto) auto!important}
+ #app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules .gtp235-rule-buttons{width:100%!important}
+ #app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules .gtp235-rule-choice{flex:1!important;min-width:0!important}
+}
