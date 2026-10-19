@@ -15,7 +15,7 @@ test('V2.41 retains six original Home modes, uniform styling, and new mystery wh
  assert.ok(!home.includes('gtp238-wheel-host"'));
  assert.ok(home.includes('tac258-portrait'));
  assert.ok(home.includes('mythic-bin-halloween-v257.webp'));
- assert.ok(home.includes(' Made by Sebyby'));
+ assert.ok(home.includes('♥ Made by Sebyby'));
  assert.ok(!home.includes('Not affiliated with EA or Respawn'));
  assert.ok(css.includes('.gtp239-mode-card .gtp239-mode-ring'));
  assert.ok(css.includes('width:84px!important;height:84px!important'));
@@ -41,7 +41,7 @@ test('V2.41 Pixel reveal is slightly harder while still solvable',()=>{
  assert.deepEqual(PIXEL_SIZES,[9,12,17,29,48,100,900]);
 });
 test('V2.41 How To and FAQ cover all six modes, updated rules and reward progression',()=>{
- for(const s of ['CLASSIC � MIRAGE','PIXEL � SPARROW','QUOTE � LOBA','ABILITY � OCTANE','EMOJI � WATTSON','TRIVIA � CRYPTO','FORBIDDEN INTEL','RUSH','SETTINGS','UTC'])assert.ok(guide.includes(s),s);
+ for(const s of ['CLASSIC · MIRAGE','PIXEL · SPARROW','QUOTE · LOBA','ABILITY · OCTANE','EMOJI · WATTSON','TRIVIA · CRYPTO','FORBIDDEN INTEL','RUSH','SETTINGS','UTC'])assert.ok(guide.includes(s),s);
  assert.ok(guide.includes('five questions'));
  assert.ok(guide.includes('At 00:00 UTC')||guide.includes('at 00:00 UTC'));
 });
