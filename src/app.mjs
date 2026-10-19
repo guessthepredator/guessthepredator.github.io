@@ -5,7 +5,7 @@ import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.43.0';
 import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.43.0';
 import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.43.0';
 import {playSound} from './audio.mjs?v=2.43.0&release=2.44.0&ui=2.62.0';
-import {paintPixelScene} from './pixel_scene.mjs?v=2.43.0';
+import {paintPixelScene} from './pixel_scene.mjs?v=2.43.0&ui=2.63.0';
 import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.43.0&release=2.54.0';
 import {dailySummary, buildSubmission} from './scoring.mjs?v=2.43.0';
 import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor,nextDailyStep} from './daily218.mjs?v=2.43.0&release=2.60.0';
@@ -410,12 +410,12 @@ function home(){
     <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Pixel and Quote">${showcase.slice(0,3).map(heroCard).join('')}</section>
     <section class="gtp222-core gtp239-core gtp246-home-core" aria-label="Forbidden Intel Supply Bin">
       <div class="gtp239-bin-stage" role="img" aria-label="Halloween Mythic Supply Bin surrounded by candles and thorns"><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-halloween-v257.webp" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
-      <div class="gtp239-intel-panel gtp246-intel-hub"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Complete the hunt. Break the seals. Uncover your forbidden intel.</p>
+      ${freeSelected?'':`<div class="gtp239-intel-panel gtp246-intel-hub"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Complete the hunt. Break the seals. Uncover your forbidden intel.</p>
        <button type="button" class="gtp239-open-intel" data-action="${lastUnlocked?'intel-open':'home-daily'}" ${lastUnlocked?`data-checkpoint="${intelTarget}"`:''}>◈ ${lastUnlocked?'OPEN MYTHIC INTEL':'BEGIN THE DAILY HUNT'} <span>↗</span></button>
        <details class="gtp239-reward-details"><summary>INTEL CHECKPOINTS · ${intelDone} / 3 <span aria-hidden="true">⌄</span></summary>
         <div class="gtp219-rewards gtp239-reward-grid">${[1,2,3].map(n=>{const {unlocked,read}=intelState(n);return `<button type="button" class="${unlocked?(read?'gtp223-read':'gtp223-new'):''}" data-action="intel-open" data-checkpoint="${n}" ${unlocked?'':'disabled'}><span>${unlocked?(read?'✓':'✦'):'◇'} ${n===1?'FULL SCAN':n===2?'ONE SIGNAL':'DAILY TRIVIA'}</span><small>${unlocked?(read?'READ ✓':'NEW · OPEN ↗'):'LOCKED'}</small></button>`}).join('')}</div>
        </details>
-      </div>
+      </div>`}
 
     </section>
     <section class="gtp222-side gtp239-side gtp239-side-right" aria-label="Ability, Emoji and Trivia">${showcase.slice(3).map(heroCard).join('')}</section>
@@ -460,8 +460,8 @@ function getVisual(round,target){
     const effect='soft';
     const step=round.won?6:Math.min(round.guesses.length,6);
     // Pixelate and blur the FULL COMPOSITE SCENE (location, lights, character), not a lone cutout.
-    const sizes=[9,12,17,29,48,100,900];
-    const blur=effect==='soft'?[2.4,2.0,1.5,1.1,.7,.3,0]:effect==='holo'?[18,16,13,9,6,3,0]:[16,14,11,8,5,2,0];
+    const sizes=[9,10,12,16,23,36,900];
+    const blur=effect==='soft'?[2.8,2.5,2.1,1.6,1.1,.6,0]:effect==='holo'?[18,16,13,9,6,3,0]:[16,14,11,8,5,2,0];
     const pct=[6,15,28,46,66,84,100];
     const size=sizes[step];
     return `<div class="clue-visual visual-pixel px-effect-${effect} nova-pixel-scene ${round.won?'pixel-revealed':''}"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
