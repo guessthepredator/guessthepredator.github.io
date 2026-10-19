@@ -12,6 +12,13 @@ const json=(body:unknown,status=200,origin='https://guessthepredator.github.io')
  status,headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'authorization, apikey, x-client-info, content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Vary':'Origin'}
 });
 const yesterday=day=>new Date(Date.parse(day+'T00:00:00Z')-86400000).toISOString().slice(0,10);
+function validRankedTimer(r){
+ if(r.timeLimit===0)return true;
+ if(r.timeLimit!==120||!Number.isFinite(r.startedAt)||!Number.isFinite(r.finishedAt))return false;
+ const elapsed=r.finishedAt-r.startedAt;
+ if(elapsed<0)return false;
+ return r.loss==='time'?!r.won&&elapsed===120000:elapsed<120000;
+}
 Deno.serve(async(req:Request)=>{
  const incoming=req.headers.get('Origin');if(incoming&&!allowedOrigins.has(incoming))return json({error:'Origin not allowed'},403);
  const origin=incoming||'https://guessthepredator.github.io';
@@ -31,7 +38,7 @@ Deno.serve(async(req:Request)=>{
  if(authError||!user||user.is_anonymous!==true)return json({error:'Invalid anonymous session'},401,origin);
  const answers=puzzleAnswers(day,legends),pivot=hash('gtp:v218:daily:'+day)%MODES.length;
  const schedule={full:MODES[pivot],signal:MODES[(pivot+2)%MODES.length]};
- if(isDual&&(!payload.rounds.full||!payload.rounds.signal||payload.rounds.full.mode!=='full'||payload.rounds.signal.mode!=='signal'||payload.rounds.full.gameMode!==schedule.full||payload.rounds.signal.gameMode!==schedule.signal||payload.rounds.full.timeLimit!==0||payload.rounds.signal.timeLimit!==0))return json({error:'Daily track configuration mismatch'},400,origin);
+ if(isDual&&(!payload.rounds.full||!payload.rounds.signal||payload.rounds.full.mode!=='full'||payload.rounds.signal.mode!=='signal'||payload.rounds.full.gameMode!==schedule.full||payload.rounds.signal.gameMode!==schedule.signal||![0,120].includes(payload.rounds.full.timeLimit)||![0,120].includes(payload.rounds.signal.timeLimit)))return json({error:'Daily track configuration mismatch'},400,origin);
  if(isDual&&(!Number.isFinite(payload.rounds.full.finishedAt)||!Number.isFinite(payload.rounds.signal.startedAt)||payload.rounds.signal.startedAt<payload.rounds.full.finishedAt))return json({error:'Daily track order invalid'},400,origin);
  let base=0,allWon=true;const details:Record<string,unknown>={};
  for(const track of tracks){
@@ -41,6 +48,7 @@ Deno.serve(async(req:Request)=>{
   const hit=guesses.indexOf(answers[gameMode]),won=hit===guesses.length-1&&hit!==-1;
   if((hit!==-1&&!won)||r.won!==won||(!won&&!(guesses.length===limit||([120,180].includes(r.timeLimit)&&r.loss==='time'))))return json({error:`Round verification failed: ${track}`},400,origin);
   if(r.loss==='time'&&![120,180].includes(r.timeLimit))return json({error:'Invalid timer'},400,origin);
+  if(isDual&&!validRankedTimer(r))return json({error:"Invalid ranked timing"},400,origin);
   let remain=0;if([120,180].includes(r.timeLimit)&&Number.isFinite(r.startedAt)&&Number.isFinite(r.finishedAt)){
    const duration=(r.finishedAt-r.startedAt)/1000;if(duration<0||duration>86400)return json({error:'Invalid timing'},400,origin);
    remain=Math.max(0,Math.min(r.timeLimit,Math.ceil(r.timeLimit-duration)));
