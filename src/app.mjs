@@ -369,14 +369,14 @@ function home(){
  <span class="gtp239-mode-caption gtp242-mode-plate"><span class="gtp242-host-name">${cfg.host.toUpperCase()} · YOUR HOST</span><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
  return `<main class="gtp219-home gtp222-home gtp239-home gtp246-outlands-home" aria-label="Guess the Predator homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
-  <div class="gtp239-sky" aria-hidden="true"><span class="gtp239-blood-moon"></span><span class="gtp239-embers"></span></div>
+  <div class="gtp239-sky" aria-hidden="true"><span class="gtp239-embers"></span></div>
   <div class="gtp238-mirage-duo gtp239-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-right"></span></div>
   <div class="gtp222-layout gtp239-layout">
    <header class="gtp239-masthead"><span>GUESS THE</span><h1>PREDATOR</h1><small>APEX LEGENDS DAILY CHALLENGE</small></header>
    <div class="gtp222-arena gtp239-arena gtp246-home-arena" aria-label="Six original game modes with individual Legend themes">
     <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Pixel and Quote">${showcase.slice(0,3).map(heroCard).join('')}</section>
     <section class="gtp222-core gtp239-core gtp246-home-core" aria-label="Forbidden Intel Supply Bin">
-      <div class="gtp239-bin-stage" role="img" aria-label="Large glowing red mythic supply bin"><span class="gtp239-bin-aura"></span><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-v2391.webp" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
+      <div class="gtp239-bin-stage" role="img" aria-label="Large glowing red mythic supply bin"><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-v2391.webp" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
       <div class="gtp239-intel-panel gtp246-intel-hub"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Three classified secrets. Complete challenges to reveal them.</p>
        <button type="button" class="gtp239-open-intel" data-action="${lastUnlocked?'intel-open':'home-daily'}" ${lastUnlocked?`data-checkpoint="${intelTarget}"`:''}>◈ ${lastUnlocked?'OPEN MYTHIC INTEL':'BEGIN THE DAILY HUNT'} <span>↗</span></button>
        <details class="gtp239-reward-details"><summary>INTEL CHECKPOINTS · ${intelDone} / 3 <span aria-hidden="true">⌄</span></summary>
@@ -669,7 +669,7 @@ function game(){
      ${getVisual(round,target)}
     </section>
     ${cinematicControls(round,target)}
-    <div class="gtp236-intel-column gtp248-inline-intel" aria-label="Scanner, rule choices and guess history"><details class="gtp248-scan-details"><summary>◈ SCAN INTEL / PREVIOUS GUESSES ⌄</summary><div class="gtp248-scan-content">${triedLegendNote(round)}${board}${side}</div></details>${visibleRoundModes(round)}</div>
+    <div class="gtp236-intel-column gtp248-inline-intel gtp249-visible-signals" aria-label="Scanner, rule choices and guess history">${board}<details class="gtp248-scan-details"><summary>◈ PREVIOUS GUESSES / EXTRA INTEL ⌄</summary><div class="gtp248-scan-content">${triedLegendNote(round)}${side}</div></details>${visibleRoundModes(round)}</div>
    </div>
  </main>`;
 }

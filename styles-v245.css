@@ -597,3 +597,54 @@
  #app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules .gtp235-rule-buttons{width:100%!important}
  #app[data-screen="game"] .gtp248-inline-intel>.gtp235-rules .gtp235-rule-choice{flex:1!important;min-width:0!important}
 }
+
+/* V2.49: the real six Identity Signal traits are visible immediately, without the giant panel frame. */
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board{
+ display:block!important;position:static!important;flex:0 0 auto!important;
+ width:100%!important;min-width:0!important;max-width:none!important;
+ min-height:0!important;max-height:none!important;height:auto!important;
+ margin:0!important;padding:7px 0!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;background:transparent!important;backdrop-filter:none!important;overflow:visible!important;
+}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board>h2{
+ font-size:clamp(15px,1.4vw,20px)!important;margin:0 0 4px!important;line-height:1.1!important;color:#ffefdf!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board>small{
+ display:block!important;font-size:10px!important;color:#acc5d1!important;margin:0 0 7px!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait-list{
+ display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:7px!important;width:100%!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait{
+ display:grid!important;grid-template-columns:20px minmax(0,1fr)!important;grid-template-rows:auto auto!important;
+ width:100%!important;min-width:0!important;min-height:66px!important;padding:8px!important;gap:4px!important;
+ align-content:center!important;align-items:center!important;border:1px solid #7191a25b!important;
+ border-radius:6px!important;background:#0c2334df!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait-icon{
+ grid-column:1!important;grid-row:1!important;font-size:13px!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait-name{
+ grid-column:2!important;grid-row:1!important;font-size:10px!important;white-space:nowrap!important;
+ overflow:hidden!important;text-overflow:ellipsis!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait strong{
+ grid-column:1/-1!important;grid-row:2!important;display:block!important;
+ text-align:center!important;font-size:12px!important;white-space:normal!important;overflow-wrap:anywhere!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait-match{
+ background:#10392ebc!important;border-color:#51b88b89!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait-different{
+ background:#392029c0!important;border-color:#d57f7c84!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp248-scan-details{
+ border:0!important;border-top:1px solid #64879740!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp249-visible-signals>.gtp248-scan-details>summary{
+ padding:8px 1px!important;color:#a5c4cf!important;font-size:10px!important}
+#app[data-screen="game"] .gtp249-visible-signals .gtp248-scan-content{display:block!important;padding:4px 0!important}
+#app[data-screen="game"] .gtp249-visible-signals .gtp248-scan-content>.gtp235-tried,
+#app[data-screen="game"] .gtp249-visible-signals .gtp248-scan-content>.gtp230-side{
+ display:block!important;grid-column:auto!important;grid-row:auto!important;position:static!important;
+ width:100%!important;max-width:none!important;min-height:0!important;
+ margin:0 0 5px!important;border:0!important;box-shadow:none!important;background:#0a1929b0!important}
+#app[data-screen="home"] .gtp239-blood-moon,
+#app[data-screen="home"] .gtp239-bin-aura{display:none!important}
+#app[data-screen="home"] .gtp239-sky{background:transparent!important}
+@media(max-width:1040px){
+ #app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait-list{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:590px){
+ #app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}

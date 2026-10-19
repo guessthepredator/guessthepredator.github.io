@@ -35,7 +35,9 @@ test('V2.47 Pixel stage scaled visually, logic untouched',()=>{
  assert.ok(app.includes("const sizes=[9,12,17,29,48,100,900]"));
 });
 test('V2.47 refreshes browser assets and retains daily progress',()=>{
- assert.ok(html.includes('styles-v245.css?v=2.46.0&amp;ui=2.48.0'));
- assert.ok(html.includes('&amp;rev=2.46.0&amp;ui=2.48.0'));
+ assert.ok(html.includes('styles-v245.css?v=2.46.0&amp;ui=2.49.0'));
+ assert.ok(html.includes('&amp;rev=2.46.0&amp;ui=2.49.0'));
  assert.ok(app.includes('loadStore()')&&!app.includes('localStorage.clear()'));
 });
+
+test('V2.49: scan information always visible and home moon removed',()=>{ const game=app.split('function game(){')[1].split('function howTo(){')[0]; const home=app.split('function home(){')[1].split('function homeLegacy(){')[0]; assert.ok(game.includes('gtp249-visible-signals')); assert.ok(game.includes('class="gtp248-scan-details"')); assert.ok(game.indexOf('gtp249-visible-signals')<game.indexOf('gtp248-scan-details')); assert.ok(!home.includes('gtp239-blood-moon')); assert.ok(!home.includes('gtp239-bin-aura')); assert.ok(css.includes('repeat(6,minmax(0,1fr))')); });
