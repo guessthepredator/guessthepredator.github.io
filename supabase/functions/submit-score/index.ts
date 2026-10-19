@@ -2,7 +2,6 @@ import {createClient} from 'npm:@supabase/supabase-js@2.57.0';
 import {legends} from './_shared/data.mjs';
 import {MODES,hash,puzzleAnswers} from './_shared/engine.mjs';
 
-
 /** Offline source parity with deployed submit-score v5. Deploy separately from GitHub Pages.
  * Supports V2.18 dual challenges and legacy five-puzzle submissions during transition.
  */
@@ -35,3 +34,28 @@ Deno.serve(async(req:Request)=>{
  if(isDual&&(!payload.rounds.full||!payload.rounds.signal||payload.rounds.full.mode!=='full'||payload.rounds.signal.mode!=='signal'||payload.rounds.full.gameMode!==schedule.full||payload.rounds.signal.gameMode!==schedule.signal||payload.rounds.full.timeLimit!==0||payload.rounds.signal.timeLimit!==0))return json({error:'Daily track configuration mismatch'},400,origin);
  if(isDual&&(!Number.isFinite(payload.rounds.full.finishedAt)||!Number.isFinite(payload.rounds.signal.startedAt)||payload.rounds.signal.startedAt<payload.rounds.full.finishedAt))return json({error:'Daily track order invalid'},400,origin);
  let base=0,allWon=true;const details:Record<string,unknown>={};
+ for(const track of tracks){
+  const gameMode=isDual?schedule[track]:track,r=payload.rounds[track],guesses=r?.guesses;
+  if(!r||!Array.isArray(guesses)||guesses.length>6||!guesses.every((guess:unknown)=>typeof guess==='string'&&names.has(guess as string))||new Set(guesses).size!==guesses.length||!Array.isArray(r.hints)||r.hints.length>2||r.hints.some((field:unknown)=>typeof field!=='string'||!fields.has(field as string))||new Set(r.hints).size!==r.hints.length||!['signal','full'].includes(r.mode)||![0,120,180].includes(r.timeLimit)||r.finished!==true||typeof r.won!=='boolean')return json({error:`Invalid ${track} round`},400,origin);
+  const limit=r.mode==='full'?5:6;if(guesses.length>limit)return json({error:'Too many guesses'},400,origin);
+  const hit=guesses.indexOf(answers[gameMode]),won=hit===guesses.length-1&&hit!==-1;
+  if((hit!==-1&&!won)||r.won!==won||(!won&&!(guesses.length===limit||([120,180].includes(r.timeLimit)&&r.loss==='time'))))return json({error:`Round verification failed: ${track}`},400,origin);
+  if(r.loss==='time'&&![120,180].includes(r.timeLimit))return json({error:'Invalid timer'},400,origin);
+  let remain=0;if([120,180].includes(r.timeLimit)&&Number.isFinite(r.startedAt)&&Number.isFinite(r.finishedAt)){
+   const duration=(r.finishedAt-r.startedAt)/1000;if(duration<0||duration>86400)return json({error:'Invalid timing'},400,origin);
+   remain=Math.max(0,Math.min(r.timeLimit,Math.ceil(r.timeLimit-duration)));
+  }
+  const points=won?Math.max(100,Math.round(1460-(guesses.length-1)*180-r.hints.length*145+remain*4)):0;
+  base+=points;allWon&&=won;details[track]={gameMode,won,guesses:guesses.length,hints:r.hints.length,score:points};
+ }
+ if(isDual)base=Math.round(base*2.5);
+ const {data:prior,error:priorError}=await client.from('gtp_daily_scores').select('user_id').eq('user_id',user.id).eq('day',day).maybeSingle();
+ if(priorError)return json({error:'Unable to check existing scores'},503,origin);
+ if(prior)return json({error:"Today's score is already registered"},409,origin);
+ const {data:prev,error:prevError}=await client.from('gtp_daily_scores').select('streak,all_won').eq('user_id',user.id).eq('day',yesterday(day)).maybeSingle();
+ if(prevError)return json({error:'Unable to check streak'},503,origin);
+ const streak=allWon?(prev?.all_won?prev.streak+1:1):0,bonus=Math.round(base*Math.min(streak,10)*.05);
+ const {error:insertError}=await client.from('gtp_daily_scores').insert({user_id:user.id,day,display_name:payload.displayName,base_score:base,streak_bonus:bonus,streak,all_won:allWon,round_results:details});
+ if(insertError)return json({error:insertError.code==='23505'?'Already submitted':'Score storage failed'},insertError.code==='23505'?409:500,origin);
+ return json({ok:true,baseScore:base,streakBonus:bonus,totalScore:base+bonus,streak},200,origin);
+});
