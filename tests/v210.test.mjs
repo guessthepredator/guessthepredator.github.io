@@ -10,7 +10,7 @@ test('Emoji visual uses five numbered, unlockable cards rather than old circular
   assert.ok(app.includes('gtp210-emoji-slots'));
   assert.ok(app.includes('gtp210-emoji-tile'));
   assert.ok(app.includes('gtp210-reveal-track'));
-  assert.ok(app.includes("const shown=Math.min(all.length,3+Math.floor(round.guesses.length/2))"));
+  assert.ok(app.includes("const shown=round.finished?all.length:visibleEmojiCount(round,all.length)"));
   assert.ok(css.includes('.clue-visual.gtp210-emoji-stage::before'));
   assert.ok(css.includes('content:none!important'));
 });
