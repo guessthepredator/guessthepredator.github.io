@@ -358,3 +358,16 @@
 @media(prefers-reduced-motion:reduce){
  #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode{transition:none!important}
 }
+
+/* V2.46 functional screenshot-inspired settings drawer (existing working controls). */
+#app .gtp237-settings-backdrop:has(.gtp246-settings-drawer){display:flex!important;justify-content:flex-end!important;align-items:stretch!important;padding:0!important;background:#050813b8!important}
+#app .gtp246-settings-drawer{display:flex!important;flex-direction:column!important;gap:16px!important;width:min(415px,100%)!important;max-width:415px!important;height:100dvh!important;max-height:100dvh!important;overflow-y:auto!important;padding:20px!important;margin:0!important;border:0!important;border-left:2px solid #d36450!important;border-radius:0!important;background:linear-gradient(145deg,#101c2a,#070d19)!important;box-shadow:-20px 0 55px #000e!important}
+#app .gtp246-settings-drawer .gtp237-settings-head{padding-bottom:16px!important;border-bottom:1px solid #6e80917a!important}
+#app .gtp246-sound-section{display:flex!important;flex-direction:column!important;gap:12px!important;padding:18px!important;border-radius:11px!important;border:1px solid #4d7182a0!important;background:#0a1829d9!important}
+#app .gtp246-sound-section h3{margin:0!important;font-size:13px!important;letter-spacing:.12em!important;color:#ffb19d!important}
+#app .gtp246-sound-section p{margin:0!important;font-size:11px!important;color:#b4c8d6!important}
+#app .gtp246-sound-section label{display:flex!important;justify-content:space-between!important;color:#f0e9df!important;font-size:11px!important}
+#app .gtp246-sound-section output{color:#ffb49a!important}
+#app .gtp246-sound-section #gtp237-volume{width:100%!important;accent-color:#ff6754!important;cursor:pointer!important}
+#app .gtp246-sound-section .gtp237-settings-actions{display:flex!important;flex-direction:column!important;gap:9px!important;margin:0!important}
+#app .gtp246-sound-section .gtp237-settings-actions button{min-height:45px!important;width:100%!important;border:1px solid #536e82!important;border-radius:7px!important;background:linear-gradient(165deg,#132c41,#071320)!important;color:#f8f4ed!important;font-size:12px!important}
