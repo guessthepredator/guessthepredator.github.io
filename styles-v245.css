@@ -850,7 +850,7 @@
 /* V2.54 — approved photographic scenes. Decorative layers never enter layout. */
 #app[data-screen="game"][data-mode="ability"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#050c1010,#050b1840 50%,#050b1880),url('./assets/game-bg/ability-v254.webp')!important}
 #app[data-screen="game"][data-mode="pixel"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#050c1810,#050b1840 50%,#050b1880),url('./assets/game-bg/pixel-v254.webp')!important}
-#app[data-screen="game"][data-mode="quote"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#12071510,#0f091b40 50%,#0b071880),url('./assets/game-bg/quote-v257.webp')!important}
+#app[data-screen="game"][data-mode="quote"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#12071510,#0f091b40 50%,#0b071880),url('./assets/game-bg/quote-v259.webp')!important}
 #app[data-screen="game"][data-mode="emoji"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#150c0510,#11101b40 50%,#080b1880),url('./assets/game-bg/emoji-v254.webp')!important;filter:none!important}
 #app[data-screen="game"]:not([data-mode="classic"])>.gtp233-viewport-art{position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;pointer-events:none!important;contain:strict;z-index:0!important}
 #app[data-screen="game"]:not([data-mode="classic"])>.gtp241-mode-scene{display:none!important}
@@ -1157,3 +1157,6 @@
 #app .wheel-modal .wheel-settings label{color:#d9c4ad!important}
 #app .wheel-modal .wheel-check input{accent-color:#bd8a52}
 #app .wheel-modal [data-action="close-wheel"]{background:#2d2530!important;border:1px solid #9d7955!important;color:#f5e8d9!important;box-shadow:none!important}
+
+.tac259-intel-drill{display:grid;gap:7px;margin:14px 0;padding:12px 14px;border-left:3px solid #b47935;background:#8f571b10;color:#332719;font:12px/1.6 Arial,sans-serif}.tac259-intel-drill b{font-size:9px;letter-spacing:.13em;color:#80501e}#app .gold-paper{max-height:70vh;overflow-y:auto}
+@media(min-width:1100px){#app[data-screen="game"][data-mode="quote"] .gtp230-game .gtp230-arena>.gtp230-main-clue{padding-left:clamp(180px,25vw,360px)!important;min-width:0}}
