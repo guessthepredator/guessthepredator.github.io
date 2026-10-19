@@ -743,3 +743,100 @@
 #app[data-screen="trivia"]>.gtp241-trivia-scene{
  background:linear-gradient(110deg,#06151b9a,transparent 50%,#06151d8a),url("./assets/game-hosts/crypto.svg") center/cover no-repeat!important;
  opacity:1!important}
+
+/* V2.52 — Pixel needs to be legible; Ability must show the scanner above the fold.
+   Fixed game proportions are intentional, and resize at tablet/phone breakpoints. */
+#app[data-screen="game"][data-mode="pixel"] .gtp230-arena{
+ grid-template-rows:clamp(475px,56svh,595px) auto!important;
+}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene{
+ display:flex!important;flex-direction:column!important;align-items:center!important;
+ justify-content:center!important;width:min(540px,62vw)!important;
+ max-width:540px!important;min-width:0!important;height:390px!important;
+ max-height:390px!important;margin:0 auto!important;border:0!important;
+ background:none!important;box-shadow:none!important;overflow:visible!important;
+}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-art{
+ width:100%!important;height:345px!important;max-height:345px!important;min-height:0!important;
+ overflow:hidden!important;display:flex!important;align-items:center!important;
+ justify-content:center!important;background:transparent!important;
+ border:0!important;box-shadow:none!important;
+}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-canvas{
+ display:block!important;position:relative!important;flex:none!important;
+ width:min(100%,485px)!important;height:auto!important;max-width:485px!important;
+ max-height:334px!important;aspect-ratio:1.38!important;object-fit:contain!important;
+ image-rendering:pixelated!important;margin:0 auto!important;
+ border:0!important;box-shadow:none!important;transform:none!important;
+}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .pixel-caption{
+ position:relative!important;inset:auto!important;margin:6px auto!important;
+ padding:0!important;text-align:center!important;font-size:11px!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp230-arena{
+ grid-template-rows:clamp(395px,47svh,500px) auto!important;
+ min-height:0!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp230-main-clue{
+ min-height:0!important;height:auto!important;max-height:100%!important;
+ overflow:visible!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp230-main-clue .gtp210-ability-stage{
+ display:grid!important;grid-template-rows:40px minmax(0,1fr) 54px!important;
+ width:min(590px,60vw)!important;max-width:590px!important;
+ height:335px!important;min-height:0!important;max-height:335px!important;
+ margin:0 auto!important;border:0!important;box-shadow:none!important;
+ background:transparent!important;overflow:hidden!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp230-main-clue .gtp210-ability-core{
+ width:100%!important;height:238px!important;max-height:238px!important;
+ min-height:0!important;grid-template-rows:minmax(0,1fr) 22px!important;
+ overflow:hidden!important;padding:0!important;gap:0!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp210-ability-icon,
+#app[data-screen="game"][data-mode="ability"] .ability-symbol{
+ width:min(190px,23vw)!important;height:min(190px,23vw)!important;
+ min-width:0!important;min-height:0!important;max-width:190px!important;
+ max-height:190px!important;margin:auto!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp230-arena>.gtp230-console{
+ margin-bottom:6px!important;padding:8px 12px!important;
+}
+#app[data-screen="game"][data-mode="ability"] .gtp249-visible-signals>.gtp230-board{
+ padding-top:3px!important;
+}
+@media(max-width:850px){
+ #app[data-screen="game"][data-mode="pixel"] .gtp230-arena{
+  grid-template-rows:minmax(455px,auto) auto!important;
+ }
+ #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene{
+  width:min(475px,80vw)!important;height:340px!important;max-height:340px!important;
+ }
+ #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-art{
+  height:300px!important;max-height:300px!important;
+ }
+ #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-canvas{
+  width:min(100%,425px)!important;max-width:425px!important;max-height:295px!important;
+ }
+ #app[data-screen="game"][data-mode="ability"] .gtp230-arena{
+  grid-template-rows:minmax(390px,auto) auto!important;
+ }
+ #app[data-screen="game"][data-mode="ability"] .gtp230-main-clue .gtp210-ability-stage{
+  width:min(530px,90vw)!important;height:300px!important;max-height:300px!important;
+ }
+}
+@media(max-width:560px){
+ #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene{
+  width:min(355px,93vw)!important;height:275px!important;max-height:275px!important;
+ }
+ #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-art{
+  height:238px!important;max-height:238px!important;
+ }
+ #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-canvas{
+  width:min(100%,335px)!important;max-width:335px!important;max-height:235px!important;
+ }
+ #app[data-screen="game"][data-mode="ability"] .gtp210-ability-icon,
+ #app[data-screen="game"][data-mode="ability"] .ability-symbol{
+  width:155px!important;height:155px!important;
+ }
+}
