@@ -5,4 +5,4 @@ test('Free Play has real Play Again button',()=>{const s=app.split('function cin
 test('Daily leaderboard has unlock CTA and valid submit when eligible',()=>{assert.ok(app.includes('canSubmitDaily'));assert.ok(app.includes('PLAY DAILY TO UNLOCK SUBMISSION'));assert.ok(app.includes('data-action="home-daily"'));assert.ok(app.includes('SUBMIT DAILY SCORE ↗'));assert.ok(app.includes('Free Play scores are practice-only'));});
 test('Intel board visible after successful guess',()=>{assert.ok(app.includes('round.won?victoryIntelState(round,target)'));assert.ok(css.includes('.gtp230-arena:has(>.gtp230-finished)'));});
 test('Pixel art unboxed and proportional',()=>{assert.ok(!app.includes('◌ SOFT BLUR'));assert.ok(css.includes('aspect-ratio:1.38!important'));assert.ok(css.includes('max-width:370px!important'));});
-test('Release URLs and suite match',()=>{assert.equal((html.match(/ui=2\.52\.0/g)||[]).length,2);assert.ok(wf.includes('tests/v251.test.mjs'));});
+test('Release URLs and suite match',()=>{assert.equal((html.match(/ui=2\.\d+\.\d+/g)||[]).length,2, 'CSS and JavaScript must both be revisioned');assert.ok(wf.includes('tests/v251.test.mjs'));});

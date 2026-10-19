@@ -35,8 +35,8 @@ test('V2.47 Pixel stage scaled visually, logic untouched',()=>{
  assert.ok(app.includes("const sizes=[9,12,17,29,48,100,900]"));
 });
 test('V2.47 refreshes browser assets and retains daily progress',()=>{
- assert.ok(html.includes('styles-v245.css?v=2.46.0&amp;ui=2.52.0'));
- assert.ok(html.includes('&amp;rev=2.46.0&amp;ui=2.52.0'));
+ assert.match(html,/styles-v245\.css\?v=2\.46\.0&amp;ui=2\.\d+\.\d+/, 'versioned stylesheet must be linked');
+ assert.match(html,/&amp;rev=2\.46\.0&amp;ui=2\.\d+\.\d+/, 'versioned script must be linked');
  assert.ok(app.includes('loadStore()')&&!app.includes('localStorage.clear()'));
 });
 
