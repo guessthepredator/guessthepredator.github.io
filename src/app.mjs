@@ -388,7 +388,7 @@ function home(){
     <section class="gtp222-side gtp239-side gtp239-side-right" aria-label="Ability, Emoji and Trivia">${showcase.slice(3).map(heroCard).join('')}</section>
    </div>
    <div class="gtp222-home-dock gtp239-home-dock">
-    <button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host gtp241-mystery-badge" aria-hidden="true"><span>?</span></span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
+    <button type="button" data-action="wheel" class="gtp222-wheel gtp238-pathfinder-wheel" aria-label="Spin the full Next Game Legend wheel, hosted by Pathfinder"><span class="gtp238-wheel-host gtp241-mystery-badge" aria-hidden="true"></span><span class="gtp222-wheel-illustration" aria-hidden="true"></span><span class="gtp222-dock-copy"><strong>NEXT GAME LEGEND</strong><span class="gtp238-wheel-guide">PATHFINDER · YOUR HOST</span><small>Spin for a random Legend · whole panel clickable</small></span><b aria-hidden="true">↗</b></button>
     <article class="gtp222-spotlight"><div class="gtp222-spotlight-art gtp241-spotlight-art">${portrait(spotlight.slug,{alt:spotlight.name,cls:'balanced',eager:true})}</div><div class="gtp222-dock-copy"><strong>LEGEND OF THE DAY</strong><b>${esc(spotlight.name)}</b><small>${esc(spotlight.role)} · changes daily</small></div></article>
    </div>
    <footer class="gtp219-footer">♥ Made by Sebyby</footer>

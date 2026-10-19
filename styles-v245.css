@@ -14,12 +14,12 @@
  position:absolute!important;inset:0!important;opacity:1!important;
  background-image:url("./assets/decor/mirage-clean-final.webp")!important;
  background-size:cover!important;background-position:center 42%!important;
- filter:sepia(.90) saturate(1.55) hue-rotate(325deg) brightness(.68) contrast(1.17)!important;
+ filter:sepia(.47) saturate(1.15) hue-rotate(339deg) brightness(.88) contrast(1.08)!important;
 }
 #app[data-screen="home"] .gtp246-outlands-home::before{
  content:"";position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;
- background:linear-gradient(90deg,#08070aca,transparent 23%,transparent 77%,#08070ac8),
- linear-gradient(180deg,#10070a41 0%,#10070a08 20%,#09030b29 60%,#030407d9 100%)!important;
+ background:linear-gradient(90deg,#08070a4e,transparent 16%,transparent 84%,#08070a4e),
+ linear-gradient(180deg,#10070a27 0%,#10070a05 20%,#09030b18 60%,#030407b6 100%)!important;
 }
 #app[data-screen="home"] .gtp239-mirage-duo{display:none!important} /* Mirages are already in the backdrop */
 #app[data-screen="home"] .gtp239-sky{
@@ -30,12 +30,12 @@
  display:block!important;position:absolute!important;left:50%!important;
  top:clamp(60px,8vw,112px)!important;width:clamp(220px,24vw,365px)!important;
  aspect-ratio:1!important;height:auto!important;border-radius:50%!important;
- opacity:.91!important;mix-blend-mode:screen!important;filter:blur(.2px)!important;
+ opacity:.72!important;mix-blend-mode:screen!important;filter:blur(.2px)!important;
  background:radial-gradient(circle at 33% 25%,#ffe1b633 0 5%,transparent 6%),
  radial-gradient(circle at 66% 58%,#510d223d 0 15%,transparent 17%),
  radial-gradient(circle at 35% 68%,#41111b37 0 12%,transparent 14%),
  radial-gradient(circle at 47% 44%,#e76f59,#c13531 52%,#5e1020 92%)!important;
- box-shadow:0 0 55px #f44a4760,0 0 142px #ce252957,0 0 240px #ff6a302d!important;
+ box-shadow:0 0 34px #f44a473d,0 0 95px #ce252932,0 0 150px #ff6a301b!important;
  transform:translateX(-50%)!important;
 }
 #app[data-screen="home"] .gtp246-outlands-home .gtp239-layout{
@@ -123,7 +123,7 @@
  margin:0 auto -9px!important;overflow:visible!important;transform:none!important;z-index:4!important}
 #app[data-screen="home"] .gtp246-home-core .gtp239-bin-image{
  width:100%!important;height:100%!important;object-fit:contain!important;transform:none!important;
- filter:drop-shadow(0 0 14px #e72327dd) drop-shadow(0 9px 14px #000e)!important;
+ filter:drop-shadow(0 0 8px #e7232785) drop-shadow(0 7px 12px #000c)!important;
 }
 #app[data-screen="home"] .gtp246-home-core .gtp239-bin-floor{opacity:.56!important}
 #app[data-screen="home"] .gtp246-intel-hub{
@@ -371,3 +371,145 @@
 #app .gtp246-sound-section #gtp237-volume{width:100%!important;accent-color:#ff6754!important;cursor:pointer!important}
 #app .gtp246-sound-section .gtp237-settings-actions{display:flex!important;flex-direction:column!important;gap:9px!important;margin:0!important}
 #app .gtp246-sound-section .gtp237-settings-actions button{min-height:45px!important;width:100%!important;border:1px solid #536e82!important;border-radius:7px!important;background:linear-gradient(165deg,#132c41,#071320)!important;color:#f8f4ed!important;font-size:12px!important}
+
+/* V2.47 — clean mockup pass. Consolidated in the existing V2.45+ stylesheet. */
+/* The original Mirage art stays visible at both sides; no additional heavy vignette. */
+#app[data-screen="home"] .gtp246-outlands-home .gtp219-backdrop{
+  opacity:1!important;
+  filter:sepia(.47) saturate(1.15) hue-rotate(339deg) brightness(.88) contrast(1.08)!important;
+}
+#app[data-screen="home"] .gtp239-sky{background:radial-gradient(circle at 51% 24%,#c6302823,transparent 31%)!important}
+/* Reclaim visual space around the mode orbit: one portrait ring, plain typography. */
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode{
+  gap:3px!important;height:157px!important;min-height:157px!important;
+  box-shadow:none!important;border:none!important;background:transparent!important;
+}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-medallion{
+  flex:0 0 94px!important;width:94px!important;height:94px!important;
+  min-width:94px!important;min-height:94px!important;max-width:94px!important;max-height:94px!important;
+  border-width:2px!important;
+  box-shadow:0 0 0 2px #07090f,0 0 13px color-mix(in srgb,var(--mode) 44%,transparent),0 7px 17px #000c!important;
+}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-plate{
+  width:100%!important;max-width:100%!important;
+  min-height:0!important;max-height:none!important;
+  padding:1px 1px 0!important;margin:0!important;
+  border:none!important;background:none!important;box-shadow:none!important;
+}
+#app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate .gtp242-host-name{display:none!important}
+#app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate strong{
+  color:#fff5eb!important;font-size:15px!important;line-height:1.06!important;
+  letter-spacing:.04em!important;text-shadow:0 2px 6px #000e!important;
+}
+#app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate small{
+  font-size:9px!important;line-height:1.16!important;color:#e1d7d3!important;
+  text-shadow:0 1px 5px #000d!important;
+}
+#app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode[data-host="sparrow"] .portrait-holder img{
+  object-fit:contain!important;object-position:center 28%!important;transform:scale(.93)!important;
+}
+#app[data-screen="home"] .gtp246-intel-hub{
+  box-shadow:0 0 10px #e638331d,0 7px 17px #000b!important;
+  border-color:#ba5c5180!important;
+}
+#app[data-screen="home"] .gtp246-intel-hub .gtp239-open-intel{
+  box-shadow:0 0 13px #f53e3e60,0 6px 12px #0009!important;
+}
+/* Wheel: actual question mark removed from markup; prevent empty placeholder from occupying space. */
+#app[data-screen="home"] .gtp239-home-dock .gtp241-mystery-badge{display:none!important}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-wheel{
+  position:relative!important;isolation:isolate!important;
+  display:flex!important;align-items:center!important;
+  padding:12px 124px 12px 16px!important;gap:0!important;overflow:hidden!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-wheel .gtp222-dock-copy{
+  display:flex!important;flex-direction:column!important;
+  position:relative!important;z-index:2!important;width:100%!important;max-width:100%!important;
+  min-width:0!important;margin:0!important;padding:0!important;
+  align-items:flex-start!important;gap:5px!important;text-align:left!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-wheel .gtp222-dock-copy strong{
+  display:block!important;max-width:100%!important;font-size:clamp(19px,1.55vw,26px)!important;
+  line-height:1.01!important;white-space:normal!important;letter-spacing:.005em!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-wheel .gtp222-dock-copy small{
+  max-width:100%!important;font-size:10px!important;line-height:1.22!important;
+  white-space:normal!important;overflow-wrap:normal!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-wheel .gtp222-wheel-illustration{
+  position:absolute!important;inset:auto 10px auto auto!important;
+  top:50%!important;left:auto!important;right:12px!important;
+  width:105px!important;height:105px!important;
+  transform:translateY(-50%) rotate(-14deg)!important;
+  opacity:.84!important;z-index:0!important;
+  border-width:5px!important;
+  box-shadow:0 0 0 2px #111729,0 0 11px #71dafa55,inset 0 0 15px #090f286e!important;
+}
+#app[data-screen="home"] .gtp239-home-dock .gtp222-wheel>b{
+  display:none!important;
+}
+/* Game modes: remove redundant decorative hosts; never remove the actual puzzle clue. */
+#app[data-screen="game"] .gtp241-mode-scene .gtp241-scene-host,
+#app[data-screen="game"] .gtp241-mode-scene .gtp241-scene-label,
+#app[data-screen="game"] .gtp240-mode-identity{display:none!important}
+#app[data-screen="game"] .gtp230-titlebar{
+  border:0!important;border-bottom:1px solid #7896a452!important;border-radius:8px!important;
+  box-shadow:0 4px 14px #0008!important;
+  background:linear-gradient(100deg,#081222d8,#0d1929c6,#071321d8)!important;
+}
+#app[data-screen="game"] .gtp230-title-icon{
+  border:0!important;box-shadow:none!important;
+  background:#101c2dc7!important;
+}
+#app[data-screen="game"] .gtp230-main-clue{
+  border:1px solid #73809536!important;
+  box-shadow:none!important;
+}
+#app[data-screen="game"] .gtp230-main-clue .clue-visual{border-color:transparent!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp230-arena>.gtp230-console,
+#app[data-screen="game"] .gtp230-arena>.gtp230-finished{
+  border:1px solid #d77a6c72!important;
+  border-radius:9px!important;box-shadow:0 6px 15px #0009!important;
+  background:linear-gradient(180deg,#07101baf,#070e19e0)!important;
+}
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-board,
+#app[data-screen="game"] .gtp236-intel-column>.gtp230-side,
+#app[data-screen="game"] .gtp236-intel-column>.gtp235-rules{
+  border:1px solid #7296a348!important;
+  border-radius:8px!important;box-shadow:none!important;
+  background:linear-gradient(155deg,#071626dc,#0a1726e5)!important;
+}
+#app[data-screen="game"] .gtp245-tried{
+  border:0!important;border-bottom:1px solid #708a9b42!important;
+  border-radius:5px!important;background:#0714218f!important;
+}
+/* Pixel clue: slightly smaller decrypted visual, without changing difficulty or canvas resolution. */
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel .pixel-canvas{
+  width:88%!important;height:88%!important;
+  max-width:88%!important;max-height:88%!important;
+  margin:auto!important;object-fit:contain!important;
+}
+@media(max-width:900px){
+  #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode{height:141px!important;min-height:141px!important}
+  #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-medallion{
+    width:77px!important;height:77px!important;min-width:77px!important;min-height:77px!important;
+    max-width:77px!important;max-height:77px!important;flex-basis:77px!important;
+  }
+}
+@media(max-width:560px){
+  #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode{height:122px!important;min-height:122px!important}
+  #app[data-screen="home"] .gtp246-home-arena .gtp246-orbit-mode .gtp242-mode-medallion{
+    width:60px!important;height:60px!important;min-width:60px!important;min-height:60px!important;
+    max-width:60px!important;max-height:60px!important;flex-basis:60px!important;
+  }
+  #app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate strong{font-size:11px!important}
+  #app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate small{font-size:7.5px!important}
+  #app[data-screen="home"] .gtp239-home-dock .gtp222-wheel{padding-right:91px!important}
+  #app[data-screen="home"] .gtp239-home-dock .gtp222-wheel .gtp222-wheel-illustration{
+    width:77px!important;height:77px!important;right:8px!important;
+  }
+  #app[data-screen="home"] .gtp239-home-dock .gtp222-wheel .gtp222-dock-copy strong{font-size:19px!important}
+  #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel .pixel-canvas{
+    width:94%!important;height:94%!important;max-width:94%!important;max-height:94%!important;
+  }
+}
