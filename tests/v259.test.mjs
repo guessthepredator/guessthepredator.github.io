@@ -7,9 +7,10 @@ import {newRound} from '../src/engine.mjs';
 const app=readFileSync(new URL('../src/app.mjs',import.meta.url),'utf8');
 const backend=readFileSync(new URL('../supabase/functions/submit-score/index.ts',import.meta.url),'utf8');
 const timer=backend.slice(backend.indexOf('function validRankedTimer('),backend.indexOf('Deno.serve('));
-const valid=vm.runInNewContext(timer+'validRankedTimer');
+const validate=vm.runInNewContext(timer+'validRankedTimer');
+const valid=r=>validate(r,200000);
 test('ranked timer accepts a timely win and preserves legacy rounds',()=>{
- assert.equal(valid({timeLimit:0}),true);
+ assert.equal(valid({timeLimit:0,startedAt:1000,finishedAt:2000}),true);
  assert.equal(valid({timeLimit:120,startedAt:1000,finishedAt:120999,won:true}),true);
  assert.equal(valid({timeLimit:120,startedAt:1000,finishedAt:121000,won:false,loss:'time'}),true);
 });

@@ -42,15 +42,14 @@ test('Next Daily keeps One Signal ranked even if a global session flag is stale'
  vm.runInContext("nextMode('daily')",ctx);
  assert.deepEqual(ctx.calls,[['open','quote','daily']]);
 });
-test('Next after both stages opens Daily Trivia; completed Trivia opens rankings',()=>{
+test('Next after both stages opens the Daily summary in ranked context',()=>{
  const rounds={full:{finished:true},signal:{finished:true}};
  for(const completed of [false,true]){
   const ctx=nextContext(rounds,completed);
   vm.runInContext("nextMode('daily')",ctx);
   assert.equal(ctx.session,'daily');
   assert.equal(ctx.store.settings.session,'daily');
-  assert.equal(ctx.screen,completed?'leaderboard':'trivia');
-  if(!completed)assert.equal(ctx.triviaMode,'daily');
+  assert.equal(ctx.screen,'debrief');
   assert.deepEqual(ctx.calls,[]);
  }
 });

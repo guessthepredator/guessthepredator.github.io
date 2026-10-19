@@ -43,7 +43,7 @@ test('Practice starts without nickname; Ranked still requests one',async()=>{
   let prompts=0,requests=0;
   const context={triviaMode,triviaBusy:false,triviaMessage:'',screen:'trivia',triviaRun:null,triviaAnswerText:'',savedNickname:()=>'',
    render:()=>{},openIdentityPrompt:()=>prompts++,saveTriviaReward:()=>{},focusTriviaQuestion:()=>{},
-   triviaRequest:async p=>{requests++;assert.equal(p.displayName,'Practice');return {finished:false};}};
+   triviaAction:async(action,p)=>{requests++;assert.equal(action,'start');assert.equal(p.displayName,'Practice');return {finished:false};}};
   await vm.runInNewContext(app.slice(app.indexOf('async function triviaStart('),app.indexOf('async function triviaSubmitAnswer('))+'triviaStart()',context);
   assert.equal(prompts,triviaMode==='daily'?1:0);assert.equal(requests,triviaMode==='daily'?0:1);
  }
