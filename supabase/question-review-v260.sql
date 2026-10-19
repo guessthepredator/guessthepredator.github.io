@@ -1,0 +1,2 @@
+-- Wording only; answer and concept unchanged. Applied and verified on 2026-10-19.
+update public.gtp_trivia_questions set prompt='Which planet is the home world of Bangalore and Newcastle?', explanation='Bangalore (Anita Williams) and her brother Newcastle (Jackson Williams) are both from Gridiron.',last_reviewed_on=current_date where id='v255-bangalore-origin-world' and answers='["Gridiron"]'::jsonb returning id,prompt,answers,explanation;
