@@ -202,7 +202,7 @@ test('V2.28 builds real transparent cutouts and prevents original scene backgrou
 test('V2.30 cinematic game matches supplied seven-panel UI reference while retaining functionality',()=>{
  const unknown=read('assets/decor/unknown-legend.svg');
  assert.ok(unknown.includes('<svg')&&unknown.includes('Unknown Legend'));
- assert.ok(app.includes('unknown-legend.svg'));
+ assert.ok(!app.includes('unknown-legend.svg'), 'Classic no longer renders the removed generic silhouette');
  assert.ok(app.includes('function cinematicIdentityBoard(round,target)'));
  assert.ok(app.includes('function cinematicStageAside(round,target)'));
  assert.ok(app.includes('function cinematicControls(round,target)'));
