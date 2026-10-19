@@ -29,7 +29,7 @@ test('scanner unknown is neutral before a guess and amber when attempted',()=>{
 });
 test('pixel soft only, rush 120 seconds, legacy 180 support',()=>{
  assert.ok(app.includes("const effect='soft'"));assert.ok(!app.includes('▦ MOSAIC'));assert.ok(!app.includes('⌁ SIGNAL'));
- assert.ok(app.includes('◌ SOFT BLUR'));
+ assert.ok(!app.includes('◌ SOFT BLUR'), 'Removed obsolete Soft Blur badge; Pixel rendering remains soft');
  assert.equal(newRound('Mirage','signal',120).timeLimit,120);
  assert.equal(newRound('Mirage','signal',180).timeLimit,180);
  assert.ok(app.includes('round.timeLimit?0:120'));

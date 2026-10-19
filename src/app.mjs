@@ -535,8 +535,12 @@ function guessBody(round,target){
 }
 
 /** V2.30 cinematic round surface: UI only; engine scoring remains unchanged. */
+function victoryIntelState(round,target){
+ if(!round.won)return null;
+ return Object.fromEntries(FIELDS.map(field=>[field,{kind:'hint',value:formatValue(target[field],field)}]));
+}
 function cinematicIdentityBoard(round,target){
- const state=round.won?Object.fromEntries(FIELDS.map(field=>[field,{kind:'hint',value:formatValue(target[field],field)}])):round.guesses.length?scannerState(round,target,legends):null;
+ const state=round.won?victoryIntelState(round,target):round.guesses.length?scannerState(round,target,legends):null;
  const names={realName:'REAL NAME',name:'REAL NAME',role:'CLASS',class:'CLASS',age:'AGE',release:'RELEASE',season:'SEASON'};
  const rows=FIELDS.map((field,i)=>{
   const trait=state?.[field];
