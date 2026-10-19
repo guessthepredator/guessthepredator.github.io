@@ -1,8 +1,8 @@
-/* GUESS THE PREDATOR - V2.45 CINEMATIC HALLOWEEN OVERHAUL */
+/* GUESS THE PREDATOR — V2.45 CINEMATIC HALLOWEEN OVERHAUL */
 /* A deliberately scoped single visual authority for Home, gameplay, picker and Trivia. */
 #app .top.gtp2-top{background:linear-gradient(100deg,#050b17f2,#101420ec 48%,#070c18f3)!important;border-bottom:1px solid #cd594c9e!important;box-shadow:0 9px 22px #0009!important;backdrop-filter:blur(16px)!important}
 #app button:focus-visible{outline:2px solid #ffd0a7!important;outline-offset:3px!important}
-/* HOME - V2.46: photographic Halloween scene and actual floating orbit buttons.
+/* HOME — V2.46: photographic Halloween scene and actual floating orbit buttons.
    The existing hero photo ALREADY contains two Mirage characters. Never stack another pair.
    Six game modes remain real buttons with their previous actions. */
 #app[data-screen="home"] .gtp246-outlands-home{
@@ -283,7 +283,7 @@
 @media(prefers-reduced-motion:reduce){#app .gtp245-picker-item{transition:none!important}#app[data-screen="home"] .gtp239-mode-card{transition:none!important}}
 
 
-/* GAME - V2.46: left image+actions share one continuous frame; right always-visible Intel column.
+/* GAME — V2.46: left image+actions share one continuous frame; right always-visible Intel column.
    This fixes the previous blank gap under the game image. */
 @media(min-width:901px){
  #app[data-screen="game"] .gtp230-arena{
@@ -372,7 +372,7 @@
 #app .gtp246-sound-section .gtp237-settings-actions{display:flex!important;flex-direction:column!important;gap:9px!important;margin:0!important}
 #app .gtp246-sound-section .gtp237-settings-actions button{min-height:45px!important;width:100%!important;border:1px solid #536e82!important;border-radius:7px!important;background:linear-gradient(165deg,#132c41,#071320)!important;color:#f8f4ed!important;font-size:12px!important}
 
-/* V2.47 - clean mockup pass. Consolidated in the existing V2.45+ stylesheet. */
+/* V2.47 — clean mockup pass. Consolidated in the existing V2.45+ stylesheet. */
 /* The original Mirage art stays visible at both sides; no additional heavy vignette. */
 #app[data-screen="home"] .gtp246-outlands-home .gtp219-backdrop{
   opacity:1!important;
@@ -727,7 +727,7 @@
  #app[data-screen="game"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-canvas{width:min(100%,320px)!important;max-width:320px!important;max-height:185px!important}
 }
 
-/* V2.51 cinematic scene pass - independent environments, no shared Mirage texture. */
+/* V2.51 cinematic scene pass — independent environments, no shared Mirage texture. */
 #app[data-screen="game"]>.gtp233-viewport-art{
  background-position:center center!important;background-repeat:no-repeat!important;background-size:cover!important;
  opacity:1!important;filter:none!important}
@@ -744,7 +744,7 @@
  background:linear-gradient(110deg,#06151b9a,transparent 50%,#06151d8a),url("./assets/game-hosts/crypto.svg") center/cover no-repeat!important;
  opacity:1!important}
 
-/* V2.52 - Pixel needs to be legible; Ability must show the scanner above the fold.
+/* V2.52 — Pixel needs to be legible; Ability must show the scanner above the fold.
    Fixed game proportions are intentional, and resize at tablet/phone breakpoints. */
 #app[data-screen="game"][data-mode="pixel"] .gtp230-arena{
  grid-template-rows:clamp(475px,56svh,595px) auto!important;
@@ -841,13 +841,13 @@
  }
 }
 
-/* V2.53 - renamed brand, fitted for existing Home layout. */
+/* V2.53 — renamed brand, fitted for existing Home layout. */
 #app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(50px,5.4vw,88px)!important;letter-spacing:0!important;max-width:min(90vw,1000px)!important;white-space:normal!important}
 #app .gtp219-brand-type{min-width:113px!important;letter-spacing:-.01em!important}
 #app .gtp219-brand-type strong{letter-spacing:-.025em!important}
 @media(max-width:560px){#app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(42px,10.5vw,64px)!important}}
 
-/* V2.54 - approved photographic scenes. Decorative layers never enter layout. */
+/* V2.54 — approved photographic scenes. Decorative layers never enter layout. */
 #app[data-screen="game"][data-mode="ability"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#050c1010,#050b1840 50%,#050b1880),url('./assets/game-bg/ability-v254.webp')!important}
 #app[data-screen="game"][data-mode="pixel"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#050c1810,#050b1840 50%,#050b1880),url('./assets/game-bg/pixel-v254.webp')!important}
 #app[data-screen="game"][data-mode="quote"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#12071510,#0f091b40 50%,#0b071880),url('./assets/game-bg/quote-v257.webp')!important}
@@ -925,7 +925,7 @@
  #app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate strong{white-space:normal!important}
 }
 
-/* V2.55 - restrained cinematic light, redesigned roster and independent rankings. */
+/* V2.55 — restrained cinematic light, redesigned roster and independent rankings. */
 #app[data-screen="game"]>.gtp233-viewport-art,#app[data-screen="trivia"]>.gtp241-trivia-scene{filter:brightness(.8) saturate(.72) contrast(1.04)!important}
 #app[data-screen="game"] .gtp241-scene-host img{filter:drop-shadow(0 10px 16px #0008)!important}
 #app[data-screen="game"] .gtp230-titlebar{box-shadow:0 8px 24px #0006!important}
