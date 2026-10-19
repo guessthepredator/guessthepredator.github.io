@@ -906,7 +906,7 @@ async function submitScores(){
   const receipt=await submitDaily(buildSubmission(store.days,today(),nickname));
   store.submittedDays={...(store.submittedDays||{}),[today()]:{...receipt,nickname,submittedAt:Date.now()}};sync();
   await refreshBoards();if(screen==='debrief')render({scroll:false});const message=`SCORE SUBMITTED · ${receipt.totalScore} PTS · STREAK ${receipt.streak}`;showToast(message);const status=document.getElementById('board-submit-feedback');if(status){status.textContent=message;status.dataset.status='success';}
- }catch(error){const message=error.message||'Submission failed';showToast(message);if(feedback){feedback.textContent=message;feedback.dataset.status='error';}if(button){button.disabled=false;button.textContent='SUBMIT DAILY SCORE ↗';}}finally{scoreSubmitting=false;}
+ }catch(error){const message=error.message||'Submission failed';showToast(message);const currentFeedback=document.getElementById('board-submit-feedback');if(currentFeedback){currentFeedback.textContent=message;currentFeedback.dataset.status='error';}}finally{scoreSubmitting=false;const currentButton=document.querySelector('#board-submit-form button[type=submit]');if(currentButton&&!store.submittedDays?.[today()]){currentButton.disabled=false;currentButton.textContent='SUBMIT DAILY SCORE ↗';}}
 }
 function dailyDebrief(){
  const rounds=currentDailyRounds(store.days,today()),summary=dailySummary(store.days,today());
