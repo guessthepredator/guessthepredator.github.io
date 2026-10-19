@@ -25,7 +25,7 @@ let screen='home';
 let triviaRun=null;
 const triviaDailyRewardKey=day=>'gtp-trivia-daily-complete:'+day;
 function triviaRewardEarned(){try{return localStorage.getItem(triviaDailyRewardKey(today()))==='yes';}catch{return false;}}
-function saveTriviaReward(run){if(run?.finished&&run.mode==='daily'){try{localStorage.setItem(triviaDailyRewardKey(today()),'yes');}catch{}}}
+function saveTriviaReward(run){if(run?.finished&&run.mode==='daily'){try{localStorage.setItem(triviaDailyRewardKey(run.day||utcDay()),'yes');localStorage.setItem('tac:trivia-receipt:'+(run.day||utcDay()),JSON.stringify({score:run.score,correctAnswers:run.correctAnswers}));}catch{}}}
 function totalIntelCheckpoints(){return checkpointCount(store.days,today())+Number(triviaRewardEarned());}
 function intelState(checkpoint){
   const unlocked=checkpoint===3?triviaRewardEarned():checkpointCount(store.days,today())>=checkpoint;
@@ -39,6 +39,8 @@ function intelReadyMarkup(checkpoint){
 }
 
 let triviaMode=store.settings.session==='unlimited'?'practice':'daily';
+let triviaEpoch=0;
+let triviaRetryAt=0;
 let triviaBusy=false;
 let triviaMessage='';
 let triviaScoreTab='daily';
@@ -214,7 +216,7 @@ function loadAbilityImages(parent=app){
 
 function identityPrompt(){
   const value=esc(savedNickname());
-  return `<div class="identity-backdrop" id="identity-backdrop" role="presentation"><section class="identity-modal" role="dialog" aria-modal="true" aria-labelledby="identity-title"><button class="identity-close" type="button" data-action="identity-skip" aria-label="Close nickname dialog">✕</button><span class="identity-kicker">PUBLIC RANKINGS / SAVED LOCALLY</span><h2 id="identity-title">CHOOSE YOUR <em>NICKNAME.</em></h2><p>This name appears automatically when you submit Daily scores and stays saved on this device. You can change it later anytime.</p><form id="identity-form" class="identity-form"><label for="identity-name">PLAYER NICKNAME</label><input id="identity-name" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Example: MirageMain" value="${value}" required/><small>3–18 characters · letters, numbers, spaces, _ or -</small><div class="identity-actions"><button class="btn pink" type="submit">SAVE NICKNAME ↗</button><button class="btn lilac" type="button" data-action="identity-skip">MAYBE LATER</button></div><p class="identity-note">This only stores a public nickname, not personal details.</p></form></section></div>`;
+  return `<div class="identity-backdrop" id="identity-backdrop" role="presentation"><section class="identity-modal" role="dialog" aria-modal="true" aria-labelledby="identity-title"><button class="identity-close" type="button" data-action="identity-skip" aria-label="Close nickname dialog">✕</button><span class="identity-kicker">PUBLIC RANKINGS / SAVED LOCALLY</span><h2 id="identity-title">CHOOSE YOUR <em>NICKNAME.</em></h2><p>This name appears automatically when you submit Daily scores and stays saved on this device. You can change it later anytime.</p><form id="identity-form" class="identity-form"><label for="identity-name">PLAYER NICKNAME</label><input id="identity-name" name="nickname" required minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Example: MirageMain" value="${value}" required/><small>3–18 characters · letters, numbers, spaces, _ or -</small><div class="identity-actions"><button class="btn pink" type="submit">SAVE NICKNAME ↗</button><button class="btn lilac" type="button" data-action="identity-skip">MAYBE LATER</button></div><p class="identity-note">This only stores a public nickname, not personal details.</p></form></section></div>`;
 }
 function openIdentityPrompt(force=false){
   if(identityPromptOpen)return;
@@ -251,6 +253,7 @@ function nav(){const nick=savedNickname();return `<header class="top gtp2-top"><
   <div class="top-actions"><button class="switch gtp237-settings-switch" type="button" data-action="settings">⚙ SETTINGS</button><button class="switch gtp2-profile-switch" data-action="profile" aria-label="Choose nickname">${nick?`◉ ${esc(nick)}`:'◎ NICKNAME'}</button><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
  </div></header>`;}
 function settingsDialog(){
+ if(document.getElementById('gtp237-settings'))return;
  const layer=document.createElement('div');layer.id='gtp237-settings';layer.className='gtp237-settings-backdrop';
  layer.innerHTML=`<div class="gtp237-settings-panel gtp246-settings-drawer" role="dialog" aria-modal="true" aria-label="Game settings"><div class="gtp237-settings-head"><div><span>OUTLANDS CONTROL PANEL</span><h2>SETTINGS</h2></div><button type="button" data-action="settings-close" aria-label="Close settings">✕</button></div><section class="gtp246-sound-section"><h3>♫ AUDIO CONTROLS</h3><p>Adjust the original Outlands sound effects.</p><label for="gtp237-volume">MASTER FX VOLUME <output id="gtp237-volume-output">${Math.round((store.settings.volume??.7)*100)}%</output></label><input id="gtp237-volume" type="range" min="0" max="100" step="1" value="${Math.round((store.settings.volume??.7)*100)}" aria-label="Sound effects volume"/></section><section class="gtp246-sound-section"><h3>◈ VISUAL SETTINGS</h3><div class="gtp237-settings-actions"><button type="button" data-action="audio">SOUND ${store.settings.audio?'ON':'OFF'}</button><button type="button" data-action="motion">ANIMATIONS ${store.settings.motion?'ON':'OFF'}</button><button type="button" data-action="sound-preview">TEST SOUND ✦</button></div></section><small>Preferences saved automatically.</small></div>`;
  layer.addEventListener('click',e=>{if(e.target===layer)layer.remove()});app.appendChild(layer);layer.querySelector('[data-action="settings-close"]')?.focus();
@@ -266,7 +269,7 @@ function statCards(){
 }
 function forbiddenPanel(){
  const done=totalIntelCheckpoints();
- return `<section class="vault-showcase gtp218-record-rewards"><div class="vault-intro"><span class="kicker">✦ FORBIDDEN INTEL / THREE CHECKPOINTS</span><h2>UNLOCK YOUR <em>INTEL.</em></h2><p>Finish Full Scan, One Signal, and Daily Trivia to unlock all three rewards.</p><div class="vault-track"><span style="width:${done/3*100}%"></span></div><strong>${done}/3 CHECKPOINTS COMPLETE</strong><div class="gtp218-reward-actions">${[1,2,3].map(n=>`<button class="btn mint" data-action="intel-open" data-checkpoint="${n}" ${(n===3?triviaRewardEarned():done>=n)?'':'disabled'}>${intelState(n).unlocked?(intelState(n).read?`✓ CHECKPOINT ${n} · READ`:`✦ CHECKPOINT ${n} · NEW`):`CHECKPOINT ${n} LOCKED`}</button>`).join('')}</div></div></section>`;
+ return `<section class="vault-showcase gtp218-record-rewards"><div class="vault-intro"><span class="kicker">✦ FORBIDDEN INTEL / THREE CHECKPOINTS</span><h2>UNLOCK YOUR <em>INTEL.</em></h2><p>Finish Full Scan, One Signal, and Daily Trivia to unlock all three rewards.</p><div class="vault-track"><span style="width:${done/3*100}%"></span></div><strong>${done}/3 CHECKPOINTS COMPLETE</strong><div class="gtp218-reward-actions">${[1,2,3].map(n=>`<button class="btn mint" data-action="intel-open" data-checkpoint="${n}" ${intelState(n).unlocked?'':'disabled'}>${intelState(n).unlocked?(intelState(n).read?`✓ CHECKPOINT ${n} · READ`:`✦ CHECKPOINT ${n} · NEW`):`CHECKPOINT ${n} LOCKED`}</button>`).join('')}</div></div></section>`;
 }
 function intelDialog(){
   const tip=intelFor(today(),intelCheckpoint);
@@ -764,7 +767,7 @@ function trivia(){
   <div class="trivia-grid"><section class="trivia-main" id="trivia-main-content" tabindex="-1">
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}
   ${!run?`<div class="trivia-intro"><span class="trivia-tag">${isDaily?'ONE OFFICIAL RUN PER UTC DAY':'UNLIMITED UNRANKED ROUNDS'}</span><h2>${isDaily?'DAILY INTEL DROP':'TRAIN YOUR KNOWLEDGE'}</h2><p>${isDaily?'Everyone receives the same five-question selection today. Answers and timing are verified on the server; results appear on the separate Trivia leaderboard.':'Try varied sets across the question bank; recent topics are rotated when possible. Practice does not affect your global ranking.'}</p><p class="trivia-hint">${isDaily?'Public nickname: <strong>'+esc(savedNickname()||'Choose one when starting Daily')+'</strong>':'No nickname needed. Practice is unranked.'}</p><button type="button" data-action="trivia-start" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'CONNECTING…':isDaily?'START / RESUME DAILY →':'START PRACTICE →'}</button></div>`:''}
-  ${run?.finished?`<div class="trivia-finale"><span class="trivia-tag">${isDaily?'DAILY SUBMITTED':'PRACTICE COMPLETE'}</span><h2>RUN COMPLETE.</h2><div class="trivia-final-score">${Number(run.score)||0}<small> / 100</small></div><p>${run.score===100?'PERFECT INTEL. FIVE FOR FIVE.':'You answered '+Number(run.correctAnswers??Math.floor(run.score/20))+' of 5 questions correctly.'} ${isDaily?'Your score is stored in the separate Trivia rankings.':'Practice rounds never change the leaderboard.'}</p>${run.feedback?`<div class="trivia-last-explanation"><strong>${run.feedback.correct?'✓ FINAL ANSWER CORRECT':'FINAL QUESTION REVIEW'}</strong><span>${esc(run.feedback.explanation||'')}</span>${run.feedback.source?`<a href="${esc(run.feedback.source)}" target="_blank" rel="noopener noreferrer">Official EA source ↗</a>`:''}</div>`:''}${isDaily&&triviaRewardEarned()?intelReadyMarkup(3):''}<div class="trivia-final-actions"><button type="button" class="trivia-primary" data-action="trivia-mode" data-trivia-mode="practice">∞ PRACTICE AGAIN</button><button type="button" class="trivia-secondary" data-action="trivia-board-refresh">VIEW RANKINGS ↗</button></div></div>`:''}
+  ${run?.finished?`<div class="trivia-finale"><span class="trivia-tag">${isDaily?'DAILY SUBMITTED':'PRACTICE COMPLETE'}</span><h2>RUN COMPLETE.</h2><div class="trivia-final-score">${Number(run.score)||0}<small> / 100</small></div><p>${run.score===100?'PERFECT INTEL. FIVE FOR FIVE.':'You answered '+Number(run.correctAnswers??Math.floor(run.score/20))+' of 5 questions correctly.'} ${isDaily?'Your score is stored in the separate Trivia rankings.':'Practice rounds never change the leaderboard.'}</p>${run.feedback?`<div class="trivia-last-explanation"><strong>${run.feedback.correct?'✓ FINAL ANSWER CORRECT':'FINAL QUESTION REVIEW'}</strong><span>${esc(run.feedback.explanation||'')}</span>${run.feedback.source?`<a href="${esc(run.feedback.source)}" target="_blank" rel="noopener noreferrer">Official EA source ↗</a>`:''}</div>`:''}${isDaily&&triviaRewardEarned()?intelReadyMarkup(3):''}<div class="trivia-final-actions">${isDaily?'<button type="button" class="trivia-primary" data-action="daily-summary">VIEW DAILY SUMMARY ↗</button>':''}<button type="button" class="trivia-primary" data-action="trivia-mode" data-trivia-mode="practice">∞ PRACTICE AGAIN</button><button type="button" class="trivia-secondary" data-action="leaderboard">VIEW RANKINGS ↗</button></div></div>`:''}
   ${run&&!run.finished&&feedback?`<div class="trivia-feedback ${feedback.correct?'good':'bad'}"><span class="trivia-tag">QUESTION ${Math.min(run.number-1,5)} / 5</span><h2>${feedback.correct?'✓ CORRECT · +'+Number(feedback.earned||20):feedback.timedOut?'⌛ TIME’S UP · QUESTION EXPIRED':'✕ NOT QUITE'}</h2><p><strong>Accepted answer${feedback.acceptedAnswers?.length>1?'s':''}:</strong> ${esc((feedback.acceptedAnswers||[]).join(' · '))}</p><p>${esc(feedback.explanation||'')}</p>${feedback.source?`<a href="${esc(feedback.source)}" target="_blank" rel="noopener noreferrer">Verify with EA ↗</a>`:''}<p class="trivia-current-score">RUN SCORE: ${run.score} / 100</p><button data-action="trivia-next" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'LOADING…':'NEXT QUESTION →'}</button></div>`:''}
   ${run&&!run.finished&&!feedback&&question?`<div class="trivia-question"><div class="gtp245-trivia-progress" role="progressbar" aria-label="Completed Trivia questions" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${Math.max(0,run.number-1)}">${Array.from({length:5},(_,i)=>`<span class="${i<run.number-1?'complete':i===run.number-1?'current':''}"></span>`).join('')}</div><div class="trivia-question-head"><span class="trivia-tag">QUESTION ${run.number} / 5 · ${['WARM-UP','WARM-UP','STANDARD','ADVANCED','EXPERT'][Math.max(0,Math.min(4,run.number-1))]} · ${esc(question.category.replace(/-/g,' ').toUpperCase())}</span><strong class="trivia-clock ${remaining<=6?'urgent':''}" id="trivia-clock"><span id="trivia-seconds">${remaining}</span>s</strong></div><div class="trivia-timebar"><span id="trivia-timefill" style="width:${Math.max(0,Math.min(100,remaining*5))}%"></span></div><h2>${esc(question.prompt)}</h2><div class="tac-trivia-help"><button type="button" data-action="trivia-help" ${triviaBusy||question.assisted?'disabled':''}>${question.assisted?'INTEL ASSIST ACTIVE':question.kind==='choice'?'50 / 50 LIFELINE':'REVEAL ANSWER OPTIONS'}</button><span>${question.assisted?'Correct answer: 10 points':'Optional help · 10 points instead of 20 · timer keeps running'}</span></div><form id="trivia-answer-form">${question.kind==='choice'?`<div class="trivia-options">${question.options.map((v,i)=>`<button class="trivia-option" type="button" data-action="trivia-choice" data-value="${esc(v)}" ${triviaBusy?'disabled':''}><b>${String.fromCharCode(65+i)}</b><span>${esc(v)}</span><span>↗</span></button>`).join('')}</div>`:`<div class="trivia-type"><label for="trivia-written-answer">YOUR ANSWER</label><input id="trivia-written-answer" name="answer" spellcheck="false" autocomplete="off" placeholder="Type a Legend name…" maxlength="70" value="${esc(triviaAnswerText)}" ${triviaBusy?'disabled':''}/><button class="trivia-primary" type="submit" ${triviaBusy?'disabled':''}>SUBMIT ANSWER ↗</button></div>`}</form><button type="button" class="trivia-skip" data-action="trivia-skip" ${triviaBusy?'disabled':''}>SKIP / NO ANSWER</button><p class="trivia-note">The clock continues even when you switch tabs. Answers are evaluated server-side.</p></div>`:''}
   </section><aside class="trivia-sidebar"><div class="trivia-sidehead"><span>✦ SEPARATE TRIVIA RANKINGS</span><div class="trivia-tabs"><button data-action="trivia-board-tab" data-tab="daily" class="${triviaScoreTab==='daily'?'active':''}">TODAY</button><button data-action="trivia-board-tab" data-tab="overall" class="${triviaScoreTab==='overall'?'active':''}">ALL TIME</button></div></div>${triviaBoardBusy&&!rows.length?'<p class="trivia-quiet">LOADING SCORES…</p>':triviaBoardError&&!rows.length?`<p class="trivia-quiet">${esc(triviaBoardError)}</p>`:rows.length?`<div class="trivia-board-rows">${rows.map((r,i)=>`<div class="trivia-board-row"><b>#${Number(r.position)||i+1}</b><span>${esc(r.player_name||'Player')}</span><strong>${Number(r.score)||0} ${triviaScoreTab==='overall'?'PTS':'/100'}</strong></div>`).join('')}</div>`:'<p class="trivia-quiet">No daily submissions yet. Be the first!</p>'}<div class="trivia-aside-foot"><b>CURATED QUESTION BANK</b><p>Start with two familiar Legend questions, then progress through standard, advanced and expert intel. Five different questions per run. Lifelines are always optional.</p><button class="trivia-secondary" data-action="trivia-board-refresh">↻ REFRESH LEADERBOARD</button></div></aside></div>
@@ -775,31 +778,48 @@ async function loadTriviaBoards(){if(!leaderboardConfigured())return;
  try{triviaBoard=await getTriviaBoards(today());try{localStorage.setItem('tac:trivia-boards:reset-20261019',JSON.stringify({day:today(),boards:triviaBoard}));}catch{}}catch(e){triviaBoardError=e?.message||'Could not load Trivia rankings';}
  finally{triviaBoardBusy=false;if(screen==='trivia'||screen==='leaderboard')render({scroll:false});}
 }
+function resetTriviaView(){
+ triviaEpoch++;triviaBusy=false;triviaSubmitting=false;triviaRun=null;triviaAnswerText='';triviaMessage='';triviaExpiredKey='';triviaRetryAt=0;
+}
+function triviaContext(){return {epoch:triviaEpoch,mode:triviaMode,day:triviaRun?.day||utcDay(),runId:triviaRun?.runId};}
+function currentTriviaContext(context){return context.epoch===triviaEpoch&&context.mode===triviaMode;}
+async function triviaAction(action,payload={},timedOut=false){
+ if(triviaBusy)return;
+ const context=triviaContext();triviaBusy=true;triviaMessage='';if(action==='answer')triviaSubmitting=true;
+ if(action==='start'||action==='next')render({scroll:false});
+ try{
+  let response=await triviaRequest({action,...payload});
+  response={...response,day:response.day||context.day};saveTriviaReward(response);
+  if(!currentTriviaContext(context))return;
+  if(timedOut&&response.feedback)response={...response,feedback:{...response.feedback,timedOut:true}};
+  triviaRun=response;triviaAnswerText='';triviaMessage='';triviaRetryAt=0;
+  if(action==='answer')sound(response.feedback?.correct?'correct':'wrong');
+  if(response.finished){sound('win');void loadTriviaBoards();}
+ }catch(e){
+  if(!currentTriviaContext(context))return;
+  triviaMessage=e?.message||'Trivia connection unavailable. Please retry.';
+  if(timedOut){triviaExpiredKey='';triviaRetryAt=Date.now()+3000;}
+ }finally{
+  if(currentTriviaContext(context)){triviaBusy=false;triviaSubmitting=false;if(screen==='trivia'){render({scroll:false});if(action==='start'||action==='next')focusTriviaQuestion();}}
+ }
+}
 async function triviaHelp(){
  if(triviaBusy||!triviaRun?.question||triviaRun.question.assisted)return;
- triviaBusy=true;triviaMessage='';
- try{triviaRun=await triviaRequest({action:'hint',runId:triviaRun.runId});}
- catch(e){triviaMessage=e?.message||'Could not load help';}
- finally{triviaBusy=false;if(screen==='trivia')render({scroll:false});}
+ return triviaAction('hint',{runId:triviaRun.runId});
 }
-async function triviaStart(){if(triviaBusy)return;
- const nickname=savedNickname()||(triviaMode==='practice'?'Practice':'');if(triviaMode==='daily'&&!/^[A-Za-z0-9 _-]{3,18}$/.test(nickname)){triviaMessage='Choose a nickname in the top-right profile first.';render({scroll:false});openIdentityPrompt(true);return;}
- triviaBusy=true;triviaMessage='';render({scroll:false});
- try{triviaRun=await triviaRequest({action:'start',mode:triviaMode,displayName:nickname});saveTriviaReward(triviaRun);triviaAnswerText='';triviaMessage='';if(triviaRun.finished)void loadTriviaBoards();}
- catch(e){triviaMessage=e?.message||'Could not start Trivia';}
- finally{triviaBusy=false;if(screen==='trivia'){render({scroll:false});focusTriviaQuestion();}}
+async function triviaStart(){
+ if(triviaBusy)return;
+ const nickname=savedNickname()||(triviaMode==='practice'?'Practice':'');
+ if(triviaMode==='daily'&&!/^[A-Za-z0-9 _-]{3,18}$/.test(nickname)){triviaMessage='Choose a nickname in the top-right profile first.';render({scroll:false});openIdentityPrompt(true);return;}
+ return triviaAction('start',{mode:triviaMode,displayName:nickname});
 }
-async function triviaSubmitAnswer(value,timedOut=false){if(triviaBusy||triviaSubmitting||!triviaRun?.question||triviaRun.finished)return;
- triviaBusy=true;triviaSubmitting=true;let response;
- try{response=await triviaRequest({action:'answer',runId:triviaRun.runId,answer:String(value||'').slice(0,120)});if(timedOut&&response?.feedback)response={...response,feedback:{...response.feedback,timedOut:true}};triviaRun=response;saveTriviaReward(response);triviaAnswerText='';triviaMessage='';sound(response?.feedback?.correct?'correct':'wrong');if(response?.finished){sound('win');void loadTriviaBoards();}}
- catch(e){triviaMessage=e?.message||'Could not submit answer';}
- finally{triviaBusy=false;triviaSubmitting=false;if(screen==='trivia')render({scroll:false});}
+async function triviaSubmitAnswer(value,timedOut=false){
+ if(triviaBusy||triviaSubmitting||!triviaRun?.question||triviaRun.finished)return;
+ return triviaAction('answer',{runId:triviaRun.runId,answer:String(value||'').slice(0,120)},timedOut);
 }
-async function triviaNext(){if(triviaBusy||!triviaRun?.waitingNext)return;
- triviaBusy=true;render({scroll:false});
- try{triviaRun=await triviaRequest({action:'next',runId:triviaRun.runId});triviaMessage='';triviaAnswerText='';}
- catch(e){triviaMessage=e?.message||'Could not load the next question';}
- finally{triviaBusy=false;if(screen==='trivia'){render({scroll:false});focusTriviaQuestion();}}
+async function triviaNext(){
+ if(triviaBusy||!triviaRun?.waitingNext)return;
+ return triviaAction('next',{runId:triviaRun.runId});
 }
 function focusTriviaQuestion(){
  if(screen!=='trivia'||!triviaRun?.question||triviaRun?.finished||triviaRun?.feedback)return;
@@ -828,11 +848,11 @@ function triviaClockTick(){
   document.getElementById('trivia-clock')?.classList.toggle('urgent',seconds<=6);
   if(remainingMs<=0){
    const key=[run.runId,run.number,run.deadlineAt].join(':');
-   if(triviaExpiredKey!==key&&!triviaBusy&&!triviaSubmitting){
+   if(triviaExpiredKey!==key&&!triviaBusy&&!triviaSubmitting&&Date.now()>=triviaRetryAt){
     triviaExpiredKey=key;
     void triviaSubmitAnswer('',true);
    }
-   triviaClockFrame=0;return;
+   triviaClockFrame=requestAnimationFrame(frame);return;
   }
   triviaClockFrame=requestAnimationFrame(frame);
  };
@@ -885,9 +905,30 @@ async function submitScores(){
  try{
   const receipt=await submitDaily(buildSubmission(store.days,today(),nickname));
   store.submittedDays={...(store.submittedDays||{}),[today()]:{...receipt,nickname,submittedAt:Date.now()}};sync();
-  await refreshBoards();const message=`SCORE SUBMITTED · ${receipt.totalScore} PTS · STREAK ${receipt.streak}`;showToast(message);const status=document.getElementById('board-submit-feedback');if(status){status.textContent=message;status.dataset.status='success';}
+  await refreshBoards();if(screen==='debrief')render({scroll:false});const message=`SCORE SUBMITTED · ${receipt.totalScore} PTS · STREAK ${receipt.streak}`;showToast(message);const status=document.getElementById('board-submit-feedback');if(status){status.textContent=message;status.dataset.status='success';}
  }catch(error){const message=error.message||'Submission failed';showToast(message);if(feedback){feedback.textContent=message;feedback.dataset.status='error';}if(button){button.disabled=false;button.textContent='SUBMIT DAILY SCORE ↗';}}finally{scoreSubmitting=false;}
 }
+function dailyDebrief(){
+ const rounds=currentDailyRounds(store.days,today()),summary=dailySummary(store.days,today());
+ const triviaDone=triviaRewardEarned(),receipt=store.submittedDays?.[today()];
+ let triviaReceipt=null;try{triviaReceipt=JSON.parse(localStorage.getItem('tac:trivia-receipt:'+today())||'null');}catch{}
+ const finished=checkpointCount(store.days,today())+Number(triviaDone);
+ const eligible=summary.completed&&!receipt&&!sharedDay&&today()===utcDay()&&leaderboardConfigured();
+ const score=receipt?.totalScore??summary.score;
+ return `<main class="tac261-debrief" aria-labelledby="debrief-title"><section class="tac261-debrief-window">
+ <header><b>THE APEX CHALLENGE</b><span>DAILY HUNT · ${esc(today())}</span></header><div class="tac261-debrief-body">
+ <span class="kicker">${finished}/3 CHECKPOINTS COMPLETE</span><h1 id="debrief-title">${finished===3?'ALL SECRETS REVEALED.':summary.completed?'ONE MORE SECRET.':'CONTINUE THE HUNT.'}</h1>
+ <p class="tac261-debrief-intro">${summary.completed?'Full Scan and One Signal are complete. Your Challenges and Trivia scores have separate rankings.':'Complete Full Scan, One Signal and Daily Trivia to unlock all three rewards.'}</p>
+ <div class="tac261-stages">${[['FULL SCAN',rounds.full?.finished],['ONE SIGNAL',rounds.signal?.finished],['DAILY TRIVIA',triviaDone]].map(([label,done],i)=>`<div class="${done?'complete':'pending'}"><b>${done?'✓':String(i+1).padStart(2,'0')} ${label}</b><small>${done?'COMPLETED':'UP NEXT'}</small></div>`).join('')}</div>
+ <section class="tac261-score" aria-label="Daily Challenges score"><div><span>DAILY CHALLENGES</span><strong>${Number(score).toLocaleString('en-US')} <small>PTS${receipt?'':' · LOCAL PREVIEW'}</small></strong><p>Full Scan + One Signal · separate from Trivia</p><p class="tac261-receipt">${receipt?'✓ Score submitted':summary.completed?'Ready to submit to the Daily leaderboard':'Finish both stages to unlock submission'}</p></div>
+ ${eligible?`<form id="board-submit-form" class="board-form"><label for="board-nickname">PUBLIC NICKNAME</label><input id="board-nickname" name="nickname" required minlength="3" maxlength="18" pattern="[A-Za-z0-9 _-]{3,18}" autocomplete="nickname" placeholder="Your gamer nickname" value="${esc(savedNickname())}"/><button type="submit" class="tac261-submit" ${scoreSubmitting?'disabled':''}>${scoreSubmitting?'SUBMITTING…':'SUBMIT DAILY SCORE ↗'}</button><p id="board-submit-feedback" role="status" aria-live="polite"></p></form>`:''}</section>
+ <section class="tac261-score" aria-label="Daily Trivia score"><div><span>DAILY TRIVIA</span><strong>${triviaDone?(triviaReceipt?Number(triviaReceipt.score)+' <small>/ 100</small>':'SUBMITTED'):'NOT PLAYED'}</strong><p>${triviaDone?'✓ Automatically submitted to Trivia rankings':'Five questions · independent Trivia ranking'}</p>${triviaDone&&triviaReceipt?`<p>${Number(triviaReceipt.correctAnswers)||0} / 5 correct</p>`:''}</div></section>
+ <button type="button" class="tac261-next" ${!summary.completed?'data-action="home-daily"':!triviaDone?'data-action="trivia" data-trivia-mode="daily"':'data-action="leaderboard"'}>${!summary.completed?'CONTINUE DAILY CHALLENGES →':!triviaDone?'CONTINUE TO DAILY TRIVIA →':'VIEW BOTH RANKINGS →'}</button>
+ <div class="tac261-footer"><button type="button" data-action="home">BACK TO HOME</button><button type="button" data-action="leaderboard">VIEW RANKINGS ↗</button></div>
+ ${summary.completed&&!receipt?'<p class="tac261-reminder">Your Challenges score needs a submission. Trivia submits automatically when its run ends.</p>':''}
+ </div></section></main>`;
+}
+
 function records(){
   const stats=dailyStats(store.days,utcDay());const days=Object.keys(store.days).sort().reverse().slice(0,14);
   return `<main class="wrap records"><span class="pill">PERSONAL ARCHIVE</span><h1>YOUR <span style="color:#ec4a95">SIGNAL.</span></h1><p class="lead">Records are stored in your browser. Global rankings require a connected database; local stats remain in this browser.</p>${statCards()}${forbiddenPanel()}<h2 class="caps" style="font-size:38px">RECENT DAYS</h2><div class="record-rows">${days.map(day=>`<div class="record-row"><span>${day}</span><span>${checkpointCount(store.days,day)}/2 ${checkpointCount(store.days,day)===2?'✦ CLEARED':''}</span></div>`).join('')||'<p>No Daily results yet. Go start a hunt!</p>'}</div><div class="record-settings"><div><strong>ACCESSIBILITY / VISUAL EFFECTS</strong><small>Reduce background and reward animation intensity on slower devices.</small></div><button class="btn lilac small" data-action="motion">FX ${store.settings.motion?'ON':'OFF'} · CHANGE</button></div><button class="btn pink" data-action="home">BACK TO CHALLENGES ↗</button><button class="btn mint" data-action="leaderboard">♛ GLOBAL LEADERBOARD</button></main>`;
@@ -1010,12 +1051,16 @@ function pageEnvironment(){
  return '<div class="tac-page-environment" data-guide="'+theme[0]+'" aria-hidden="true"><div class="tac-page-orbit"></div><img src="./assets/page-hosts/'+theme[0]+'.png" alt=""/></div><div class="tac-page-host-line"><b>'+theme[0].toUpperCase()+' / '+theme[1]+'</b><span>'+theme[2]+'</span></div>';
 }
 function render({scroll=true}={}) {
+  const identityDraft=identityPromptOpen?(document.getElementById('identity-name')?.value??''):null;
+  const settingsWasOpen=!!document.getElementById('gtp237-settings');identityPromptOpen=false;
   if(intelModalOpen)closeIntelDialog();
   if(wheelOpen)closeWheel();
   document.body.classList.toggle('lightshift-playing',screen==='game');
   app.className=`app ${store.settings.motion?'':'no-motion'}`;
   app.dataset.screen=screen;app.dataset.session=session;app.dataset.mode=screen==='game'?active:'';
-  app.innerHTML=nav()+pageEnvironment()+(screen==='home'?home():screen==='game'?game():screen==='trivia'?trivia():screen==='records'?records():screen==='howto'?howTo():screen==='faq'?faq():leaderboard());
+  app.innerHTML=nav()+pageEnvironment()+(screen==='home'?home():screen==='game'?game():screen==='trivia'?trivia():screen==='records'?records():screen==='howto'?howTo():screen==='faq'?faq():screen==='debrief'?dailyDebrief():leaderboard());
+  if(identityDraft!==null){openIdentityPrompt(true);const input=document.getElementById('identity-name');if(input)input.value=identityDraft;}
+  else if(settingsWasOpen)settingsDialog();
   loadPortraitImages();
   loadAbilityImages();
   if(screen==='trivia')triviaClockTick();
@@ -1036,7 +1081,7 @@ function openMode(mode,playSession=session){
   active=mode;session=playSession;store.settings.session=session;sync();screen='game';pickerOpen=false;quickSearch='';ensureRound();render();sound('nav');
 }
 function submitGuess(name){
-  const round=getRound();if(!round||round.finished)return;
+  const round=getRound();if(!round){if(session==='daily'){ensureRound();render({scroll:false});}return;}if(round.finished)return;
   const next=tryGuess(round,name,legends);
   if(next===round)return;
   const wasWon=round.won;setRound(next);
@@ -1119,7 +1164,7 @@ function showLegendPreview(slug){
 }
 function dailyNextLabel(){
  const step=nextDailyStep(currentDailyRounds(store.days,today()),triviaRewardEarned());
- return step==='trivia'?'NEXT: DAILY TRIVIA':step==='leaderboard'?'VIEW LEADERBOARD':'NEXT DAILY STEP';
+ return step==='trivia'||step==='leaderboard'?'VIEW DAILY SUMMARY':'NEXT DAILY STEP';
 }
 function nextMode(playSession=session){
  if(playSession==='unlimited'){randomPractice(active);return;}
@@ -1127,11 +1172,7 @@ function nextMode(playSession=session){
  if(step==='full'||step==='signal'){
   dailyTrack=step;openMode(dailySchedule(today())[step],'daily');return;
  }
- session='daily';store.settings.session='daily';sync();pickerOpen=false;
- if(step==='trivia'){
-  triviaMode='daily';triviaRun=null;triviaMessage='';screen='trivia';render();void loadTriviaBoards();sound('nav');return;
- }
- screen='leaderboard';render();void refreshBoards();void loadTriviaBoards();sound('nav');
+ session='daily';store.settings.session='daily';sync();pickerOpen=false;screen='debrief';render();sound('nav');
 }
 function showToast(message){
   document.querySelector('.toast')?.remove();
@@ -1164,8 +1205,8 @@ app.addEventListener('click',event=>{
   else if(action==='share-wheel')void copyWheelPick();
   else if(action==='home'){screen='home';pickerOpen=false;render();sound('nav');}
   else if(action==='home-session'){session=button.dataset.session==='unlimited'?'unlimited':'daily';store.settings.session=session;triviaMode=session==='daily'?'daily':'practice';sync();render({scroll:false});sound('nav');}
-  else if(action==='trivia'){triviaMode=button.dataset.triviaMode||(session==='daily'?'daily':'practice');session=triviaMode==='daily'?'daily':'unlimited';store.settings.session=session;sync();screen='trivia';pickerOpen=false;triviaMessage='';triviaRun=null;render();void loadTriviaBoards();sound('nav');}
-  else if(action==='trivia-mode'){triviaMode=button.dataset.triviaMode==='practice'?'practice':'daily';session=triviaMode==='daily'?'daily':'unlimited';store.settings.session=session;sync();triviaRun=null;triviaMessage='';render({scroll:false});sound('nav');}
+  else if(action==='trivia'){resetTriviaView();triviaMode=button.dataset.triviaMode||(session==='daily'?'daily':'practice');session=triviaMode==='daily'?'daily':'unlimited';store.settings.session=session;sync();screen='trivia';pickerOpen=false;triviaMessage='';triviaRun=null;render();void loadTriviaBoards();sound('nav');}
+  else if(action==='trivia-mode'){resetTriviaView();triviaMode=button.dataset.triviaMode==='practice'?'practice':'daily';session=triviaMode==='daily'?'daily':'unlimited';store.settings.session=session;sync();triviaRun=null;triviaMessage='';render({scroll:false});sound('nav');}
   else if(action==='trivia-help')void triviaHelp();
   else if(action==='trivia-start')void triviaStart();
   else if(action==='trivia-choice')void triviaSubmitAnswer(button.dataset.value);
@@ -1173,6 +1214,7 @@ app.addEventListener('click',event=>{
   else if(action==='trivia-next')void triviaNext();
   else if(action==='trivia-board-tab'){triviaScoreTab=button.dataset.tab==='overall'?'overall':'daily';render({scroll:false});}
   else if(action==='trivia-board-refresh')void loadTriviaBoards();
+  else if(action==='daily-summary'){screen='debrief';pickerOpen=false;render();sound('nav');}
   else if(action==='records'){screen='records';pickerOpen=false;render();sound('nav');}
   else if(action==='howto'){screen='howto';pickerOpen=false;render();sound('nav');}
   else if(action==='faq'){screen='faq';pickerOpen=false;render();sound('nav');}
@@ -1273,27 +1315,22 @@ app.addEventListener('change',event=>{
   if(event.target.id==='wheel-repeat'&&!wheelSpinning){wheelNoRepeat=event.target.checked;refreshWheelOptions();}
 if(event.target.id==='picker-sort'){pickerSort=event.target.value;renderPickerResults();}});
 document.addEventListener('keydown',event=>{
-  if(intelModalOpen&&event.key==='Tab'){
-    const nodes=[...document.querySelectorAll('#intel-dialog button:not(:disabled)')];
-    if(nodes.length){const current=nodes.indexOf(document.activeElement);if(current===-1||(!event.shiftKey&&current===nodes.length-1)||(event.shiftKey&&current===0)){event.preventDefault();nodes[event.shiftKey?nodes.length-1:0].focus();}}
-    return;
-  }
-  if(wheelOpen&&event.key==='Tab'){
-    const focusables=[...document.querySelectorAll('#wheel-backdrop button:not(:disabled), #wheel-backdrop summary')];
-    if(focusables.length){
-      const index=focusables.indexOf(document.activeElement);
-      if(index===-1||(!event.shiftKey&&index===focusables.length-1)||(event.shiftKey&&index===0)){
-        event.preventDefault();focusables[event.shiftKey?focusables.length-1:0].focus();
-      }
-    }
+  const modal=document.getElementById('identity-backdrop')||document.getElementById('gtp237-settings')||document.getElementById('intel-dialog')||document.getElementById('wheel-backdrop')||document.getElementById('picker-backdrop');
+  if(modal&&event.key==='Tab'){
+   const nodes=[...modal.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary')].filter(node=>node.getClientRects().length);
+   const index=nodes.indexOf(document.activeElement);
+   if(nodes.length&&(index===-1||(!event.shiftKey&&index===nodes.length-1)||(event.shiftKey&&index===0))){event.preventDefault();nodes[event.shiftKey?nodes.length-1:0].focus();}
+   return;
   }
   if(event.key==='Escape'){
- if(document.getElementById('gtp237-settings')){document.getElementById('gtp237-settings').remove();return;}
-    if(intelModalOpen){closeIntelDialog();return;}
-    if(wheelOpen){closeWheel();return;}
-    if(pickerOpen){pickerOpen=false;document.getElementById('picker-backdrop')?.remove();}
-    else if(document.activeElement instanceof HTMLElement)document.activeElement.blur();return;
+   if(identityPromptOpen){closeIdentityPrompt();return;}
+   if(document.getElementById('gtp237-settings')){document.getElementById('gtp237-settings').remove();return;}
+   if(intelModalOpen){closeIntelDialog();return;}
+   if(wheelOpen){closeWheel();return;}
+   if(pickerOpen){pickerOpen=false;document.getElementById('picker-backdrop')?.remove();return;}
+   if(document.activeElement instanceof HTMLElement)document.activeElement.blur();return;
   }
+  if(modal&&!pickerOpen)return;
   if(screen!=='game'||getRound()?.finished)return;
   if(pickerOpen){
     if(event.key==='Enter'&&event.target.id==='picker-search'){
@@ -1316,7 +1353,7 @@ setInterval(()=>{
   const currentUTC=utcDay();
   if(currentUTC!==lastSpotlightUTC){
     lastSpotlightUTC=currentUTC;
-    if(screen==='home'&&!wheelOpen){render({scroll:false});}
+    if(!sharedDay){if(screen==='game'&&session==='daily'){dailyTrack='full';ensureRound();render({scroll:false});showToast('A new UTC day has started. Your new Daily Challenge is ready.');}else if(screen==='trivia'&&!triviaRun){resetTriviaView();render({scroll:false});}else if(['home','records','leaderboard','debrief'].includes(screen)&&!wheelOpen){render({scroll:false});if(screen==='leaderboard'){void refreshBoards();void loadTriviaBoards();}}}
   }
   if(screen!=='game')return;
   const round=getRound();if(!round)return;
