@@ -648,3 +648,56 @@
 @media(max-width:590px){
  #app[data-screen="game"] .gtp249-visible-signals>.gtp230-board .gtp230-trait-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
+
+/* V2.50: immersive mode art, accessible quick navigation and unmistakeable win feedback. */
+#app[data-screen="game"]>.gtp233-viewport-art{opacity:1!important;filter:none!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important}
+#app[data-screen="game"][data-mode="pixel"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#060b1770,#0a11294f 55%,#060816c0),url("./assets/game-hosts/sparrow.svg")!important}
+#app[data-screen="game"][data-mode="ability"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#050e166e,#06151c45 55%,#030f18c2),url("./assets/game-hosts/octane.svg")!important}
+#app[data-screen="game"][data-mode="emoji"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#060b1c65,#09121d45 54%,#06111bc6),url("./assets/game-hosts/wattson.svg")!important}
+#app[data-screen="game"][data-mode="quote"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#10071a6b,#10071838 52%,#050a18c4),url("./assets/game-hosts/loba.svg")!important}
+#app[data-screen="trivia"] .gtp241-trivia-scene::before{content:"";position:fixed!important;inset:0!important;z-index:-1!important;background:linear-gradient(90deg,#050b17ab,#0a142039,#08101c9e),url("./assets/game-hosts/crypto.svg") center/cover no-repeat!important;pointer-events:none!important}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{display:block!important;position:fixed!important;left:1.5vw!important;right:auto!important;top:25vh!important;bottom:auto!important;width:clamp(165px,24vw,370px)!important;height:min(68vh,625px)!important;opacity:.76!important;z-index:1!important;pointer-events:none!important;-webkit-mask-image:linear-gradient(#000 0 70%,transparent 100%)!important;mask-image:linear-gradient(#000 0 70%,transparent 100%)!important}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host .portrait-holder{display:block!important;position:relative!important;width:100%!important;height:100%!important}
+#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;filter:drop-shadow(0 14px 20px #000e) saturate(.96)!important;transform:none!important}
+#app[data-screen="game"][data-mode="pixel"]>.gtp241-mode-scene .gtp241-scene-host{left:2vw!important;width:clamp(150px,22vw,325px)!important;opacity:.88!important}
+#app[data-screen="game"][data-mode="quote"]>.gtp241-mode-scene .gtp241-scene-host{left:auto!important;right:1vw!important;width:clamp(165px,22vw,350px)!important;opacity:.77!important}
+#app[data-screen="game"][data-mode="emoji"]>.gtp241-mode-scene .gtp241-scene-host{left:1.5vw!important;opacity:.8!important}
+#app[data-screen="game"][data-mode="ability"]>.gtp241-mode-scene .gtp241-scene-host{left:1vw!important;opacity:.83!important}
+#app[data-screen="game"] .gtp230-main-clue{position:relative!important;z-index:2!important;isolation:isolate!important}
+#app[data-screen="game"] .gtp230-main-clue .clue-visual{margin:0 auto!important;max-width:min(100%,810px)!important;position:relative!important;z-index:2!important}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel{width:min(490px,47vw)!important;height:min(350px,43vh)!important;min-height:0!important;max-width:none!important;overflow:visible!important;border:0!important;box-shadow:none!important;background:transparent!important}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel .pixel-art{width:100%!important;height:100%!important;min-height:0!important;margin:0 auto!important;border:0!important;box-shadow:none!important;background:transparent!important;overflow:hidden!important}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel .pixel-canvas{display:block!important;width:70%!important;height:70%!important;max-width:70%!important;max-height:70%!important;object-fit:contain!important;margin:auto!important;border:0!important;box-shadow:none!important}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel .pixel-caption{border:0!important;background:transparent!important;box-shadow:none!important;font-size:11px!important}
+#app .gtp250-mode-links{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:wrap!important;gap:5px!important;width:100%!important;max-width:1150px!important;margin:6px auto 7px!important;padding:5px 8px!important;border:1px solid #6e88923b!important;border-radius:10px!important;background:#050d18ab!important;backdrop-filter:blur(9px)!important;position:relative!important;z-index:7!important}
+#app .gtp250-mode-links-label{font-size:9px!important;letter-spacing:.15em!important;color:#b4bbc9!important;font-weight:800!important;margin-right:7px!important}
+#app .gtp250-mode-link{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;min-height:30px!important;padding:5px 10px!important;border:1px solid transparent!important;border-radius:7px!important;background:transparent!important;color:#ced9e6!important;cursor:pointer!important;font-size:10px!important;font-weight:850!important;letter-spacing:.035em!important}
+#app .gtp250-mode-link:hover,#app .gtp250-mode-link:focus-visible{background:#133148c4!important;border-color:#5bb9d6a8!important;color:#fff!important}
+#app .gtp250-mode-link.active{background:linear-gradient(150deg,#822e41,#502233)!important;color:#fff8e9!important;border-color:#ee766ca3!important}
+#app[data-screen="game"] .gtp230-arena>.gtp230-finished.gtp250-success{max-width:840px!important;padding:24px!important;border:2px solid #8df6be!important;background:linear-gradient(150deg,#06352df4,#092034f5)!important;box-shadow:0 0 0 4px #0331245e,0 0 43px #50edab70,0 13px 30px #000b!important;animation:gtp250-win-pulse .85s ease-out both!important}
+#app[data-screen="game"] .gtp250-success .gtp230-finished-info{display:flex!important;flex-direction:column!important;gap:8px!important;align-items:center!important;text-align:center!important}
+#app[data-screen="game"] .gtp250-success .gtp250-success-eyebrow{display:block!important;color:#aaffd6!important;font-size:clamp(20px,3vw,33px)!important;font-weight:950!important;letter-spacing:.1em!important;text-shadow:0 0 23px #51f9bbab!important}
+#app[data-screen="game"] .gtp250-success .gtp230-finished-info strong{color:#fffaf2!important;font-size:clamp(30px,4vw,52px)!important;line-height:1.08!important;text-shadow:0 2px 18px #000a!important}
+#app[data-screen="game"] .gtp250-success .gtp230-finished-info small{color:#bcefdc!important;font-size:12px!important;font-weight:800!important;letter-spacing:.08em!important}
+@keyframes gtp250-win-pulse{from{transform:scale(.94);opacity:.55}70%{transform:scale(1.03);opacity:1}to{transform:scale(1);opacity:1}}
+@media(max-width:900px){#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{width:170px!important;left:-40px!important;opacity:.46!important}#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel{width:min(490px,68vw)!important;height:min(350px,42vh)!important}#app .gtp250-mode-link{padding:5px 8px!important}}
+@media(max-width:600px){#app .gtp250-mode-links-label{width:100%!important;text-align:center!important}#app .gtp250-mode-link{font-size:9px!important;padding:5px 6px!important}#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel{width:min(350px,83vw)!important;height:min(290px,40vh)!important}#app[data-screen="game"]>.gtp241-mode-scene .gtp241-scene-host{left:-62px!important;opacity:.3!important}#app[data-screen="game"] .gtp250-success .gtp250-success-eyebrow{font-size:20px!important}}
+@media(prefers-reduced-motion:reduce){#app[data-screen="game"] .gtp230-arena>.gtp230-finished.gtp250-success{animation:none!important}}
+
+/* Crypto scene uses its local background directly; the playable questions stay foreground. */
+#app[data-screen="trivia"]>.gtp241-trivia-scene{
+ background:linear-gradient(110deg,#03101b6d,#05151c15 49%,#030c19b3),url("./assets/game-hosts/crypto.svg") center center/cover no-repeat!important;
+ opacity:1!important;
+}
+#app[data-screen="trivia"]>.gtp241-trivia-scene::before{display:none!important}
+#app[data-screen="trivia"]>.gtp241-trivia-scene>.portrait-holder{
+ left:1vw!important;right:auto!important;bottom:-1vh!important;
+ width:clamp(165px,24vw,370px)!important;height:min(73vh,660px)!important;
+ opacity:.77!important;z-index:2!important;
+}
+#app[data-screen="trivia"]>.gtp241-trivia-scene>.portrait-holder img{
+ display:block!important;width:100%!important;height:100%!important;
+ object-fit:contain!important;object-position:center bottom!important;
+ transform:none!important;filter:drop-shadow(0 18px 21px #000d)!important;
+}
+@media(max-width:700px){#app[data-screen="trivia"]>.gtp241-trivia-scene>.portrait-holder{left:-45px!important;width:185px!important;opacity:.37!important}}

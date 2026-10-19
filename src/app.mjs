@@ -456,6 +456,14 @@ function getVisual(round,target){
   }
   return `<div class="clue-visual gtp27-mystery gtp29-classic-visual gtp229-mystery-visual"><div class="mystery-wording"><small>01 · UNKNOWN LEGEND</small><strong>WHO'S THAT LEGEND?</strong><span>Compare clues to uncover the identity.</span></div></div>`;
 }
+function quickModeLinks(selected){
+ const all=[...MODES,'trivia'];
+ return '<nav class="gtp250-mode-links" aria-label="Quick links between game modes"><span class="gtp250-mode-links-label">SWITCH MODE</span>'+all.map(mode=>{
+  const selectedMode=selected===mode;
+  const route=mode==='trivia'?'data-action="trivia"':'data-action="open" data-mode="'+mode+'" data-session="unlimited"';
+  return '<button type="button" class="gtp250-mode-link '+(selectedMode?'active':'')+'" '+route+' '+(selectedMode?'aria-current="page"':'')+'><span>'+(mode==='trivia'?'✧':ICONS[mode])+'</span> '+(mode==='trivia'?'TRIVIA':MODE_NAMES[mode])+'</button>';
+ }).join('')+'</nav>';
+}
 function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode">${MODES.map(mode=>`<button class="mode-tab ${active===mode?'active':''} ${session==='daily'&&Object.values(currentDailyRounds(store.days,today())).some(r=>r?.won&&r.answer===answers()[mode])?'done':''}" style="--tile:${classOf(mode)}" data-action="open" data-mode="${mode}" ><b>${ICONS[mode]}</b><span>${MODE_NAMES[mode]}</span></button>`).join('')}</nav>`;}
 function styleStrip(round){
   const locked=session==='daily'||round.guesses.length>0||round.finished;
@@ -512,7 +520,7 @@ function guessBody(round,target){
   if(round.finished){
     const score=gameScore(round);const rank=gameRank(score);const badges=styleBadges(round);
     return `<div class="end-panel ${round.won?'gtp212-victory':''}"><span class="rank">${round.won?rank:'—'}</span><h2>${round.won?'TARGET FOUND!':round.loss==='time'?'TIME’S UP.':'NICE TRY.'}</h2><p>${round.won?`You identified ${esc(target.name)} in ${round.guesses.length} guesses. ${score} points earned.`:`Your mystery Legend was ${esc(target.name)}. Every guess counts. Try another round!`}</p>${badges.length?`<div class="medal-row">${badges.map(tag=>`<span class="medal">${esc(tag)}</span>`).join('')}</div>`:''}<div class="answer-tag">${portrait(target.slug,{alt:target.name,cls:'balanced'})}<strong>${esc(target.name)}</strong></div>
-      <div class="end-actions"><button class="btn pink" data-action="next">${session==='daily'?(dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'):'TRY AGAIN'} ↗</button><button class="btn lilac" data-action="again">∞ FREE PLAY</button><button class="btn ghost" data-action="home">ALL MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
+      <div class="end-actions">${session==='daily'?`<button class="btn pink" data-action="next">${dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'} ↗</button>`:''}<button class="btn ghost" data-action="home">BACK TO MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
   }
   const hintUnavailable=round.guesses.length===0||round.hints.length>=MAX_HINTS||availableHintFields(round,target,legends).length===0;
   return `<div class="gtp229-stepbar"><div><span class="gtp229-step">02 · YOUR GUESS</span><h2>IDENTIFY THE <em>LEGEND</em></h2></div><strong class="gtp229-remaining">${maxGuesses(round)-round.guesses.length}<small> GUESSES LEFT</small></strong></div>
@@ -609,16 +617,15 @@ function triedLegendNote(round){
 function cinematicControls(round,target){
  if(round.finished){
   const score=gameScore(round);
-  return `<section class="gtp230-finished" aria-label="Round result">
+  return `<section class="gtp230-finished ${round.won?'gtp250-success':''}" aria-label="Round result" role="status" aria-live="polite">
    <div class="gtp230-finished-info">
-    <span>${round.won?'✓ TARGET IDENTIFIED':round.loss==='time'?'⌛ TIME IS UP':'✕ ROUND COMPLETE'}</span>
-    <strong>${esc(target.name)}</strong>
-    <small>${round.won?`${score} POINTS · ${round.guesses.length} GUESSES`:'You can try a new round in Free Play.'}</small>
+    <span class="${round.won?'gtp250-success-eyebrow':''}">${round.won?'✓ CORRECT! TARGET IDENTIFIED':round.loss==='time'?'⌛ TIME IS UP':'✕ ROUND COMPLETE'}</span>
+    <strong>${round.won?'LEGEND IDENTIFIED: ':''}${esc(target.name)}</strong>
+    <small>${round.won?`YOU GOT IT RIGHT · ${score} POINTS · ${round.guesses.length} GUESSES`:'The correct Legend is revealed above.'}</small>
    </div>
    <div class="gtp230-finished-actions">
-    <button type="button" data-action="next" class="gtp230-btn gtp230-btn-main">${session==='daily'?'NEXT DAILY STEP':'TRY AGAIN'} ↗</button>
-    <button type="button" data-action="again" class="gtp230-btn gtp230-btn-blue">FREE PLAY</button>
-    <button type="button" data-action="home" class="gtp230-btn gtp230-btn-secondary">ALL MODES</button>
+    ${session==='daily'?'<button type="button" data-action="next" class="gtp230-btn gtp230-btn-main">NEXT DAILY STEP ↗</button>':''}
+    <button type="button" data-action="home" class="gtp230-btn gtp230-btn-secondary">BACK TO MODES</button>
    </div>
    ${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}
   </section>`;
@@ -653,6 +660,7 @@ function game(){
  const host=MODE_HOSTS[active]||MODE_HOSTS.classic;
  const signature={classic:['DECOY PROTOCOL','BAMBOOZLE THEM'],pixel:['RECON OPTICS','READ BETWEEN THE PIXELS'],quote:['BLACK MARKET COMMS','EVERY VOICE HAS A PRICE'],ability:['STIM SYSTEMS','IDENTIFY THE SIGNATURE'],emoji:['ELECTRIC CIPHER','CONNECT THE SIGNALS']}[active]||['OUTLANDS INTEL','FOLLOW THE CLUES'];
  return `<div class="gtp233-viewport-art" aria-hidden="true"></div><div class="gtp241-mode-scene gtp241-scene-${active} gtp242-scene" aria-hidden="true"><div class="gtp242-scenery"><i></i><i></i><i></i></div><div class="gtp241-scene-halo"></div><div class="gtp241-scene-host gtp242-fullbody-host">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div><span class="gtp241-scene-label">${host.name} · ${signature[0]}</span><span class="gtp242-atmosphere-mark">◈ ${signature[0]}</span></div><main class="wrap game gtp2-game-scene gtp2-scene-${active} gtp230-game" style="--tile:${classOf(active)}">
+   ${quickModeLinks(active)}
    <header class="gtp230-titlebar gtp240-themed-titlebar">
     <span class="gtp240-header-beam" aria-hidden="true"></span>
     <div class="gtp230-title-icon gtp238-game-host" aria-hidden="true">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</div>
@@ -711,6 +719,7 @@ function trivia(){
  const rows=triviaBoard?.[triviaScoreTab]||[];
  const feedback=run?.feedback;
  return `<div class="gtp241-trivia-scene gtp242-trivia-environment" aria-hidden="true"><span class="gtp242-crypto-grid"></span>${portrait('crypto',{alt:'',cls:'balanced',eager:true})}</div><main class="trivia-page ${run&&!run.finished?'trivia-page-active':''} ${question&&!feedback&&!run?.finished?'trivia-page-question':''} ${question?.kind==='text'?'trivia-page-written':''}" aria-label="Apex Trivia"><div class="trivia-shell">
+  ${quickModeLinks('trivia')}
   <section class="trivia-hero gtp240-trivia-hero"><span class="gtp240-trivia-host" aria-hidden="true">${portrait('crypto',{alt:'',cls:'balanced',eager:true})}</span><span class="trivia-kicker">◈ CRYPTO / ENCRYPTED OUTLANDS INTEL</span><h1>APEX <em>TRIVIA.</em></h1><p>Five questions. 20 seconds each. Every right answer earns <b>20 points</b> — up to 100. Different from Daily Challenges.</p><div class="trivia-switch" role="group" aria-label="Trivia mode"><button data-action="trivia-mode" data-trivia-mode="daily" class="${isDaily?'active':''}">✦ DAILY RANKED</button><button data-action="trivia-mode" data-trivia-mode="practice" class="${!isDaily?'active':''}">∞ PRACTICE</button></div></section>
   <div class="trivia-grid"><section class="trivia-main" id="trivia-main-content" tabindex="-1">
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}

@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync,existsSync} from 'node:fs';
+const root=new URL('../',import.meta.url);const read=p=>readFileSync(new URL(p,root),'utf8');
+const app=read('src/app.mjs'),css=read('styles-v245.css'),html=read('index.html'),flow=read('.github/workflows/pages.yml');
+test('V250 real mode quick links for game and trivia',()=>{assert.ok(app.includes('function quickModeLinks(selected)'));assert.ok(app.includes("const all=[...MODES,'trivia']"));assert.ok(app.includes('data-action="trivia"'));assert.ok(app.includes('data-action="open"'));assert.ok(app.includes('quickModeLinks(active)'));assert.ok(app.includes("quickModeLinks('trivia')"));});
+test('V250 all five cinematic host environments bundled locally',()=>{for(const s of ['octane','sparrow','wattson','loba','crypto']){assert.ok(existsSync(new URL('assets/game-hosts/'+s+'.svg',root)),s);assert.ok(css.includes('game-hosts/'+s+'.svg'));}});
+test('V250 no Try Again after puzzle and distinct won styling',()=>{const done=app.split('function cinematicControls(round,target){')[1].split('function game(){')[0];assert.ok(done.includes('gtp250-success'));assert.ok(done.includes('CORRECT! TARGET IDENTIFIED'));assert.ok(!done.includes('TRY AGAIN'));assert.ok(!done.includes('data-action="again"'));});
+test('V250 Pixel smaller, unboxed, host to side',()=>{assert.ok(css.includes('visual-pixel'));assert.ok(css.includes('width:70%!important;height:70%!important'));assert.ok(css.includes('left:2vw!important'));});
+test('V250 cache bust and QA aligned',()=>{assert.ok(html.includes('ui=2.50.0'));assert.ok(flow.includes('tests/v250.test.mjs'));});
