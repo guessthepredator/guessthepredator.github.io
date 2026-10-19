@@ -214,3 +214,10 @@ export function rewardFor(day,index){
   const entry=intelFor(day,index);
   return (index===2?'ADVANCED INTEL · ':'')+entry.title+' · '+entry.tip;
 }
+
+/** Ranked progression never routes into practice, including after the second stage. */
+export function nextDailyStep(rounds,triviaComplete=false){
+ if(!rounds.full?.finished)return 'full';
+ if(!rounds.signal?.finished)return 'signal';
+ return triviaComplete?'leaderboard':'trivia';
+}

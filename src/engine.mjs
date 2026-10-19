@@ -5,6 +5,8 @@ export const LABELS = Object.freeze({role: 'CLASS', gender: 'GENDER', form: 'FOR
 export const MODES = Object.freeze(['classic', 'pixel', 'quote', 'ability', 'emoji']);
 export const MODE_NAMES = Object.freeze({classic:'CLASSIC',pixel:'PIXEL',quote:'QUOTE',ability:'ABILITY',emoji:'EMOJI'});
 export const MAX_GUESSES = 6;
+// Start with two clues; reveal another after guesses 1, 3 and 5.
+export const visibleEmojiCount = (round,total=5) => Math.min(total,2+Math.ceil((round?.guesses?.length||0)/2));
 export const FULL_SCAN_GUESSES = 5;
 export const maxGuesses = round => round?.mode === 'full' ? FULL_SCAN_GUESSES : MAX_GUESSES;
 export const MAX_HINTS = 2;

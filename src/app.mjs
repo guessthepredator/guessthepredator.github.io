@@ -8,10 +8,10 @@ import {playSound} from './audio.mjs?v=2.43.0&release=2.44.0';
 import {paintPixelScene} from './pixel_scene.mjs?v=2.43.0';
 import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.43.0&release=2.54.0';
 import {dailySummary, buildSubmission} from './scoring.mjs?v=2.43.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.43.0&release=2.59.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor,nextDailyStep} from './daily218.mjs?v=2.43.0&release=2.60.0';
 import {loadStore,saveStore} from './store.mjs?v=2.43.0';
-import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
-  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.43.0';
+import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,visibleEmojiCount,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
+  getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.43.0&release=2.60.0';
 
 const app=document.getElementById('app');
 let store=loadStore();
@@ -479,7 +479,7 @@ function getVisual(round,target){
   </div>`;
   if(mode==='emoji'){
     const all=[...target.emoji.split(/\s+/),...target.extraEmoji];
-    const shown=Math.min(all.length,3+Math.floor(round.guesses.length/2));
+    const shown=round.finished?all.length:visibleEmojiCount(round,all.length);
     return `<div class="clue-visual visual-emoji gtp210-emoji-stage" aria-label="Emoji puzzle: ${shown} of ${all.length} symbols visible">
       <div class="gtp210-clue-top"><span><i class="gtp210-live-dot"></i> EMOJI / DECRYPTION</span><small>${shown} / ${all.length} UNLOCKED</small></div>
       <div class="gtp210-emoji-core">
@@ -487,15 +487,15 @@ function getVisual(round,target){
         <div class="gtp210-emoji-slots" role="group" aria-label="Emoji clues">${all.map((symbol,i)=>`<span class="gtp210-emoji-tile ${i>=shown?'is-locked':'is-visible'}" aria-label="${i<shown?'Visible clue '+(i+1):'Locked clue '+(i+1)}"><span>${i<shown?esc(symbol):'<b aria-hidden="true">?</b>'}</span><small>0${i+1}</small></span>`).join('')}</div>
         <div class="gtp210-reveal-track" aria-hidden="true">${all.map((_,i)=>`<span class="${i<shown?'is-lit':''}"></span>`).join('')}</div>
       </div>
-      <div class="gtp210-clue-bottom"><strong>${shown===all.length?'ALL FIVE CLUES REVEALED':'DECRYPT THE REMAINING CLUES.'}</strong><span>${shown===all.length?'You have every symbol — make your final guess.':'More symbols unlock as you make guesses.'}</span></div>
+      <div class="gtp210-clue-bottom"><strong>${shown===all.length?'ALL FIVE CLUES REVEALED':'DECRYPT THE REMAINING CLUES.'}</strong><span>${shown===all.length?'You have every symbol — make your final guess.':'Starts with 2 symbols. Unlock more after guesses 1, 3 and 5.'}</span></div>
     </div>`;
   }
   return `<div class="clue-visual gtp27-mystery gtp29-classic-visual gtp229-mystery-visual"><div class="mystery-wording"><small>01 · UNKNOWN LEGEND</small><strong>CRACK THE IDENTITY.</strong><span>Make a guess. Compare six traits. Follow the scanner.</span></div></div>`;
 }
 function quickModeLinks(selected){
  const all=[...MODES,'trivia'];
- return '<nav class="gtp250-mode-links" aria-label="Quick links between game modes"><span class="gtp250-mode-links-label">FREE PLAY MODES</span>'+all.map(mode=>{
-  const selectedMode=selected===mode;
+ return '<nav class="gtp250-mode-links" aria-label="Quick links between game modes"><span class="gtp250-mode-links-label">'+(session==='daily'?'SWITCH TO FREE PLAY':'FREE PLAY MODES')+'</span>'+all.map(mode=>{
+  const selectedMode=session==='unlimited'&&selected===mode;
   const route=mode==='trivia'?'data-action="trivia" data-trivia-mode="practice"':'data-action="open" data-mode="'+mode+'" data-session="unlimited"';
   return '<button type="button" class="gtp250-mode-link '+(selectedMode?'active':'')+'" '+route+' '+(selectedMode?'aria-current="page"':'')+'><span>'+(mode==='trivia'?'✧':ICONS[mode])+'</span> '+(mode==='trivia'?'TRIVIA':MODE_NAMES[mode])+'</button>';
  }).join('')+'</nav>';
@@ -556,7 +556,7 @@ function guessBody(round,target){
   if(round.finished){
     const score=gameScore(round);const rank=gameRank(score);const badges=styleBadges(round);
     return `<div class="end-panel ${round.won?'gtp212-victory':''}"><span class="rank">${round.won?rank:'—'}</span><h2>${round.won?'TARGET FOUND!':round.loss==='time'?'TIME’S UP.':'NICE TRY.'}</h2><p>${round.won?`You identified ${esc(target.name)} in ${round.guesses.length} guesses. ${score} points earned.`:`Your mystery Legend was ${esc(target.name)}. Every guess counts. Try another round!`}</p>${badges.length?`<div class="medal-row">${badges.map(tag=>`<span class="medal">${esc(tag)}</span>`).join('')}</div>`:''}<div class="answer-tag">${portrait(target.slug,{alt:target.name,cls:'balanced'})}<strong>${esc(target.name)}</strong></div>
-      <div class="end-actions">${session==='daily'?`<button class="btn pink" data-action="next">${dailySummary(store.days,today()).completed?'VIEW LEADERBOARD':'NEXT DAILY CHALLENGE'} ↗</button>`:'<button class="btn pink" data-action="next">↻ PLAY AGAIN</button>'}<button class="btn ghost" data-action="home">BACK TO MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
+      <div class="end-actions">${session==='daily'?`<button class="btn pink" data-action="next" data-session="daily">${dailyNextLabel()} ↗</button>`:'<button class="btn pink" data-action="next" data-session="unlimited">↻ PLAY AGAIN</button>'}<button class="btn ghost" data-action="home">BACK TO MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
   }
   const hintUnavailable=round.guesses.length===0||round.hints.length>=MAX_HINTS||availableHintFields(round,target,legends).length===0;
   return `<div class="gtp229-stepbar"><div><span class="gtp229-step">02 · YOUR GUESS</span><h2>IDENTIFY THE <em>LEGEND</em></h2></div><strong class="gtp229-remaining">${maxGuesses(round)-round.guesses.length}<small> GUESSES LEFT</small></strong></div>
@@ -664,7 +664,7 @@ function cinematicControls(round,target){
     <small>${round.won?`YOU GOT IT RIGHT · ${score} POINTS · ${round.guesses.length} GUESSES`:'The correct Legend is revealed above.'}</small>
    </div>
    <div class="gtp230-finished-actions">
-    ${session==='daily'?'<button type="button" data-action="next" class="gtp230-btn gtp230-btn-main">'+(dailySummary(store.days,today()).completed?'VIEW LEADERBOARD ↗':'NEXT DAILY STEP ↗')+'</button>':'<button type="button" data-action="next" class="gtp230-btn gtp230-btn-main">↻ PLAY AGAIN</button>'}
+    ${session==='daily'?'<button type="button" data-action="next" data-session="daily" class="gtp230-btn gtp230-btn-main">'+(dailyNextLabel()+' ↗')+'</button>':'<button type="button" data-action="next" data-session="unlimited" class="gtp230-btn gtp230-btn-main">↻ PLAY AGAIN</button>'}
     <button type="button" data-action="home" class="gtp230-btn gtp230-btn-secondary">BACK TO MODES</button>
    </div>
    ${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}
@@ -1031,7 +1031,7 @@ function openMode(mode,playSession=session){
     const schedule=dailySchedule(today());
     const targetTrack=Object.entries(schedule).find(([,m])=>m===mode)?.[0];
     if(targetTrack){if(targetTrack==='signal'&&!currentDailyRounds(store.days,today()).full?.finished){showToast('Finish Full Scan to unlock One Signal.');return;}dailyTrack=targetTrack;}
-    else playSession='unlimited';
+    else {showToast('This mode is available in Free Play today. Use the Free Play links to switch.');return;}
   }
   active=mode;session=playSession;store.settings.session=session;sync();screen='game';pickerOpen=false;quickSearch='';ensureRound();render();sound('nav');
 }
@@ -1117,12 +1117,21 @@ function showLegendPreview(slug){
  document.querySelectorAll('.gtp245-picker-item').forEach(card=>card.classList.toggle('is-preview',card.dataset.previewSlug===slug));
  loadPortraitImages(panel);
 }
-function nextMode(){
- if(session==='unlimited'){randomPractice(active);return;}
- const rounds=currentDailyRounds(store.days,today());
- if(!rounds.full?.finished){openMode(dailySchedule(today()).full,'daily');return;}
- if(!rounds.signal?.finished){dailyTrack='signal';openMode(dailySchedule(today()).signal,'daily');return;}
- screen='leaderboard';pickerOpen=false;render();void refreshBoards();void loadTriviaBoards();sound('nav');
+function dailyNextLabel(){
+ const step=nextDailyStep(currentDailyRounds(store.days,today()),triviaRewardEarned());
+ return step==='trivia'?'NEXT: DAILY TRIVIA':step==='leaderboard'?'VIEW LEADERBOARD':'NEXT DAILY STEP';
+}
+function nextMode(playSession=session){
+ if(playSession==='unlimited'){randomPractice(active);return;}
+ const step=nextDailyStep(currentDailyRounds(store.days,today()),triviaRewardEarned());
+ if(step==='full'||step==='signal'){
+  dailyTrack=step;openMode(dailySchedule(today())[step],'daily');return;
+ }
+ session='daily';store.settings.session='daily';sync();pickerOpen=false;
+ if(step==='trivia'){
+  triviaMode='daily';triviaRun=null;triviaMessage='';screen='trivia';render();void loadTriviaBoards();sound('nav');return;
+ }
+ screen='leaderboard';render();void refreshBoards();void loadTriviaBoards();sound('nav');
 }
 function showToast(message){
   document.querySelector('.toast')?.remove();
@@ -1187,7 +1196,7 @@ app.addEventListener('click',event=>{
     const rounds=currentDailyRounds(store.days,today());session='daily';
     const next=DAILY_TRACKS.find(track=>!rounds[track]?.finished);
     if(next){dailyTrack=next;openMode(dailySchedule(today())[next],'daily');}
-    else{screen='leaderboard';render();void refreshBoards();void loadTriviaBoards();}
+    else nextMode('daily');
   }
   else if(action==='session'){
     if(button.dataset.session==='unlimited')openMode(active||'classic','unlimited');
@@ -1235,7 +1244,7 @@ app.addEventListener('click',event=>{
     if(changed!==round){setRound(changed);render({scroll:false});sound('clue');}
   }
   else if(action==='filter'){pickerClass=button.dataset.class;renderPicker();sound('nav');}
-  else if(action==='next')nextMode();
+  else if(action==='next')nextMode(button.dataset.session||session);
   else if(action==='again')randomPractice(active);
 });
 app.addEventListener('submit',event=>{
