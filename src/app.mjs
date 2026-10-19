@@ -237,7 +237,7 @@ function edgeArenaDecor(){
 }
 // The character is painted only once inside the backdrop art. No artificial gaze overlay.
 function nav(){const nick=savedNickname();return `<header class="top gtp2-top"><div class="gtp2-top-inner">
-  <button class="brand gtp2-brand gtp221-unified-brand" data-action="home" aria-label="Guess the Predator home"><span class="gtp219-logo-emblem" aria-hidden="true"><svg viewBox="0 0 64 72" width="38" height="44" fill="none"><path d="M32 3 61 64H44L31 30 20 64H3L32 3Z" fill="currentColor"/><path d="M23 51h19l5 11H18l5-11Z" fill="#071222"/></svg></span><span class="gtp219-brand-type">GUESS THE<strong>PREDATOR</strong></span></button>
+  <button class="brand gtp2-brand gtp221-unified-brand" data-action="home" aria-label="The Apex Challenge home"><span class="gtp219-logo-emblem" aria-hidden="true"><svg viewBox="0 0 64 72" width="38" height="44" fill="none"><path d="M32 3 61 64H44L31 30 20 64H3L32 3Z" fill="currentColor"/><path d="M23 51h19l5 11H18l5-11Z" fill="#071222"/></svg></span><span class="gtp219-brand-type">THE APEX<strong>CHALLENGE</strong></span></button>
   <nav class="topnav" aria-label="Main navigation"><button class="nav-item ${screen==='home'?'active':''}" data-action="home">⌂ HOME</button><button class="nav-item ${screen==='trivia'?'active':''}" data-action="trivia">✦ TRIVIA</button><button class="nav-item ${screen==='game'?'active':''}" data-action="open" data-mode="classic">◈ PLAY</button><button class="nav-item ${screen==='leaderboard'?'active':''}" data-action="leaderboard">♛ RANKINGS</button><button class="nav-item ${screen==='records'?'active':''}" data-action="records">▤ STATS</button><button class="nav-item ${screen==='howto'?'active':''}" data-action="howto">? HOW TO PLAY</button><button class="nav-item ${screen==='faq'?'active':''}" data-action="faq">◉ FAQ</button></nav>
   <details class="gtp213-mobile-menu"><summary aria-label="Open site navigation">☰</summary><div class="gtp213-mobile-links"><button data-action="home" type="button">⌂ HOME</button><button data-action="trivia" type="button">✦ TRIVIA</button><button data-action="open" data-mode="classic" type="button">◈ PLAY</button><button data-action="leaderboard" type="button">♛ RANKINGS</button><button data-action="records" type="button">▤ STATS</button><button data-action="howto" type="button">? HOW TO PLAY</button><button data-action="faq" type="button">◉ FAQ</button></div></details>
   <div class="top-actions"><button class="switch gtp237-settings-switch" type="button" data-action="settings">⚙ SETTINGS</button><button class="switch gtp2-profile-switch" data-action="profile" aria-label="Choose nickname">${nick?`◉ ${esc(nick)}`:'◎ NICKNAME'}</button><button class="switch gtp2-sound-switch" data-action="audio" aria-label="Toggle sound" aria-pressed="${store.settings.audio}">${store.settings.audio?'♫ FX ON':'♪ FX OFF'}</button></div>
@@ -367,12 +367,12 @@ function home(){
  const heroCard=cfg=>`<button type="button" class="gtp239-mode-card gtp246-orbit-mode gtp239-${cfg.accent}" data-host="${cfg.host}" data-sound="${cfg.id}" data-action="${cfg.action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:''} aria-label="${cfg.title} - ${cfg.description}">
  <span class="gtp239-mode-ring gtp242-mode-medallion" data-host="${cfg.host}" aria-hidden="true"><span class="gtp242-ring-detail"></span><span class="gtp239-host-fallback">${cfg.host.slice(0,2).toUpperCase()}</span>${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}<span class="gtp242-ring-notch"></span></span>
  <span class="gtp239-mode-caption gtp242-mode-plate"><span class="gtp242-host-name">${cfg.host.toUpperCase()} · YOUR HOST</span><strong>${cfg.title}</strong><small>${cfg.description}</small></span></button>`;
- return `<main class="gtp219-home gtp222-home gtp239-home gtp246-outlands-home" aria-label="Guess the Predator homepage">
+ return `<main class="gtp219-home gtp222-home gtp239-home gtp246-outlands-home" aria-label="The Apex Challenge homepage">
   <div class="gtp219-backdrop" aria-hidden="true"></div>
   <div class="gtp239-sky" aria-hidden="true"><span class="gtp239-embers"></span></div>
   <div class="gtp238-mirage-duo gtp239-mirage-duo" aria-hidden="true"><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-left"></span><span class="gtp238-mirage-figure gtp239-mirage-figure gtp238-mirage-right"></span></div>
   <div class="gtp222-layout gtp239-layout">
-   <header class="gtp239-masthead"><span>GUESS THE</span><h1>PREDATOR</h1><small>APEX LEGENDS DAILY CHALLENGE</small></header>
+   <header class="gtp239-masthead"><span>THE APEX</span><h1>CHALLENGE</h1><small>APEX LEGENDS DAILY CHALLENGE</small></header>
    <div class="gtp222-arena gtp239-arena gtp246-home-arena" aria-label="Six original game modes with individual Legend themes">
     <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Pixel and Quote">${showcase.slice(0,3).map(heroCard).join('')}</section>
     <section class="gtp222-core gtp239-core gtp246-home-core" aria-label="Forbidden Intel Supply Bin">
@@ -397,7 +397,7 @@ function home(){
 }
 function homeLegacy(){
  return `<main class="gtp2-home">
-  <section class="gtp2-hero nova27-home" aria-label="Guess the Predator — five game modes">
+  <section class="gtp2-hero nova27-home" aria-label="The Apex Challenge — five game modes">
    <img id="gtp2-backdrop" class="gtp2-backdrop" src="./assets/decor/haunted-hero.webp" alt="" aria-hidden="true" fetchpriority="high"/>
    <div class="gtp216-center-clear" aria-hidden="true"></div>
    <div class="gtp216-mirage-duo" aria-hidden="true"><span class="gtp216-mirage gtp216-mirage-left"></span><span class="gtp216-mirage gtp216-mirage-right"></span></div>
@@ -468,13 +468,13 @@ function modeRail(){return `<nav class="mode-rail" aria-label="Switch game mode"
 function styleStrip(round){
   const locked=session==='daily'||round.guesses.length>0||round.finished;
   return `<div class="style-strip" aria-label="Round rules">
-    <div><strong>${session==='daily'?'DAILY SCAN · RULES LOCKED':'CHOOSE YOUR SCAN'}</strong><div class="style-description">${round.mode==='signal'?'MYSTERY: one trait comparison per guess':'FULL SCAN: reveal all six traits'}</div></div>
+    <div><strong>${session==='daily'?'DAILY SCAN · RULES LOCKED':'CHOOSE YOUR SCAN'}</strong><div class="style-description">${round.mode==='signal'?'ONE SIGNAL: one comparison per guess; confirmed matches stay saved':'FULL SCAN: all six comparisons; confirmed matches stay saved'}</div></div>
     <div class="style-options" role="group" aria-label="Choose feedback"><button class="segment ${round.mode==='signal'?'active':''}" data-action="style" data-style="signal" ${locked?'disabled':''}>✦ ONE SIGNAL</button><button class="segment ${round.mode==='full'?'active':''}" data-action="style" data-style="full" ${locked?'disabled':''}>▦ FULL SCAN</button><button class="segment rush-btn ${round.timeLimit?'active':''}" data-action="rush" ${locked?'disabled':''}>⌛ RUSH ${round.timeLimit?round.timeLimit+'s':'OFF'}</button></div>
   </div>`;
 }
 function latestSignal(round,target){
   if(!round.guesses.length)return `<div class="flash idle"><span class="signal-mark">✧</span><span><strong>AWAITING YOUR FIRST GUESS</strong><small>Your next guess will reveal ${round.mode==='signal'?'one of the six traits':'all six traits'}.</small></span></div>`;
-  if(round.mode==='full')return `<div class="flash idle"><span class="signal-mark">▦</span><span><strong>LATEST FULL SCAN RECEIVED</strong><small>The board displays this guess only. Red means mismatch, green means match.</small></span></div>`;
+  if(round.mode==='full')return `<div class="flash idle"><span class="signal-mark">▦</span><span><strong>FULL SCAN · PROGRESS SAVED</strong><small>Every guess compares all six traits. Correct matches stay green even when a later guess differs.</small></span></div>`;
   const s=round.signals.at(-1);
   if(!s)return `<div class="flash idle"><span class="signal-mark">⌁</span><span><strong>NO NEW SIGNAL</strong><small>All remaining comparable fields were already revealed.</small></span></div>`;
   const correct=s.kind==='correct';
@@ -496,7 +496,7 @@ function scannerMarkup(round,target){
   const misses=FIELDS.filter(field=>scanner[field]?.kind==='wrong').length;
   const remaining=availableHintFields(round,target,legends);
   const disabled=round.finished||round.guesses.length===0||round.hints.length>=MAX_HINTS||remaining.length===0;
-  return `<div class="scanner-head gtp226-scanner-head"><div><strong>◈ IDENTITY SIGNAL BOARD</strong><small>${round.mode==='full'?'FULL SCAN · COMPARES THE LATEST GUESS ONLY':'ONE SIGNAL · CONFIRMED MATCHES STAY GREEN'}</small></div><div class="gtp226-scan-metrics" aria-label="${matches} matching and ${misses} different traits"><span class="matching">✓ ${matches} MATCH</span><span class="different">✕ ${misses} DIFFERENT</span></div></div>
+  return `<div class="scanner-head gtp226-scanner-head"><div><strong>◈ IDENTITY SIGNAL BOARD</strong><small>${round.mode==='full'?'FULL SCAN · ALL SIX TRAITS, MATCHES LOCKED':'ONE SIGNAL · ONE TRAIT PER GUESS, MATCHES LOCKED'}</small></div><div class="gtp226-scan-metrics" aria-label="${matches} matching and ${misses} different traits"><span class="matching">✓ ${matches} MATCH</span><span class="different">✕ ${misses} DIFFERENT</span></div></div>
   ${round.mode==='signal'?`<div class="gtp222-locked-intel" role="status" aria-label="Previously confirmed traits"><strong>CONFIRMED INTEL</strong><div>${chips||'<small>Correct traits will stay locked here after every new guess.</small>'}</div></div>`:''}<div class="scanner" role="group" aria-label="Legend scanner">${cells}</div>
   `;
 }
@@ -555,7 +555,7 @@ function cinematicIdentityBoard(round,target){
       <strong title="${esc(wording)}">${esc(wording)}</strong>
     </div>`;
  }).join('');
- const description=round.mode==='full'?'LATEST GUESS · ALL SIX TRAITS':'ONE SIGNAL · REVEALED TRAITS ONLY';
+ const description=round.mode==='full'?'FULL SCAN · CONFIRMED MATCHES ARE REMEMBERED':'ONE SIGNAL · ONE REVEALED TRAIT PER GUESS';
  return `<aside class="gtp230-board" aria-label="Identity Signal Board">
    <h2>IDENTITY SIGNAL BOARD</h2><small>${description}</small>
    <div class="gtp230-trait-list">${rows}</div>
@@ -696,14 +696,14 @@ function howTo(){return `<main class="wrap gtp27-guide gtp241-guide" aria-labell
  ['✦','EMOJI · WATTSON','Decode five thematic symbols about a Legend, their abilities and story.'],
  ['◈','TRIVIA · CRYPTO','Five timed Apex questions per run, 20 seconds each, 20 points per correct answer. Daily Ranked and unranked Practice are separate.']
 ].map(([ico,title,desc])=>`<article class="guide-card"><span>${ico}</span><h2>${title}</h2><p>${desc}</p></article>`).join('')}</div>
-<div class="guide-rule-row"><article><b>▦ FULL SCAN</b><p>Six trait comparisons after an incorrect guess. Five guesses total; first Daily checkpoint.</p></article><article><b>◈ ONE SIGNAL</b><p>One informative comparison per incorrect guess. Six guesses; unlocked in Daily after Full Scan.</p></article><article><b>◷ RUSH</b><p>Optional 120-second timer, starting at your first guess. Choose before beginning a round.</p></article></div>
+<div class="guide-rule-row"><article><b>▦ FULL SCAN</b><p>All six traits are compared after each incorrect guess. Correct matches stay green across later guesses. Five guesses total; first Daily checkpoint.</p></article><article><b>◈ ONE SIGNAL</b><p>One trait comparison is revealed per incorrect guess. Confirmed correct traits stay green. Six guesses; unlocked in Daily after Full Scan.</p></article><article><b>◷ RUSH</b><p>Optional 120-second timer, starting at your first guess. Choose before beginning a round.</p></article></div>
 <div class="guide-rule-row"><article><b>◈ FORBIDDEN INTEL</b><p>Unlock up to three daily secrets by completing Full Scan, One Signal and Daily Trivia.</p></article><article><b>✧ NEXT GAME LEGEND</b><p>The mystery '?' wheel draws a random Legend. It does not reveal or alter your current puzzle answer.</p></article><article><b>⚙ SETTINGS</b><p>Change sound FX volume and animations from Settings; progress and preferences are remembered on this device.</p></article></div>
 <div class="guide-cta"><button class="btn pink" data-action="open" data-mode="classic">PLAY CLASSIC ↗</button><button class="btn lilac" data-action="faq">READ FAQ</button></div></main>`;}
 function faq(){return `<main class="wrap gtp27-guide gtp27-faq gtp241-guide" aria-labelledby="faq-title"><span class="kicker">OUTLANDS SUPPORT · UPDATED FOR SIX MODES</span><h1 id="faq-title">FREQUENTLY <em>ASKED.</em></h1>
  <div class="faq-stack">${[
  ['What are the six modes?','Classic (Mirage), Pixel (Sparrow), Quote (Loba), Ability (Octane), Emoji (Wattson) and Trivia (Crypto). Their hosts are decorative, not mystery answers.'],
  ['How do Daily Challenges work?','The daily challenges reset at 00:00 UTC. Finish Full Scan before unlocking One Signal. Daily Trivia has its own separate daily ranked run.'],
- ['What are Full Scan, One Signal and Rush?','These are gameplay rule options, not additional modes. Full Scan shows six trait comparisons per guess and allows five guesses. One Signal shows one trait and allows six guesses. Rush adds a two-minute timer beginning with the first guess.'],
+ ['What are Full Scan, One Signal and Rush?','These are gameplay rule options, not additional modes. Full Scan compares all six traits per guess (five attempts), preserving confirmed matches. One Signal reveals one trait per guess (six attempts), preserving confirmed matches. Rush adds a two-minute timer beginning with the first guess.'],
  ['How do I unlock Forbidden Intel?','Complete the daily Full Scan, One Signal and Trivia checkpoints. Open any unlocked Intel rewards from the Home centerpiece.'],
  ['What does the Next Game Legend question mark do?','The spinning wheel chooses a random Legend. It does not give away the answer to a running puzzle.'],
  ['What makes Pixel Mode difficult?','The Legend starts heavily pixelated, with more detail revealed after each guess. You must identify the figure from visual information, not the host portrait.'],
@@ -930,7 +930,7 @@ function spinWheel(){
 }
 async function copyWheelPick(){
   if(!wheelChosen)return;
-  const message=`My next Apex Legend: ${wheelChosen.name}! Picked by Guess the Predator — Spin the Wheel.`;
+  const message=`My next Apex Legend: ${wheelChosen.name}! Picked by The Apex Challenge — Spin the Wheel.`;
   let copied=false;
   try{await navigator.clipboard.writeText(message);copied=true;}
   catch{

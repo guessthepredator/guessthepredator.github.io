@@ -19,7 +19,7 @@ test('six cards orbit around a single central reward hub',()=>{
  assert.ok(home.includes('data-action="wheel"')&&home.includes('gtp222-wheel-illustration'));
  assert.ok(home.includes('data-action="intel-open"')&&home.includes('gtp222-primary-actions'));
 });
-test('Full Scan shows latest truthful match or mismatch, never an old green override',()=>{
+test('Full Scan retains correct matches across later different guesses',()=>{
  const target=legends.find(l=>l.name==='Mirage');
  const first=legends.find(l=>l.name!==target.name&&FIELDS.some(f=>lMatch(l,target,f)));
  const shared=FIELDS.find(f=>lMatch(first,target,f));
@@ -27,8 +27,8 @@ test('Full Scan shows latest truthful match or mismatch, never an old green over
  let round=tryGuess(newRound(target.name,'full'),first.name,legends,1000);
  assert.equal(scannerState(round,target,legends)[shared].kind,'correct');
  round=tryGuess(round,second.name,legends,2000);
- assert.equal(scannerState(round,target,legends)[shared].kind,'wrong');
- assert.ok(app.includes('LATEST GUESS ONLY'));
+ assert.equal(scannerState(round,target,legends)[shared].kind,'correct');
+ assert.ok(app.includes('CONFIRMED MATCHES ARE REMEMBERED'));
  assert.ok(!app.includes('${fullScanHistoryMarkup(round,target)}'));
 });
 function lMatch(a,b,f){return a[f]!=null&&a[f]===b[f];}
@@ -52,10 +52,10 @@ test('mode launch always uses the clicked free-play session',()=>{
  assert.ok(app.includes("openMode(button.dataset.mode,button.dataset.session||'unlimited')"));
  assert.ok(home.includes('data-session="unlimited"'));
 });
-test('Full Scan keeps its standard latest-attempt board, no extra history UI',()=>{
+test('Full Scan keeps confirmed trait matches without duplicating history UI',()=>{
  assert.ok(app.includes("round.mode==='full'?scannerMarkup(round,target):''"));
  assert.ok(!app.includes('${fullScanHistoryMarkup(round,target)}'));
- assert.ok(app.includes("LATEST GUESS ONLY"));
+ assert.ok(app.includes('CONFIRMED MATCHES ARE REMEMBERED'));
 });
 test('partial local stores preserve progress without requiring a practice object',()=>{
  const map=new Map([['guess-the-predator-2:daybreak-v1',JSON.stringify({days:{'2026-10-17':{daily218:{full:{won:true}}}},history:{wins:7}})]]);

@@ -10,5 +10,5 @@ test('V2.52 Ability reserves shorter arena, keeping scanner on initial viewport'
  assert.ok(styles.includes('height:335px!important'));assert.ok(styles.includes('[data-mode="ability"] .gtp249-visible-signals'));
 });
 test('V2.52 cache and CI suite',()=>{
- assert.equal((html.match(/ui=2\.52\.0/g)||[]).length,2);assert.ok(flow.includes('tests/v252.test.mjs'));
+ assert.equal((html.match(/ui=2\.53\.0/g)||[]).length,2);assert.ok(flow.includes('tests/v252.test.mjs'));
 });

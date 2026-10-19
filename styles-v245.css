@@ -840,3 +840,9 @@
   width:155px!important;height:155px!important;
  }
 }
+
+/* V2.53 — renamed brand, fitted for existing Home layout. */
+#app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(50px,5.4vw,88px)!important;letter-spacing:0!important;max-width:min(90vw,1000px)!important;white-space:normal!important}
+#app .gtp219-brand-type{min-width:113px!important;letter-spacing:-.01em!important}
+#app .gtp219-brand-type strong{letter-spacing:-.025em!important}
+@media(max-width:560px){#app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(42px,10.5vw,64px)!important}}

@@ -15,7 +15,7 @@ assert 'styles-v244.css?v=2.44.0' in html, 'Missing V2.44 cache-busted styleshee
 assert (P/'styles-v245.css').is_file(), 'V2.45 stylesheet missing'
 assert 'styles-v245.css?v=2.46.0' in html, 'V2.45 cache-busted link missing'
 style_match=re.search(r'href="\./styles\.css\?v=(\d+\.\d+\.\d+)"', html)
-app_match=re.search(r'src="\./src/app\.mjs\?v=(\d+\.\d+\.\d+)(?:&amp;release=2\.44\.0(?:&amp;rev=2\.46\.0(?:&amp;ui=2\.52\.0)?)?)?"', html)
+app_match=re.search(r'src="\./src/app\.mjs\?v=(\d+\.\d+\.\d+)(?:&amp;release=2\.44\.0(?:&amp;rev=2\.46\.0(?:&amp;ui=2\.53\.0)?)?)?"', html)
 assert style_match is not None, 'Versioned styles.css link missing'
 assert app_match is not None, 'Versioned app.mjs script missing'
 assert style_match.group(1)==app_match.group(1), 'CSS and JavaScript cache versions differ'
@@ -70,7 +70,7 @@ for slug in ('alter','axle','ballistic','catalyst','conduit','sparrow'):
   assert clear>=.30 and solid>=.04,(slug,clear,solid)
   assert all(alpha.getpixel(c)<=15 for c in [(0,0),(width-1,0),(0,height-1),(width-1,height-1)]),(slug,'opaque corners')
 print('V2.36 portrait cutout validation PASS: 6/6 tall character RGBA files with clear backgrounds')
-print(f'Guess The Predator V{style_match.group(1)} FINAL VISUAL LOCK validation PASS: 5 play modes, 2 Daily challenges, 3 rewards, 14 SFX, 6 traits, 2 scoreboards')
+print(f'The Apex Challenge V{style_match.group(1)} FINAL VISUAL LOCK validation PASS: 5 play modes, 2 Daily challenges, 3 rewards, 14 SFX, 6 traits, 2 scoreboards')
 print('Supabase project settings are preserved; live submission origin changes are deployed separately.')
 
 # V2.20 Trivia release safety: 50+ answer-key entries must stay outside GitHub Pages dist.

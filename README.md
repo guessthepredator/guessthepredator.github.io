@@ -1,4 +1,4 @@
-# Guess The Predator – V2.22
+# The Apex Challenge – V2.22
 
 See `CHANGELOG_V222.md` and `PORTRAIT_ASSET_AUDIT.md`.
 
