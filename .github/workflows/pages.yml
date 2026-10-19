@@ -1,22 +1,18 @@
-name: The Apex Challenge — Test and Deploy
-
+name: The Apex Challenge - Test and Deploy
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-
 permissions:
   contents: read
   pages: write
   id-token: write
 
-
 concurrency:
   group: pages-${{ github.repository_id }}-${{ github.ref }}
   cancel-in-progress: true
-
 
 jobs:
   test-and-deploy:
@@ -38,3 +34,25 @@ jobs:
           key: gtp-u2net-v1
       - name: Download and validate five original full-body portraits
         run: |
+          python3 -m pip install --quiet Pillow requests 'rembg[cpu]==2.0.67'
+          OUTPUT_DIR=assets/portraits python3 scripts/probe_fullbody.py --strict
+      - name: Check JavaScript modules
+        run: for f in src/*.mjs; do node --check "$f"; done
+      - name: Run game, catalog and asset tests
+        run: node --test tests/core.test.mjs tests/v27.test.mjs tests/v28.test.mjs tests/v210.test.mjs tests/v212.test.mjs tests/v213.test.mjs tests/v214.test.mjs tests/v215.test.mjs tests/v216.test.mjs tests/v217.test.mjs tests/v218.test.mjs tests/v219.test.mjs tests/v220.test.mjs tests/v222.test.mjs tests/v238.test.mjs tests/v240.test.mjs tests/v241.test.mjs tests/v242.test.mjs tests/v243.test.mjs tests/v244.test.mjs tests/v245.test.mjs tests/v246.test.mjs tests/v247.test.mjs tests/v250.test.mjs tests/v251.test.mjs tests/v252.test.mjs tests/v253.test.mjs tests/v254.test.mjs tests/v256.test.mjs
+      - name: Validate release
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 scripts/validate_release.py
+      - name: Create GitHub Pages artifact
+        run: |
+          mkdir -p dist
+          cp index.html styles.css styles-v243.css styles-v244.css styles-v245.css dist/
+          cp -r src assets dist/
+          touch dist/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
