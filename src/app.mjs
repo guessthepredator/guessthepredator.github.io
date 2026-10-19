@@ -4,7 +4,7 @@ import {artCatalog,portraitSourcesFor,reliableIconFallbacks} from './art.mjs?v=2
 import {localPortraitFiles} from './portrait_media_manifest.mjs?v=2.43.0';
 import {abilityCandidates,localAbilitySlugs} from './abilities.mjs?v=2.43.0';
 import {dailySpotlight,wheelChoices,wheelPick,destinationRotation} from './spotlight.mjs?v=2.43.0';
-import {playSound} from './audio.mjs?v=2.43.0&release=2.44.0';
+import {playSound} from './audio.mjs?v=2.43.0&release=2.44.0&ui=2.62.0';
 import {paintPixelScene} from './pixel_scene.mjs?v=2.43.0';
 import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.43.0&release=2.54.0';
 import {dailySummary, buildSubmission} from './scoring.mjs?v=2.43.0';
@@ -458,17 +458,17 @@ function getVisual(round,target){
   const mode=active;
   if(mode==='pixel'){
     const effect='soft';
-    const step=Math.min(round.guesses.length,6);
+    const step=round.won?6:Math.min(round.guesses.length,6);
     // Pixelate and blur the FULL COMPOSITE SCENE (location, lights, character), not a lone cutout.
     const sizes=[9,12,17,29,48,100,900];
     const blur=effect==='soft'?[2.4,2.0,1.5,1.1,.7,.3,0]:effect==='holo'?[18,16,13,9,6,3,0]:[16,14,11,8,5,2,0];
     const pct=[6,15,28,46,66,84,100];
     const size=sizes[step];
-    return `<div class="clue-visual visual-pixel px-effect-${effect} nova-pixel-scene"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
-      <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted full scene featuring a Legend"></canvas>
+    return `<div class="clue-visual visual-pixel px-effect-${effect} nova-pixel-scene ${round.won?'pixel-revealed':''}"><div class="pixel-art" style="--px-blur:${blur[step]}px;--px-progress:${pct[step]}%">
+      <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="${round.won?esc(target.name)+' fully revealed':'Progressively decrypted full scene featuring a Legend'}"></canvas>
       ${portrait(target.slug,{alt:'',cls:'pixel-source',concealed:!round.finished,eager:true})}
       <div class="pixel-fallback" role="group" aria-label="Offline character identity clues"><span class="pixel-fallback-kicker">◈ BACKUP INTEL / SIGNAL RECOVERY</span><div class="pixel-fallback-emblem">${step>=4?esc((target.emoji.split(/\s+/)[0]||'◇')):'?'}</div><strong>${step>=3?esc(target.role.toUpperCase()):'CLASSIFIED ROLE'}</strong><p>${step>=5?esc(target.title):'IDENTITY PROFILE ENCRYPTED'}</p><small>${step>=6?esc(target.signature):'ADDITIONAL INTEL UNLOCKS AFTER GUESSES'}</small></div><div class="pixel-error" aria-hidden="true"></div><div class="pixel-scratch scratch-a"></div><div class="pixel-scratch scratch-b"></div><div class="pixel-scan"></div><div class="pixel-vignette"></div>
-      </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div></div>`;
+      </div><div class="pixel-dots"></div><div class="pixel-caption">${round.won?esc(target.name).toUpperCase()+' · FULLY REVEALED':'DECRYPTION '+pct[step]+'% · '+(maxGuesses(round)-round.guesses.length)+' MOVES LEFT'}</div>${round.won?'<button type="button" class="tac-pixel-full" data-action="pixel-full" aria-expanded="false">VIEW FULL IMAGE ↗</button>':''}</div>`;
   }
   if(mode==='quote')return `<div class="clue-visual gtp2-quote-rework gtp29-quote-visual"><div class="gtp2-quote-head"><span>◈ WRITTEN CLUE / NO VOICE IMPERSONATION</span><span>CHANNEL 0${MODES.indexOf(active)+1}</span></div><div class="gtp29-quote-card"><blockquote>“${esc(target.quote)}”</blockquote><div class="gtp29-quote-footer"><span class="gtp2-live-dot"></span><b>SPEAKER UNKNOWN</b><small>Use class, age and launch comparisons to narrow it down.</small></div></div></div>`;
   if(mode==='ability')return `<div class="clue-visual visual-ability gtp210-ability-stage" aria-label="Ability icon puzzle">
@@ -610,7 +610,7 @@ function cinematicStageAside(round,target){
     </aside>`;
  }
  if(active==='pixel'){
-  const step=Math.min(6,round.guesses.length);
+  const step=round.won?6:Math.min(6,round.guesses.length);
   return `<aside class="gtp230-side gtp230-side-stages" aria-label="Pixel decryption stages">
     <h2>◈ REVEAL STAGES</h2>
     ${Array.from({length:6},(_,i)=>`<div class="gtp230-stage-item ${step>=i?'is-unlocked':''} ${step===i?'is-current':''}"><span aria-hidden="true">▦</span><strong>STAGE ${i+1}</strong><small>${step>i?'REVEALED':step===i?'CURRENT':'LOCKED'}</small></div>`).join('')}
@@ -676,15 +676,15 @@ function cinematicControls(round,target){
  const remaining=maxGuesses(round)-round.guesses.length;
  const hintDisabled=!round.guesses.length||round.hints.length>=MAX_HINTS||availableHintFields(round,target,legends).length===0;
  return `<section class="gtp230-console" aria-label="Submit your next guess">
-    <div class="gtp230-console-main">
+    <div class="gtp230-console-main"><div class="tac-guess-selection" id="guess-selection" aria-live="polite">CHOOSE A LEGEND · CONFIRM TO USE ONE GUESS</div>
       <div class="search-wrap gtp230-input-wrap">
        <input id="guess-search" autocomplete="off" aria-label="Search a Legend" placeholder="Type a Legend name…" value="${esc(quickSearch)}"/>
-       <button type="button" class="gtp230-btn gtp230-btn-main" data-action="submit-search">SUBMIT GUESS ↗</button>
+       <button type="button" class="gtp230-btn gtp230-btn-main" data-action="submit-search">CONFIRM GUESS ↗</button>
        <div id="search-results" class="search-list" style="display:none"></div>
       </div>
       <div class="gtp230-control-row">
        <button class="gtp230-btn gtp230-btn-blue" type="button" data-action="picker">▣ BROWSE LEGENDS</button>
-       <button class="gtp230-btn gtp230-btn-gold" type="button" data-action="hint" ${hintDisabled?'disabled':''}>✦ GET HINT ${round.hints.length?`(${MAX_HINTS-round.hints.length} LEFT)`:''}</button>
+       <button class="gtp230-btn gtp230-btn-gold" type="button" data-action="hint" ${hintDisabled?'disabled':''}>✦ GET HINT <small class="tac-hint-cost">−145 PTS</small> ${round.hints.length?`(${MAX_HINTS-round.hints.length} LEFT)`:''}</button>
        <button class="gtp230-btn gtp230-btn-danger" type="button" data-action="surrender">◷ GIVE UP</button>
       </div>
     </div>
@@ -1098,6 +1098,7 @@ function submitGuess(name){
      }else sound(next.signals.at(-1)?.kind==='correct'?'clue':'wrong');
    }
   pickerOpen=false;quickSearch='';render({scroll:false});
+  if(store.settings.motion&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.querySelectorAll('.gtp230-trait').forEach((node,i)=>{node.style.setProperty('--scan-delay',(i*70)+'ms');node.classList.add('tac-trait-reveal');});
   if(session==='daily'&&next.finished)showToast('✦ FORBIDDEN INTEL READY — Open the unlocked tip below!');
   if(justWon){sound('victory');if(store.settings.motion&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)triggerVictoryConfetti();}
 }
@@ -1121,7 +1122,7 @@ function triggerVictoryConfetti(){
 }
 function updateSearchResults(){
   const input=document.querySelector('#guess-search');const box=document.querySelector('#search-results');if(!input||!box)return;
-  const query=input.value.trim();if(!query){box.style.display='none';return;}
+  const query=input.value.trim();const selection=document.getElementById('guess-selection');const candidate=query?filteredRoster(legends,{search:query,excluded:getRound()?.guesses||[]})[0]:null;if(selection)selection.textContent=candidate?candidate.name.toUpperCase()+' SELECTED · CONFIRM TO USE ONE GUESS':query?'NO AVAILABLE LEGEND MATCHES':'CHOOSE A LEGEND · CONFIRM TO USE ONE GUESS';if(!query){box.style.display='none';return;}
   const used=getRound()?.guesses||[];
   const matches=filteredRoster(legends,{search:query,excluded:used}).slice(0,7);
   if(!matches.length){box.innerHTML='<div style="padding:12px;font-size:11px;color:#8c6896">No matches</div>';box.style.display='block';return;}
@@ -1254,6 +1255,7 @@ app.addEventListener('click',event=>{
   else if(action==='picker'){pickerOpen=true;pickerSearch='';pickerClass='All';pickerSort='az';renderPicker();sound('pick');}
   else if(action==='close-picker'){pickerOpen=false;document.getElementById('picker-backdrop')?.remove();}
   else if(action==='preview-legend'){showLegendPreview(button.dataset.previewSlug);sound('pick');}
+  else if(action==='pixel-full'){const scene=button.closest('.visual-pixel');if(!getRound()?.won||!scene)return;const expanded=scene.classList.toggle('tac-pixel-expanded');button.setAttribute('aria-expanded',String(expanded));button.textContent=expanded?'COMPACT IMAGE ↙':'VIEW FULL IMAGE ↗';}
   else if(action==='guess'){submitGuess(button.dataset.name);}
   else if(action==='submit-search'){
     const query=document.getElementById('guess-search')?.value||'';

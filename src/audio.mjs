@@ -6,6 +6,7 @@ const modes=['classic','pixel','quote','ability','emoji','trivia'];
 const events=new Set(['nav','pick','clue','wrong','correct','win','party','victory','lose','reveal',...modes.map(mode=>'hover-'+mode)]);
 const buffers=new Map(),last=new Map();
 let ctx=null,master=null;let currentVolume=.7;
+const voices=new Set();let activeSample=null;
 function audioEngine(){
   if(ctx)return ctx;
   const Ctor=globalThis.AudioContext||globalThis.webkitAudioContext;
@@ -27,7 +28,7 @@ function tone(frequency,duration=.12,{shape='sine',level=.045,delay=0,pan=0}={})
   if(typeof ac.createStereoPanner==='function'){
    const stereo=ac.createStereoPanner();stereo.pan.value=pan;osc.connect(env);env.connect(stereo);stereo.connect(master);
   }else{osc.connect(env);env.connect(master)}
-  osc.start(at);osc.stop(at+duration+.025);
+  voices.add(osc);osc.onended=()=>voices.delete(osc);osc.start(at);osc.stop(at+duration+.025);
  }catch{/* Browser audio unlock policy */ }
 }
 function melody(name){
@@ -83,12 +84,15 @@ export function playSound(name,enabled=true,volume=.7){
  const now=performance.now(),key=events.has(name)?name:'nav',minGap=key.startsWith('hover-')?310:95;
  if(now-(last.get(key)||0)<minGap)return false;
  last.set(key,now);
+ // A new interaction replaces the previous cue, including scheduled notes.
+ for(const voice of voices){try{voice.stop()}catch{}}voices.clear();
+ if(activeSample){activeSample.pause();activeSample.currentTime=0;activeSample=null;}
  try{
   if(key!=='victory'&&key!=='hover-trivia'){
    const a=getSample(key),player=a.paused?a:a.cloneNode(true);
    // Victory uses an ORIGINAL generated fanfare, not the old party sample.
    player.volume=key==='party'?.12:key.startsWith('hover-')?.028:key==='lose'?.11:key==='wrong'?.06:key==='clue'?.08:.09;
-   player.volume*=currentVolume;player.currentTime=0;void player.play()?.catch?.(()=>{});
+   activeSample=player;player.volume*=currentVolume;player.currentTime=0;void player.play()?.catch?.(()=>{});
   }
  }catch{/* Fallback to synthesized sound */ }
  melody(key);return true;
