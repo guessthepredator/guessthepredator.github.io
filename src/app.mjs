@@ -8,7 +8,7 @@ import {playSound} from './audio.mjs?v=2.43.0&release=2.44.0';
 import {paintPixelScene} from './pixel_scene.mjs?v=2.43.0';
 import {getBoards, submitDaily, triviaRequest, getTriviaBoards, leaderboardConfigured} from './leaderboard.mjs?v=2.43.0&release=2.54.0';
 import {dailySummary, buildSubmission} from './scoring.mjs?v=2.43.0';
-import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.43.0&release=2.55.0';
+import {DAILY_TRACKS,dailySchedule,dailyAnswers,currentDailyRounds,checkpointCount,dailyStats,rewardFor,intelFor} from './daily218.mjs?v=2.43.0&release=2.59.0';
 import {loadStore,saveStore} from './store.mjs?v=2.43.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
   getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.43.0';
@@ -106,8 +106,11 @@ function ensureRound(mode=active,playSession=session){
   mode=schedule[key];active=mode;
   const entry=store.days[today()]||{};
   let round=entry.daily218?.[key];
-  if(!round){round=newRound(dailyAnswers(today(),legends)[key],key,0);
+  if(!round){round=newRound(dailyAnswers(today(),legends)[key],key,120);
    store.days[today()]={...entry,daily218:{...(entry.daily218||{}),[key]:round}};sync();}
+  if(!round.finished&&!round.startedAt&&!round.guesses.length&&!round.timeLimit){
+   round={...round,timeLimit:120};store.days[today()]={...store.days[today()],daily218:{...store.days[today()].daily218,[key]:round}};sync();
+  }
   return round;
  }
  let round=store.practice[mode];
@@ -271,7 +274,7 @@ function intelDialog(){
   dialog.innerHTML=`<div class="intel-modal" role="dialog" aria-modal="true" aria-label="Forbidden Intel reward"><button class="intel-close" data-action="intel-close" type="button" aria-label="Close reward">✕</button>
       <div class="intel-reveal-scene"><span class="reward-spark s1">✦</span><span class="reward-spark s2">✧</span><span class="reward-spark s3">✦</span><span class="reward-spark s4">✧</span>
       <div class="reward-chest gtp244-mythic-reward" role="img" aria-label="Mythic Supply Bin"><img src="./assets/decor/mythic-bin-halloween-v257.webp" alt="" loading="eager"/></div>
-      <div class="gold-paper"><div class="paper-stamp">✦ OUTLANDS / DAILY REWARD ✦</div><h2>${intelCheckpoint===1?'FIELD<br>INTEL':intelCheckpoint===2?'RARE<br>INTEL':'TRIVIA<br>INTEL'}</h2><span class="paper-legend">CHECKPOINT ${intelCheckpoint} · ${esc(tip.category)}</span><p><strong class="gtp223-intel-title">${esc(tip.title)}</strong> ${esc(tip.tip)}</p>${tip.source?`<a class="gtp223-intel-source" href="${esc(tip.source)}" target="_blank" rel="noopener noreferrer">READ THE GAME MECHANIC ↗</a>`:'<span class="gtp223-intel-source">TACTICAL FIELD NOTE · THE APEX CHALLENGE</span>'}<small>INTEL DECLASSIFIED · ${esc(today())}</small></div>
+      <div class="gold-paper"><div class="paper-stamp">✦ OUTLANDS / DAILY REWARD ✦</div><h2>${intelCheckpoint===1?'FIELD<br>INTEL':intelCheckpoint===2?'RARE<br>INTEL':'LEGEND<br>INTEL'}</h2><span class="paper-legend">CHECKPOINT ${intelCheckpoint} · ${esc(tip.category)}</span><p><strong class="gtp223-intel-title">${esc(tip.title)}</strong> ${esc(tip.tip)}</p>${tip.drill?`<div class="tac259-intel-drill"><b>TRY IT NEXT MATCH</b><span>${esc(tip.drill)}</span></div>`:''}${tip.source?`<a class="gtp223-intel-source" href="${esc(tip.source)}" target="_blank" rel="noopener noreferrer">MECHANIC REFERENCE · EA ↗</a>`:'<span class="gtp223-intel-source">TACTICAL FIELD NOTE · THE APEX CHALLENGE</span>'}<small>INTEL DECLASSIFIED · ${esc(today())}</small></div>
       <span class="reveal-boozle">BAMBOOZLED! ✦</span></div><div class="intel-dialog-footer"><button class="btn mint" data-action="intel-close" type="button">TAKE THE INTEL ✓</button></div></div>`;
   dialog.addEventListener('click',ev=>{if(ev.target===dialog){closeIntelDialog();render({scroll:false});}});
   app.appendChild(dialog);intelModalOpen=true;
@@ -346,14 +349,14 @@ function playContext(isDaily,{trivia=false,home=false}={}){
  const complete=DAILY_TRACKS.filter(t=>rounds[t]?.finished).length;
  const label=isDaily?'DAILY CHALLENGE':'FREE PLAY';
  const copy=trivia?(isDaily?'One ranked run today · separate Trivia leaderboard':'Unlimited practice · no leaderboard points'):
-  isDaily?'Two daily stages + Daily Trivia · resets at 00:00 UTC':'Unlimited rounds · scores do not affect rankings';
+  isDaily?'Daily stages: Rush 120s each + Daily Trivia · resets at 00:00 UTC':'Unlimited rounds · scores do not affect rankings';
  const action=home?'home-session':trivia?'trivia-mode':isDaily?'session':'home-daily';
  const attrs=trivia?('data-trivia-mode="'+(isDaily?'practice':'daily')+'"'):('data-session="'+(isDaily?'unlimited':'daily')+'"');
  return '<section class="tac-play-context '+(isDaily?'is-daily':'is-free')+' '+(home?'is-home':'')+'" aria-label="Current play type">'+
   '<div class="tac-context-copy"><span class="tac-context-label">'+(isDaily?'◈ ':'∞ ')+label+'</span><p>'+copy+'</p></div>'+
   (home?'<div class="tac-play-selector" role="group" aria-label="Choose Daily Challenge or Free Play"><button type="button" data-action="home-session" data-session="daily" aria-pressed="'+isDaily+'">◈ DAILY CHALLENGE</button><button type="button" data-action="home-session" data-session="unlimited" aria-pressed="'+!isDaily+'">∞ FREE PLAY</button></div>':
    '<button type="button" class="tac-context-switch" data-action="'+action+'" '+attrs+'>'+ (isDaily?'SWITCH TO FREE PLAY':'CONTINUE DAILY')+' ↗</button>')+
-  (home&&isDaily?'<div class="tac-daily-progress">'+['full','signal'].map((track,i)=>{const r=rounds[track],locked=track==='signal'&&!rounds.full?.finished;const help=track==='full'?'Five guesses. Every guess compares all six traits: class, gender, form, age, launch and origin. Correct matches stay revealed.':'Six guesses. Each wrong guess reveals one trait comparison. Keep the confirmed clues and narrow down the Legend. Unlocks after Full Scan.';return '<div class="tac-stage-guide"><button type="button" aria-describedby="stage-help-'+track+'" data-action="home-'+track+'" '+(locked?'disabled':'')+'><b>0'+(i+1)+' · '+(track==='full'?'FULL SCAN':'ONE SIGNAL')+'</b><span>'+MODE_NAMES[dailySchedule(today())[track]]+' · '+(r?.finished?'COMPLETED':locked?'LOCKED':r?.guesses?.length?'IN PROGRESS':'READY')+'</span></button><details class="tac-stage-info"><summary aria-label="About '+(track==='full'?'Full Scan':'One Signal')+'">i</summary><p id="stage-help-'+track+'">'+help+'</p></details></div>'; }).join('')+'<button type="button" data-action="trivia" data-trivia-mode="daily"><b>03 · DAILY TRIVIA</b><span>'+(triviaRewardEarned()?'COMPLETED':'RANKED KNOWLEDGE RUN')+'</span></button></div>':'')+'</section>';
+  (home&&isDaily?'<div class="tac-daily-progress">'+['full','signal'].map((track,i)=>{const r=rounds[track],locked=track==='signal'&&!rounds.full?.finished;const help=track==='full'?'Rush: 120 seconds from your first guess. Five guesses. Every guess compares all six traits: class, gender, form, age, launch and origin. Correct matches stay revealed.':'Rush: 120 seconds from your first guess. Six guesses. Each wrong guess reveals one trait comparison. Keep the confirmed clues and narrow down the Legend. Unlocks after Full Scan.';return '<div class="tac-stage-guide"><button type="button" aria-describedby="stage-help-'+track+'" data-action="home-'+track+'" '+(locked?'disabled':'')+'><b>0'+(i+1)+' · '+(track==='full'?'FULL SCAN':'ONE SIGNAL')+'</b><span>'+MODE_NAMES[dailySchedule(today())[track]]+' · '+(r?.finished?'COMPLETED':locked?'LOCKED':r?.guesses?.length?'IN PROGRESS':'READY')+'</span></button><details class="tac-stage-info"><summary aria-label="About '+(track==='full'?'Full Scan':'One Signal')+'">i</summary><p id="stage-help-'+track+'">'+help+'</p></details></div>'; }).join('')+'<button type="button" data-action="trivia" data-trivia-mode="daily"><b>03 · DAILY TRIVIA</b><span>'+(triviaRewardEarned()?'COMPLETED':'RANKED KNOWLEDGE RUN')+'</span></button></div>':'')+'</section>';
 }
 function home(){
  const rounds=currentDailyRounds(store.days,today());
@@ -729,13 +732,13 @@ function howTo(){return `<main class="wrap gtp27-guide gtp241-guide" aria-labell
  ['✦','EMOJI · WATTSON','Decode five thematic symbols about a Legend, their abilities and story.'],
  ['◈','TRIVIA · CRYPTO','Five timed Apex questions per run, 20 seconds each, 20 points per correct answer, or 10 with a lifeline. Daily Ranked and unranked Practice are separate.']
 ].map(([ico,title,desc])=>`<article class="guide-card"><span>${ico}</span><h2>${title}</h2><p>${desc}</p></article>`).join('')}</div>
-<div class="guide-rule-row"><article><b>▦ FULL SCAN</b><p>All six traits are compared after each incorrect guess. Correct matches stay green across later guesses. Five guesses total; first Daily checkpoint.</p></article><article><b>◈ ONE SIGNAL</b><p>One trait comparison is revealed per incorrect guess. Confirmed correct traits stay green. Six guesses; unlocked in Daily after Full Scan.</p></article><article><b>◷ RUSH</b><p>Optional 120-second timer, starting at your first guess. Choose before beginning a round.</p></article></div>
+<div class="guide-rule-row"><article><b>▦ FULL SCAN</b><p>All six traits are compared after each incorrect guess. Correct matches stay green across later guesses. Five guesses total; first Daily checkpoint.</p></article><article><b>◈ ONE SIGNAL</b><p>One trait comparison is revealed per incorrect guess. Confirmed correct traits stay green. Six guesses; unlocked in Daily after Full Scan.</p></article><article><b>◷ RUSH</b><p>Daily Ranked enables Rush by default: 120 seconds per stage, starting at your first guess. Free Play keeps its optional timer.</p></article></div>
 <div class="guide-rule-row"><article><b>◈ FORBIDDEN INTEL</b><p>Unlock up to three daily secrets by completing Full Scan, One Signal and Daily Trivia.</p></article><article><b>✧ NEXT GAME LEGEND</b><p>The mystery '?' wheel draws a random Legend. It does not reveal or alter your current puzzle answer.</p></article><article><b>⚙ SETTINGS</b><p>Change sound FX volume and animations from Settings; progress and preferences are remembered on this device.</p></article></div>
 <div class="guide-cta"><button class="btn pink" data-action="open" data-mode="classic">PLAY CLASSIC ↗</button><button class="btn lilac" data-action="faq">READ FAQ</button></div></main>`;}
 function faq(){return `<main class="wrap gtp27-guide gtp27-faq gtp241-guide" aria-labelledby="faq-title"><span class="kicker">OUTLANDS SUPPORT · UPDATED FOR SIX MODES</span><h1 id="faq-title">FREQUENTLY <em>ASKED.</em></h1>
  <div class="faq-stack">${[
  ['What are the six modes?','Classic (Mirage), Pixel (Sparrow), Quote (Loba), Ability (Octane), Emoji (Wattson) and Trivia (Crypto). Their hosts are decorative, not mystery answers.'],
- ['How do Daily Challenges work?','The daily challenges reset at 00:00 UTC. Finish Full Scan before unlocking One Signal. Daily Trivia has its own separate daily ranked run.'],
+ ['How do Daily Challenges work?','The daily challenges reset at 00:00 UTC. Finish Full Scan before unlocking One Signal. Each new ranked stage has a 120-second Rush timer from the first guess. Daily Trivia has its own separate daily ranked run.'],
  ['What are Full Scan, One Signal and Rush?','These are gameplay rule options, not additional modes. Full Scan compares all six traits per guess (five attempts), preserving confirmed matches. One Signal reveals one trait per guess (six attempts), preserving confirmed matches. Rush adds a two-minute timer beginning with the first guess.'],
  ['How do I unlock Forbidden Intel?','Complete the daily Full Scan, One Signal and Trivia checkpoints. Open any unlocked Intel rewards from the Home centerpiece.'],
  ['What does the Next Game Legend question mark do?','The spinning wheel chooses a random Legend. It does not give away the answer to a running puzzle.'],
