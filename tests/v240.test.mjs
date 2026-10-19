@@ -14,7 +14,7 @@ test('V2.40: all six ORIGINAL modes are primary interactive Home cards, no scan 
  assert.ok(showcase.includes("action:'trivia'"));
  for(const wrong of ["id:'full'","id:'signal'","id:'rush'","id:'wheel'"])assert.ok(!showcase.includes(wrong));
  assert.ok(!home.includes('gtp239-secondary'));
- assert.ok(home.includes('gtp222-home-dock')&&home.includes('data-action="wheel"'));
+ assert.ok(home.includes('tac258-discover')&&home.includes('data-action="wheel"'));
 });
 test('V2.40: separate Legend is attached to each original game mode, never the answer',()=>{
  for(const [mode,slug] of Object.entries(hosts)){

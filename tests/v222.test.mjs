@@ -10,13 +10,13 @@ const home=app.split('function home(){')[1].split('function homeLegacy(){')[0];
 test('only one header is rendered on all screens with HOME nav',()=>{
  assert.ok(app.includes('app.innerHTML=nav()+'));
  assert.ok(home.includes('gtp222-layout')&&!home.includes('gtp219-header'));
- assert.ok(app.includes('data-action="home">⌂ HOME'));
+ assert.ok(app.includes('data-action="home"> HOME'));
  assert.ok(css.includes('#app[data-screen="home"]>.gtp2-top{display:flex!important'));
 });
 test('six cards orbit around a single central reward hub',()=>{
  assert.ok(home.includes('gtp222-arena')&&home.includes('gtp222-core'));
  for(const mode of ['classic','pixel','quote','ability','emoji','trivia'])assert.ok(home.includes(`'${mode}'`));
- assert.ok(home.includes('data-action="wheel"')&&home.includes('gtp222-wheel-illustration'));
+ assert.ok(home.includes('data-action="wheel"')&&home.includes('tac258-wheel-face'));
  assert.ok(home.includes('data-action="intel-open"')&&home.includes('playContext(session')&&!home.includes('gtp222-primary-actions'));
 });
 test('Full Scan retains correct matches across later different guesses',()=>{
@@ -36,7 +36,7 @@ test('saved days, stats and submission receipts survive reload',()=>{
  const map=new Map(),storage={getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};
  let st=freshStore();st.history.wins=17;st.days['2026-10-17']={daily218:{full:{finished:true,won:true}}};st.submittedDays['2026-10-17']={totalScore:2440};saveStore(st,storage);
  const again=loadStore(storage);assert.equal(again.history.wins,17);assert.equal(again.days['2026-10-17'].daily218.full.won,true);assert.equal(again.submittedDays['2026-10-17'].totalScore,2440);
- assert.ok(app.includes('SAVED_BOARD_KEY')&&app.includes('OFFLINE · SAVED RESULTS'));
+ assert.ok(app.includes('SAVED_BOARD_KEY')&&app.includes('OFFLINE � SAVED RESULTS'));
 });
 test('priority 10 legends try Original model renders before square portraits',()=>{
  const art=read('src/art.mjs');for(const name of ['Vantage','Sparrow','Rampart','Revenant','Loba','Gibraltar','Conduit','Catalyst','Ballistic','Alter'])assert.ok(art.includes('Original%20'+name+'.png'));
@@ -81,7 +81,7 @@ test('the three Intel checkpoints have deterministic actionable tactical notes',
 test('read-aware Intel UI and contextual reward access are wired',()=>{
  assert.ok(app.includes('function intelState(checkpoint)'));
  assert.ok(app.includes('store.intelOpenedDays?.['));
- assert.ok(app.includes('NEW · OPEN ↗')&&app.includes('READ ✓'));
+ assert.ok(app.includes('NEW � OPEN ?')&&app.includes('READ �'));
  assert.ok(app.includes("intelReadyMarkup(dailyTrack==='full'?1:2)"));
  assert.ok(app.includes('intelReadyMarkup(3)'));
  assert.ok(css.includes('gtp223-intel-ready')&&css.includes('gtp223-intel-source'));
@@ -89,7 +89,7 @@ test('read-aware Intel UI and contextual reward access are wired',()=>{
 test('home cards leave space for character art; game sidebars match every mode',()=>{
  for(const mode of ['classic','pixel','quote','ability','emoji'])
   assert.ok(css.includes(`[data-mode="${mode}"]{--side-tone:`));
- assert.ok(css.includes('V2.23 · SHOWCASE'));
+ assert.ok(css.includes('V2.23 � SHOWCASE'));
  assert.ok(css.includes('grid-template-columns:minmax(214px,286px)'));
  assert.ok(css.includes('.gtp222-home:after'));
 });
@@ -97,12 +97,12 @@ test('home cards leave space for character art; game sidebars match every mode',
 test('V2.24 orbit, full dock art, game sessions and Trivia timeout are wired',()=>{
  assert.ok(app.includes('gtp224-orbit-'));
  assert.ok(app.includes('gtp230-session'));
- assert.ok(css.includes('V2.24 — true orbit'));
+ assert.ok(css.includes('V2.24 - true orbit'));
  assert.ok(css.includes('.gtp222-home-dock .gtp222-wheel-illustration'));
  assert.ok(css.includes('.gtp222-home-dock .gtp222-spotlight-art'));
  assert.ok(css.includes('#app[data-screen="trivia"] .trivia-page'));
  assert.ok(app.includes("requestAnimationFrame(frame)"));
- assert.ok(app.includes('TIME’S UP · QUESTION EXPIRED'));
+ assert.ok(app.includes('TIME'S UP � QUESTION EXPIRED'));
 });
 test('portrait catalog prioritizes known real vertical assets, including missing screenshot roster',async()=>{
  const {portraitOriginalNames,portraitSourcesFor,stableFanPortraits,verifiedSkinPortraits,reliableIconFallbacks}=await import('../src/art.mjs');
@@ -121,7 +121,7 @@ test('portrait catalog prioritizes known real vertical assets, including missing
  for(const slug of ['loba','gibraltar'])assert.ok(portraitSourcesFor(slug)[0].includes(slug==='loba'?'0012_Loba.png':'0015_Gibraltar.png'));
 });
 test('screenshot regression: dark Browse, non-overlapping Home and original graphic wheel',()=>{
- assert.ok(css.includes('V2.25 — Screenshot QA'));
+ assert.ok(css.includes('V2.25 - Screenshot QA'));
  assert.ok(css.includes('#app .gtp2-picker .picker-header'));
  assert.ok(css.includes('#app .gtp2-picker .picker-search select'));
  assert.ok(css.includes('#app .gtp2-picker .portrait-unavailable'));
@@ -142,7 +142,7 @@ test('V2.26 missing five portraits have real hosted per-Legend GitHub fallback s
 });
 test('V2.26 every incorrect Full Scan cell has a red state and summary',()=>{
  assert.ok(app.includes('data-scan-kind="${kind}"'));
- assert.ok(app.includes('WRONG · DIFFERENT'));
+ assert.ok(app.includes('WRONG � DIFFERENT'));
  assert.ok(app.includes('gtp226-scan-metrics'));
  assert.ok(app.includes('matches=FIELDS.filter'));
  assert.ok(css.includes('.scan-cell.bad[data-scan-kind="wrong"]'));
@@ -176,7 +176,7 @@ test('V2.27 active Trivia centers its question and supports typed answers in vie
  assert.ok(app.includes('trivia-page-written'));
  assert.ok(app.includes('function focusTriviaQuestion()'));
  assert.ok(app.includes("question.scrollIntoView({behavior:'instant',block:'center'"));
- assert.ok(css.includes('V2.27 — Focused Trivia gameplay'));
+ assert.ok(css.includes('V2.27 - Focused Trivia gameplay'));
  assert.ok(css.includes('.trivia-page-active .trivia-type'));
  assert.ok(css.includes('.trivia-page-active .trivia-main'));
 });
@@ -221,7 +221,7 @@ test('V2.30 cinematic game matches supplied seven-panel UI reference while retai
  assert.ok(app.includes('data-action="surrender"'));
  assert.ok(app.includes("else if(action==='surrender')"));
  assert.ok(app.includes('window.confirm('));
- assert.ok(css.includes('V2.30 — CINEMATIC NEON MODES'));
+ assert.ok(css.includes('V2.30 - CINEMATIC NEON MODES'));
  for(const mode of ['classic','pixel','quote','ability','emoji'])
   assert.ok(css.includes('[data-mode="'+mode+'"]{--gtp230-accent:'));
  assert.ok(css.includes('.gtp230-board'));
@@ -231,7 +231,7 @@ test('V2.30 cinematic game matches supplied seven-panel UI reference while retai
 });
 
 test('V2.31 themed backgrounds backfill both screen gutters without horizontal scrolling',()=>{
- assert.ok(css.includes('V2.31 — SCREENSHOT QA / FULL-BLEED'));
+ assert.ok(css.includes('V2.31 - SCREENSHOT QA / FULL-BLEED'));
  assert.ok(css.includes('background-image:'));
  assert.ok(css.includes('var(--gtp230-back)!important'));
  assert.ok(css.includes('width:calc(100vw - 22px)!important'));
@@ -260,17 +260,17 @@ test('V2.31 short and mobile viewports retain scrollable game controls',()=>{
 
 test('V2.32 green scanner cells reveal only confirmed values with exact age',()=>{
  const target=legends.find(l=>l.name==='Bangalore');
- assert.equal(scannerDisplayValue('gender',compare(target,target,'gender')),'✓ FEMALE');
- assert.equal(scannerDisplayValue('role',compare(target,target,'role')),'✓ ASSAULT');
- assert.equal(scannerDisplayValue('age',compare(target,target,'age')),'✓ 40 EXACT');
- assert.equal(scannerDisplayValue('debut',compare(target,target,'debut')),'✓ LAUNCH');
- assert.equal(scannerDisplayValue('form',compare(target,target,'form')),'✓ HUMAN');
+ assert.equal(scannerDisplayValue('gender',compare(target,target,'gender')),'� FEMALE');
+ assert.equal(scannerDisplayValue('role',compare(target,target,'role')),'� ASSAULT');
+ assert.equal(scannerDisplayValue('age',compare(target,target,'age')),'� 40 EXACT');
+ assert.equal(scannerDisplayValue('debut',compare(target,target,'debut')),'� LAUNCH');
+ assert.equal(scannerDisplayValue('form',compare(target,target,'form')),'� HUMAN');
  const incorrect=legends.find(l=>l.gender==='Male');
- assert.equal(scannerDisplayValue('gender',compare(incorrect,target,'gender')),'✕ DIFFERENT');
- assert.equal(scannerDisplayValue('age',{kind:'wrong',value:'64',direction:-1}),'✕ DIFFERENT');
+ assert.equal(scannerDisplayValue('gender',compare(incorrect,target,'gender')),'? DIFFERENT');
+ assert.equal(scannerDisplayValue('age',{kind:'wrong',value:'64',direction:-1}),'? DIFFERENT');
  assert.equal(scannerDisplayValue('age',{kind:'hidden',value:'40'}),'? UNKNOWN');
  assert.equal(scannerDisplayValue('origin',{kind:'unknown',value:'Secret planet'}),'? UNKNOWN');
- assert.equal(scannerDisplayValue('age',{kind:'hint',value:'40'}),'✓ 40 EXACT');
+ assert.equal(scannerDisplayValue('age',{kind:'hint',value:'40'}),'� 40 EXACT');
  const alter=legends.find(l=>l.name==='Alter');
  assert.equal(scannerDisplayValue('age',compare(target,alter,'age')),'? UNKNOWN');
 });
@@ -283,7 +283,7 @@ test('V2.32 cinema board uses signal values, never unconfirmed target data',()=>
  assert.ok(board.includes('gtp230-trait-${status}'));
 });
 test('V2.32 seamless game backdrop is drawn once across the desktop',()=>{
- assert.ok(css.includes('V2.32 · ONE CONTINUOUS FULL-VIEWPORT BACKDROP'));
+ assert.ok(css.includes('V2.32 � ONE CONTINUOUS FULL-VIEWPORT BACKDROP'));
  assert.ok(css.includes('#app[data-screen="game"]::before,'));
  assert.ok(css.includes('#app[data-screen="game"]::after'));
  assert.ok(css.includes('content:none!important;display:none!important;'));
@@ -299,7 +299,7 @@ test('V2.32 seamless game backdrop is drawn once across the desktop',()=>{
 test('V2.33 adds an explicit full-screen game wallpaper node above legacy app layers',()=>{
  const render=app.split('function game(){')[1].split('function howTo()')[0];
  assert.ok(render.includes('<div class="gtp233-viewport-art" aria-hidden="true"></div><div class="gtp241-mode-scene'));;
- assert.ok(css.includes('V2.33 — DEDICATED FULL-VIEWPORT GAME ART'));
+ assert.ok(css.includes('V2.33 - DEDICATED FULL-VIEWPORT GAME ART'));
  assert.ok(css.includes('#app[data-screen="game"] > .gtp233-viewport-art'));
  assert.ok(css.includes('position:fixed!important'));
  assert.ok(css.includes('width:100vw!important;height:100vh!important;height:100dvh!important'));
@@ -322,7 +322,7 @@ test('V2.33 live game content stays above a seamless non-interactive background'
 });
 
 test('V2.34 HUD shows one full wallpaper even under navbar, title and action dock',()=>{
- assert.ok(css.includes('V2.34 — TRUE FULL-SCREEN WALLPAPER'));
+ assert.ok(css.includes('V2.34 - TRUE FULL-SCREEN WALLPAPER'));
  assert.ok(css.includes('background-image:none!important'));
  assert.ok(css.includes('#app[data-screen="game"] > .gtp233-viewport-art'));
  assert.ok(css.includes('var(--gtp230-back)!important'));
@@ -348,9 +348,9 @@ test('V2.34 visual regression runner inspects real Chromium viewport and screens
 
 test('V2.35 always-visible scan controls expose all three modes in every active game',()=>{
  const ui=app.split('function visibleRoundModes(round){')[1].split('function triedLegendNote')[0];
- assert.ok(ui.includes('▦ FULL SCAN'));
- assert.ok(ui.includes('✦ ONE SIGNAL'));
- assert.ok(ui.includes('◷ RUSH'));
+ assert.ok(ui.includes('? FULL SCAN'));
+ assert.ok(ui.includes('? ONE SIGNAL'));
+ assert.ok(ui.includes('? RUSH'));
  assert.ok(ui.includes('data-action="'));
  assert.ok(ui.includes('aria-pressed='));
  assert.ok(ui.includes("session==='daily'||round.guesses.length>0||round.finished"));
@@ -358,7 +358,7 @@ test('V2.35 always-visible scan controls expose all three modes in every active 
  assert.ok(ui.includes("LOCKED AFTER FIRST GUESS"));
  assert.ok(app.includes('${visibleRoundModes(round)}'));
  assert.ok(!app.includes('<details class="gtp230-round-options">'));
- assert.ok(css.includes('V2.35 · ALWAYS-VISIBLE SCAN RULES'));
+ assert.ok(css.includes('V2.35 � ALWAYS-VISIBLE SCAN RULES'));
  assert.ok(css.includes('.gtp235-rule-choice.is-active.scan-full'));
  assert.ok(css.includes('.gtp235-rule-choice.is-active.scan-signal'));
  assert.ok(css.includes('.gtp235-rule-choice.is-active.scan-rush'));
@@ -387,7 +387,7 @@ test('V2.49 Identity Signal Board remains visible without the old boxed sidebar'
  const console=app.split('function cinematicControls(round,target){')[1].split('function game(){')[0];
  assert.ok(!console.includes('latestSignal(round,target)'));
  assert.ok(!console.includes('${triedLegendNote(round)}'));
- assert.ok(css.includes('V2.36 · Screenshot-led gameplay UI polish'));
+ assert.ok(css.includes('V2.36 � Screenshot-led gameplay UI polish'));
  assert.ok(css.includes('.gtp236-intel-column>.gtp235-tried'));
  assert.ok(css.includes('.gtp230-control-row>.gtp230-btn'));
 });

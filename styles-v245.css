@@ -1,8 +1,8 @@
-/* GUESS THE PREDATOR — V2.45 CINEMATIC HALLOWEEN OVERHAUL */
+/* GUESS THE PREDATOR - V2.45 CINEMATIC HALLOWEEN OVERHAUL */
 /* A deliberately scoped single visual authority for Home, gameplay, picker and Trivia. */
 #app .top.gtp2-top{background:linear-gradient(100deg,#050b17f2,#101420ec 48%,#070c18f3)!important;border-bottom:1px solid #cd594c9e!important;box-shadow:0 9px 22px #0009!important;backdrop-filter:blur(16px)!important}
 #app button:focus-visible{outline:2px solid #ffd0a7!important;outline-offset:3px!important}
-/* HOME — V2.46: photographic Halloween scene and actual floating orbit buttons.
+/* HOME - V2.46: photographic Halloween scene and actual floating orbit buttons.
    The existing hero photo ALREADY contains two Mirage characters. Never stack another pair.
    Six game modes remain real buttons with their previous actions. */
 #app[data-screen="home"] .gtp246-outlands-home{
@@ -283,7 +283,7 @@
 @media(prefers-reduced-motion:reduce){#app .gtp245-picker-item{transition:none!important}#app[data-screen="home"] .gtp239-mode-card{transition:none!important}}
 
 
-/* GAME — V2.46: left image+actions share one continuous frame; right always-visible Intel column.
+/* GAME - V2.46: left image+actions share one continuous frame; right always-visible Intel column.
    This fixes the previous blank gap under the game image. */
 @media(min-width:901px){
  #app[data-screen="game"] .gtp230-arena{
@@ -372,7 +372,7 @@
 #app .gtp246-sound-section .gtp237-settings-actions{display:flex!important;flex-direction:column!important;gap:9px!important;margin:0!important}
 #app .gtp246-sound-section .gtp237-settings-actions button{min-height:45px!important;width:100%!important;border:1px solid #536e82!important;border-radius:7px!important;background:linear-gradient(165deg,#132c41,#071320)!important;color:#f8f4ed!important;font-size:12px!important}
 
-/* V2.47 — clean mockup pass. Consolidated in the existing V2.45+ stylesheet. */
+/* V2.47 - clean mockup pass. Consolidated in the existing V2.45+ stylesheet. */
 /* The original Mirage art stays visible at both sides; no additional heavy vignette. */
 #app[data-screen="home"] .gtp246-outlands-home .gtp219-backdrop{
   opacity:1!important;
@@ -727,7 +727,7 @@
  #app[data-screen="game"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-canvas{width:min(100%,320px)!important;max-width:320px!important;max-height:185px!important}
 }
 
-/* V2.51 cinematic scene pass — independent environments, no shared Mirage texture. */
+/* V2.51 cinematic scene pass - independent environments, no shared Mirage texture. */
 #app[data-screen="game"]>.gtp233-viewport-art{
  background-position:center center!important;background-repeat:no-repeat!important;background-size:cover!important;
  opacity:1!important;filter:none!important}
@@ -744,7 +744,7 @@
  background:linear-gradient(110deg,#06151b9a,transparent 50%,#06151d8a),url("./assets/game-hosts/crypto.svg") center/cover no-repeat!important;
  opacity:1!important}
 
-/* V2.52 — Pixel needs to be legible; Ability must show the scanner above the fold.
+/* V2.52 - Pixel needs to be legible; Ability must show the scanner above the fold.
    Fixed game proportions are intentional, and resize at tablet/phone breakpoints. */
 #app[data-screen="game"][data-mode="pixel"] .gtp230-arena{
  grid-template-rows:clamp(475px,56svh,595px) auto!important;
@@ -841,13 +841,13 @@
  }
 }
 
-/* V2.53 — renamed brand, fitted for existing Home layout. */
+/* V2.53 - renamed brand, fitted for existing Home layout. */
 #app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(50px,5.4vw,88px)!important;letter-spacing:0!important;max-width:min(90vw,1000px)!important;white-space:normal!important}
 #app .gtp219-brand-type{min-width:113px!important;letter-spacing:-.01em!important}
 #app .gtp219-brand-type strong{letter-spacing:-.025em!important}
 @media(max-width:560px){#app[data-screen="home"] .gtp239-masthead h1{font-size:clamp(42px,10.5vw,64px)!important}}
 
-/* V2.54 — approved photographic scenes. Decorative layers never enter layout. */
+/* V2.54 - approved photographic scenes. Decorative layers never enter layout. */
 #app[data-screen="game"][data-mode="ability"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#050c1010,#050b1840 50%,#050b1880),url('./assets/game-bg/ability-v254.webp')!important}
 #app[data-screen="game"][data-mode="pixel"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#050c1810,#050b1840 50%,#050b1880),url('./assets/game-bg/pixel-v254.webp')!important}
 #app[data-screen="game"][data-mode="quote"]>.gtp233-viewport-art{background-image:linear-gradient(90deg,#12071510,#0f091b40 50%,#0b071880),url('./assets/game-bg/quote-v257.webp')!important}
@@ -925,7 +925,7 @@
  #app[data-screen="home"] .gtp246-orbit-mode .gtp242-mode-plate strong{white-space:normal!important}
 }
 
-/* V2.55 — restrained cinematic light, redesigned roster and independent rankings. */
+/* V2.55 - restrained cinematic light, redesigned roster and independent rankings. */
 #app[data-screen="game"]>.gtp233-viewport-art,#app[data-screen="trivia"]>.gtp241-trivia-scene{filter:brightness(.8) saturate(.72) contrast(1.04)!important}
 #app[data-screen="game"] .gtp241-scene-host img{filter:drop-shadow(0 10px 16px #0008)!important}
 #app[data-screen="game"] .gtp230-titlebar{box-shadow:0 8px 24px #0006!important}
@@ -1101,3 +1101,59 @@
 #app[data-screen="game"][data-mode="classic"] .gtp230-console .gtp230-btn:is(:hover,:focus-visible){border-color:#e0ae8d!important;background:#2b303b!important}
 #app[data-screen="game"][data-mode="classic"] .gtp230-console .gtp230-btn:disabled{opacity:.4!important}
 @media(max-width:650px){#app[data-screen="home"] .gtp239-home-dock{grid-template-columns:minmax(0,1fr)!important}#app[data-screen="home"] .gtp239-home-dock .tac-haunted-wheel{min-height:132px!important;padding:18px!important;gap:18px!important}#app[data-screen="home"] .tac-haunted-wheel .tac-wheel-orbit{flex-basis:80px;width:80px;height:80px}.tac-wheel-orbit b{font-size:52px}#app[data-screen="home"] .gtp246-home-core .gtp239-bin-image{max-height:230px!important}}
+
+/* V2.58: independent, matched Halloween feature panels. */
+#app[data-screen="home"] .tac258-discover{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:1160px;width:100%;margin:24px auto 0;padding:0 18px;box-sizing:border-box}
+#app[data-screen="home"] .tac258-card{position:relative;isolation:isolate;display:flex;align-items:center;min-width:0;min-height:230px;padding:28px;border:1px solid #9b76524d;border-radius:10px;background:radial-gradient(ellipse at 5% 80%,#8c432a25,transparent 70%),linear-gradient(125deg,#19141dec,#10101aed);box-shadow:0 15px 35px #0005;overflow:hidden;text-align:left;color:#f3e7d7;box-sizing:border-box}
+#app[data-screen="home"] .tac258-card::before{content:"";position:absolute;inset:8px;z-index:-1;pointer-events:none;border:1px solid #c7a17712;border-radius:4px}
+#app[data-screen="home"] .tac258-random{gap:26px;cursor:pointer;font:inherit;transition:border-color .2s,transform .2s}
+#app[data-screen="home"] .tac258-random:hover{transform:translateY(-3px);border-color:#d4a16e}
+#app[data-screen="home"] .tac258-random:focus-visible{outline:2px solid #ffcf96;outline-offset:5px}
+.tac258-copy{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;min-width:0;gap:9px}
+.tac258-eyebrow{font:700 10px/1.5 Arial,sans-serif;letter-spacing:.16em;color:#d4aa7d}
+.tac258-copy>strong,.tac258-copy>h2{font-family:Impact,'Arial Narrow',sans-serif;font-size:clamp(30px,3.1vw,44px);font-weight:800;line-height:.98;letter-spacing:.025em;margin:0;color:#f7eadd;text-shadow:0 3px 12px #0006}
+.tac258-copy>strong em{font-style:normal;color:#e4ac72}
+.tac258-description{font:12px/1.6 Arial,sans-serif;color:#b9aeb1;margin:0}
+.tac258-cta{display:flex;align-items:center;gap:20px;font:700 10px/1.3 Arial,sans-serif;letter-spacing:.1em;color:#f1c38f;border-bottom:1px solid #a7774b77;padding:9px 0 5px;margin-top:2px}
+.tac258-cta>span{font-size:19px;line-height:1}
+.tac258-wheel{position:relative;display:grid;place-items:center;flex:0 0 142px;width:142px;height:142px;filter:drop-shadow(0 7px 16px #0008)}
+.tac258-wheel::before{content:"";position:absolute;top:-7px;left:calc(50% - 8px);border-left:8px solid transparent;border-right:8px solid transparent;border-top:20px solid #f5c28b;z-index:3}
+.tac258-wheel-face{position:relative;display:grid;place-items:center;width:130px;height:130px;border-radius:50%;border:3px solid #b78a58;box-shadow:0 0 0 5px #35271f,0 0 0 6px #bb8e5e66,inset 0 0 16px #0009;background:repeating-conic-gradient(from -15deg,#6b3a29 0deg 30deg,#b47a46 30deg 60deg,#373040 60deg 90deg,#8b6343 90deg 120deg);transition:transform 1.2s cubic-bezier(.2,.6,.3,1)}
+.tac258-wheel-face i{position:absolute;inset:7px;border:1px dashed #f6cc9877;border-radius:50%}
+.tac258-wheel-face b{display:grid;place-items:center;width:42px;height:42px;border:2px solid #d6ab78;border-radius:50%;background:#19161e;font:900 28px/1 Impact,sans-serif;color:#f2c18a}
+.tac258-random:hover .tac258-wheel-face{transform:rotate(65deg)}
+#app[data-screen="home"] .tac258-daily{background:radial-gradient(ellipse at 85% 60%,#b46e3533,transparent 65%),linear-gradient(125deg,#19141ded,#10101af2);padding-right:44%;align-items:center}
+.tac258-role{font:700 10px/1.4 Arial,sans-serif;text-transform:uppercase;letter-spacing:.12em;color:#e2b688}
+.tac258-reset{font:700 9px/1.4 Arial,sans-serif;letter-spacing:.12em;color:#8f8485;margin-top:9px}
+#app[data-screen="home"] .tac258-portrait{position:absolute;right:0;bottom:0;top:12px;width:48%;pointer-events:none;overflow:hidden;mask-image:linear-gradient(to right,transparent,#000 18%);-webkit-mask-image:linear-gradient(to right,transparent,#000 18%)}
+#app[data-screen="home"] .tac258-portrait img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center bottom!important;transform:none!important;filter:drop-shadow(0 0 12px #d4a67522)!important}
+#app .wheel-modal .wheel-disc{background:radial-gradient(circle,#b0793522,transparent 68%)!important}
+#app .wheel-modal .wheel-arrow{color:#f5c28b!important;text-shadow:0 3px 10px #000!important}
+#app .wheel-modal .wheel-pick{background:#15141e!important;border-color:#9b76524d!important;color:#f5e8d9!important}
+#app .wheel-modal .wheel-pick strong{color:#f5e8d9!important}
+#app .wheel-modal .wheel-pick-badge,#app .wheel-modal .wheel-stamp{color:#e2b688!important;background:#34251e!important;border-color:#956947!important}
+@media(max-width:800px){#app[data-screen="home"] .tac258-discover{gap:14px;padding:0 10px}#app[data-screen="home"] .tac258-card{padding:22px 18px;min-height:220px}.tac258-wheel{flex-basis:96px;width:96px;height:96px}.tac258-wheel-face{width:90px;height:90px}#app[data-screen="home"] .tac258-random{gap:18px}.tac258-copy>strong,.tac258-copy>h2{font-size:32px}.tac258-eyebrow{font-size:9px}}
+@media(max-width:600px){#app[data-screen="home"] .tac258-discover{grid-template-columns:1fr;margin-top:20px}#app[data-screen="home"] .tac258-card{min-height:205px;padding:24px}#app[data-screen="home"] .tac258-random{gap:25px}.tac258-wheel{flex-basis:110px;width:110px;height:110px}.tac258-wheel-face{width:104px;height:104px}#app[data-screen="home"] .tac258-daily{padding-right:44%}.tac258-copy>strong,.tac258-copy>h2{font-size:36px}}
+@media(prefers-reduced-motion:reduce){#app[data-screen="home"] .tac258-random,.tac258-wheel-face{transition:none}.tac258-random:hover .tac258-wheel-face{transform:none}}
+
+/* Daily rule descriptions work on hover, keyboard focus and touch. */
+#app .tac-stage-guide{position:relative;min-width:0;display:flex}
+#app .tac-stage-guide>button{width:100%;padding-right:35px}
+#app .tac-stage-info{position:absolute;right:9px;top:9px;z-index:6}
+#app .tac-stage-info>summary{display:grid;place-items:center;list-style:none;width:19px;height:19px;border:1px solid #bd9a6d88;border-radius:50%;color:#f2cd96;font:700 12px Georgia,serif;cursor:pointer}
+#app .tac-stage-info>summary::-webkit-details-marker{display:none}
+#app .tac-stage-info>summary:focus-visible{outline:2px solid #ffd6a2;outline-offset:3px}
+#app .tac-stage-info>p{display:none;position:absolute;top:23px;right:-9px;width:min(290px,75vw);padding:15px 17px;border:1px solid #ac8258;border-radius:7px;background:#14131cf7;box-shadow:0 10px 35px #000a;color:#e2d6c9;font:12px/1.7 Arial,sans-serif;margin:0;text-align:left;box-sizing:border-box}
+#app .tac-stage-guide:hover .tac-stage-info>p,#app .tac-stage-guide:focus-within .tac-stage-info>p,#app .tac-stage-info[open]>p{display:block}
+#app[data-screen="home"] .tac258-portrait .portrait-holder{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;aspect-ratio:auto!important;background:none!important;border:0!important;border-radius:0!important;overflow:visible!important}
+#app .wheel-modal .wheel-heading{background:#1c1720!important;border-bottom:1px solid #a87a4d55!important;color:#f5e8d9!important}
+#app .wheel-modal .wheel-side{background:transparent!important;color:#f5e8d9!important}
+#app .wheel-modal h2,#app .wheel-modal h3{color:#f5e8d9!important}
+#app .wheel-modal p,#app .wheel-modal .wheel-help,#app .wheel-modal .wheel-pick small{color:#bdb0ac!important}
+#app .wheel-modal .kicker{color:#d0a06e!important}
+#app .wheel-modal .wheel-pick-empty{color:#b9a69a!important;font-size:18px!important}
+#app .wheel-modal .wheel-pick{box-shadow:none!important}
+#app .wheel-modal .wheel-settings{background:#241d27!important;border:1px solid #a87a4d44!important;border-radius:6px!important}
+#app .wheel-modal .wheel-settings label{color:#d9c4ad!important}
+#app .wheel-modal .wheel-check input{accent-color:#bd8a52}
+#app .wheel-modal [data-action="close-wheel"]{background:#2d2530!important;border:1px solid #9d7955!important;color:#f5e8d9!important;box-shadow:none!important}
