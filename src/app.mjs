@@ -429,7 +429,7 @@ function getVisual(round,target){
       <canvas class="pixel-canvas" data-resolution="${size}" width="${size}" height="${size}" aria-label="Progressively decrypted full scene featuring a Legend"></canvas>
       ${portrait(target.slug,{alt:'',cls:'pixel-source',concealed:!round.finished,eager:true})}
       <div class="pixel-fallback" role="group" aria-label="Offline character identity clues"><span class="pixel-fallback-kicker">◈ BACKUP INTEL / SIGNAL RECOVERY</span><div class="pixel-fallback-emblem">${step>=4?esc((target.emoji.split(/\s+/)[0]||'◇')):'?'}</div><strong>${step>=3?esc(target.role.toUpperCase()):'CLASSIFIED ROLE'}</strong><p>${step>=5?esc(target.title):'IDENTITY PROFILE ENCRYPTED'}</p><small>${step>=6?esc(target.signature):'ADDITIONAL INTEL UNLOCKS AFTER GUESSES'}</small></div><div class="pixel-error" aria-hidden="true"></div><div class="pixel-scratch scratch-a"></div><div class="pixel-scratch scratch-b"></div><div class="pixel-scan"></div><div class="pixel-vignette"></div>
-      </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div><div class="pixel-effect-label" aria-label="Soft blur effect">◌ SOFT BLUR</div></div>`;
+      </div><div class="pixel-dots"></div><div class="pixel-caption">DECRYPTION ${pct[step]}% · ${maxGuesses(round)-round.guesses.length} MOVES LEFT</div></div>`;
   }
   if(mode==='quote')return `<div class="clue-visual gtp2-quote-rework gtp29-quote-visual"><div class="gtp2-quote-head"><span>◈ WRITTEN CLUE / NO VOICE IMPERSONATION</span><span>CHANNEL 0${MODES.indexOf(active)+1}</span></div><div class="gtp29-quote-card"><blockquote>“${esc(target.quote)}”</blockquote><div class="gtp29-quote-footer"><span class="gtp2-live-dot"></span><b>SPEAKER UNKNOWN</b><small>Use class, age and launch comparisons to narrow it down.</small></div></div></div>`;
   if(mode==='ability')return `<div class="clue-visual visual-ability gtp210-ability-stage" aria-label="Ability icon puzzle">
@@ -520,7 +520,7 @@ function guessBody(round,target){
   if(round.finished){
     const score=gameScore(round);const rank=gameRank(score);const badges=styleBadges(round);
     return `<div class="end-panel ${round.won?'gtp212-victory':''}"><span class="rank">${round.won?rank:'—'}</span><h2>${round.won?'TARGET FOUND!':round.loss==='time'?'TIME’S UP.':'NICE TRY.'}</h2><p>${round.won?`You identified ${esc(target.name)} in ${round.guesses.length} guesses. ${score} points earned.`:`Your mystery Legend was ${esc(target.name)}. Every guess counts. Try another round!`}</p>${badges.length?`<div class="medal-row">${badges.map(tag=>`<span class="medal">${esc(tag)}</span>`).join('')}</div>`:''}<div class="answer-tag">${portrait(target.slug,{alt:target.name,cls:'balanced'})}<strong>${esc(target.name)}</strong></div>
-      <div class="end-actions">${session==='daily'?`<button class="btn pink" data-action="next">${dailySummary(store.days,today()).completed?'POST DAILY SCORE':'NEXT DAILY CHALLENGE'} ↗</button>`:''}<button class="btn ghost" data-action="home">BACK TO MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
+      <div class="end-actions">${session==='daily'?`<button class="btn pink" data-action="next">${dailySummary(store.days,today()).completed?'VIEW LEADERBOARD':'NEXT DAILY CHALLENGE'} ↗</button>`:'<button class="btn pink" data-action="next">↻ PLAY AGAIN</button>'}<button class="btn ghost" data-action="home">BACK TO MODES</button></div></div>${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}${round.mode==='full'?scannerMarkup(round,target):''}`;
   }
   const hintUnavailable=round.guesses.length===0||round.hints.length>=MAX_HINTS||availableHintFields(round,target,legends).length===0;
   return `<div class="gtp229-stepbar"><div><span class="gtp229-step">02 · YOUR GUESS</span><h2>IDENTIFY THE <em>LEGEND</em></h2></div><strong class="gtp229-remaining">${maxGuesses(round)-round.guesses.length}<small> GUESSES LEFT</small></strong></div>
@@ -536,7 +536,7 @@ function guessBody(round,target){
 
 /** V2.30 cinematic round surface: UI only; engine scoring remains unchanged. */
 function cinematicIdentityBoard(round,target){
- const state=round.guesses.length?scannerState(round,target,legends):null;
+ const state=round.won?Object.fromEntries(FIELDS.map(field=>[field,{kind:'hint',value:formatValue(target[field],field)}])):round.guesses.length?scannerState(round,target,legends):null;
  const names={realName:'REAL NAME',name:'REAL NAME',role:'CLASS',class:'CLASS',age:'AGE',release:'RELEASE',season:'SEASON'};
  const rows=FIELDS.map((field,i)=>{
   const trait=state?.[field];
@@ -624,7 +624,7 @@ function cinematicControls(round,target){
     <small>${round.won?`YOU GOT IT RIGHT · ${score} POINTS · ${round.guesses.length} GUESSES`:'The correct Legend is revealed above.'}</small>
    </div>
    <div class="gtp230-finished-actions">
-    ${session==='daily'?'<button type="button" data-action="next" class="gtp230-btn gtp230-btn-main">NEXT DAILY STEP ↗</button>':''}
+    ${session==='daily'?'<button type="button" data-action="next" class="gtp230-btn gtp230-btn-main">'+(dailySummary(store.days,today()).completed?'VIEW LEADERBOARD ↗':'NEXT DAILY STEP ↗')+'</button>':'<button type="button" data-action="next" class="gtp230-btn gtp230-btn-main">↻ PLAY AGAIN</button>'}
     <button type="button" data-action="home" class="gtp230-btn gtp230-btn-secondary">BACK TO MODES</button>
    </div>
    ${session==='daily'?intelReadyMarkup(dailyTrack==='full'?1:2):''}
@@ -796,12 +796,13 @@ function leaderboard(){
  const rows=boardData?.[boardTab]||[];
  const isTodayComplete=summary.completed && !sharedDay && today()===utcDay();
  const existingSubmission=store.submittedDays?.[today()];
- return `<main class="wrap gtp27-leaderboard" aria-labelledby="rank-title"><span class="kicker">PUBLIC HALL OF FAME / TWO RANKINGS</span><h1 id="rank-title">THE <em>LEADERBOARD.</em></h1><p class="lead">Daily shows today's best hunters. Overall adds all submitted daily scores and streak bonuses.</p>
+ const canSubmitDaily=isTodayComplete&&leaderboardConfigured()&&!existingSubmission;
+ return `<main class="wrap gtp27-leaderboard" aria-labelledby="rank-title"><span class="kicker">PUBLIC HALL OF FAME / TWO RANKINGS</span><h1 id="rank-title">THE <em>LEADERBOARD.</em></h1><p class="lead">Daily shows today's best hunters. Overall adds Daily scores and streak bonuses. Free Play does not count toward the public leaderboard.</p>
  <div class="board-switch" role="group" aria-label="Choose leaderboard"><button data-action="board-tab" data-board="daily" class="${boardTab==='daily'?'active':''}" aria-pressed="${boardTab==='daily'}">◈ DAILY · ${esc(utcDay())}</button><button data-action="board-tab" data-board="overall" class="${boardTab==='overall'?'active':''}" aria-pressed="${boardTab==='overall'}">♛ OVERALL · ALL-TIME</button></div>
  <section class="gtp27-board"><div class="board-head"><strong>${boardTab==='daily'?'TOP DAILY HUNTERS':'OVERALL LEGENDS'}</strong><small>${boardLoading&&rows.length?'UPDATING · LAST SAVED RESULTS VISIBLE':leaderboardConfigured()?'LIVE · PUBLIC DATABASE':'DATABASE CONNECTION PENDING'}</small></div>
  ${!leaderboardConfigured()?`<div class="board-empty"><b>RANKINGS NOT CONNECTED YET</b><p>The game owner must link a Supabase project first. The database and server validation code are included in this release.</p></div>`:boardLoading&&!rows.length?'<div class="board-empty">LOADING THE LEADERBOARD…</div>':boardError&&!rows.length?`<div class="board-empty">${esc(boardError)}</div>`:rows.length?`<div class="board-table">${rows.map((line,i)=>`<div class="board-row"><span>#${Number(line.position)||i+1}</span><strong>${esc(line.player_name)}</strong><b>${Number(line.score).toLocaleString('en-US')} PTS</b><small>${boardTab==='daily'?`✦ STREAK ${Number(line.streak)||0}`:`${Number(line.days_played)||0} DAYS · BEST ${Number(line.best_streak)||0}`}</small></div>`).join('')}</div>`:'<div class="board-empty">NO SCORES YET. BE THE FIRST!</div>'}</section>
- <section class="gtp27-submit"><div><span class="kicker">YOUR DAILY SCORE</span><h2>${summary.score.toLocaleString('en-US')} <small>PTS (LOCAL PREVIEW)</small></h2><p>${existingSubmission?`✓ DAILY SCORE SUBMITTED · ${Number(existingSubmission.totalScore||0).toLocaleString('en-US')} POINTS · SAVED ON THIS DEVICE`:summary.completed?'Two Daily Challenges complete. Submit once to appear in the public rankings.':'Complete both Daily Challenges to submit your score. Practice rounds do not count.'}</p><small>BASE ${summary.baseScore.toLocaleString('en-US')} · STREAK BONUS ${summary.bonus.toLocaleString('en-US')} · ${summary.streak} DAY STREAK</small></div>
- <form class="board-form" id="board-submit-form"><label for="board-nickname">PUBLIC NICKNAME</label><input id="board-nickname" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Your gamer nickname" value="${esc(savedNickname())}" ${isTodayComplete&&leaderboardConfigured()&&!existingSubmission?'':'disabled'}/><button class="btn pink" type="submit" ${isTodayComplete&&leaderboardConfigured()&&!existingSubmission?'':'disabled'}>${existingSubmission?'✓ SUBMITTED':'SUBMIT DAILY SCORE ↗'}</button><small>One submission per UTC day · nickname is visible to everyone · no real names. <button class="inline-link" type="button" data-action="profile">Change nickname</button></small><p id="board-submit-feedback" class="board-submit-feedback" role="status" aria-live="polite"></p></form></section>
+ <section class="gtp27-submit"><div><span class="kicker">YOUR DAILY SCORE</span><h2>${summary.score.toLocaleString('en-US')} <small>PTS (LOCAL PREVIEW)</small></h2><p>${existingSubmission?`✓ DAILY SCORE SUBMITTED · ${Number(existingSubmission.totalScore||0).toLocaleString('en-US')} POINTS · SAVED ON THIS DEVICE`:summary.completed?'Two Daily Challenges complete. Submit once to appear in the public rankings.':'Complete both Daily Challenges to unlock submission. Free Play scores are practice-only.'}</p><small>BASE ${summary.baseScore.toLocaleString('en-US')} · STREAK BONUS ${summary.bonus.toLocaleString('en-US')} · ${summary.streak} DAY STREAK</small></div>
+ <form class="board-form" id="board-submit-form"><label for="board-nickname">PUBLIC NICKNAME</label><input id="board-nickname" name="nickname" minlength="3" maxlength="18" autocomplete="nickname" pattern="[A-Za-z0-9 _-]{3,18}" placeholder="Your gamer nickname" value="${esc(savedNickname())}" ${isTodayComplete&&leaderboardConfigured()&&!existingSubmission?'':'disabled'}/>${canSubmitDaily?'<button class="btn pink" type="submit">SUBMIT DAILY SCORE ↗</button>':existingSubmission?'<button class="btn pink" type="button" disabled>✓ SCORE SUBMITTED</button>':!isTodayComplete?'<button class="btn pink" type="button" data-action="home-daily">▶ PLAY DAILY TO UNLOCK SUBMISSION</button>':'<button class="btn pink" type="button" disabled>SUBMISSION UNAVAILABLE</button>'}<small>Ranked scores require both Daily Challenges. Free Play is unranked · one submission per day · no real names. <button class="inline-link" type="button" data-action="profile">Change nickname</button></small><p id="board-submit-feedback" class="board-submit-feedback" role="status" aria-live="polite"></p></form></section>
  <div class="guide-cta"><button class="btn lilac" data-action="home">BACK TO CHALLENGES</button><button class="btn mint" data-action="records">MY STATS ↗</button></div></main>`;
 }
 async function refreshBoards(){
@@ -814,7 +815,8 @@ async function refreshBoards(){
 async function submitScores(){
  if(!leaderboardConfigured()){showToast('Database not configured yet');return;}
  const summary=dailySummary(store.days,today());
- if(!summary.completed||sharedDay||today()!==utcDay()){showToast('Complete both Daily Challenges first');return;}
+ if(!summary.completed||sharedDay||today()!==utcDay()){showToast('Ranked submissions require both Daily Challenges. Free Play is practice-only.');return;}
+ if(store.submittedDays?.[today()]){showToast('Today’s score is already submitted.');return;}
  const input=document.getElementById('board-nickname');
  if(!input||!input.checkValidity()){input?.reportValidity();return;}
  const nickname=input?.value?.trim()||'';

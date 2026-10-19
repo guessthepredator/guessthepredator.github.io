@@ -701,3 +701,45 @@
  transform:none!important;filter:drop-shadow(0 18px 21px #000d)!important;
 }
 @media(max-width:700px){#app[data-screen="trivia"]>.gtp241-trivia-scene>.portrait-holder{left:-45px!important;width:185px!important;opacity:.37!important}}
+
+/* V2.51: clean proportional Pixel preview and visible post-game intel */
+#app[data-screen="game"] .gtp230-main-clue .visual-pixel.nova-pixel-scene{
+ display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;
+ width:min(410px,43vw)!important;max-width:410px!important;min-width:0!important;height:330px!important;max-height:330px!important;
+ margin:0 auto!important;background:none!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+#app[data-screen="game"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-art{
+ display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;
+ width:100%!important;height:265px!important;min-height:0!important;overflow:hidden!important;border:0!important;box-shadow:none!important;background:none!important}
+#app[data-screen="game"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-canvas{
+ display:block!important;position:relative!important;flex:0 0 auto!important;
+ width:min(100%,370px)!important;height:auto!important;max-width:370px!important;max-height:245px!important;
+ aspect-ratio:1.38!important;object-fit:contain!important;margin:auto!important;border:0!important;box-shadow:none!important}
+#app[data-screen="game"] .visual-pixel .pixel-effect-label{display:none!important}
+#app[data-screen="game"] .gtp230-arena:has(>.gtp230-finished){grid-template-rows:minmax(305px,360px) auto!important;min-height:0!important}
+#app[data-screen="game"] .gtp230-arena:has(>.gtp230-finished)>.gtp230-main-clue{min-height:0!important;height:350px!important;overflow:hidden!important}
+#app[data-screen="game"] .gtp230-arena:has(>.gtp230-finished)>.gtp249-visible-signals>.gtp230-board{display:block!important;visibility:visible!important;opacity:1!important}
+#app[data-screen="game"] .gtp250-success .gtp230-finished-actions .gtp230-btn-main{
+ background:linear-gradient(180deg,#4cdb98,#17775f)!important;border-color:#a2fed0!important;color:#071a17!important;box-shadow:0 0 18px #4aefa86c!important}
+#app[data-screen="leaderboard"] .board-form [data-action="home-daily"]{background:linear-gradient(160deg,#18587d,#112d4c)!important;border:1px solid #7fb8d0!important;color:#f5fdff!important}
+@media(max-width:760px){
+ #app[data-screen="game"] .gtp230-main-clue .visual-pixel.nova-pixel-scene{width:min(340px,84vw)!important;height:245px!important}
+ #app[data-screen="game"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-art{height:195px!important}
+ #app[data-screen="game"] .gtp230-main-clue .visual-pixel.nova-pixel-scene .pixel-canvas{width:min(100%,320px)!important;max-width:320px!important;max-height:185px!important}
+}
+
+/* V2.51 cinematic scene pass — independent environments, no shared Mirage texture. */
+#app[data-screen="game"]>.gtp233-viewport-art{
+ background-position:center center!important;background-repeat:no-repeat!important;background-size:cover!important;
+ opacity:1!important;filter:none!important}
+#app[data-screen="game"][data-mode="pixel"]>.gtp233-viewport-art{
+ background:linear-gradient(90deg,#07101d85,transparent 43%,#0309186b),url("./assets/game-hosts/sparrow.svg") center/cover no-repeat!important}
+#app[data-screen="game"][data-mode="ability"]>.gtp233-viewport-art{
+ background:linear-gradient(90deg,#08120e72,transparent 48%,#070d0c5e),url("./assets/game-hosts/octane.svg") center/cover no-repeat!important}
+#app[data-screen="game"][data-mode="quote"]>.gtp233-viewport-art{
+ background:linear-gradient(90deg,#190d1c86,transparent 48%,#0e0a1477),url("./assets/game-hosts/loba.svg") center/cover no-repeat!important}
+#app[data-screen="game"][data-mode="emoji"]>.gtp233-viewport-art{
+ background:linear-gradient(90deg,#18130e78,transparent 45%,#0d0a106d),url("./assets/game-hosts/wattson.svg") center/cover no-repeat!important;
+ filter:brightness(.88) saturate(.84)!important}
+#app[data-screen="trivia"]>.gtp241-trivia-scene{
+ background:linear-gradient(110deg,#06151b9a,transparent 50%,#06151d8a),url("./assets/game-hosts/crypto.svg") center/cover no-repeat!important;
+ opacity:1!important}
