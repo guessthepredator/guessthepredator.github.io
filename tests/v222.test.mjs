@@ -66,7 +66,7 @@ test('partial local stores preserve progress without requiring a practice object
  assert.deepEqual(saved.practice,{});
 });
 
-test('the three Intel checkpoints have deterministic EA-linked tips',async()=>{
+test('the three Intel checkpoints have deterministic actionable tactical notes',async()=>{
  const {INTEL_POOL,intelFor}=await import('../src/daily218.mjs');
  const official=['https://help.ea.com/','https://www.ea.com/'];
  for(const idx of [1,2,3]){
@@ -74,7 +74,8 @@ test('the three Intel checkpoints have deterministic EA-linked tips',async()=>{
   const entry=intelFor('2026-10-17',idx);
   assert.deepEqual(entry,intelFor('2026-10-17',idx));
   assert.ok(entry.tip.length>70);
-  assert.ok(official.some(prefix=>entry.source.startsWith(prefix)));
+  assert.ok(entry.source===null||official.some(prefix=>entry.source.startsWith(prefix)));
+  assert.ok(entry.title.length>5&&entry.category.length>5);
  }
 });
 test('read-aware Intel UI and contextual reward access are wired',()=>{

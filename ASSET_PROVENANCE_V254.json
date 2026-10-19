@@ -1,0 +1,13 @@
+{
+  "release": "2.54.0",
+  "backgrounds": {
+    "ability": "ChatGPT Image Oct 19, 2026, 07_20_52 AM-1.png",
+    "pixel": "ChatGPT Image Oct 19, 2026, 07_20_57 AM-2.png",
+    "emoji": "ChatGPT Image Oct 19, 2026, 07_21_02 AM-3.png",
+    "quote": "ChatGPT Image Oct 19, 2026, 07_21_05 AM-4.png",
+    "trivia": "ChatGPT Image Oct 19, 2026, 07_21_10 AM-5.png"
+  },
+  "source": "User supplied approved artwork; converted to WebP without altering composition.",
+  "mythicBin": "Existing real in-game asset assets/decor/mythic-bin-real-v239.webp",
+  "storage": "Existing player, auth and progress keys preserved"
+}

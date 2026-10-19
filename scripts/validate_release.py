@@ -15,7 +15,7 @@ assert 'styles-v244.css?v=2.44.0' in html, 'Missing V2.44 cache-busted styleshee
 assert (P/'styles-v245.css').is_file(), 'V2.45 stylesheet missing'
 assert 'styles-v245.css?v=2.46.0' in html, 'V2.45 cache-busted link missing'
 style_match=re.search(r'href="\./styles\.css\?v=(\d+\.\d+\.\d+)"', html)
-app_match=re.search(r'src="\./src/app\.mjs\?v=(\d+\.\d+\.\d+)(?:&amp;release=2\.44\.0(?:&amp;rev=2\.46\.0(?:&amp;ui=2\.53\.0)?)?)?"', html)
+app_match=re.search(r'src="\./src/app\.mjs\?v=(\d+\.\d+\.\d+)(?:&amp;release=2\.44\.0(?:&amp;rev=2\.46\.0(?:&amp;ui=2\.\d+\.0)?)?)?"', html)
 assert style_match is not None, 'Versioned styles.css link missing'
 assert app_match is not None, 'Versioned app.mjs script missing'
 assert style_match.group(1)==app_match.group(1), 'CSS and JavaScript cache versions differ'

@@ -30,6 +30,6 @@ test('Renamed brand and rule explanations are included in the published app',()=
  assert.ok(app.includes('CONFIRMED MATCHES ARE REMEMBERED'));
  assert.ok(app.includes('Correct matches stay green'));
  assert.ok(css.includes('V2.53 — renamed brand'));
- assert.equal((html.match(/ui=2\.53\.0/g)||[]).length,2);
+ assert.equal((html.match(/ui=2\.\d+\.0/g)||[]).length,2);
  assert.ok(wf.includes('tests/v253.test.mjs'));
 });
