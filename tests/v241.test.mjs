@@ -38,7 +38,7 @@ test('V2.41 gives Crypto environmental scene, not just header',()=>{
  assert.ok(css.includes('#app[data-screen="trivia"]>.gtp241-trivia-scene'));
 });
 test('V2.41 Pixel reveal is slightly harder while still solvable',()=>{
- assert.deepEqual(PIXEL_SIZES,[9,12,17,29,48,100,900]);
+ assert.deepEqual(PIXEL_SIZES,[9,10,12,16,23,36,900]);
 });
 test('V2.41 How To and FAQ cover all six modes, updated rules and reward progression',()=>{
  for(const s of ['CLASSIC · MIRAGE','PIXEL · SPARROW','QUOTE · LOBA','ABILITY · OCTANE','EMOJI · WATTSON','TRIVIA · CRYPTO','FORBIDDEN INTEL','RUSH','SETTINGS','UTC'])assert.ok(guide.includes(s),s);

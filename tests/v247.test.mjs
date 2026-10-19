@@ -32,7 +32,7 @@ test('V2.47 removes extra characters and heavy borders across game modes',()=>{
 test('V2.47 Pixel stage scaled visually, logic untouched',()=>{
  assert.ok(css.includes('[data-mode="pixel"] .gtp230-main-clue .visual-pixel .pixel-canvas'));
  assert.ok(css.includes('width:88%!important;height:88%!important'));
- assert.ok(app.includes("const sizes=[9,12,17,29,48,100,900]"));
+ assert.ok(app.includes("const sizes=[9,10,12,16,23,36,900]"));
 });
 test('V2.47 refreshes browser assets and retains daily progress',()=>{
  assert.match(html,/styles-v245\.css\?v=2\.46\.0&amp;ui=2\.\d+\.\d+/, 'versioned stylesheet must be linked');

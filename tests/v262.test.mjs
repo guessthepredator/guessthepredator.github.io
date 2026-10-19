@@ -7,5 +7,5 @@ test('a first-guess Pixel win is fully revealed at resolution 900 with zero blur
  assert.match(css,/pixel-revealed[\s\S]*filter:none!important;image-rendering:auto!important/);
 });
 test('an unresolved Pixel round retains its progressive first-stage clue',()=>{
- const html=pixel({won:false,finished:false,guesses:[],mode:'full'});assert.doesNotMatch(html,/pixel-revealed/);assert.match(html,/data-resolution="9"/);assert.match(html,/--px-blur:2.4px/);
+ const html=pixel({won:false,finished:false,guesses:[],mode:'full'});assert.doesNotMatch(html,/pixel-revealed/);assert.match(html,/data-resolution="9"/);assert.match(html,/--px-blur:2.8px/);
 });
