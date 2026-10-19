@@ -1164,3 +1164,28 @@
 @media(max-width:900px){#app[data-screen="game"][data-mode] .gtp230-game .gtp230-arena{grid-template-areas:"clue" "controls" "intel"!important;grid-template-rows:auto auto auto!important}#app[data-screen="game"][data-mode="classic"] .gtp230-game .gtp230-arena>.gtp230-main-clue{min-height:120px!important}#app[data-screen="game"][data-mode="classic"] .gtp230-game .mystery-wording{gap:8px!important;padding:10px!important}#app[data-screen="game"][data-mode="classic"] .gtp230-game .mystery-wording strong{font-size:27px!important}}
 @media(max-width:560px){.tac261-debrief{margin:18px auto;padding:0 10px}.tac261-debrief-body{padding:18px}.tac261-stages{grid-template-columns:1fr}.tac261-stages>div{display:flex;justify-content:space-between;align-items:center}.tac261-score{align-items:stretch;flex-direction:column}.tac261-score .board-form{max-width:none;min-width:0}}
 
+
+/* A correct Pixel guess always reveals a clean full-resolution scene. */
+#app[data-screen="game"] .visual-pixel.pixel-revealed .pixel-art,#app[data-screen="game"] .visual-pixel.pixel-revealed .pixel-canvas.loaded{filter:none!important;image-rendering:auto!important}
+#app[data-screen="game"] .visual-pixel.pixel-revealed :is(.pixel-scratch,.pixel-scan,.pixel-vignette,.pixel-dots){display:none!important}
+
+/* V2.62: focused controls and a complete Pixel victory reveal. */
+#app[data-screen="game"] .gtp230-console .gtp230-btn-main{background:linear-gradient(115deg,#bc6842,#995435)!important;color:#fff4e7!important;border:1px solid #d49a70!important;box-shadow:0 4px 16px #0003!important}
+#app[data-screen="game"] .gtp230-console .gtp230-btn-blue{background:#202630!important;color:#eadccd!important;border-color:#62616b!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp230-console .gtp230-btn-gold{background:#29272a!important;color:#e8d5b2!important;border-color:#69605a!important;box-shadow:none!important}
+#app[data-screen="game"] .gtp230-console .gtp230-btn-danger{background:transparent!important;border-color:transparent!important;box-shadow:none!important;color:#c4a4a1!important}
+#app[data-screen="game"] .gtp230-console button:disabled{opacity:.5!important}
+#app[data-screen="game"] .gtp230-console button:not(:disabled):hover{filter:brightness(1.12)}
+#app[data-screen="game"] .tac-hint-cost{display:inline-block;font:inherit;font-size:11px;color:inherit;white-space:nowrap;margin-left:5px}
+#app[data-screen="game"] .tac-guess-selection{font-size:11px;letter-spacing:.08em;color:#d2c1b4;padding:0 0 8px;overflow-wrap:anywhere}
+#app[data-screen="game"] .tac-pixel-full{display:block;margin:10px auto 0;padding:10px 14px;border:1px solid #75675b;border-radius:6px;background:#1c2631;color:#f2e5d6;font:inherit;font-size:12px}
+#app[data-screen="game"] .visual-pixel.tac-pixel-expanded{height:auto!important;min-height:0!important;overflow:visible!important}
+#app[data-screen="game"] .visual-pixel.tac-pixel-expanded .pixel-art{height:auto!important;min-height:0!important;aspect-ratio:1!important;max-height:none!important;width:100%!important}
+#app[data-screen="game"] .tac-trait-reveal{animation:tac-scan-in .28s ease-out both;animation-delay:var(--scan-delay,0ms)}
+@keyframes tac-scan-in{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){#app[data-screen="game"] .tac-trait-reveal{animation:none}}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene.pixel-revealed .pixel-art,
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene.pixel-revealed .pixel-canvas.loaded{filter:none!important;image-rendering:auto!important}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene.tac-pixel-expanded{height:auto!important;min-height:0!important;max-height:none!important}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene.tac-pixel-expanded .pixel-art{height:auto!important;max-height:none!important;min-height:0!important;aspect-ratio:1.38!important;width:100%!important}
+#app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene.tac-pixel-expanded .pixel-canvas{width:100%!important;max-width:none!important;max-height:none!important;height:auto!important;object-fit:contain!important}
