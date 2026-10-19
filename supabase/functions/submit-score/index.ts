@@ -12,11 +12,13 @@ const json=(body:unknown,status=200,origin='https://guessthepredator.github.io')
  status,headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'authorization, apikey, x-client-info, content-type','Access-Control-Allow-Methods':'POST,OPTIONS','Vary':'Origin'}
 });
 const yesterday=day=>new Date(Date.parse(day+'T00:00:00Z')-86400000).toISOString().slice(0,10);
-function validRankedTimer(r){
+function validRankedTimer(r,now=Date.now()){
+ if(!Number.isFinite(r.startedAt)||!Number.isFinite(r.finishedAt))return false;
+ const dayStart=Math.floor(now/86400000)*86400000;
+ if(r.startedAt<dayStart||r.finishedAt<r.startedAt||r.finishedAt>now+2000||r.finishedAt>=dayStart+86400000)return false;
  if(r.timeLimit===0)return true;
- if(r.timeLimit!==120||!Number.isFinite(r.startedAt)||!Number.isFinite(r.finishedAt))return false;
+ if(r.timeLimit!==120)return false;
  const elapsed=r.finishedAt-r.startedAt;
- if(elapsed<0)return false;
  return r.loss==='time'?!r.won&&elapsed===120000:elapsed<120000;
 }
 Deno.serve(async(req:Request)=>{
