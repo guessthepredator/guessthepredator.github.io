@@ -14,7 +14,7 @@ test('V2.41 retains six original Home modes, uniform styling, and new mystery wh
  assert.ok(home.includes('gtp241-mystery-badge'));
  assert.ok(!home.includes('gtp238-wheel-host"'));
  assert.ok(home.includes('gtp241-spotlight-art'));
- assert.ok(home.includes('mythic-bin-real-v239.webp'));
+ assert.ok(home.includes('mythic-bin-halloween-v257.webp'));
  assert.ok(home.includes('♥ Made by Sebyby'));
  assert.ok(!home.includes('Not affiliated with EA or Respawn'));
  assert.ok(css.includes('.gtp239-mode-card .gtp239-mode-ring'));

@@ -12,10 +12,10 @@ test('V2.38 restores exactly two decorative Mirage home figures',()=>{
  assert.ok(css.includes('pointer-events:none'));
 });
 test('V2.39 real in-game mythic bin is bundled, not tiny vector outline',()=>{
- assert.ok(home.includes('mythic-bin-real-v239.webp'));
+ assert.ok(home.includes('mythic-bin-halloween-v257.webp'));
  assert.ok(!home.includes('gtp237-mythic-bin'));
  assert.ok(home.includes('gtp239-bin-image'));
- assert.ok(statSync(new URL('../assets/decor/mythic-bin-real-v239.webp',import.meta.url)).size>3000);
+ assert.ok(statSync(new URL('../assets/decor/mythic-bin-halloween-v257.webp',import.meta.url)).size>3000);
 });
 test('V2.38 Legend mode guides do not reveal the random answer',()=>{
  const expected={classic:'mirage',pixel:'sparrow',quote:'loba',ability:'octane',emoji:'wattson',trivia:'crypto',wheel:'pathfinder'};

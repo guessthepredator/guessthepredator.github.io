@@ -20,10 +20,10 @@ test('rebranding preserves existing practice, daily results, nickname and receip
 test('approved scene assets are full-sized WebP files and independent of gameplay geometry',()=>{
  const css=read('styles-v245.css');
  for(const mode of ['ability','pixel','quote','emoji','trivia']){
-  const bytes=readFileSync(new URL('../assets/game-bg/'+mode+'-v254.webp',import.meta.url));
+  const bytes=readFileSync(new URL('../assets/game-bg/'+mode+(mode==='quote'?'-v257.webp':'-v254.webp'),import.meta.url));
   assert.equal(bytes.subarray(0,4).toString(),'RIFF');assert.equal(bytes.subarray(8,12).toString(),'WEBP');
   assert.ok(bytes.length>100000&&bytes.length<600000,mode);
-  assert.ok(css.includes(mode+'-v254.webp'));
+  assert.ok(css.includes(mode+(mode==='quote'?'-v257.webp':'-v254.webp')));
  }
  assert.ok(css.includes('pointer-events:none!important;contain:strict;z-index:0!important'));
  assert.ok(existsSync(new URL('../assets/decor/mythic-bin-real-v239.webp',import.meta.url)));

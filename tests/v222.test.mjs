@@ -17,7 +17,7 @@ test('six cards orbit around a single central reward hub',()=>{
  assert.ok(home.includes('gtp222-arena')&&home.includes('gtp222-core'));
  for(const mode of ['classic','pixel','quote','ability','emoji','trivia'])assert.ok(home.includes(`'${mode}'`));
  assert.ok(home.includes('data-action="wheel"')&&home.includes('gtp222-wheel-illustration'));
- assert.ok(home.includes('data-action="intel-open"')&&home.includes('gtp222-primary-actions'));
+ assert.ok(home.includes('data-action="intel-open"')&&home.includes('playContext(session')&&!home.includes('gtp222-primary-actions'));
 });
 test('Full Scan retains correct matches across later different guesses',()=>{
  const target=legends.find(l=>l.name==='Mirage');
@@ -36,7 +36,7 @@ test('saved days, stats and submission receipts survive reload',()=>{
  const map=new Map(),storage={getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};
  let st=freshStore();st.history.wins=17;st.days['2026-10-17']={daily218:{full:{finished:true,won:true}}};st.submittedDays['2026-10-17']={totalScore:2440};saveStore(st,storage);
  const again=loadStore(storage);assert.equal(again.history.wins,17);assert.equal(again.days['2026-10-17'].daily218.full.won,true);assert.equal(again.submittedDays['2026-10-17'].totalScore,2440);
- assert.ok(app.includes('SAVED_BOARD_KEY')&&app.includes('LAST SAVED RESULTS VISIBLE'));
+ assert.ok(app.includes('SAVED_BOARD_KEY')&&app.includes('OFFLINE · SAVED RESULTS'));
 });
 test('priority 10 legends try Original model renders before square portraits',()=>{
  const art=read('src/art.mjs');for(const name of ['Vantage','Sparrow','Rampart','Revenant','Loba','Gibraltar','Conduit','Catalyst','Ballistic','Alter'])assert.ok(art.includes('Original%20'+name+'.png'));
@@ -383,7 +383,7 @@ test('V2.49 Identity Signal Board remains visible without the old boxed sidebar'
  const game=app.split('function game(){')[1].split('function howTo()')[0];
  assert.ok(game.includes('gtp236-intel-column'));
  assert.ok(game.includes('${triedLegendNote(round)}'));
- assert.ok(game.includes('${board}<details class="gtp248-scan-details"')&&game.includes('${triedLegendNote(round)}${side}')&&game.includes('${visibleRoundModes(round)}'), 'All six scanner traits are visible; extra guess history is optional; scan rule controls remain');
+ assert.ok(game.includes('${board}<details class="gtp248-scan-details"')&&game.includes('${triedLegendNote(round)}${board}')&&game.includes('${side}</div></details>')&&game.includes('${visibleRoundModes(round)}'), 'All six scanner traits are visible; extra guess history is optional; scan rule controls remain');
  const console=app.split('function cinematicControls(round,target){')[1].split('function game(){')[0];
  assert.ok(!console.includes('latestSignal(round,target)'));
  assert.ok(!console.includes('${triedLegendNote(round)}'));

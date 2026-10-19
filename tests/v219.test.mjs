@@ -16,7 +16,8 @@ test('game mode cards real HTML and correct five actions, no cropped screenshot 
  assert.ok(!home.includes('gtp218-mode-classic.webp'));
 });
 test('both daily checkpoints and all main interactive surfaces wired',()=>{
- for(const action of ['home-daily','session','intel-open','wheel'])assert.ok(home.includes(`data-action="${action}"`));
+ for(const action of ['intel-open','wheel'])assert.ok(home.includes(`data-action="${action}"`));
+ assert.ok(home.includes("'home-daily'")&&home.includes('playContext(session')&&app.includes('data-action="home-session"')); 
  assert.ok(home.includes('gtp219-rewards'));assert.ok(home.includes('gtp222-spotlight-art'));assert.ok(app.includes('data-action="leaderboard"'));assert.ok(app.includes('data-action="profile"'));
 });
 test('browse portraits use verified local full-body sources where available',()=>{
