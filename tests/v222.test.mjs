@@ -378,11 +378,11 @@ test('V2.35 previously guessed Legends are displayed unobtrusively with escaped 
  assert.ok(runner.includes('Scan rules must be locked after the first guess'));
 });
 
-test('V2.36 Tried Legends sits on the right above Identity Signal Board',()=>{
+test('V2.49 Identity Signal Board remains visible without the old boxed sidebar',()=>{
  const game=app.split('function game(){')[1].split('function howTo()')[0];
  assert.ok(game.includes('gtp236-intel-column'));
  assert.ok(game.includes('${triedLegendNote(round)}'));
- assert.ok(game.includes('gtp248-scan-details')&&game.includes('${triedLegendNote(round)}${board}${side}')&&game.includes('${visibleRoundModes(round)}'), 'Scanner available on demand, scan rule controls remain visible');
+ assert.ok(game.includes('${board}<details class="gtp248-scan-details"')&&game.includes('${triedLegendNote(round)}${side}')&&game.includes('${visibleRoundModes(round)}'), 'All six scanner traits are visible; extra guess history is optional; scan rule controls remain');
  const console=app.split('function cinematicControls(round,target){')[1].split('function game(){')[0];
  assert.ok(!console.includes('latestSignal(round,target)'));
  assert.ok(!console.includes('${triedLegendNote(round)}'));
