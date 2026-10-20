@@ -580,6 +580,9 @@ function victoryIntelState(round,target){
 }
 function cinematicIdentityBoard(round,target){
  const state=round.won?victoryIntelState(round,target):round.guesses.length?scannerState(round,target,legends):null;
+ const latest=round.mode==='full'&&round.guesses.length?scannerState({...round,guesses:round.guesses.slice(-1),hints:[]},target,legends):null;
+ const latestMatches=latest?FIELDS.filter(field=>latest[field]?.kind==='correct').length:0;
+ const comparison=latest?'<section class="tac-latest-comparison" aria-label="Latest guess comparison"><strong>LAST GUESS: '+esc(round.guesses.at(-1))+' · '+latestMatches+'/6 MATCHING</strong><div>'+FIELDS.map(field=>{const trait=latest[field],match=trait?.kind==='correct';return '<span class="tac-comparison-'+(match?'match':trait?.kind==='wrong'?'different':'unknown')+'">'+esc(LABELS[field])+': '+(match?'✓ '+esc(trait.value):trait?.kind==='wrong'?'✕ '+esc(trait.value)+' · DIFFERENT':'? UNKNOWN')+'</span>';}).join('')+'</div></section>':'';
  const names={realName:'REAL NAME',name:'REAL NAME',role:'CLASS',class:'CLASS',age:'AGE',release:'RELEASE',season:'SEASON'};
  const rows=FIELDS.map((field,i)=>{
   const trait=state?.[field];
@@ -596,7 +599,7 @@ function cinematicIdentityBoard(round,target){
  }).join('');
  const description=round.mode==='full'?'FULL SCAN · CONFIRMED MATCHES ARE REMEMBERED':'ONE SIGNAL · ONE REVEALED TRAIT PER GUESS';
  return `<aside class="gtp230-board" aria-label="Identity Signal Board">
-   <h2>IDENTITY SIGNAL BOARD</h2><small>${description}</small>
+   <h2>IDENTITY SIGNAL BOARD</h2><small>${description}</small>${comparison}${round.mode==='full'&&round.guesses.length?'<p class="tac-confirmed-note">CONFIRMED INTEL · Green traits below stay locked from earlier guesses and hints.</p>':''}
    <div class="gtp230-trait-list">${rows}</div>
   </aside>`;
 }
@@ -710,11 +713,12 @@ function game(){
     <div class="gtp230-title-copy"><span class="gtp238-game-host-label">✦ ${host.name} · ${signature[0]}</span><h1>${title} MODE</h1><p>${TAGLINES[active]} <span class="gtp230-scan-caption">· ${modeTag}</span></p></div>
     <div class="gtp240-mode-identity" aria-hidden="true"><span class="gtp240-mode-identity-copy"><b>${host.name}</b><small>${signature[1]}</small></span><span class="gtp240-mode-identity-art">${portrait(host.slug,{alt:'',cls:'balanced',eager:true})}</span></div>
     <div class="gtp230-title-status">
-     <span class="gtp230-session ${isDaily?'is-daily':'is-free'}">${isDaily?'DAILY · RANKED':'FREE PLAY · UNRANKED'}</span>
+     <span class="gtp230-session ${isDaily?'is-daily':'is-free'}">${isDaily?'DAILY · PUZZLE #'+(dailyTrack==='signal'?'2':'1')+'/2':'FREE PLAY · UNRANKED'}</span>
      <span class="gtp230-guess-count"><small>GUESSES</small><b>${round.guesses.length}/${maxGuesses(round)}</b></span>
      ${round.timeLimit?`<span id="round-timer" class="game-timer ${urgent?'urgent':''}" aria-label="Time remaining"><i>◷</i><span>${timeLeft??120}s</span></span>`:''}
     </div>
    </header>
+   ${isDaily?'<section class="tac-daily-stage" role="status" aria-label="Daily puzzle stage"><b>DAILY PUZZLE #'+(dailyTrack==='signal'?'2':'1')+' OF 2 · '+modeTag+'</b><span>'+(dailyTrack==='signal'?'A NEW MYSTERY LEGEND · One trait comparison per guess · 6 guesses.':'Compare all six traits per guess · 5 guesses.')+'</span></section>':''}
    <div class="gtp230-arena ${board?'has-board':''} ${side?'has-side':''}">
     <section class="gtp230-main-clue" aria-label="Legend clue">
      ${getVisual(round,target)}
@@ -1165,7 +1169,7 @@ function showLegendPreview(slug){
 }
 function dailyNextLabel(){
  const step=nextDailyStep(currentDailyRounds(store.days,today()),triviaRewardEarned());
- return step==='trivia'||step==='leaderboard'?'VIEW DAILY SUMMARY':'NEXT DAILY STEP';
+ return step==='trivia'||step==='leaderboard'?'VIEW DAILY SUMMARY':step==='signal'?'START PUZZLE #2 · ONE SIGNAL':'START PUZZLE #1 · FULL SCAN';
 }
 function nextMode(playSession=session){
  if(playSession==='unlimited'){randomPractice(active);return;}
