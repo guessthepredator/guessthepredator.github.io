@@ -567,7 +567,7 @@ function cinematicIdentityBoard(round,target){
  const state=round.won?victoryIntelState(round,target):round.guesses.length?scannerState(round,target,legends):null;
  const latest=round.mode==='full'&&round.guesses.length?scannerState({...round,guesses:round.guesses.slice(-1),hints:[]},target,legends):null;
  const latestMatches=latest?FIELDS.filter(field=>latest[field]?.kind==='correct').length:0;
- const comparison=latest?'<section class="tac-latest-comparison" aria-label="Latest guess comparison"><strong>LAST GUESS: '+esc(round.guesses.at(-1))+' · '+latestMatches+'/6 MATCHING</strong><div>'+FIELDS.map(field=>{const trait=latest[field],match=trait?.kind==='correct';return '<span class="tac-comparison-'+(match?'match':trait?.kind==='wrong'?'different':'unknown')+'">'+esc(LABELS[field])+': '+(match?'✓ '+esc(trait.value):trait?.kind==='wrong'?'✕ '+esc(trait.value)+' · DIFFERENT':'? UNKNOWN')+'</span>';}).join('')+'</div></section>':'';
+ const comparison=latest?'<div class="tac-latest-comparison" aria-label="Latest guess comparison"><span>'+esc(round.guesses.at(-1))+'</span><small>'+latestMatches+'/6 matching this guess</small></div>':'';
  const names={realName:'REAL NAME',name:'REAL NAME',role:'CLASS',class:'CLASS',age:'AGE',release:'RELEASE',season:'SEASON'};
  const rows=FIELDS.map((field,i)=>{
   const trait=state?.[field];
@@ -584,7 +584,7 @@ function cinematicIdentityBoard(round,target){
  }).join('');
  const description=round.mode==='full'?'FULL SCAN · CONFIRMED MATCHES ARE REMEMBERED':'ONE SIGNAL · ONE REVEALED TRAIT PER GUESS';
  return `<aside class="gtp230-board" aria-label="Identity Signal Board">
-   <h2>IDENTITY SIGNAL BOARD</h2><small>${description}</small>${comparison}${round.mode==='full'&&round.guesses.length?'<p class="tac-confirmed-note">CONFIRMED INTEL · Green traits below stay locked from earlier guesses and hints.</p>':''}
+   <h2>IDENTITY SIGNAL BOARD</h2><small>${description}</small>${comparison}
    <div class="gtp230-trait-list">${rows}</div>
   </aside>`;
 }
