@@ -1,10 +1,11 @@
 import {gameScore} from './engine.mjs';
 export const MODERN_SCORE_FACTOR=2.5;
+export const DAILY_SCORE_WEIGHTS=Object.freeze({full:0.7,signal:1});
 import {DAILY_TRACKS,dailySchedule,currentDailyRounds,dailyStats} from './daily218.mjs?ui=2.65.0';
 /** V2.18: two Daily Challenges, independently validated by the server. */
 export function dailySummary(days,day){
  const rounds=currentDailyRounds(days,day);
- if(rounds.single){const round=rounds[rounds.choice],completed=!!round?.finished,allWon=!!round?.won,baseScore=gameScore(round||{})*5;const streak=allWon?Math.max(1,dailyStats(days,day).current):0,bonus=Math.round(baseScore*Math.min(streak,10)*.05);return {completed,allWon,baseScore,bonus,score:baseScore+bonus,streak,difficulty:rounds.choice};}
+ if(rounds.single){const round=rounds[rounds.choice],completed=!!round?.finished,allWon=!!round?.won,baseScore=Math.round(gameScore(round||{})*5*(DAILY_SCORE_WEIGHTS[rounds.choice]??1));const streak=allWon?Math.max(1,dailyStats(days,day).current):0,bonus=Math.round(baseScore*Math.min(streak,10)*.05);return {completed,allWon,baseScore,bonus,score:baseScore+bonus,streak,difficulty:rounds.choice};}
  const completed=DAILY_TRACKS.every(track=>rounds[track]?.finished);
  const allWon=DAILY_TRACKS.every(track=>rounds[track]?.won);
  // Normalize 2 new rounds to the earlier 5-mode scoring scale for leaderboard continuity.

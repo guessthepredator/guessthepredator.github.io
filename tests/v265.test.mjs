@@ -11,6 +11,45 @@ test('12 community techniques include source, input scope, reasoning, mistake an
 function server({prior=false,nicknameConflict=false}={}){let handler,inserted;const client={auth:{getUser:async()=>({data:{user:{id:'test-user',is_anonymous:true}},error:null})},from:()=>{let column;const q={select:c=>{column=c;return q},eq:()=>q,maybeSingle:async()=>({data:column==='user_id'&&prior?{user_id:'test-user'}:null,error:null}),insert:async row=>{inserted=row;return {error:nicknameConflict?{code:'23505',message:'Nickname already taken'}:null}}};return q}};
 let js=source.replace(/^import .*;$/gm,'').replaceAll(':unknown','').replaceAll(':string','').replaceAll(':Request','').replaceAll(':any','').replaceAll(':Record<string,unknown>','').replaceAll(' as string','');vm.runInNewContext(js,{createClient:()=>client,legends,MODES:['classic','pixel','quote','ability','emoji'],hash,puzzleAnswers,Response,Date,Deno:{env:{get:()=> 'configured'},serve:fn=>handler=fn}});return {call:async payload=>{const res=await handler({method:'POST',headers:new Headers({Origin:'https://the-apex-challenge.github.io',Authorization:'Bearer test'}),text:async()=>JSON.stringify(payload)});return {status:res.status,body:await res.json(),inserted}}};}
 import {hash,puzzleAnswers} from '../src/engine.mjs';
+import {gameScore} from '../src/engine.mjs';
+
+test('Easy has a 70 percent Daily weight and Hard retains its original score, with the streak bonus applied afterwards',()=>{
+ const day=utcDay(),scores={};
+ for(const track of ['full','signal']){
+  const days={},c=chooseDaily(days,day,track,legends);
+  c.round=tryGuess(c.round,c.round.answer,legends,1000);
+  c.round.finishedAt=11000;
+  const summary=dailySummary(days,day);
+  assert.equal(summary.baseScore,Math.round(gameScore(c.round)*5*(track==='full'?0.7:1)));
+  assert.equal(summary.bonus,Math.round(summary.baseScore*.05));
+  scores[track]=summary.baseScore;
+ }
+ assert.equal(scores.full,Math.round(scores.signal*.7));
+});
+
+test('client and authoritative server agree on weighted scores with guesses, hints and losses; client multipliers cannot override the server',async()=>{
+ const day=utcDay(),end=Date.now()-100,start=Math.max(Date.parse(day+'T00:00:00Z'),end-10000);
+ for(const track of ['full','signal'])for(const guesses of [1,3,5])for(const hints of [0,1,2]){
+  const days={},c=chooseDaily(days,day,track,legends);
+  const wrong=legends.filter(l=>l.name!==c.round.answer).slice(0,guesses-1);
+  for(const l of wrong)c.round=tryGuess(c.round,l.name,legends,start);
+  c.round=tryGuess(c.round,c.round.answer,legends,start);
+  c.round={...c.round,hints:['age','role'].slice(0,hints),finishedAt:end};
+  const expected=dailySummary(days,day),payload={...buildSubmission(days,day,'WeightedScore'),score:999999,multiplier:1};
+  const res=await server().call(payload);
+  assert.equal(res.status,200,JSON.stringify(res.body));
+  assert.equal(res.body.baseScore,expected.baseScore);
+  assert.equal(res.body.streakBonus,expected.bonus);
+  assert.equal(res.body.totalScore,expected.score);
+ }
+ for(const track of ['full','signal']){
+  const days={},c=chooseDaily(days,day,track,legends);
+  for(const l of legends.filter(l=>l.name!==c.round.answer).slice(0,track==='full'?5:6))c.round=tryGuess(c.round,l.name,legends,start);
+  c.round.finishedAt=end;
+  const res=await server().call(buildSubmission(days,day,'WeightedLoss'));
+  assert.equal(res.status,200);assert.equal(res.body.totalScore,0);assert.equal(dailySummary(days,day).score,0);
+ }
+});
 function validPayload(track){const days={},day=utcDay(),c=chooseDaily(days,day,track,legends);c.round=tryGuess(c.round,c.round.answer,legends,Date.now()-2000);c.round.finishedAt=Date.now()-1000;return buildSubmission(days,day,'Player265');}
 for(const track of ['full','signal'])test('server accepts and recomputes a single '+track+' score',async()=>{const payload=validPayload(track),res=await server().call(payload);assert.equal(res.status,200,JSON.stringify(res.body));assert.equal(res.body.ok,true);assert.deepEqual(Object.keys(res.inserted.round_results),[track]);assert.ok(res.inserted.base_score>0);});
 test('server rejects difficulty mismatch, extra rounds and forged timing',async()=>{for(const mutate of [p=>p.difficulty='other',p=>p.rounds.full.mode='signal',p=>p.rounds.full.gameMode='quote',p=>p.rounds.signal={...p.rounds.full},p=>p.rounds.full.startedAt=null,p=>p.rounds.full.finishedAt=Date.now()+60000]){const p=validPayload('full');mutate(p);assert.equal((await server().call(p)).status,400);}});

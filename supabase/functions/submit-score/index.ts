@@ -2,7 +2,7 @@ import {createClient} from 'npm:@supabase/supabase-js@2.57.0';
 import {legends} from './_shared/data.mjs';
 import {MODES,hash,puzzleAnswers} from './_shared/engine.mjs';
 
-/** Offline source parity with deployed submit-score v5. Deploy separately from GitHub Pages.
+/** Deploy separately from GitHub Pages; single Daily Easy scores use a 70% weight.
  * Supports V2.18 dual challenges and legacy five-puzzle submissions during transition.
  */
 const allowedOrigins=new Set(['https://the-apex-challenge.github.io','https://negoitasebastian.github.io','https://guessthepredator.github.io','http://localhost:8000','http://127.0.0.1:8000']);
@@ -60,7 +60,7 @@ Deno.serve(async(req:Request)=>{
   const points=won?Math.max(100,Math.round(1460-(guesses.length-1)*180-r.hints.length*145+remain*4)):0;
   base+=points;allWon&&=won;details[track]={gameMode,won,guesses:guesses.length,hints:r.hints.length,score:points};
  }
- if(isDual)base=Math.round(base*2.5);if(isSingle)base=Math.round(base*5);
+ if(isDual)base=Math.round(base*2.5);if(isSingle)base=Math.round(base*5*(payload.difficulty==='full'?0.7:1));
  const {data:prior,error:priorError}=await client.from('gtp_daily_scores').select('user_id').eq('user_id',user.id).eq('day',day).maybeSingle();
  if(priorError)return json({error:'Unable to check existing scores'},503,origin);
  if(prior)return json({error:"Today's score is already registered"},409,origin);
