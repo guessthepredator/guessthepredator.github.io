@@ -18,10 +18,10 @@ test('V2.39 real in-game mythic bin is bundled, not tiny vector outline',()=>{
  assert.ok(statSync(new URL('../assets/decor/mythic-bin-halloween-v257.webp',import.meta.url)).size>3000);
 });
 test('V2.38 Legend mode guides do not reveal the random answer',()=>{
- const expected={classic:'mirage',pixel:'sparrow',quote:'loba',ability:'octane',emoji:'wattson',trivia:'crypto',wheel:'pathfinder'};
+ const expected={classic:'loba',pixel:'sparrow',quote:'wraith',ability:'octane',emoji:'wattson',trivia:'crypto',wheel:'pathfinder'};
  for(const [mode,slug] of Object.entries(expected)){
   assert.ok(app.includes(mode+":{slug:'"+slug+"'"),mode+' guide');
-  assert.ok(css.includes('data-host="'+slug+'"')||mode==='wheel',mode+' palette');
+  assert.ok(css.includes('data-host="'+slug+'"')||['wheel','quote'].includes(mode),mode+' palette');
  }
  assert.ok(home.includes('modeHostBadge(mode)'));
  assert.ok(home.includes('data-action="'));

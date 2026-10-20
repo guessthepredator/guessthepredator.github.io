@@ -1,3 +1,4 @@
+const MODE_SYMBOLS267={"classic":"<path d=\"M18 3 33 33H24L18 18 12 33H3Z\"/><path d=\"m13 27 5-9 5 9\"/>","pixel":"<path d=\"M5 5h9v9H5zm17 0h9v9h-9zM5 22h9v9H5zm17 0h9v9h-9z\"/><path d=\"M14 14h8v8h-8\"/>","quote":"<path d=\"M6 20h8V9H6v11l-3 7h7zm17 0h8V9h-8v11l-3 7h7\"/>","ability":"<path d=\"m18 3 4 11 11 4-11 4-4 11-4-11L3 18l11-4Z\"/><path d=\"M18 9v18M9 18h18\"/>","emoji":"<circle cx=\"18\" cy=\"18\" r=\"14\"/><path d=\"M11 22q7 8 14 0M12 12h1m10 0h1\"/>","trivia":"<circle cx=\"18\" cy=\"18\" r=\"14\"/><path d=\"M4 18h28M18 4q-13 14 0 28M18 4q13 14 0 28M7 10h22M7 26h22\"/>"};
 import {chosenDaily,migrateSingleDaily,chooseDaily,DAILY_RULES} from './daily265.mjs?v=2.65.0';
 import {TIPS,unlockedIntel,tipFor} from './tips.mjs?v=2.43.0';
 import {legends} from './data.mjs?v=2.43.0';
@@ -331,8 +332,8 @@ function modeTile(mode,i){
 }
 /** Decorative mode hosts never reveal the hidden answer. */
 const MODE_HOSTS=Object.freeze({
- classic:{slug:'mirage',name:'MIRAGE'},pixel:{slug:'sparrow',name:'SPARROW'},
- quote:{slug:'loba',name:'LOBA'},ability:{slug:'octane',name:'OCTANE'},
+ classic:{slug:'loba',name:'LOBA'},pixel:{slug:'sparrow',name:'SPARROW'},
+ quote:{slug:'wraith',name:'WRAITH'},ability:{slug:'octane',name:'OCTANE'},
  emoji:{slug:'wattson',name:'WATTSON'},trivia:{slug:'crypto',name:'CRYPTO'},
  wheel:{slug:'pathfinder',name:'PATHFINDER'}
 });
@@ -366,9 +367,9 @@ function home(){
  const lastUnlocked=[2,1].find(n=>intelState(n).unlocked);
  const intelTarget=unread||lastUnlocked||1;
  const showcase=[
-  {id:'classic',title:'CLASSIC MODE',host:'mirage',description:'Find the mystery Legend.',action:'open',mode:'classic',accent:'red'},
+  {id:'classic',title:'CLASSIC MODE',host:'loba',description:'Find the mystery Legend.',action:'open',mode:'classic',accent:'red'},
   {id:'pixel',title:'PIXEL MODE',host:'sparrow',description:'Decode the distorted silhouette.',action:'open',mode:'pixel',accent:'cyan'},
-  {id:'quote',title:'QUOTE MODE',host:'loba',description:'Recognize the intercepted voice.',action:'open',mode:'quote',accent:'purple'},
+  {id:'quote',title:'QUOTE MODE',host:'wraith',description:'Recognize the intercepted voice.',action:'open',mode:'quote',accent:'purple'},
   {id:'ability',title:'ABILITY MODE',host:'octane',description:'Read the tactical signature.',action:'open',mode:'ability',accent:'lime'},
   {id:'emoji',title:'EMOJI MODE',host:'wattson',description:'Five symbols. One Legend.',action:'open',mode:'emoji',accent:'gold'},
   {id:'trivia',title:'TRIVIA',host:'crypto',description:'Crack five Apex intel questions.',action:'trivia',accent:'blue'}
@@ -381,7 +382,7 @@ function home(){
  const r=track?rounds[track]:store.practice[cfg.mode];
  const state=session==='daily'?(cfg.id==='trivia'?(triviaRewardEarned()?'DAILY COMPLETED':'DAILY RANKED'):!track?'FREE PLAY ONLY TODAY':r?.finished?'DAILY COMPLETED':locked?'CHOOSE DIFFICULTY':r?.guesses?.length?'RESUME DAILY':'PLAY DAILY'):'FREE PLAY · UNRANKED';
  return `<button type="button" class="gtp239-mode-card gtp246-orbit-mode gtp239-${cfg.accent} ${completed?'tac-completed':''}" data-host="${cfg.host}" data-sound="${cfg.id}" data-action="${action}" ${cfg.mode?`data-mode="${cfg.mode}" data-session="unlimited"`:`data-trivia-mode="${session==='daily'?'daily':'practice'}"`} ${locked||completed?'disabled':''} aria-label="${cfg.title} — ${state}">
- <span class="gtp239-mode-ring gtp242-mode-medallion" data-host="${cfg.host}" aria-hidden="true"><span class="gtp242-ring-detail"></span><span class="gtp239-host-fallback">${cfg.host.slice(0,2).toUpperCase()}</span>${portrait(cfg.host,{alt:'',cls:'balanced',eager:true})}<span class="gtp242-ring-notch"></span></span>
+ <span class="gtp239-mode-ring gtp242-mode-medallion" aria-hidden="true"><span class="gtp242-ring-detail"></span><span class="gtp242-ring-notch"></span><svg class="tac267-mode-symbol" viewBox="0 0 36 36">${MODE_SYMBOLS267[cfg.id]}</svg></span>
  <span class="gtp239-mode-caption gtp242-mode-plate"><span class="gtp242-host-name">${cfg.host.toUpperCase()} · YOUR HOST</span><strong>${cfg.title}</strong><small>${cfg.description}</small><span class="tac-card-state">${state}</span></span></button>`;
  };
  return `<main class="gtp219-home gtp222-home gtp239-home gtp246-outlands-home" aria-label="The Apex Challenge homepage">
@@ -728,7 +729,7 @@ function howTo(){return `<main class="wrap gtp27-guide gtp241-guide" aria-labell
 <div class="guide-cta"><button class="btn pink" data-action="open" data-mode="classic">PLAY CLASSIC ↗</button><button class="btn lilac" data-action="faq">READ FAQ</button></div></main>`;}
 function faq(){return `<main class="wrap gtp27-guide gtp27-faq gtp241-guide" aria-labelledby="faq-title"><span class="kicker">OUTLANDS SUPPORT · UPDATED FOR SIX MODES</span><h1 id="faq-title">FREQUENTLY <em>ASKED.</em></h1>
  <div class="faq-stack">${[
- ['What are the six modes?','Classic (Mirage), Pixel (Sparrow), Quote (Loba), Ability (Octane), Emoji (Wattson) and Trivia (Crypto). Their hosts are decorative, not mystery answers.'],
+ ['What are the six modes?','Classic (Loba), Pixel (Sparrow), Quote (Wraith), Ability (Octane), Emoji (Wattson) and Trivia (Crypto). Their hosts are decorative, not mystery answers.'],
  ['How do Daily Challenges work?','The daily challenges reset at 00:00 UTC. Choose Full Scan (Easy) or One Signal (Hard) for one mystery Legend. Your choice locks at start. The puzzle has a 120-second Rush timer from the first guess. Daily Trivia has its own separate daily ranked run.'],
  ['What are Full Scan, One Signal and Rush?','These are gameplay rule options, not additional modes. Full Scan compares all six traits per guess (five attempts), preserving confirmed matches. One Signal reveals one trait per guess (six attempts), preserving confirmed matches. Rush adds a two-minute timer beginning with the first guess.'],
  ['How do I unlock Forbidden Intel?','Complete your selected Daily puzzle and Daily Trivia. Open any unlocked Intel rewards from the Home centerpiece.'],

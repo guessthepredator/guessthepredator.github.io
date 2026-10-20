@@ -21,7 +21,7 @@ test('V2.41 retains six original Home modes, uniform styling, and new mystery wh
  assert.ok(css.includes('width:84px!important;height:84px!important'));
 });
 test('V2.41 assigns distinct portrait-based scenic art to ALL five game modes',()=>{
- const hosts=['mirage','sparrow','loba','octane','wattson'];
+ const hosts=['loba','sparrow','wraith','octane','wattson'];
  for(const mode of ['classic','pixel','quote','ability','emoji']){
   assert.ok(css.includes('gtp241-scene-'+mode),'missing mode scene '+mode);
  }

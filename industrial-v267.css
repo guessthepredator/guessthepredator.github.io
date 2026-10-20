@@ -1,0 +1,131 @@
+:root{--tac267-panel:#10151aee;--tac267-line:#55514b;--tac267-red:#813340;--tac267-ink:#f0ece5;--tac267-muted:#b5b4af}
+html,body{background:#0d1012!important;color:var(--tac267-ink)}
+#app#app{--v243-accent:#bb4d59;--v243-glow:transparent;min-height:100svh;background:none!important;isolation:isolate}
+#app#app::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#090b0d12,#090b0d30 44%,#090b0d65),var(--tac267-art,url("./assets/industrial-v267/loba.webp")) center/cover no-repeat}
+#app#app[data-screen="daily-choice"],#app#app[data-screen="debrief"]{--tac267-art:url("./assets/industrial-v267/hangar.webp")}
+#app#app[data-screen="game"][data-mode="pixel"]{--tac267-art:url("./assets/industrial-v267/pixel.webp")}
+#app#app[data-screen="game"][data-mode="ability"]{--tac267-art:url("./assets/industrial-v267/ability.webp")}
+#app#app[data-screen="game"][data-mode="emoji"]{--tac267-art:url("./assets/industrial-v267/emoji.webp")}
+#app#app[data-screen="game"][data-mode="quote"]{--tac267-art:url("./assets/industrial-v267/quote.webp")}
+#app#app[data-screen="trivia"]{--tac267-art:url("./assets/industrial-v267/trivia.webp")}
+#app#app :is(.gtp219-backdrop,.gtp239-sky,.gtp239-mirage-duo,.gtp233-viewport-art,.gtp241-mode-scene,.gtp241-trivia-scene,.tac-page-environment,.tac-page-host-line){display:none!important}
+#app#app .gtp2-top{position:relative!important;z-index:30!important;background:#0b1013ee!important;border-bottom:1px solid #6b5144!important;box-shadow:none!important;backdrop-filter:blur(12px)}
+#app#app .gtp2-top-inner{min-height:68px!important;max-width:1600px!important;padding:8px 24px!important;gap:16px!important}
+#app#app .gtp219-logo-emblem{color:#d95a60!important;filter:none!important}
+#app#app .gtp219-brand-type,#app#app .gtp219-brand-type strong{color:#f2eee8!important;text-shadow:none!important}
+#app#app .topnav{gap:3px!important}
+#app#app .nav-item{background:transparent!important;border:0!important;border-radius:0!important;border-bottom:2px solid transparent!important;color:#c6c5c1!important;padding:13px 9px!important;box-shadow:none!important;font-size:10px!important;letter-spacing:.06em}
+#app#app .nav-item.active{border-bottom-color:#c45461!important;color:white!important}
+#app#app :is(.switch,.gtp213-mobile-menu>summary){background:#20252a!important;border:1px solid #585951!important;border-radius:4px!important;color:#e3ded6!important;box-shadow:none!important}
+#app#app :is(.switch,.nav-item):focus-visible,#app#app button:focus-visible{outline:2px solid #efc58c;outline-offset:3px}
+#app#app .top-actions{gap:6px!important}
+#app#app .switch{font-size:9px!important;min-width:0!important;padding:10px!important}
+#app#app .gtp239-home{background:none!important;min-height:calc(100svh - 68px)!important}
+#app#app .gtp239-layout{width:72%!important;max-width:1120px!important;margin:0 3% 0 auto!important;padding:30px 0 16px!important;position:relative}
+#app#app .gtp239-masthead{text-align:left!important;padding:0 0 20px!important}
+#app#app .gtp239-masthead>span{font-size:12px!important;letter-spacing:.26em!important}
+#app#app .gtp239-masthead h1{font-size:clamp(42px,5vw,72px)!important;line-height:.95!important;color:#f2ece2!important;text-shadow:none!important;margin:5px 0 9px!important}
+#app#app .gtp239-masthead small{font-size:10px!important;color:#c1b6a8!important;letter-spacing:.2em!important}
+#app#app .tac-play-context{background:#10161be8!important;border:1px solid #635a4e!important;border-left:3px solid #a84350!important;border-radius:4px!important;box-shadow:none!important;padding:16px!important}
+#app#app .tac-context-label{color:#f3e6cf!important}
+#app#app .tac-play-selector button{border-radius:3px!important;background:#1d252c!important;border:1px solid #565d62!important;color:#deded9!important;box-shadow:none!important}
+#app#app .tac-play-selector button[aria-pressed="true"]{background:#79313d!important;border-color:#b25762!important;color:white!important}
+#app#app .gtp246-home-arena{display:grid!important;grid-template-columns:1fr 1fr!important;gap:14px!important;min-height:0!important;padding:22px 0 12px!important;position:static!important}
+#app#app .gtp239-side{display:contents!important}
+#app#app .gtp246-orbit-mode{position:relative!important;inset:auto!important;transform:none!important;display:flex!important;align-items:center!important;gap:15px!important;width:100%!important;min-width:0!important;height:auto!important;min-height:100px!important;margin:0!important;padding:16px!important;text-align:left!important;background:#11171de8!important;border:1px solid #55544e!important;border-radius:4px!important;box-shadow:0 4px 12px #0003!important;opacity:1!important;filter:none!important}
+#app#app .gtp246-orbit-mode:hover:not(:disabled){border-color:#c78275!important;background:#242329f5!important;transform:translateY(-2px)!important}
+#app#app .gtp246-orbit-mode:disabled{opacity:.53!important}
+#app#app .gtp242-mode-medallion{position:static!important;flex:0 0 44px!important;width:44px!important;height:44px!important;border:0!important;background:none!important;box-shadow:none!important;border-radius:0!important;margin:0!important;transform:none!important;filter:none!important}
+#app#app .tac267-mode-symbol{display:block;width:38px;height:38px;fill:none;stroke:#e0ddd4;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#app#app .gtp242-mode-plate{background:none!important;border:0!important;padding:0!important;width:auto!important;min-height:0!important}
+#app#app .gtp242-mode-plate strong{font-size:23px!important;color:#f0ece4!important;text-shadow:none!important;line-height:1.1!important}
+#app#app .gtp242-mode-plate small{font-size:11px!important;color:#c3beb5!important;line-height:1.5!important}
+#app#app .gtp242-host-name{display:none!important}
+#app#app .tac-card-state{font-size:9px!important;color:#cc9f90!important}
+#app#app .gtp246-home-core{grid-column:1/-1!important;grid-row:4!important;display:grid!important;grid-template-columns:minmax(130px,.7fr) 1fr!important;align-items:center!important;gap:10px!important;padding:4px 10px!important;background:none!important}
+#app#app .gtp246-home-core::before,#app#app .gtp239-bin-stage::before,#app#app .gtp239-bin-spark{display:none!important}
+#app#app .gtp246-home-core .gtp239-bin-stage{aspect-ratio:1.75!important;max-width:300px!important;margin:0!important;filter:saturate(.65)!important}
+#app#app .gtp246-home-core .gtp239-bin-image{filter:none!important;animation:none!important}
+#app#app .gtp246-home-core .gtp239-intel-panel{text-align:left!important;max-width:none!important;margin:0!important;padding:0!important}
+#app#app .gtp239-intel-panel h2{font-size:32px!important;color:#e7ddd0!important;text-shadow:none!important}
+#app#app .gtp239-intel-panel p{font-size:12px!important;color:#d2c3b2!important}
+#app#app .gtp239-open-intel{background:#79313de8!important;border-color:#b26165!important;color:#fff0df!important}
+#app#app .gtp239-kicker{color:#c9aa80!important}
+#app#app .tac258-discover{margin:10px 0!important;gap:14px!important}
+#app#app .tac258-card{min-height:150px!important;padding:18px!important;border-radius:4px!important;background:#10161be8!important;box-shadow:none!important;border-color:#5d554a!important}
+#app#app .tac258-copy>strong,#app#app .tac258-copy>h2{font-size:28px!important}
+#app#app .tac258-wheel{transform:scale(.76);transform-origin:left center;margin-right:-20px}
+#app#app .gtp219-footer{color:#c5b8a7!important}
+#app#app[data-screen="game"] .gtp230-game{width:70%!important;max-width:1120px!important;margin:0 3% 0 auto!important;padding:28px 0!important;min-height:calc(100svh - 68px)!important;gap:12px!important}
+#app#app[data-screen="game"] .gtp230-titlebar{background:none!important;border:0!important;border-bottom:1px solid #766656!important;border-radius:0!important;box-shadow:none!important;padding:0 0 14px!important;min-height:75px!important}
+#app#app :is(.gtp230-title-icon,.gtp240-mode-identity,.gtp240-header-beam,.gtp238-game-host-label,.gtp230-scan-caption){display:none!important}
+#app#app .gtp230-title-copy h1{font-size:clamp(30px,3.5vw,48px)!important;color:#f2eee6!important;text-shadow:none!important}
+#app#app .gtp230-title-copy p{color:#c9bfb1!important;font-size:11px!important}
+#app#app .gtp230-title-status{background:#11171ce8!important;border:1px solid #61564e!important;border-radius:3px!important;padding:10px!important}
+#app#app[data-screen="game"][data-mode] .gtp230-game .gtp230-arena{grid-template-columns:minmax(0,1fr) minmax(240px,.75fr)!important;grid-template-rows:minmax(210px,auto) auto!important;gap:14px!important}
+#app#app[data-screen="game"][data-mode] .gtp230-game .gtp230-arena>.gtp230-main-clue{min-height:210px!important;padding:14px!important;background:#10161be6!important;border:1px solid #56534e!important;border-radius:4px!important}
+#app#app[data-screen="game"][data-mode] .gtp230-game .gtp230-arena>.gtp236-intel-column{background:#10161bea!important;border:1px solid #56534e!important;border-radius:4px!important;padding:14px!important}
+#app#app[data-screen="game"][data-mode] .gtp230-game .gtp230-arena>.gtp230-console{background:#10161bf0!important;border:1px solid #56534e!important;border-radius:4px!important;padding:16px!important;box-shadow:none!important}
+#app#app .gtp230-console .gtp230-btn-main{background:#813340!important;border-color:#bc6470!important;box-shadow:none!important}
+#app#app .gtp230-console :is(.gtp230-btn-blue,.gtp230-btn-gold){background:#282d31!important;border-color:#5e6061!important;color:#e3ded6!important}
+#app#app .gtp230-console input{background:#0c1014!important;border-color:#606365!important;border-radius:3px!important}
+#app#app :is(.gtp230-clue-frame,.gtp230-main-clue .visual-quote,.gtp230-main-clue .visual-ability,.gtp230-main-clue .visual-emoji){box-shadow:none!important;background:none!important}
+#app#app .gtp230-main-clue .mystery-wording{background:none!important;border:0!important}
+#app#app .gtp230-main-clue .mystery-wording strong{font-size:36px!important;color:#e9e2d6!important;text-shadow:none!important}
+#app#app[data-screen="trivia"] .trivia-page{width:70%!important;max-width:1120px!important;margin:0 3% 0 auto!important;padding:28px 0!important;position:relative;z-index:1}
+#app#app .trivia-shell{width:100%!important;max-width:none!important;margin:0!important}
+#app#app .trivia-hero{background:none!important;border:0!important;box-shadow:none!important;padding:0 0 20px!important}
+#app#app .trivia-hero :is(.gtp240-trivia-host,.trivia-kicker){display:none!important}
+#app#app .trivia-hero h1{color:#f1ede4!important;text-shadow:none!important}
+#app#app .trivia-grid{grid-template-columns:minmax(0,1fr) 230px!important;gap:14px!important}
+#app#app :is(.trivia-main,.trivia-side,.trivia-intro,.trivia-question,.trivia-complete,.trivia-side-card,.board-card,.guide-card,.faq-item){background:#10161bee!important;border:1px solid #58534c!important;border-radius:4px!important;box-shadow:none!important}
+#app#app .trivia-question::before{display:none!important}
+#app#app :is(.trivia-option,.trivia-choice){background:#282d31!important;border:1px solid #5b5c58!important;color:#ece6dc!important;border-radius:3px!important}
+#app#app[data-screen="daily-choice"]{background:none!important}
+#app#app .tac265-choice{max-width:1150px;padding:35px 24px}
+#app#app .tac265-choice-grid{gap:18px;border-radius:4px}
+#app#app .tac265-choice-card{border:1px solid #6a6b56;border-radius:4px!important}
+#app#app .tac265-choice-card.easy{background:linear-gradient(135deg,#163c2beb,#0d211deb)!important;--choice-ink:#c1dfc6;--choice-fill:#467a50}
+#app#app .tac265-choice-card.hard{background:linear-gradient(225deg,#57232dec,#25121aef)!important;--choice-ink:#e4bec0;--choice-fill:#8e3b48}
+#app#app .tac265-choice-card>button{color:#fff4e4!important;border:1px solid #b0a083!important;border-radius:3px!important}
+#app#app[data-screen="leaderboard"]>main,#app#app[data-screen="records"]>main,#app#app[data-screen="faq"]>main,#app#app[data-screen="howto"]>main{position:relative!important;z-index:1!important;width:70%!important;max-width:1120px!important;margin:0 3% 0 auto!important;padding:32px 0!important;background:none!important}
+#app#app :is(.records-hero,.board-hero,.gtp241-guide){background:none!important;box-shadow:none!important}
+#app#app :is(.guide-rule-row article,.stat-card,.stats-card,.records-card,.board-form,.leaderboard-card){background:#10161bee!important;border:1px solid #58534c!important;border-radius:4px!important;box-shadow:none!important}
+#app#app .faq-item[open]{border-left:3px solid #a54652!important}
+#app#app .faq-item summary{color:#ede4d7!important}
+#app#app :is(.btn.pink,.btn.mint,.btn.lilac,.btn.gold){background:#813340!important;border:1px solid #b15a66!important;color:#fff0e4!important;border-radius:3px!important;box-shadow:none!important}
+#app#app :is(.gtp237-settings-panel,.wheel-modal,.legend-picker,.picker-modal,.gtp237-identity-panel,.gtp246-settings-drawer){background:#12181cf7!important;border:1px solid #716557!important;border-radius:5px!important;box-shadow:0 20px 80px #0009!important}
+#app#app .tac261-debrief-window{background:#10161bf0;border-radius:4px;border-color:#6d5c49}
+#app#app .tac261-debrief-body{background:none}
+#app#app .tac261-next{background:#813340!important;color:#fff0e4!important}
+@media(min-width:1500px){#app#app .gtp239-layout,#app#app[data-screen="game"] .gtp230-game,#app#app[data-screen="trivia"] .trivia-page,#app#app[data-screen="leaderboard"]>main,#app#app[data-screen="records"]>main,#app#app[data-screen="faq"]>main,#app#app[data-screen="howto"]>main{margin-right:5%!important}}
+@media(max-width:1050px){#app#app .gtp2-top-inner{padding:8px 14px!important;gap:8px!important}#app#app .topnav .nav-item{font-size:9px!important;padding-inline:6px!important}#app#app .gtp239-layout,#app#app[data-screen="game"] .gtp230-game,#app#app[data-screen="trivia"] .trivia-page,#app#app[data-screen="leaderboard"]>main,#app#app[data-screen="records"]>main,#app#app[data-screen="faq"]>main,#app#app[data-screen="howto"]>main{width:78%!important;margin-right:2%!important}#app#app .gtp230-title-status{padding:6px!important}#app#app .trivia-grid{grid-template-columns:1fr!important}}
+@media(max-width:900px){#app#app[data-screen="game"][data-mode] .gtp230-game .gtp230-arena{grid-template-columns:1fr!important;grid-template-rows:auto auto auto!important;grid-template-areas:"clue" "controls" "intel"!important}#app#app .gtp230-titlebar{flex-wrap:wrap!important}#app#app .gtp230-title-status{margin-left:0!important}#app#app .gtp246-home-core{grid-template-columns:.7fr 1fr!important}}
+@media(max-width:700px){#app#app::before{background-position:24% top;background-size:auto 70svh;background-color:#101214;background-repeat:no-repeat;background-image:linear-gradient(180deg,#0b0e1000,#0b0e1070 35svh,#101214 68svh),var(--tac267-art,url("./assets/industrial-v267/loba.webp"))}#app#app .gtp2-top-inner{min-height:62px!important}#app#app .top-actions .gtp2-sound-switch{display:none!important}#app#app .top-actions .switch{font-size:8px!important;padding:8px!important}#app#app .gtp219-brand-type{font-size:14px!important}#app#app .gtp219-logo-emblem svg{width:25px;height:30px}#app#app .gtp239-layout,#app#app[data-screen="game"] .gtp230-game,#app#app[data-screen="trivia"] .trivia-page,#app#app[data-screen="leaderboard"]>main,#app#app[data-screen="records"]>main,#app#app[data-screen="faq"]>main,#app#app[data-screen="howto"]>main{width:calc(100% - 24px)!important;margin:0 12px!important;padding-top:160px!important}#app#app .gtp239-masthead{padding-bottom:15px!important}#app#app .gtp239-masthead h1{font-size:43px!important}#app#app .gtp246-home-arena{gap:9px!important;padding-top:14px!important}#app#app .gtp246-orbit-mode{padding:12px 9px!important;gap:7px!important;min-height:105px!important}#app#app .gtp242-mode-medallion{flex-basis:28px!important;width:28px!important;height:32px!important}#app#app .tac267-mode-symbol{width:27px;height:27px}#app#app .gtp242-mode-plate strong{font-size:19px!important}#app#app .gtp242-mode-plate small{font-size:10px!important}#app#app .tac-card-state{font-size:8px!important}#app#app .gtp246-home-core{grid-template-columns:1fr!important;text-align:center!important;padding:12px!important}#app#app .gtp246-home-core .gtp239-bin-stage{max-width:240px!important;margin:auto!important}#app#app .gtp246-home-core .gtp239-intel-panel{text-align:center!important}#app#app .tac258-discover{grid-template-columns:1fr!important}#app#app .tac258-card{min-height:160px!important}#app#app[data-screen="game"] .gtp230-title-copy h1{font-size:32px!important}#app#app .gtp230-title-status{width:100%!important;justify-content:space-between!important}#app#app .tac265-choice{padding:22px 12px}#app#app .tac265-choice>header{background:#10161bd9;border:1px solid #6d5b46;border-radius:4px;padding:18px;margin-bottom:14px}#app#app .tac265-choice h1{font-size:30px}#app#app .guide-grid{grid-template-columns:1fr 1fr!important}#app#app .guide-rule-row{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){#app#app .gtp246-orbit-mode{transition:none!important}}
+
+/* V2.67 final integration: use retained, verified local artwork. */
+#app#app[data-screen="home"],#app#app[data-screen="game"][data-mode="classic"]{--tac267-art:url("./assets/industrial-v267/loba.webp")}
+#app#app[data-screen="home"]::before,#app#app[data-screen="game"][data-mode="classic"]::before{background-position:left center}
+@media(max-width:700px){#app#app[data-screen="home"]::before,#app#app[data-screen="game"][data-mode="classic"]::before{background-position:left top}}
+
+/* Retire legacy decorative layers which otherwise mask the new artwork. */
+#app#app::before{display:block!important;opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important}
+#app#app .gtp239-home::before,#app#app .gtp239-home::after,#app#app .gtp246-orbit-mode::before,#app#app .gtp246-orbit-mode::after,#app#app .gtp242-mode-medallion::before,#app#app .gtp242-mode-medallion::after,#app#app .gtp242-ring-detail,#app#app .gtp242-ring-notch{display:none!important}
+#app#app .gtp246-orbit-mode{flex-direction:row!important;justify-content:flex-start!important}
+#app#app .gtp242-mode-plate{text-align:left!important;align-items:flex-start!important}
+#app#app .gtp239-layout{width:66%!important}
+#app#app .gtp239-masthead{text-align:left!important;align-items:flex-start!important}
+@media(max-width:1050px){#app#app .gtp239-layout{width:72%!important}}
+@media(max-width:700px){#app#app .gtp239-layout{width:calc(100% - 24px)!important}}
+
+#app#app::before{top:74px!important;background-position:left top!important}
+#app#app[data-screen="home"]::before,#app#app[data-screen="game"][data-mode="classic"]::before{background-position:left top!important}
+#app#app[data-screen="leaderboard"],#app#app[data-screen="records"],#app#app[data-screen="faq"],#app#app[data-screen="howto"]{--tac267-art:url("./assets/industrial-v267/hangar.webp")}
+@media(max-width:700px){#app#app::before{top:62px!important}#app#app .gtp242-mode-plate{min-width:0!important}#app#app .gtp242-mode-plate strong{overflow-wrap:anywhere}}
+
+#app#app::before{content:""!important;position:fixed!important;inset:74px 0 0!important;z-index:-1!important;background:linear-gradient(90deg,#090b0d12,#090b0d30 44%,#090b0d65),var(--tac267-art,url("./assets/industrial-v267/loba.webp")) left top/cover no-repeat!important}
+#app#app::after{display:none!important}
+@media(max-width:700px){#app#app::before{inset:62px 0 0!important;background:linear-gradient(180deg,#0b0e1000,#0b0e1070 35svh,#101214 68svh),var(--tac267-art,url("./assets/industrial-v267/loba.webp")) left top/auto 70svh no-repeat #101214!important}}
+
+#app#app::before{width:auto!important;height:auto!important;mask:none!important;-webkit-mask:none!important;clip-path:none!important}

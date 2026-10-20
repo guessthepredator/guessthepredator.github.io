@@ -1,0 +1,37 @@
+{
+  "release": "2.67",
+  "kind": "AI-generated fan artwork",
+  "generator": "OpenAI image generation",
+  "date": "2026-10-20",
+  "note": "Decorative fan artwork; not official EA or Respawn art. No gameplay answers encoded.",
+  "assets": [
+    {
+      "file": "assets/industrial-v267/loba.webp",
+      "usage": "Home and Classic"
+    },
+    {
+      "file": "assets/industrial-v267/pixel.webp",
+      "usage": "pixel"
+    },
+    {
+      "file": "assets/industrial-v267/quote.webp",
+      "usage": "quote"
+    },
+    {
+      "file": "assets/industrial-v267/ability.webp",
+      "usage": "ability"
+    },
+    {
+      "file": "assets/industrial-v267/emoji.webp",
+      "usage": "emoji"
+    },
+    {
+      "file": "assets/industrial-v267/trivia.webp",
+      "usage": "trivia"
+    },
+    {
+      "file": "assets/industrial-v267/hangar.webp",
+      "usage": "Utility screens"
+    }
+  ]
+}

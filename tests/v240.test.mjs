@@ -5,7 +5,7 @@ const read=f=>readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const js=read('src/app.mjs'),css=read('styles.css'),html=read('index.html');
 const home=js.split('function home(){')[1].split('function homeLegacy(){')[0];
 const classic=['classic','pixel','quote','ability','emoji','trivia'];
-const hosts={classic:'mirage',pixel:'sparrow',quote:'loba',ability:'octane',emoji:'wattson',trivia:'crypto'};
+const hosts={classic:'loba',pixel:'sparrow',quote:'wraith',ability:'octane',emoji:'wattson',trivia:'crypto'};
 test('V2.40: all six ORIGINAL modes are primary interactive Home cards, no scan rules as modes',()=>{
  const showcase=home.split('const showcase=[')[1].split('];')[0];
  const names=[...showcase.matchAll(/id:'([^']+)'/g)].map(x=>x[1]);
