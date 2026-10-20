@@ -17,7 +17,7 @@ export function dailySummary(days,day){
 }
 export function buildSubmission(days,day,displayName){
  const rounds=currentDailyRounds(days,day),schedule=dailySchedule(day);
- if(rounds.single){const chosen=days[day].daily265,r=chosen.round;return {protocol:'v265',day,displayName,difficulty:chosen.track,rounds:{[chosen.track]:{gameMode:chosen.gameMode,guesses:r.guesses,hints:r.hints,mode:r.mode,timeLimit:r.timeLimit,finished:r.finished,won:r.won,loss:r.loss,startedAt:r.startedAt,finishedAt:r.finishedAt}}};}
+ if(rounds.single){const chosen=days[day].daily265,r=chosen.round;return {protocol:'v265',day,displayName,difficulty:chosen.track,legacyMigration:chosen.migrated===true,rounds:{[chosen.track]:{gameMode:chosen.gameMode,guesses:r.guesses,hints:r.hints,mode:r.mode,timeLimit:r.timeLimit,finished:r.finished,won:r.won,loss:r.loss,startedAt:r.startedAt,finishedAt:r.finishedAt}}};}
  return {protocol:'v218',day,displayName,rounds:Object.fromEntries(DAILY_TRACKS.map(track=>{
   const r=rounds[track];
   return [track,{gameMode:schedule[track],guesses:r?.guesses||[],hints:r?.hints||[],mode:r?.mode||track,timeLimit:r?.timeLimit||0,finished:r?.finished||false,won:r?.won||false,loss:r?.loss||null,startedAt:r?.startedAt||null,finishedAt:r?.finishedAt||null}];
