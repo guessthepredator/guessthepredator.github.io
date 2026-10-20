@@ -1,4 +1,4 @@
-import {dailySchedule} from './daily218.mjs';
+import {dailySchedule} from './daily218.mjs?ui=2.65.0';
 import {newRound,puzzleAnswers} from './engine.mjs';
 export const DAILY_RULES=Object.freeze({full:{label:'FULL SCAN',difficulty:'EASY',guesses:5},signal:{label:'ONE SIGNAL',difficulty:'HARD',guesses:6}});
 export function chosenDaily(days,day){return days?.[day]?.daily265||null;}

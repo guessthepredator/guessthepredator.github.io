@@ -1,6 +1,6 @@
 import {gameScore} from './engine.mjs';
 export const MODERN_SCORE_FACTOR=2.5;
-import {DAILY_TRACKS,dailySchedule,currentDailyRounds,dailyStats} from './daily218.mjs';
+import {DAILY_TRACKS,dailySchedule,currentDailyRounds,dailyStats} from './daily218.mjs?ui=2.65.0';
 /** V2.18: two Daily Challenges, independently validated by the server. */
 export function dailySummary(days,day){
  const rounds=currentDailyRounds(days,day);
