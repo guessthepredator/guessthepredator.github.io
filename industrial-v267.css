@@ -453,3 +453,29 @@ html,body{background:#0d1012!important;color:var(--tac267-ink)}
 #app#app[data-screen="trivia"] .trivia-page-active .trivia-question h2{background:none!important;border:0!important;border-radius:0!important;padding:12px 0!important;text-wrap:pretty!important}
 #app#app[data-screen="trivia"] .trivia-page-active .trivia-clock{color:#ecc98f!important}
 #app#app[data-screen="trivia"] .trivia-page-active .trivia-type input{background:#172129!important;border:1px solid #8a7d69!important;border-radius:4px!important}
+
+/* V2.76: a compact Daily objective leaves the mode cards in view. */
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core{display:grid!important;grid-template-columns:90px minmax(0,1fr)!important;align-items:center!important;gap:12px!important;padding:14px!important;margin:0 0 10px!important;box-sizing:border-box!important;background:#111a21f5!important;border:1px solid #776548!important;border-left:3px solid #d3ad72!important;border-radius:5px!important;min-height:0!important;height:auto!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-bin-stage{width:90px!important;height:90px!important;min-height:0!important;margin:0!important;position:relative!important;inset:auto!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-bin-image{width:100%!important;height:100%!important;object-fit:contain!important;position:static!important;transform:none!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-intel-panel.tac276-intel-brief{display:grid!important;grid-template-columns:minmax(0,1fr) 200px!important;gap:5px 18px!important;padding:0!important;margin:0!important;border:0!important;background:none!important;box-shadow:none!important;text-align:left!important;width:100%!important;max-width:none!important;min-height:0!important;align-items:start!important}
+#app#app .tac276-intel-brief>.gtp239-kicker{grid-column:1!important;grid-row:1!important;justify-self:start!important;font-size:10px!important;line-height:1.2!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .tac276-intel-brief>h2{grid-column:1!important;grid-row:2!important;justify-self:start!important;font-size:27px!important;line-height:1.1!important;margin:0!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .tac276-intel-brief>p{grid-column:1!important;grid-row:3!important;justify-self:start!important;font:13px/1.5 Arial,sans-serif!important;margin:0!important;max-width:66ch!important;text-align:left!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .tac276-intel-brief>.gtp239-open-intel{grid-column:2!important;grid-row:1/4!important;align-self:center!important;justify-self:stretch!important;width:100%!important;max-width:none!important;min-height:44px!important;margin:0!important;padding:10px!important;font-size:12px!important;line-height:1.4!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .tac276-intel-brief>.tac275-reward-path{grid-column:1!important;grid-row:4!important;font-size:11px!important;line-height:1.5!important;margin:2px 0 0!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .tac276-intel-brief>.tac275-daily-date{grid-column:1!important;grid-row:5!important;font-size:10px!important;line-height:1.5!important;margin:0!important}
+#app#app .tac276-intel-brief>.gtp239-reward-details{grid-column:2!important;grid-row:4/6!important;width:100%!important;min-width:0!important;margin:0!important;padding:0!important;text-align:left!important}
+#app#app .tac276-intel-brief .gtp239-reward-details>summary{font:10px/1.5 Arial,sans-serif!important;letter-spacing:.4px!important;padding:7px!important;min-height:0!important;height:auto!important;white-space:normal!important;cursor:pointer!important}
+#app#app .tac276-intel-brief .gtp239-reward-grid{display:grid!important;grid-template-columns:1fr!important;gap:5px!important;margin-top:6px!important}
+#app#app[data-screen="home"] .gtp246-home-arena>.gtp239-side .gtp246-orbit-mode{min-height:104px!important}
+@media(max-width:1050px) and (min-width:701px){#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-intel-panel.tac276-intel-brief{grid-template-columns:minmax(0,1fr) 170px!important;column-gap:12px!important}}
+@media(max-width:700px){
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core{grid-template-columns:64px minmax(0,1fr)!important;align-items:start!important;padding:12px!important;gap:10px!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-bin-stage{width:64px!important;height:70px!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-intel-panel.tac276-intel-brief{grid-template-columns:minmax(0,1fr)!important;gap:7px!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .tac276-intel-brief>.gtp239-open-intel{grid-column:1!important;grid-row:4!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .tac276-intel-brief>.tac275-reward-path{grid-row:5!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .tac276-intel-brief>.tac275-daily-date{grid-row:6!important}
+ #app#app .tac276-intel-brief>.gtp239-reward-details{grid-column:1!important;grid-row:7!important}
+}
