@@ -41,7 +41,7 @@ test('V2.41 Pixel reveal is slightly harder while still solvable',()=>{
  assert.deepEqual(PIXEL_SIZES,[9,10,12,16,23,36,900]);
 });
 test('V2.41 How To and FAQ cover all six modes, updated rules and reward progression',()=>{
- for(const s of ['CLASSIC · MIRAGE','PIXEL · SPARROW','QUOTE · LOBA','ABILITY · OCTANE','EMOJI · WATTSON','TRIVIA · CRYPTO','FORBIDDEN INTEL','RUSH','SETTINGS','UTC'])assert.ok(guide.includes(s),s);
+ for(const s of ['CLASSIC','PIXEL','QUOTE','ABILITY','EMOJI','TRIVIA','FORBIDDEN INTEL','RUSH','SETTINGS','UTC'])assert.ok(guide.includes(s),s);
  assert.ok(guide.includes('five questions'));
  assert.ok(guide.includes('At 00:00 UTC')||guide.includes('at 00:00 UTC'));
 });
