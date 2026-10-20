@@ -1189,3 +1189,15 @@
 #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene.tac-pixel-expanded{height:auto!important;min-height:0!important;max-height:none!important}
 #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene.tac-pixel-expanded .pixel-art{height:auto!important;max-height:none!important;min-height:0!important;aspect-ratio:1.38!important;width:100%!important}
 #app[data-screen="game"][data-mode="pixel"] .gtp230-main-clue .visual-pixel.nova-pixel-scene.tac-pixel-expanded .pixel-canvas{width:100%!important;max-width:none!important;max-height:none!important;height:auto!important;object-fit:contain!important}
+
+/* V2.64: distinguish the latest comparison from accumulated confirmed intel. */
+#app[data-screen="game"] .tac-latest-comparison{padding:10px 0;border-bottom:1px solid #657c8f80;margin-bottom:10px}
+#app[data-screen="game"] .tac-latest-comparison>strong{display:block;font-size:12px;color:#f5e8d5;margin-bottom:8px;overflow-wrap:anywhere}
+#app[data-screen="game"] .tac-latest-comparison>div{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#app[data-screen="game"] .tac-latest-comparison span{padding:6px;font-size:11px;border-radius:4px;overflow-wrap:anywhere;background:#252d39;color:#d8dde4}
+#app[data-screen="game"] .tac-latest-comparison .tac-comparison-match{background:#163e33;color:#bff4d6}
+#app[data-screen="game"] .tac-latest-comparison .tac-comparison-different{background:#452831;color:#ffd0d0}
+#app[data-screen="game"] .tac-confirmed-note{font-size:11px;color:#c8d2db;line-height:1.5;margin:8px 0}
+#app[data-screen="game"] .tac-daily-stage{display:flex;flex-direction:column;gap:5px;margin:10px 0 16px;padding:12px 16px;border-left:4px solid #e6a56c;background:#13212eeb;color:#f7e9d9;border-radius:5px}
+#app[data-screen="game"] .tac-daily-stage b{font-size:15px;letter-spacing:.04em}
+#app[data-screen="game"] .tac-daily-stage span{font-size:12px;color:#d0dce5}
