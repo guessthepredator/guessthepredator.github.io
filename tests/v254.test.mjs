@@ -1,3 +1,4 @@
+import {chooseDaily as chooseDaily265,chosenDaily as chosenDaily265} from '../src/daily265.mjs';import {legends as roster265} from '../src/data.mjs';import {COMMUNITY_INTEL as community265} from '../src/community_intel265.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
@@ -29,15 +30,7 @@ test('approved scene assets are full-sized WebP files and independent of gamepla
  assert.ok(existsSync(new URL('../assets/decor/mythic-bin-real-v239.webp',import.meta.url)));
 });
 
-test('Intel rotates deterministic practical notes without falsely claiming EA verification',()=>{
- for(const index of [1,2,3]){
-  assert.ok(INTEL_POOL[index].length>=8);
-  const first=intelFor('2026-10-19',index);
-  assert.deepEqual(first,intelFor('2026-10-19',index));
-  assert.ok(first.tip.length>90);
- }
- assert.ok(!read('src/app.mjs').includes('VERIFIED EA GUIDE'));
-});
+test('Intel rotates deterministic practical notes without falsely claiming EA verification',()=>{assert.doesNotMatch(read('src/app.mjs'),/MECHANIC REFERENCE · EA/);assert.ok(read('src/app.mjs').includes('tip.sourceName'));assert.ok(read('src/app.mjs').includes('COMMON MISTAKE'));});
 
 // Test the actual leaderboard module with a controlled SDK; no production score is submitted.
 async function leaderboardWith(sdk){

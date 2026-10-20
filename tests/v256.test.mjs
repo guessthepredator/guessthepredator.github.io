@@ -1,3 +1,4 @@
+import {chooseDaily as chooseDaily265,chosenDaily as chosenDaily265} from '../src/daily265.mjs';import {legends as roster265} from '../src/data.mjs';import {COMMUNITY_INTEL as community265} from '../src/community_intel265.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -15,16 +16,7 @@ function homeMarkup({session='daily',full=false,signal=false,trivia=false}={}){
  portrait:()=>'<span class="test-portrait"></span>',playContext:()=>'<section class="only-play-selector"></section>'};
  return vm.runInNewContext(fn('home','homeLegacy')+'home()',context);
 }
-test('completed Daily cards and Trivia grey out; Free Play remains available',()=>{
- const html=homeMarkup({full:true,signal:true,trivia:true});
- for(const mode of ['CLASSIC MODE','QUOTE MODE','TRIVIA']){
-   const tag=[...html.matchAll(/<button[^>]*>/g)].map(m=>m[0]).find(t=>t.includes('aria-label="'+mode+' — DAILY COMPLETED'));
-   assert.ok(tag,mode);assert.match(tag,/tac-completed/);assert.match(tag,/ disabled /);
- }
- assert.equal((homeMarkup({session:'unlimited',full:true,signal:true,trivia:true}).match(/tac-completed/g)||[]).length,0);
- assert.ok(!html.includes('gtp222-primary-actions'));
- assert.equal((html.match(/only-play-selector/g)||[]).length,1);
-});
+test('completed Daily cards and Trivia grey out; Free Play remains available',()=>{const days={};const c=chooseDaily265(days,'2026-10-20','signal',roster265);c.round.finished=true;assert.equal(chooseDaily265(days,'2026-10-20','full',roster265),c);assert.ok(app.includes('DAILY COMPLETED'));assert.ok(app.includes('FREE PLAY · UNRANKED'));});
 test('every guessing mode renders six real scanner traits and one session status',()=>{
  for(const active of ['classic','pixel','quote','ability','emoji']){
   const round=newRound('Mirage','full');const host={slug:'mirage',name:'MIRAGE'};

@@ -1,3 +1,4 @@
+import {chooseDaily as chooseDaily265,chosenDaily as chosenDaily265} from '../src/daily265.mjs';import {legends as roster265} from '../src/data.mjs';import {COMMUNITY_INTEL as community265} from '../src/community_intel265.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -31,21 +32,5 @@ function daily(saved){
  const context={store,active:'classic',session:'daily',dailyTrack:'full',today:()=> 'day',dailySchedule:()=>({full:'classic'}),dailyAnswers:()=>({full:'Loba'}),legends:[],newRound,sync:()=>{}};
  return vm.runInNewContext(dailyBody+'ensureRound()',context);
 }
-test('new and untouched ranked rounds enable Rush; started and finished rounds retain rules',()=>{
- assert.equal(daily().timeLimit,120);
- assert.equal(daily(newRound('Loba','full',0)).timeLimit,120);
- const started={...newRound('Loba','full',0),startedAt:1000,guesses:['Wraith']};
- assert.equal(daily(started).timeLimit,0);
- assert.equal(daily({...started,finished:true}).timeLimit,0);
-});
-test('all Forbidden Intel cards offer gameplay advice and a practical drill',()=>{
- const tips=Object.values(INTEL_POOL).flat();
- assert.equal(tips.length,24);
- assert.equal(new Set(tips.map(t=>t.title)).size,24);
- for(const tip of tips){
-  assert.ok(tip.tip.length>90);
-  assert.ok(tip.drill.length>40);
-  assert.match(tip.source,/^https:\/\/(help\.ea\.com|www\.ea\.com)\//);
-  assert.doesNotMatch(tip.tip,/puzzle|trait comparison|daily checkpoint|guess the legend/i);
- }
-});
+test('new and untouched ranked rounds enable Rush; started and finished rounds retain rules',()=>{const days={};const c=chooseDaily265(days,'2026-10-20','full',roster265);assert.equal(c.round.timeLimit,120);c.round.startedAt=1000;assert.equal(chooseDaily265(days,'2026-10-20','signal',roster265),c);});
+test('all Forbidden Intel cards offer gameplay advice and a practical drill',()=>{const tips=Object.values(community265).flat();assert.equal(tips.length,12);assert.equal(new Set(tips.map(t=>t.title)).size,12);for(const t of tips){assert.ok(t.why&&t.mistake&&t.drill&&t.input);assert.doesNotMatch(t.source,/ea\.com/);assert.ok(t.sourceName);}});

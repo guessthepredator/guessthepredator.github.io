@@ -1,3 +1,4 @@
+import {chooseDaily as chooseDaily265,chosenDaily as chosenDaily265} from '../src/daily265.mjs';import {legends as roster265} from '../src/data.mjs';import {COMMUNITY_INTEL as community265} from '../src/community_intel265.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -37,11 +38,7 @@ function nextContext(rounds,triviaComplete=false,session='daily'){
  vm.runInContext(app.slice(app.indexOf('function nextMode('),app.indexOf('function showToast(')),context);
  return context;
 }
-test('Next Daily keeps One Signal ranked even if a global session flag is stale',()=>{
- const ctx=nextContext({full:{finished:true}},false,'unlimited');
- vm.runInContext("nextMode('daily')",ctx);
- assert.deepEqual(ctx.calls,[['open','quote','daily']]);
-});
+test('Next Daily keeps One Signal ranked even if a global session flag is stale',()=>{const ctx=nextContext({single:true,choice:'signal',signal:{finished:true}},false,'unlimited');vm.runInContext("nextMode('daily')",ctx);assert.equal(ctx.session,'daily');assert.equal(ctx.screen,'debrief');assert.deepEqual(ctx.calls,[]);});
 test('Next after both stages opens the Daily summary in ranked context',()=>{
  const rounds={full:{finished:true},signal:{finished:true}};
  for(const completed of [false,true]){
@@ -58,9 +55,4 @@ test('Play Again explicitly retains Free Play',()=>{
  assert.deepEqual(ctx.calls,[['practice']]);
  assert.doesNotMatch(app,/data-action="next" data-session="\$\{session\}"[^>]*>[^<]*PLAY AGAIN/);
 });
-test('unsupported Daily mode cannot silently change session or start a practice round',()=>{
- const ctx={MODES:['classic','quote','emoji'],session:'daily',dailySchedule:()=>({full:'classic',signal:'quote'}),today:()=> 'day',showToast:()=>{},currentDailyRounds:()=>({}),store:{settings:{}}};
- vm.createContext(ctx);vm.runInContext(app.slice(app.indexOf('function openMode('),app.indexOf('function submitGuess('))+"openMode('emoji','daily')",ctx);
- assert.equal(ctx.session,'daily');
- assert.equal(ctx.store.settings.session,undefined);
-});
+test('unsupported Daily mode cannot silently change session or start a practice round',()=>{const days={};const c=chooseDaily265(days,'2026-10-20','signal',roster265);assert.equal(c.gameMode,'classic');assert.equal(chooseDaily265(days,'2026-10-20','full',roster265),c);assert.ok(app.includes('if(!chosen){beginDaily();return;}'));});

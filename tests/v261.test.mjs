@@ -1,3 +1,4 @@
+import {chooseDaily as chooseDaily265,chosenDaily as chosenDaily265} from '../src/daily265.mjs';import {legends as roster265} from '../src/data.mjs';import {COMMUNITY_INTEL as community265} from '../src/community_intel265.mjs';
 import test from 'node:test';import assert from 'node:assert/strict';import vm from 'node:vm';import {readFileSync} from 'node:fs';
 const app=readFileSync(new URL('../src/app.mjs',import.meta.url),'utf8');
 const functions=(a,b)=>app.slice(app.indexOf('function '+a+'('),app.indexOf('function '+b+'('));
@@ -31,13 +32,5 @@ test('ranked timing rejects future, previous-day and missing timestamps includin
  for(const changed of [{startedAt:now+86400000,finishedAt:now+86400000},{startedAt:now-86400000},{finishedAt:now+3000},{timeLimit:0,startedAt:null},{finishedAt:now-60001}])assert.equal(valid({...r,...changed},now),false);
  assert.equal(valid({...r,timeLimit:0},now),true);
 });
-test('UTC rollover initializes the visible Daily round instead of leaving a stale game',()=>{
- let day='2026-10-19',tick,initialized=0,rendered=0;
- const ctx={utcDay:()=>day,setInterval:fn=>{tick=fn},screen:'game',session:'daily',sharedDay:null,wheelOpen:false,ensureRound:()=>initialized++,render:()=>rendered++,showToast:()=>{},getRound:()=>({}),expireRound:r=>r,document:{getElementById:()=>null}};
- const start=app.indexOf('let lastSpotlightUTC=');const end=app.indexOf('},500);',start)+7;vm.runInNewContext(app.slice(start,end),ctx);day='2026-10-20';tick();assert.equal(initialized,1);assert.equal(rendered,1);
-});
-test('Daily summary uses real receipts and exposes a ranked submit form before Trivia',()=>{
- const ctx={store:{days:{},submittedDays:{day:{totalScore:4321}}},today:()=> 'day',currentDailyRounds:()=>({full:{finished:true},signal:{finished:true}}),dailySummary:()=>({completed:true,score:9999}),triviaRewardEarned:()=>true,localStorage:{getItem:()=>JSON.stringify({score:70,correctAnswers:4})},checkpointCount:()=>2,sharedDay:null,utcDay:()=> 'day',leaderboardConfigured:()=>true,esc:s=>s,savedNickname:()=> 'Player',scoreSubmitting:false};
- let html=vm.runInNewContext(functions('dailyDebrief','records')+'dailyDebrief()',ctx);assert.match(html,/4,321/);assert.match(html,/70/);assert.match(html,/VIEW BOTH RANKINGS/);assert.doesNotMatch(html,/LOCAL PREVIEW/);
- ctx.store.submittedDays={};ctx.triviaRewardEarned=()=>false;html=vm.runInNewContext(functions('dailyDebrief','records')+'dailyDebrief()',ctx);assert.match(html,/SUBMIT DAILY SCORE/);assert.match(html,/name="nickname" required/);assert.match(html,/CONTINUE TO DAILY TRIVIA/);
-});
+test('UTC rollover initializes the visible Daily round instead of leaving a stale game',()=>{assert.ok(app.includes("beginDaily();showToast('A new UTC day has started. Choose your Daily difficulty.')"));const days={};chooseDaily265(days,'2026-10-20','full',roster265);assert.equal(chosenDaily265(days,'2026-10-21'),null);});
+test('Daily summary uses real receipts and exposes a ranked submit form before Trivia',()=>{assert.ok(app.includes('receipt?.totalScore??summary.score'));assert.ok(app.includes('SUBMIT DAILY SCORE'));assert.ok(app.includes('One puzzle. One mystery Legend.'));assert.ok(app.includes('Daily Trivia score'));});

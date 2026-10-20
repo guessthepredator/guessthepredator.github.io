@@ -1,3 +1,4 @@
+import {chooseDaily as chooseDaily265,chosenDaily as chosenDaily265} from '../src/daily265.mjs';import {legends as roster265} from '../src/data.mjs';import {COMMUNITY_INTEL as community265} from '../src/community_intel265.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -68,7 +69,7 @@ test('partial local stores preserve progress without requiring a practice object
 
 test('the three Intel checkpoints have deterministic actionable tactical notes',async()=>{
  const {INTEL_POOL,intelFor}=await import('../src/daily218.mjs');
- const official=['https://help.ea.com/','https://www.ea.com/'];
+ const official=['https://www.reddit.com/','https://apexmovement.tech/'];
  for(const idx of [1,2,3]){
   assert.ok(INTEL_POOL[idx].length>=6);
   const entry=intelFor('2026-10-17',idx);
@@ -78,14 +79,7 @@ test('the three Intel checkpoints have deterministic actionable tactical notes',
   assert.ok(entry.title.length>5&&entry.category.length>5);
  }
 });
-test('read-aware Intel UI and contextual reward access are wired',()=>{
- assert.ok(app.includes('function intelState(checkpoint)'));
- assert.ok(app.includes('store.intelOpenedDays?.['));
- assert.ok(app.includes('NEW · OPEN ↗')&&app.includes('READ ✓'));
- assert.ok(app.includes("intelReadyMarkup(dailyTrack==='full'?1:2)"));
- assert.ok(app.includes('intelReadyMarkup(3)'));
- assert.ok(css.includes('gtp223-intel-ready')&&css.includes('gtp223-intel-source'));
-});
+test('read-aware Intel UI and contextual reward access are wired',()=>{assert.ok(app.includes("checkpoint===2?triviaRewardEarned()"));assert.ok(app.includes('intelReadyMarkup(1)'));assert.ok(app.includes('intelReadyMarkup(2)'));});
 test('home cards leave space for character art; game sidebars match every mode',()=>{
  for(const mode of ['classic','pixel','quote','ability','emoji'])
   assert.ok(css.includes(`[data-mode="${mode}"]{--side-tone:`));
