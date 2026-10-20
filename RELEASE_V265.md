@@ -6,4 +6,4 @@ Nicknames are now reserved across Challenge and Daily Trivia submissions after c
 
 Forbidden Intel contains 12 original summaries of player-authored guides from r/ApexUniversity and the Apex Movement Wiki. Each includes the input scope, technique, reasoning, common mistake, practice drill and source link. Two reward checkpoints remain: Daily puzzle and Daily Trivia.
 
-Validation: 222 game/catalog/asset/server tests, live database reservation checks with rollback, authenticated score endpoint CORS and missing-auth checks, desktop split-screen and 390px mobile UI checks. No production test scores.
+Validation: 223 game/catalog/asset/server tests, live database reservation checks with rollback, authenticated score endpoint CORS and missing-auth checks, desktop split-screen and 390px mobile UI checks. No production test scores.
