@@ -1587,3 +1587,22 @@ html,body{background:#0d1012!important;color:var(--tac267-ink)}
 #app#app .intel-modal{display:block!important}
 #app#app .intel-modal .intel-reveal-scene,#app#app .intel-modal .gold-paper{flex:0 0 auto!important}
 #app#app .gold-paper .paper-stamp,#app#app .gold-paper .paper-legend,#app#app .gold-paper .gtp223-intel-source,#app#app .gold-paper>small{position:static!important;inset:auto!important;transform:none!important;width:auto!important}
+
+/* V2.73: one viewport scene, persistent navigation and soft image edges. */
+#app#app::before,#app#app::after{display:none!important}
+#app#app .gtp2-top{position:sticky!important;top:0!important;z-index:40!important}
+#app#app .tac273-scene{position:fixed!important;inset:0!important;z-index:-1!important;pointer-events:none!important;overflow:hidden!important;background:#0d1114 url("./assets/industrial-v267/hangar.webp") center/cover no-repeat!important}
+#app#app .tac273-scene::before{content:"";position:absolute;inset:0;background:#07101566;pointer-events:none}
+#app#app .tac273-scene img{display:block!important;position:absolute!important;inset:78px 0 0!important;width:100%!important;height:calc(100svh - 78px)!important;object-fit:contain!important;object-position:left center!important;filter:none!important;opacity:1!important;mask-image:linear-gradient(to bottom,transparent 0,#000 4%,#000 94%,transparent 100%)!important}
+#app#app .tac273-scene::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#080c1000 22%,#080c1015 40%,#080c1055);pointer-events:none}
+@media(max-width:700px){
+ #app#app .tac273-scene img{inset:62px 0 auto!important;width:100%!important;height:70svh!important;object-fit:cover!important;object-position:24% top!important;mask-image:linear-gradient(to bottom,#000 0,#000 45%,transparent 100%)!important}
+ #app#app .tac273-scene::after{background:linear-gradient(to bottom,#080c1010,#080c1020 30svh,#080c10bb 70svh,#080c10dd)!important}
+}
+
+/* Existing document overflow rules prevent sticky positioning; reserve a fixed header slot. */
+#app#app{padding-top:78px!important}
+#app#app .gtp2-top{position:fixed!important;inset:0 0 auto!important;width:100%!important}
+@media(max-width:700px){#app#app{padding-top:62px!important}}
+
+@media(max-width:700px){#app#app .tac273-scene img{object-position:left top!important}}

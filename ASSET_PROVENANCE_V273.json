@@ -1,0 +1,13 @@
+{
+  "release": "2.73",
+  "kind": "AI-generated fan artwork",
+  "generator": "OpenAI image generation",
+  "date": "2026-10-20",
+  "note": "Distinct decorative fan scenes generated for utility pages, with the existing hangar artwork as a style reference. Not official EA or Respawn art. No gameplay answers encoded.",
+  "assets": [
+    {"file": "assets/industrial-v267/leaderboard-v273.webp", "character": "Ash", "usage": "Rankings"},
+    {"file": "assets/industrial-v267/records-v273.webp", "character": "Bangalore", "usage": "Stats"},
+    {"file": "assets/industrial-v267/faq-v273.webp", "character": "Pathfinder", "usage": "FAQ"},
+    {"file": "assets/industrial-v267/howto-v273.webp", "character": "Bloodhound", "usage": "How to Play"}
+  ]
+}

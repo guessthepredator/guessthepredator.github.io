@@ -1027,10 +1027,12 @@ async function copyWheelPick(){
   }
   sound('pick');
 }
-function pageEnvironment(){
- const themes={records:['octane','CAREER ARCHIVE','Every deployment leaves a record.','ability'],leaderboard:['wraith','APEX ARENA','Precision earns its place.','quote'],faq:['crypto','FRIENDLY INTEL','Intel from the Outlands.','trivia'],howto:['sparrow','TRACKER FIELD MANUAL','Read the clues. Follow the trail.','pixel']};
- const theme=themes[screen];if(!theme)return '';
- return '<div class="tac-page-environment" data-guide="'+theme[0]+'" aria-hidden="true"><div class="tac-page-orbit"></div><img src="./assets/industrial-v267/'+theme[3]+'.webp" alt=""/></div><div class="tac-page-host-line"><b>'+theme[0].toUpperCase()+' / '+theme[1]+'</b><span>'+theme[2]+'</span></div>';
+function pageEnvironment(){return '';}
+function sceneBackdrop273(){
+ const utility={leaderboard:'leaderboard-v273',records:'records-v273',faq:'faq-v273',howto:'howto-v273'};
+ const mode={classic:'loba-v271',pixel:'pixel',quote:'quote',ability:'ability',emoji:'emoji'};
+ const image=utility[screen]||(screen==='game'?mode[active]:screen==='trivia'?'trivia':screen==='daily-choice'||screen==='debrief'?'hangar':'loba-v271');
+ return '<div class="tac273-scene" aria-hidden="true"><img src="./assets/industrial-v267/'+image+'.webp" alt="" loading="eager" decoding="async" draggable="false"/></div>';
 }
 function render({scroll=true}={}) {
   const identityDraft=identityPromptOpen?(document.getElementById('identity-name')?.value??''):null;
@@ -1041,7 +1043,7 @@ function render({scroll=true}={}) {
   app.className=`app ${store.settings.motion?'':'no-motion'}`;
   app.dataset.screen=screen;app.dataset.session=session;app.dataset.difficulty=session==='daily'?(chosenDaily(store.days,today())?.track||''):'';app.dataset.mode=screen==='game'?active:'';
   if(migrateSingleDaily(store.days,today()))sync();
-  app.innerHTML=nav()+pageEnvironment()+(screen==='daily-choice'?dailyChoice():screen==='home'?home():screen==='game'?game():screen==='trivia'?trivia():screen==='records'?records():screen==='howto'?howTo():screen==='faq'?faq():screen==='debrief'?dailyDebrief():leaderboard());
+  app.innerHTML=sceneBackdrop273()+nav()+pageEnvironment()+(screen==='daily-choice'?dailyChoice():screen==='home'?home():screen==='game'?game():screen==='trivia'?trivia():screen==='records'?records():screen==='howto'?howTo():screen==='faq'?faq():screen==='debrief'?dailyDebrief():leaderboard());
   if(identityDraft!==null){openIdentityPrompt(true);const input=document.getElementById('identity-name');if(input)input.value=identityDraft;}
   else if(settingsWasOpen)settingsDialog();
   loadPortraitImages();
