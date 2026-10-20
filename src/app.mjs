@@ -393,7 +393,7 @@ function home(){
    <header class="gtp239-masthead"><span>THE APEX</span><h1>CHALLENGE</h1><small>APEX LEGENDS DAILY CHALLENGE</small></header>${playContext(session==='daily',{home:true})}
    <div class="gtp222-arena gtp239-arena gtp246-home-arena" aria-label="Six original game modes with individual Legend themes">
     <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Pixel and Quote">${showcase.slice(0,3).map(heroCard).join('')}</section>
-    <section class="gtp222-core gtp239-core gtp246-home-core" aria-label="Forbidden Intel Supply Bin">
+    <section class="gtp222-core gtp239-core gtp246-home-core ${freeSelected?'tac268-free-core':''}" aria-label="Forbidden Intel Supply Bin">
       <div class="gtp239-bin-stage" role="img" aria-label="Halloween Mythic Supply Bin surrounded by candles and thorns"><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-halloween-v257.webp" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
       ${freeSelected?'':`<div class="gtp239-intel-panel gtp246-intel-hub"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Complete the hunt. Break the seals. Uncover your forbidden intel.</p>
        <button type="button" class="gtp239-open-intel" data-action="${lastUnlocked?'intel-open':'home-daily'}" ${lastUnlocked?`data-checkpoint="${intelTarget}"`:''}>◈ ${lastUnlocked?'OPEN MYTHIC INTEL':'BEGIN THE DAILY HUNT'} <span>↗</span></button>
