@@ -318,3 +318,49 @@ html,body{background:#0d1012!important;color:var(--tac267-ink)}
 #app#app[data-screen="trivia"] .trivia-option b{background:none!important;color:#d5ae8c!important;border:0!important}
 @media(max-width:1150px){#app#app[data-screen="trivia"] .trivia-sidebar{border-left:0!important;border-top:1px solid #625a4e!important}}
 @media(max-width:700px){#app#app[data-screen="trivia"] .trivia-main{padding:18px!important}#app#app[data-screen="trivia"] .trivia-hero>p{order:0!important}}
+
+/* V2.72: larger play surfaces, illustrated utility hosts, readable reward intel. */
+@media(min-width:701px){
+ #app#app[data-screen="game"] .gtp230-game,#app#app[data-screen="trivia"] .trivia-page{width:71%!important;max-width:1320px!important;margin:0 2% 0 auto!important}
+ #app#app[data-screen="game"][data-mode] .gtp230-game .gtp230-arena{grid-template-columns:minmax(0,1fr) minmax(340px,1fr)!important}
+}
+@media(min-width:701px) and (max-width:1150px){#app#app[data-screen="game"][data-mode] .gtp230-game .gtp230-arena{grid-template-columns:1fr!important}}
+#app#app .gtp230-trait>strong{white-space:normal!important;overflow-wrap:anywhere!important}
+#app#app .tac-eliminated{display:block!important;grid-column:1/-1!important;font:11px/1.5 Arial,sans-serif!important;color:#c3b7a8!important;letter-spacing:0!important;white-space:normal!important;overflow-wrap:anywhere!important;margin-top:5px!important}
+#app#app[data-screen="records"]{--tac267-art:url("./assets/industrial-v267/ability.webp")}
+#app#app[data-screen="leaderboard"]{--tac267-art:url("./assets/industrial-v267/quote.webp")}
+#app#app[data-screen="faq"]{--tac267-art:url("./assets/industrial-v267/trivia.webp")}
+#app#app[data-screen="howto"]{--tac267-art:url("./assets/industrial-v267/pixel.webp")}
+/* Full scene art replaces the separate flat portrait layer. */
+#app#app .tac-page-environment{inset:78px 0 0!important;width:100%!important;height:auto!important;z-index:0!important}
+#app#app .tac-page-environment img{inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:left center!important;filter:none!important;mask-image:none!important}
+#app#app .gtp223-intel-ready{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:16px!important;background:#111a21fa!important;border:1px solid #b08c5d!important;border-left:3px solid #d5ad70!important;border-radius:5px!important;padding:18px!important;color:#f4e9d5!important;text-shadow:none!important;box-shadow:0 8px 28px #0005!important}
+#app#app .gtp223-intel-ready>div{flex:1 1 220px!important;display:grid!important;gap:8px!important}
+#app#app .gtp223-intel-ready b{color:#edc88e!important}
+#app#app .gtp223-intel-ready small{color:#e4ddcf!important;font:13px/1.6 Arial,sans-serif!important}
+#app#app .intel-modal{background:#111a21!important;border:1px solid #b08c5d!important;border-radius:8px!important;color:#f4e9d5!important;max-height:calc(100svh - 28px)!important;overflow-y:auto!important;min-height:0!important;padding:48px 20px 20px!important;box-shadow:0 20px 80px #000b!important}
+#app#app .intel-reveal-scene{display:flex!important;flex-direction:column!important;align-items:center!important;gap:16px!important;padding:0!important;min-height:0!important}
+#app#app .intel-modal .reward-chest{position:relative!important;inset:auto!important;width:150px!important;height:95px!important;transform:none!important;flex:0 0 auto!important}
+#app#app .intel-modal .reward-chest img{width:100%!important;height:100%!important;object-fit:contain!important}
+#app#app .intel-modal .gold-paper{position:relative!important;inset:auto!important;transform:none!important;animation:none!important;opacity:1!important;width:100%!important;min-height:0!important;max-height:none!important;overflow:visible!important;background:#f1e0bc!important;border:1px solid #b58c4e!important;border-radius:5px!important;padding:22px!important;color:#2c261c!important;box-shadow:none!important;text-align:left!important;align-items:stretch!important}
+#app#app .gold-paper::before,#app#app .intel-modal .reveal-boozle{display:none!important}
+#app#app .gold-paper h2{font-size:32px!important;line-height:1.1!important;color:#3b2d20!important;margin:6px 0 12px!important;text-shadow:none!important}
+#app#app .gold-paper p{max-width:none!important;font:14px/1.75 Arial,sans-serif!important;color:#30291e!important}
+#app#app .gold-paper .tac259-intel-drill{color:#30291e!important;background:#e2cca4!important}
+#app#app .gold-paper small,#app#app .gold-paper a{color:#654923!important;line-height:1.6!important}
+#app#app .intel-dialog-footer{padding-top:16px!important}
+@media(max-width:700px){
+ #app#app .tac-page-environment{inset:62px 0 auto!important;height:240px!important}
+ #app#app .tac-page-environment img{object-fit:cover!important;object-position:left 22%!important;mask-image:linear-gradient(to top,transparent,#000 25%)!important}
+ #app#app[data-screen="records"]>main,#app#app[data-screen="leaderboard"]>main,#app#app[data-screen="howto"]>main,#app#app[data-screen="faq"]>main{padding-top:240px!important}
+ #app#app .intel-modal{padding:44px 12px 12px!important}
+ #app#app .intel-modal .gold-paper{padding:16px!important}
+}
+
+/* The Daily homepage reward copy needs its own opaque reading surface. */
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-intel-panel{background:#111a21f5!important;border:1px solid #8d7656!important;border-left:3px solid #d3ad72!important;border-radius:5px!important;padding:18px!important;box-shadow:0 8px 24px #0004!important;text-shadow:none!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-intel-panel p{color:#eee1cb!important;line-height:1.65!important}
+
+#app#app .intel-modal{display:block!important}
+#app#app .intel-modal .intel-reveal-scene,#app#app .intel-modal .gold-paper{flex:0 0 auto!important}
+#app#app .gold-paper .paper-stamp,#app#app .gold-paper .paper-legend,#app#app .gold-paper .gtp223-intel-source,#app#app .gold-paper>small{position:static!important;inset:auto!important;transform:none!important;width:auto!important}

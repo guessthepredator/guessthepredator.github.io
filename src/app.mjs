@@ -568,6 +568,11 @@ function cinematicIdentityBoard(round,target){
  const latest=round.mode==='full'&&round.guesses.length?scannerState({...round,guesses:round.guesses.slice(-1),hints:[]},target,legends):null;
  const latestMatches=latest?FIELDS.filter(field=>latest[field]?.kind==='correct').length:0;
  const comparison=latest?'<div class="tac-latest-comparison" aria-label="Latest guess comparison"><span>'+esc(round.guesses.at(-1))+'</span><small>'+latestMatches+'/6 matching this guess</small></div>':'';
+ const excluded=Object.fromEntries(FIELDS.map(field=>[field,[]]));
+ if(round.mode==='full')for(const name of round.guesses){
+  const compared=scannerState({...round,guesses:[name],hints:[]},target,legends);
+  for(const field of FIELDS){const trait=compared[field];if(trait?.kind==='wrong'&&!excluded[field].includes(trait.value))excluded[field].push(trait.value);}
+ }
  const names={realName:'REAL NAME',name:'REAL NAME',role:'CLASS',class:'CLASS',age:'AGE',release:'RELEASE',season:'SEASON'};
  const rows=FIELDS.map((field,i)=>{
   const trait=state?.[field];
@@ -575,11 +580,13 @@ function cinematicIdentityBoard(round,target){
   const status=kind==='correct'||kind==='hint'?'match':kind==='wrong'?'different':'unknown';
   // The engine's comparison already includes the disclosed actual match;
   // never read the concealed answer here, as UNKNOWN/DIFFERENT remain hidden.
-  const wording=scannerDisplayValue(field,trait);
+  const wording=round.mode==='full'&&kind==='wrong'?'Not: '+trait.value:scannerDisplayValue(field,trait);
+  const earlier=round.mode==='full'?excluded[field].filter(value=>kind!=='wrong'||value!==trait.value):[];
+  const eliminated=earlier.length?'<small class="tac-eliminated" title="'+esc(excluded[field].join(', '))+'">'+(kind==='wrong'?'Earlier: ':'Ruled out: ')+esc(earlier.join(', '))+'</small>':'';
   return `<div class="gtp230-trait gtp230-trait-${status}" aria-label="${esc(LABELS[field])}: ${esc(wording)}">
       <span class="gtp230-trait-icon" aria-hidden="true">${['◈','✥','▦','⌁','✧','◷'][i%6]}</span>
       <span class="gtp230-trait-name">${esc(names[field]||LABELS[field])}</span>
-      <strong title="${esc(wording)}">${esc(wording)}</strong>
+      <strong title="${esc(wording)}">${esc(wording)}</strong>${eliminated}
     </div>`;
  }).join('');
  const description=round.mode==='full'?'FULL SCAN · CONFIRMED MATCHES ARE REMEMBERED':'ONE SIGNAL · ONE REVEALED TRAIT PER GUESS';
@@ -1021,9 +1028,9 @@ async function copyWheelPick(){
   sound('pick');
 }
 function pageEnvironment(){
- const themes={records:['bangalore','CAREER ARCHIVE','Every deployment leaves a record.'],leaderboard:['ash','APEX ARENA','Precision earns its place.'],faq:['pathfinder','FRIENDLY INTEL','A little help from your friendly MRVN.'],howto:['bloodhound','TRACKER FIELD MANUAL','Read the clues. Follow the trail.']};
+ const themes={records:['octane','CAREER ARCHIVE','Every deployment leaves a record.','ability'],leaderboard:['wraith','APEX ARENA','Precision earns its place.','quote'],faq:['crypto','FRIENDLY INTEL','Intel from the Outlands.','trivia'],howto:['sparrow','TRACKER FIELD MANUAL','Read the clues. Follow the trail.','pixel']};
  const theme=themes[screen];if(!theme)return '';
- return '<div class="tac-page-environment" data-guide="'+theme[0]+'" aria-hidden="true"><div class="tac-page-orbit"></div><img src="./assets/page-hosts/'+theme[0]+'.png" alt=""/></div><div class="tac-page-host-line"><b>'+theme[0].toUpperCase()+' / '+theme[1]+'</b><span>'+theme[2]+'</span></div>';
+ return '<div class="tac-page-environment" data-guide="'+theme[0]+'" aria-hidden="true"><div class="tac-page-orbit"></div><img src="./assets/industrial-v267/'+theme[3]+'.webp" alt=""/></div><div class="tac-page-host-line"><b>'+theme[0].toUpperCase()+' / '+theme[1]+'</b><span>'+theme[2]+'</span></div>';
 }
 function render({scroll=true}={}) {
   const identityDraft=identityPromptOpen?(document.getElementById('identity-name')?.value??''):null;

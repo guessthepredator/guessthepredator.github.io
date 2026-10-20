@@ -4,6 +4,16 @@ import {legends} from '../src/data.mjs';import {FIELDS,LABELS,newRound,tryGuess,
 import {dailyAnswers} from '../src/daily218.mjs';
 const app=readFileSync(new URL('../src/app.mjs',import.meta.url),'utf8');const target=legends.find(l=>l.name==='Mirage');
 function board(round){const fn=app.slice(app.indexOf('function cinematicIdentityBoard('),app.indexOf('function cinematicStageAside('));return vm.runInNewContext(fn+'cinematicIdentityBoard(round,target)',{round,target,legends,FIELDS,LABELS,scannerState,scannerDisplayValue,esc:s=>String(s),victoryIntelState:()=>null});}
+
+test('Full Scan shows excluded candidate values and remembers distinct eliminations without exposing the answer',()=>{
+ let r=tryGuess(newRound('Mirage','full'),'Pathfinder',legends,1);
+ let html=board(r);assert.ok(html.includes('Not: Robot'));assert.ok(!html.includes('Not: Human'));
+ r=tryGuess(r,'Ash',legends,2);html=board(r);
+ assert.ok(html.includes('Not: Simulacrum'));assert.ok(html.includes('Earlier: Robot'));
+ r=tryGuess(r,'Newcastle',legends,3);html=board(r);
+ assert.ok(html.includes('Ruled out: Robot, Simulacrum'));assert.equal(scannerState(r,target,legends).form.kind,'correct');
+ assert.ok(!board(tryGuess(newRound('Mirage','signal'),'Pathfinder',legends,1)).includes('Not: '));
+});
 test('Newcastle against the 20 October Daily Mirage matches only class, gender and form',()=>{assert.equal(dailyAnswers('2026-10-20',legends).full,'Mirage');const r=tryGuess(newRound('Mirage','full',120),'Newcastle',legends,1);assert.equal(r.won,false);assert.equal(r.finished,false);const state=scannerState(r,target,legends);assert.deepEqual(FIELDS.filter(f=>state[f].kind==='correct'),['role','gender','form']);assert.deepEqual(FIELDS.filter(f=>state[f].kind==='wrong'),['age','debut','origin']);const html=board(r);assert.ok(html.includes('>Newcastle</span><small>3/6 matching this guess</small>'));assert.equal((html.match(/tac-comparison-different/g)||[]).length,0);});
 test('latest comparison excludes old matches and hints while confirmed intel remains locked',()=>{let r=tryGuess(newRound('Mirage','full'),'Gibraltar',legends,1);r=tryGuess({...r,hints:['age']},'Newcastle',legends,2);const state=scannerState(r,target,legends);assert.equal(FIELDS.filter(f=>['correct','hint'].includes(state[f].kind)).length,6);assert.equal(r.won,false);const html=board(r);assert.ok(html.includes('>Newcastle</span><small>3/6 matching this guess</small>'));assert.equal((html.match(/tac-comparison-different/g)||[]).length,0);assert.doesNotMatch(html,/tac-confirmed-note/);assert.equal((html.match(/gtp230-trait-match/g)||[]).length,6);});
 test('next Daily button opens the single-puzzle summary explicitly',()=>{const fn=app.slice(app.indexOf('function dailyNextLabel('),app.indexOf('function nextMode('));assert.equal(vm.runInNewContext(fn+'dailyNextLabel()'),'VIEW DAILY SUMMARY');assert.ok(app.includes('ONE DAILY PUZZLE · ONE MYSTERY LEGEND'));});
