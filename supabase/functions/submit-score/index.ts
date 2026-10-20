@@ -41,12 +41,12 @@ Deno.serve(async(req:Request)=>{
  if(authError||!user||user.is_anonymous!==true)return json({error:'Invalid anonymous session'},401,origin);
  const answers=puzzleAnswers(day,legends),pivot=hash('gtp:v218:daily:'+day)%MODES.length;
  const schedule={full:MODES[pivot],signal:MODES[(pivot+2)%MODES.length]};
- if(isSingle){const r=payload.rounds[payload.difficulty];if(!r||r.mode!==payload.difficulty||r.gameMode!==schedule.full||![0,120].includes(r.timeLimit))return json({error:'Daily difficulty configuration mismatch'},400,origin);}
+ if(isSingle){const r=payload.rounds[payload.difficulty];if(!r||r.mode!==payload.difficulty||r.gameMode!==(payload.legacyMigration===true?schedule[payload.difficulty]:schedule.full)||![0,120].includes(r.timeLimit))return json({error:'Daily difficulty configuration mismatch'},400,origin);}
  if(isDual&&(!payload.rounds.full||!payload.rounds.signal||payload.rounds.full.mode!=='full'||payload.rounds.signal.mode!=='signal'||payload.rounds.full.gameMode!==schedule.full||payload.rounds.signal.gameMode!==schedule.signal||![0,120].includes(payload.rounds.full.timeLimit)||![0,120].includes(payload.rounds.signal.timeLimit)))return json({error:'Daily track configuration mismatch'},400,origin);
  if(isDual&&(!Number.isFinite(payload.rounds.full.finishedAt)||!Number.isFinite(payload.rounds.signal.startedAt)||payload.rounds.signal.startedAt<payload.rounds.full.finishedAt))return json({error:'Daily track order invalid'},400,origin);
  let base=0,allWon=true;const details:Record<string,unknown>={};
  for(const track of tracks){
-  const gameMode=isSingle?schedule.full:isDual?schedule[track]:track,r=payload.rounds[track],guesses=r?.guesses;
+  const gameMode=isSingle?payload.rounds[track].gameMode:isDual?schedule[track]:track,r=payload.rounds[track],guesses=r?.guesses;
   if(!r||!Array.isArray(guesses)||guesses.length>6||!guesses.every((guess:unknown)=>typeof guess==='string'&&names.has(guess as string))||new Set(guesses).size!==guesses.length||!Array.isArray(r.hints)||r.hints.length>2||r.hints.some((field:unknown)=>typeof field!=='string'||!fields.has(field as string))||new Set(r.hints).size!==r.hints.length||!['signal','full'].includes(r.mode)||![0,120,180].includes(r.timeLimit)||r.finished!==true||typeof r.won!=='boolean')return json({error:`Invalid ${track} round`},400,origin);
   const limit=r.mode==='full'?5:6;if(guesses.length>limit)return json({error:'Too many guesses'},400,origin);
   const hit=guesses.indexOf(answers[gameMode]),won=hit===guesses.length-1&&hit!==-1;
