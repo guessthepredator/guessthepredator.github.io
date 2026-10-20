@@ -15,6 +15,8 @@ import {loadStore,saveStore} from './store.mjs?v=2.43.0';
 import {FIELDS,LABELS,MODES,MODE_NAMES,CLASS_NAMES,MAX_GUESSES,MAX_HINTS,maxGuesses,visibleEmojiCount,utcDay,puzzleAnswers,newRound,tryGuess,expireRound,
   getHint,availableHintFields,formatValue,gameScore,gameRank,scannerState,scannerDisplayValue,filteredRoster,remainingTime,dayCount,streak,legendByName} from './engine.mjs?v=2.43.0&release=2.60.0';
 
+import {nextFreeMode, writtenAnswerPlaceholder} from './flow275.mjs?v=2.75.0';
+
 const app=document.getElementById('app');
 let store=loadStore();
 // The owner reset public rankings on 19 October 2026. Discard obsolete offline snapshots.
@@ -268,11 +270,11 @@ function forbiddenPanel(){
 function intelDialog(){
   const tip=intelFor(today(),intelCheckpoint);
   const dialog=document.createElement('div');dialog.className='intel-backdrop';dialog.id='intel-dialog';dialog.setAttribute('role','presentation');
-  dialog.innerHTML=`<div class="intel-modal" role="dialog" aria-modal="true" aria-label="Forbidden Intel reward"><button class="intel-close" data-action="intel-close" type="button" aria-label="Close reward">✕</button>
-      <div class="intel-reveal-scene"><span class="reward-spark s1">✦</span><span class="reward-spark s2">✧</span><span class="reward-spark s3">✦</span><span class="reward-spark s4">✧</span>
-      <div class="reward-chest gtp244-mythic-reward" role="img" aria-label="Mythic Supply Bin"><img src="./assets/decor/mythic-bin-halloween-v257.webp" alt="" loading="eager"/></div>
-      <div class="gold-paper"><div class="paper-stamp">✦ OUTLANDS / DAILY REWARD ✦</div><h2>${intelCheckpoint===1?'FIELD<br>INTEL':intelCheckpoint===2?'RARE<br>INTEL':'LEGEND<br>INTEL'}</h2><span class="paper-legend">CHECKPOINT ${intelCheckpoint} · ${esc(tip.category)}</span><p><strong class="gtp223-intel-title">${esc(tip.title)}</strong> ${esc(tip.tip)}</p>${tip.input?`<small class="tac265-tip-input">${esc(tip.input)}</small>`:''}${tip.why?`<div class="tac259-intel-drill"><b>WHY IT WORKS</b><span>${esc(tip.why)}</span></div>`:''}${tip.mistake?`<div class="tac259-intel-drill"><b>COMMON MISTAKE</b><span>${esc(tip.mistake)}</span></div>`:''}${tip.drill?`<div class="tac259-intel-drill"><b>TRY IT NEXT MATCH</b><span>${esc(tip.drill)}</span></div>`:''}${tip.source?`<a class="gtp223-intel-source" href="${esc(tip.source)}" target="_blank" rel="noopener noreferrer">${esc(tip.sourceName||'COMMUNITY GUIDE')} ↗</a>`:'<span class="gtp223-intel-source">TACTICAL FIELD NOTE · THE APEX CHALLENGE</span>'}<small>COMMUNITY SOURCE REVIEWED · ${esc(tip.reviewed||today())}</small></div>
-      <span class="reveal-boozle">BAMBOOZLED! ✦</span></div><div class="intel-dialog-footer"><button class="btn mint" data-action="intel-close" type="button">TAKE THE INTEL ✓</button></div></div>`;
+  dialog.innerHTML=`<div class="intel-modal tac275-intel-modal" role="dialog" aria-modal="true" aria-label="Forbidden Intel reward"><button class="intel-close" data-action="intel-close" type="button" aria-label="Close reward">✕</button><header class="tac275-intel-header"><span>DAILY CHALLENGE REWARD</span><strong>FORBIDDEN INTEL</strong></header>
+      <div class="tac275-intel-body" tabindex="0" role="region" aria-label="Complete Intel brief"><div class="intel-reveal-scene"><span class="reward-spark s1">✦</span><span class="reward-spark s2">✧</span><span class="reward-spark s3">✦</span><span class="reward-spark s4">✧</span>
+      <div class="tac275-unseal-stage"><div class="reward-chest gtp244-mythic-reward" role="img" aria-label="Mythic Supply Bin"><img src="./assets/decor/mythic-bin-halloween-v257.webp" alt="" loading="eager"/></div></div>
+      <div class="tac275-paper-stage"><div class="gold-paper"><div class="paper-stamp">✦ OUTLANDS / DAILY REWARD ✦</div><h2>${intelCheckpoint===1?'FIELD<br>INTEL':intelCheckpoint===2?'RARE<br>INTEL':'LEGEND<br>INTEL'}</h2><span class="paper-legend">CHECKPOINT ${intelCheckpoint} · ${esc(tip.category)}</span><p><strong class="gtp223-intel-title">${esc(tip.title)}</strong> ${esc(tip.tip)}</p>${tip.input?`<small class="tac265-tip-input">${esc(tip.input)}</small>`:''}${tip.why?`<div class="tac259-intel-drill"><b>WHY IT WORKS</b><span>${esc(tip.why)}</span></div>`:''}${tip.mistake?`<div class="tac259-intel-drill"><b>COMMON MISTAKE</b><span>${esc(tip.mistake)}</span></div>`:''}${tip.drill?`<div class="tac259-intel-drill"><b>TRY IT NEXT MATCH</b><span>${esc(tip.drill)}</span></div>`:''}${tip.source?`<a class="gtp223-intel-source" href="${esc(tip.source)}" target="_blank" rel="noopener noreferrer">${esc(tip.sourceName||'COMMUNITY GUIDE')} ↗</a>`:'<span class="gtp223-intel-source">TACTICAL FIELD NOTE · THE APEX CHALLENGE</span>'}<small>COMMUNITY SOURCE REVIEWED · ${esc(tip.reviewed||today())}</small></div></div>
+      <span class="reveal-boozle">BAMBOOZLED! ✦</span></div></div><div class="intel-dialog-footer"><button class="btn mint" data-action="intel-close" type="button">TAKE THE INTEL ✓</button></div></div>`;
   dialog.addEventListener('click',ev=>{if(ev.target===dialog){closeIntelDialog();render({scroll:false});}});
   app.appendChild(dialog);intelModalOpen=true;
   const close=dialog.querySelector('.intel-close');close?.focus({preventScroll:true});
@@ -286,7 +288,7 @@ function replayIntelReveal(){
   modal.classList.remove('reveal-started','reveal-finished');void modal.offsetWidth;
   modal.classList.add('reveal-started');sound('reveal');
   clearTimeout(intelAnimation);
-  intelAnimation=setTimeout(()=>{if(modal.isConnected)modal.classList.add('reveal-finished');},2500);
+  intelAnimation=setTimeout(()=>{if(modal.isConnected)modal.classList.add('reveal-finished');},1200);
 }
 function closeIntelDialog(){
   clearTimeout(intelAnimation);document.getElementById('intel-dialog')?.remove();intelModalOpen=false;
@@ -395,9 +397,9 @@ function home(){
     <section class="gtp222-side gtp239-side gtp239-side-left" aria-label="Classic, Pixel and Quote">${showcase.slice(0,3).map(heroCard).join('')}</section>
     <section class="gtp222-core gtp239-core gtp246-home-core ${freeSelected?'tac268-free-core':''}" aria-label="Forbidden Intel Supply Bin">
       <div class="gtp239-bin-stage" role="img" aria-label="Halloween Mythic Supply Bin surrounded by candles and thorns"><span class="gtp239-bin-floor"></span><img class="gtp239-bin-image" src="./assets/decor/mythic-bin-halloween-v257.webp" alt="" loading="eager" decoding="async"/><span class="gtp239-bin-spark one">✦</span><span class="gtp239-bin-spark two">✦</span></div>
-      ${freeSelected?'':`<div class="gtp239-intel-panel gtp246-intel-hub"><span class="gtp239-kicker">✦ OUTLANDS REWARDS ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Complete the hunt. Break the seals. Uncover your forbidden intel.</p>
-       <button type="button" class="gtp239-open-intel" data-action="${lastUnlocked?'intel-open':'home-daily'}" ${lastUnlocked?`data-checkpoint="${intelTarget}"`:''}>◈ ${lastUnlocked?'OPEN MYTHIC INTEL':'BEGIN THE DAILY HUNT'} <span>↗</span></button>
-       <details class="gtp239-reward-details"><summary>INTEL CHECKPOINTS · ${intelDone} / 2 <span aria-hidden="true">⌄</span></summary>
+      ${freeSelected?'':`<div class="gtp239-intel-panel gtp246-intel-hub"><span class="gtp239-kicker">✦ YOUR DAILY OBJECTIVE ✦</span><h2>FORBIDDEN <em>INTEL</em></h2><p>Finish the Daily Challenge. Unlock Forbidden Intel: real Apex techniques, why they work and a drill to try next match.</p>
+       <button type="button" class="gtp239-open-intel" data-action="${lastUnlocked?'intel-open':'home-daily'}" ${lastUnlocked?`data-checkpoint="${intelTarget}"`:''}>◈ ${lastUnlocked?'OPEN MYTHIC INTEL':'PLAY DAILY · UNLOCK INTEL'} <span>↗</span></button>
+       <p class="tac275-reward-path">Daily puzzle → Field Intel · Daily Trivia → Rare Intel</p><small class="tac275-daily-date">${today()} · resets at 00:00 UTC${sharedDay?' · ARCHIVED DAY':''}</small><details class="gtp239-reward-details" open><summary>INTEL CHECKPOINTS · ${intelDone} / 2 <span aria-hidden="true">⌄</span></summary>
         <div class="gtp219-rewards gtp239-reward-grid">${[1,2].map(n=>{const {unlocked,read}=intelState(n);return `<button type="button" class="${unlocked?(read?'gtp223-read':'gtp223-new'):''}" data-action="intel-open" data-checkpoint="${n}" ${unlocked?'':'disabled'}><span>${unlocked?(read?'✓':'✦'):'◇'} ${n===1?'DAILY PUZZLE':'DAILY TRIVIA'}</span><small>${unlocked?(read?'READ ✓':'NEW · OPEN ↗'):'LOCKED'}</small></button>`}).join('')}</div>
        </details>
       </div>`}
@@ -663,6 +665,7 @@ function cinematicControls(round,target){
    </div>
    <div class="gtp230-finished-actions">
     ${session==='daily'?'<button type="button" data-action="next" data-session="daily" class="gtp230-btn gtp230-btn-main">'+(dailyNextLabel()+' ↗')+'</button>':'<button type="button" data-action="next" data-session="unlimited" class="gtp230-btn gtp230-btn-main">↻ PLAY AGAIN</button>'}
+    ${session==='unlimited'?`<button type="button" data-action="free-next" class="gtp230-btn gtp230-btn-main">NEXT: ${esc(nextFreeMode(active).toUpperCase())} ↗</button>`:''}
     <button type="button" data-action="home" class="gtp230-btn gtp230-btn-secondary">BACK TO MODES</button>
    </div>
    ${session==='daily'?intelReadyMarkup(1):''}
@@ -764,9 +767,9 @@ function trivia(){
   <div class="trivia-grid"><section class="trivia-main" id="trivia-main-content" tabindex="-1">
   ${triviaMessage?`<div class="trivia-status" role="status">${esc(triviaMessage)}</div>`:''}
   ${!run?`<div class="trivia-intro"><span class="trivia-tag">${isDaily?'ONE OFFICIAL RUN PER UTC DAY':'UNLIMITED UNRANKED ROUNDS'}</span><h2>${isDaily?'DAILY INTEL DROP':'TRAIN YOUR KNOWLEDGE'}</h2><p>${isDaily?'Everyone receives the same five-question selection today. Answers and timing are verified on the server; results appear on the separate Trivia leaderboard.':'Try varied sets across the question bank; recent topics are rotated when possible. Practice does not affect your global ranking.'}</p><p class="trivia-hint">${isDaily?'Public nickname: <strong>'+esc(savedNickname()||'Choose one when starting Daily')+'</strong>':'No nickname needed. Practice is unranked.'}</p><button type="button" data-action="trivia-start" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'CONNECTING…':isDaily?'START / RESUME DAILY →':'START PRACTICE →'}</button></div>`:''}
-  ${run?.finished?`<div class="trivia-finale"><span class="trivia-tag">${isDaily?'DAILY SUBMITTED':'PRACTICE COMPLETE'}</span><h2>RUN COMPLETE.</h2><div class="trivia-final-score">${Number(run.score)||0}<small> / 100</small></div><p>${run.score===100?'PERFECT INTEL. FIVE FOR FIVE.':'You answered '+Number(run.correctAnswers??Math.floor(run.score/20))+' of 5 questions correctly.'} ${isDaily?'Your score is stored in the separate Trivia rankings.':'Practice rounds never change the leaderboard.'}</p>${run.feedback?`<div class="trivia-last-explanation"><strong>${run.feedback.correct?'✓ FINAL ANSWER CORRECT':'FINAL QUESTION REVIEW'}</strong><span>${esc(run.feedback.explanation||'')}</span>${run.feedback.source?`<a href="${esc(run.feedback.source)}" target="_blank" rel="noopener noreferrer">Official EA source ↗</a>`:''}</div>`:''}${isDaily&&triviaRewardEarned()?intelReadyMarkup(2):''}<div class="trivia-final-actions">${isDaily?'<button type="button" class="trivia-primary" data-action="daily-summary">VIEW DAILY SUMMARY ↗</button>':''}<button type="button" class="trivia-primary" data-action="trivia-mode" data-trivia-mode="practice">∞ PRACTICE AGAIN</button><button type="button" class="trivia-secondary" data-action="leaderboard">VIEW RANKINGS ↗</button></div></div>`:''}
+  ${run?.finished?`<div class="trivia-finale"><span class="trivia-tag">${isDaily?'DAILY SUBMITTED':'PRACTICE COMPLETE'}</span><h2>RUN COMPLETE.</h2><div class="trivia-final-score">${Number(run.score)||0}<small> / 100</small></div><p>${run.score===100?'PERFECT INTEL. FIVE FOR FIVE.':'You answered '+Number(run.correctAnswers??Math.floor(run.score/20))+' of 5 questions correctly.'} ${isDaily?'Your score is stored in the separate Trivia rankings.':'Practice rounds never change the leaderboard.'}</p>${run.feedback?`<div class="trivia-last-explanation"><strong>${run.feedback.correct?'✓ FINAL ANSWER CORRECT':'FINAL QUESTION REVIEW'}</strong><span>${esc(run.feedback.explanation||'')}</span>${run.feedback.source?`<a href="${esc(run.feedback.source)}" target="_blank" rel="noopener noreferrer">Official EA source ↗</a>`:''}</div>`:''}${isDaily&&triviaRewardEarned()?intelReadyMarkup(2):''}<div class="trivia-final-actions">${isDaily?'<button type="button" class="trivia-primary" data-action="daily-summary">VIEW DAILY SUMMARY ↗</button>':''}<button type="button" class="trivia-primary" data-action="trivia-mode" data-trivia-mode="practice">∞ PRACTICE AGAIN</button>${!isDaily?'<button type="button" class="trivia-primary" data-action="free-next">NEXT: CLASSIC ↗</button>':''}<button type="button" class="trivia-secondary" data-action="leaderboard">VIEW RANKINGS ↗</button></div></div>`:''}
   ${run&&!run.finished&&feedback?`<div class="trivia-feedback ${feedback.correct?'good':'bad'}"><span class="trivia-tag">QUESTION ${Math.min(run.number-1,5)} / 5</span><h2>${feedback.correct?'✓ CORRECT · +'+Number(feedback.earned||20):feedback.timedOut?'⌛ TIME’S UP · QUESTION EXPIRED':'✕ NOT QUITE'}</h2><p><strong>Accepted answer${feedback.acceptedAnswers?.length>1?'s':''}:</strong> ${esc((feedback.acceptedAnswers||[]).join(' · '))}</p><p>${esc(feedback.explanation||'')}</p>${feedback.source?`<a href="${esc(feedback.source)}" target="_blank" rel="noopener noreferrer">Verify with EA ↗</a>`:''}<p class="trivia-current-score">RUN SCORE: ${run.score} / 100</p><button data-action="trivia-next" class="trivia-primary" ${triviaBusy?'disabled':''}>${triviaBusy?'LOADING…':'NEXT QUESTION →'}</button></div>`:''}
-  ${run&&!run.finished&&!feedback&&question?`<div class="trivia-question"><div class="gtp245-trivia-progress" role="progressbar" aria-label="Completed Trivia questions" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${Math.max(0,run.number-1)}">${Array.from({length:5},(_,i)=>`<span class="${i<run.number-1?'complete':i===run.number-1?'current':''}"></span>`).join('')}</div><div class="trivia-question-head"><span class="trivia-tag">QUESTION ${run.number} / 5 · ${['WARM-UP','WARM-UP','STANDARD','ADVANCED','EXPERT'][Math.max(0,Math.min(4,run.number-1))]} · ${esc(question.category.replace(/-/g,' ').toUpperCase())}</span><strong class="trivia-clock ${remaining<=6?'urgent':''}" id="trivia-clock"><span id="trivia-seconds">${remaining}</span>s</strong></div><div class="trivia-timebar"><span id="trivia-timefill" style="width:${Math.max(0,Math.min(100,remaining*5))}%"></span></div><h2>${esc(question.prompt)}</h2><div class="tac-trivia-help"><button type="button" data-action="trivia-help" ${triviaBusy||question.assisted?'disabled':''}>${question.assisted?'INTEL ASSIST ACTIVE':question.kind==='choice'?'50 / 50 LIFELINE':'REVEAL ANSWER OPTIONS'}</button><span>${question.assisted?'Correct answer: 10 points':'Optional help · 10 points instead of 20 · timer keeps running'}</span></div><form id="trivia-answer-form">${question.kind==='choice'?`<div class="trivia-options">${question.options.map((v,i)=>`<button class="trivia-option" type="button" data-action="trivia-choice" data-value="${esc(v)}" ${triviaBusy?'disabled':''}><b>${String.fromCharCode(65+i)}</b><span>${esc(v)}</span><span>↗</span></button>`).join('')}</div>`:`<div class="trivia-type"><label for="trivia-written-answer">YOUR ANSWER</label><input id="trivia-written-answer" name="answer" spellcheck="false" autocomplete="off" placeholder="Type a Legend name…" maxlength="70" value="${esc(triviaAnswerText)}" ${triviaBusy?'disabled':''}/><button class="trivia-primary" type="submit" ${triviaBusy?'disabled':''}>SUBMIT ANSWER ↗</button></div>`}</form><button type="button" class="trivia-skip" data-action="trivia-skip" ${triviaBusy?'disabled':''}>SKIP / NO ANSWER</button><p class="trivia-note">The clock continues even when you switch tabs. Answers are evaluated server-side.</p></div>`:''}
+  ${run&&!run.finished&&!feedback&&question?`<div class="trivia-question"><div class="gtp245-trivia-progress" role="progressbar" aria-label="Completed Trivia questions" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${Math.max(0,run.number-1)}">${Array.from({length:5},(_,i)=>`<span class="${i<run.number-1?'complete':i===run.number-1?'current':''}"></span>`).join('')}</div><div class="trivia-question-head"><span class="trivia-tag">QUESTION ${run.number} / 5 · ${['WARM-UP','WARM-UP','STANDARD','ADVANCED','EXPERT'][Math.max(0,Math.min(4,run.number-1))]} · ${esc(question.category.replace(/-/g,' ').toUpperCase())}</span><strong class="trivia-clock ${remaining<=6?'urgent':''}" id="trivia-clock"><span id="trivia-seconds">${remaining}</span>s</strong></div><div class="trivia-timebar"><span id="trivia-timefill" style="width:${Math.max(0,Math.min(100,remaining*5))}%"></span></div><h2>${esc(question.prompt)}</h2><div class="tac-trivia-help"><button type="button" data-action="trivia-help" ${triviaBusy||question.assisted?'disabled':''}>${question.assisted?'INTEL ASSIST ACTIVE':question.kind==='choice'?'50 / 50 LIFELINE':'REVEAL ANSWER OPTIONS'}</button><span>${question.assisted?'Correct answer: 10 points':'Optional help · 10 points instead of 20 · timer keeps running'}</span></div><form id="trivia-answer-form">${question.kind==='choice'?`<div class="trivia-options">${question.options.map((v,i)=>`<button class="trivia-option" type="button" data-action="trivia-choice" data-value="${esc(v)}" ${triviaBusy?'disabled':''}><b>${String.fromCharCode(65+i)}</b><span>${esc(v)}</span><span>↗</span></button>`).join('')}</div>`:`<div class="trivia-type"><label for="trivia-written-answer">YOUR ANSWER</label><input id="trivia-written-answer" name="answer" spellcheck="false" autocomplete="off" placeholder="${writtenAnswerPlaceholder(question)}" maxlength="70" value="${esc(triviaAnswerText)}" ${triviaBusy?'disabled':''}/><button class="trivia-primary" type="submit" ${triviaBusy?'disabled':''}>SUBMIT ANSWER ↗</button></div>`}</form><button type="button" class="trivia-skip" data-action="trivia-skip" ${triviaBusy?'disabled':''}>SKIP / NO ANSWER</button><p class="trivia-note">The clock continues even when you switch tabs. Answers are evaluated server-side.</p></div>`:''}
   </section><aside class="trivia-sidebar"><div class="trivia-sidehead"><span>✦ SEPARATE TRIVIA RANKINGS</span><div class="trivia-tabs"><button data-action="trivia-board-tab" data-tab="daily" class="${triviaScoreTab==='daily'?'active':''}">TODAY</button><button data-action="trivia-board-tab" data-tab="overall" class="${triviaScoreTab==='overall'?'active':''}">ALL TIME</button></div></div>${triviaBoardBusy&&!rows.length?'<p class="trivia-quiet">LOADING SCORES…</p>':triviaBoardError&&!rows.length?`<p class="trivia-quiet">${esc(triviaBoardError)}</p>`:rows.length?`<div class="trivia-board-rows">${rows.map((r,i)=>`<div class="trivia-board-row"><b>#${Number(r.position)||i+1}</b><span>${esc(r.player_name||'Player')}</span><strong>${Number(r.score)||0} ${triviaScoreTab==='overall'?'PTS':'/100'}</strong></div>`).join('')}</div>`:'<p class="trivia-quiet">No daily submissions yet. Be the first!</p>'}<div class="trivia-aside-foot"><b>CURATED QUESTION BANK</b><p>Start with two familiar Legend questions, then progress through standard, advanced and expert intel. Five different questions per run. Lifelines are always optional.</p><button class="trivia-secondary" data-action="trivia-board-refresh">↻ REFRESH LEADERBOARD</button></div></aside></div>
   </div></main>`;
 }
@@ -779,7 +782,7 @@ function resetTriviaView(){
  triviaEpoch++;triviaBusy=false;triviaSubmitting=false;triviaRun=null;triviaAnswerText='';triviaMessage='';triviaExpiredKey='';triviaRetryAt=0;
 }
 function triviaContext(){return {epoch:triviaEpoch,mode:triviaMode,day:triviaRun?.day||utcDay(),runId:triviaRun?.runId};}
-function currentTriviaContext(context){return context.epoch===triviaEpoch&&context.mode===triviaMode;}
+function currentTriviaContext(context){return context.epoch===triviaEpoch&&context.mode===triviaMode&&(context.mode!=='daily'||context.day===utcDay());}
 async function triviaAction(action,payload={},timedOut=false){
  if(triviaBusy)return;
  const context=triviaContext();triviaBusy=true;triviaMessage='';if(action==='answer')triviaSubmitting=true;
@@ -1147,7 +1150,17 @@ function showLegendPreview(slug){
  document.querySelectorAll('.gtp245-picker-item').forEach(card=>card.classList.toggle('is-preview',card.dataset.previewSlug===slug));
  loadPortraitImages(panel);
 }
+function advanceFreeMode(){
+ const mode=nextFreeMode(screen==='trivia'?'trivia':active);
+ session='unlimited';store.settings.session='unlimited';sync();pickerOpen=false;quickSearch='';
+ if(mode==='trivia'){resetTriviaView();triviaMode='practice';screen='trivia';render();void loadTriviaBoards();sound('nav');return;}
+ if(store.practice[mode]?.finished)randomPractice(mode);else openMode(mode,'unlimited');
+}
+function useCurrentDay(){
+ if(sharedDay){sharedDay=null;const url=new URL(location.href);url.searchParams.delete('day');history.replaceState(null,'',url);}
+}
 function beginDaily(){
+ useCurrentDay();
  session='daily';store.settings.session='daily';migrateSingleDaily(store.days,today());sync();pickerOpen=false;
  const chosen=chosenDaily(store.days,today());if(chosen){dailyTrack=chosen.track;openMode(chosen.gameMode,'daily');return;}
  screen='daily-choice';render();sound('nav');
@@ -1188,8 +1201,8 @@ app.addEventListener('click',event=>{
   else if(action==='share-wheel')void copyWheelPick();
   else if(action==='home'){screen='home';pickerOpen=false;render();sound('nav');}
   else if(action==='home-session'){session=button.dataset.session==='unlimited'?'unlimited':'daily';store.settings.session=session;triviaMode=session==='daily'?'daily':'practice';sync();render({scroll:false});sound('nav');}
-  else if(action==='trivia'){resetTriviaView();triviaMode=button.dataset.triviaMode||(session==='daily'?'daily':'practice');session=triviaMode==='daily'?'daily':'unlimited';store.settings.session=session;sync();screen='trivia';pickerOpen=false;triviaMessage='';triviaRun=null;render();void loadTriviaBoards();sound('nav');}
-  else if(action==='trivia-mode'){resetTriviaView();triviaMode=button.dataset.triviaMode==='practice'?'practice':'daily';session=triviaMode==='daily'?'daily':'unlimited';store.settings.session=session;sync();triviaRun=null;triviaMessage='';render({scroll:false});sound('nav');}
+  else if(action==='trivia'){resetTriviaView();triviaMode=button.dataset.triviaMode||(session==='daily'?'daily':'practice');if(triviaMode==='daily')useCurrentDay();session=triviaMode==='daily'?'daily':'unlimited';store.settings.session=session;sync();screen='trivia';pickerOpen=false;triviaMessage='';triviaRun=null;render();void loadTriviaBoards();sound('nav');}
+  else if(action==='trivia-mode'){resetTriviaView();triviaMode=button.dataset.triviaMode==='practice'?'practice':'daily';if(triviaMode==='daily')useCurrentDay();session=triviaMode==='daily'?'daily':'unlimited';store.settings.session=session;sync();triviaRun=null;triviaMessage='';render({scroll:false});sound('nav');}
   else if(action==='trivia-help')void triviaHelp();
   else if(action==='trivia-start')void triviaStart();
   else if(action==='trivia-choice')void triviaSubmitAnswer(button.dataset.value);
@@ -1259,6 +1272,7 @@ app.addEventListener('click',event=>{
     if(changed!==round){setRound(changed);render({scroll:false});sound('clue');}
   }
   else if(action==='filter'){pickerClass=button.dataset.class;renderPicker();sound('nav');}
+  else if(action==='free-next')advanceFreeMode();
   else if(action==='next')nextMode(button.dataset.session||session);
   else if(action==='again')randomPractice(active);
 });
@@ -1322,12 +1336,25 @@ document.addEventListener('keydown',event=>{
   }
 });
 let lastSpotlightUTC=utcDay();
+function checkDailyRollover(){
+ const currentUTC=utcDay();if(currentUTC===lastSpotlightUTC)return;
+ lastSpotlightUTC=currentUTC;
+ if(triviaMode==='daily')resetTriviaView();
+ if(triviaBoard)triviaBoard={...triviaBoard,daily:[]};
+ if(sharedDay)return;
+ if(screen==='game'&&session==='daily'){beginDaily();showToast('A new UTC day has started. Choose your Daily difficulty.');return;}
+ if(screen==='daily-choice'||screen==='debrief'){screen='home';}
+ if(['home','records','leaderboard','trivia'].includes(screen)&&!wheelOpen){
+  render({scroll:false});
+  if(screen==='trivia'&&triviaMode==='daily')showToast('New Daily Trivia is ready. Yesterday’s result stays in your history.');
+  if(screen==='leaderboard'){void refreshBoards();void loadTriviaBoards();}
+ }
+}
+window.addEventListener('focus',checkDailyRollover);
+window.addEventListener('pageshow',checkDailyRollover);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkDailyRollover();});
 setInterval(()=>{
-  const currentUTC=utcDay();
-  if(currentUTC!==lastSpotlightUTC){
-    lastSpotlightUTC=currentUTC;
-    if(!sharedDay){if(screen==='game'&&session==='daily'){beginDaily();showToast('A new UTC day has started. Choose your Daily difficulty.');}else if(screen==='trivia'&&!triviaRun){resetTriviaView();render({scroll:false});}else if(['home','records','leaderboard','debrief'].includes(screen)&&!wheelOpen){render({scroll:false});if(screen==='leaderboard'){void refreshBoards();void loadTriviaBoards();}}}
-  }
+  checkDailyRollover();
   if(screen!=='game')return;
   const round=getRound();if(!round)return;
   const expired=expireRound(round,Date.now());

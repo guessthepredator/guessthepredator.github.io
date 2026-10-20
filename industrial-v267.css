@@ -383,3 +383,73 @@ html,body{background:#0d1012!important;color:var(--tac267-ink)}
 @media(max-width:700px){#app#app{padding-top:62px!important}}
 
 @media(max-width:700px){#app#app .tac273-scene img{object-position:left top!important}}
+
+/* V2.75: bring play toward the centre while preserving the left Legend lane. */
+@media(min-width:701px){
+ #app#app .gtp239-layout,#app#app[data-screen="game"] .gtp230-game,#app#app[data-screen="trivia"] .trivia-page,#app#app[data-screen="leaderboard"]>main,#app#app[data-screen="records"]>main,#app#app[data-screen="faq"]>main,#app#app[data-screen="howto"]>main{width:76%!important;max-width:1450px!important;margin:0 3% 0 auto!important}
+ #app#app[data-screen="trivia"] .trivia-page{width:78%!important}
+ #app#app[data-screen="trivia"] .trivia-grid{grid-template-columns:minmax(0,1fr) 220px!important;gap:20px!important}
+ #app#app[data-screen="trivia"] .trivia-main{padding:30px!important}
+}
+@media(min-width:701px) and (max-width:1050px){#app#app[data-screen="trivia"] .trivia-grid{grid-template-columns:1fr!important}}
+#app#app[data-screen="trivia"] .trivia-question h2{font-size:clamp(28px,2.6vw,38px)!important;line-height:1.25!important}
+#app#app[data-screen="trivia"] .trivia-option{font-size:16px!important;min-height:60px!important}
+#app#app .gtp230-finished-actions,#app#app .trivia-final-actions{display:flex!important;flex-wrap:wrap!important;gap:10px!important}
+#app#app[data-screen="home"][data-session="daily"] .gtp246-home-core{grid-row:1!important;grid-column:1/-1!important;margin-bottom:14px!important}
+#app#app .tac275-reward-path{font-size:13px!important;font-weight:700!important;color:#e9bf83!important}
+#app#app .tac275-daily-date{display:block!important;font:12px/1.6 Arial,sans-serif!important;color:#d3c6b1!important;margin:8px 0!important}
+/* One bounded dialog, one scroll region; the brief never clips behind its footer. */
+#app#app .intel-backdrop{position:fixed!important;inset:0!important;z-index:1100!important;display:grid!important;place-items:center!important;padding:14px!important;background:#05090de8!important;overflow:hidden!important}
+#app#app .intel-modal.tac275-intel-modal{display:grid!important;grid-template-rows:auto minmax(0,1fr) auto!important;width:min(820px,100%)!important;max-width:100%!important;height:min(850px,calc(100svh - 28px))!important;max-height:calc(100svh - 28px)!important;min-height:0!important;padding:0!important;overflow:hidden!important;position:relative!important;inset:auto!important;transform:none!important;box-sizing:border-box!important}
+#app#app .tac275-intel-header{display:grid!important;gap:5px!important;padding:20px 56px 16px 24px!important;border-bottom:1px solid #745e41!important;text-align:left!important}
+#app#app .tac275-intel-header span{font:11px/1.4 Arial,sans-serif!important;letter-spacing:2px!important;color:#d6b783!important}
+#app#app .tac275-intel-header strong{font-size:24px!important;color:#fff0d5!important}
+#app#app .tac275-intel-body{min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain!important;padding:18px 24px 24px!important;scrollbar-gutter:stable!important}
+#app#app .tac275-intel-body .intel-reveal-scene{height:auto!important;max-height:none!important;overflow:visible!important}
+#app#app .tac275-intel-modal .intel-close{position:absolute!important;top:12px!important;right:12px!important;z-index:5!important;width:36px!important;height:36px!important}
+#app#app .tac275-intel-modal .intel-dialog-footer{padding:14px 24px!important;border-top:1px solid #745e41!important;background:#111a21!important}
+#app#app .tac275-intel-modal .intel-dialog-footer button{width:100%!important}
+#app#app .tac275-intel-modal .gold-paper{height:auto!important;max-height:none!important;display:block!important;flex-shrink:0!important;box-sizing:border-box!important}
+#app#app .tac275-intel-modal .gold-paper p{font-size:16px!important;line-height:1.8!important}
+#app#app .tac275-intel-modal .tac259-intel-drill{display:grid!important;gap:7px!important;padding:14px!important;font:14px/1.75 Arial,sans-serif!important}
+#app#app .tac275-intel-modal .gtp223-intel-source{display:block!important;overflow-wrap:anywhere!important;margin:16px 0 8px!important}
+#app#app .tac275-intel-modal.reveal-started:not(.reveal-finished) .reward-chest{animation:tac275-unseal 1.2s ease-out both!important}
+#app#app .tac275-intel-modal.reveal-started:not(.reveal-finished) .gold-paper{animation:tac275-brief .7s .25s ease-out both!important}
+@keyframes tac275-unseal{0%{filter:brightness(.6);transform:translateY(8px) scale(.9)}35%{filter:brightness(1.8) drop-shadow(0 0 30px #f7c66b);transform:translateY(-5px) rotate(-3deg) scale(1.08)}60%{transform:translateY(-3px) rotate(2deg)}100%{filter:brightness(1);transform:none}}
+@keyframes tac275-brief{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+#app#app.no-motion .tac275-intel-modal .gold-paper,#app#app.no-motion .tac275-intel-modal .reward-chest{animation:none!important;opacity:1!important;transform:none!important}
+@media(prefers-reduced-motion:reduce){#app#app .tac275-intel-modal .gold-paper,#app#app .tac275-intel-modal .reward-chest{animation:none!important;opacity:1!important;transform:none!important}}
+@media(max-width:700px){
+ #app#app .tac275-intel-header{padding:16px 52px 14px 16px!important}
+ #app#app .tac275-intel-body{padding:12px!important}
+ #app#app .tac275-intel-modal .intel-dialog-footer{padding:12px!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core{display:flex!important;flex-direction:column!important}
+}
+
+/* Keep the home title out of the character lane; promote the goal as a compact daily briefing. */
+@media(min-width:701px){
+ #app#app .gtp239-layout{width:66%!important;max-width:1180px!important;margin:0 2% 0 auto!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core{display:grid!important;grid-template-columns:150px minmax(0,1fr)!important;align-items:center!important;gap:18px!important;width:100%!important;max-width:none!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-bin-stage{width:150px!important;height:160px!important;min-height:0!important;margin:0!important;position:relative!important;inset:auto!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-bin-image{width:100%!important;height:100%!important;object-fit:contain!important;position:static!important;transform:none!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-intel-panel{width:100%!important;max-width:none!important;margin:0!important;text-align:left!important;box-sizing:border-box!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-intel-panel h2{font-size:30px!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp246-home-core .gtp239-intel-panel p{max-width:none!important;margin:10px 0!important}
+ #app#app[data-screen="home"][data-session="daily"] .gtp239-open-intel{margin:12px 0!important}
+}
+
+#app#app .tac275-paper-stage{width:100%;min-width:0}
+#app#app .tac275-intel-modal.reveal-started:not(.reveal-finished) .tac275-unseal-stage{animation:tac275-unseal 1.2s ease-out both}
+#app#app .tac275-intel-modal.reveal-started:not(.reveal-finished) .tac275-paper-stage{animation:tac275-brief .7s .25s ease-out both}
+#app#app.no-motion .tac275-unseal-stage,#app#app.no-motion .tac275-paper-stage{animation:none!important}
+@media(prefers-reduced-motion:reduce){#app#app .tac275-unseal-stage,#app#app .tac275-paper-stage{animation:none!important}}
+@media(min-width:701px){#app#app[data-screen="trivia"] .tac273-scene img{transform:translateX(-60px)!important}}
+
+/* Active questions use the whole play surface, including written-answer rounds. */
+#app#app[data-screen="trivia"] .trivia-page-active .trivia-shell{width:100%!important;max-width:none!important}
+#app#app[data-screen="trivia"] .trivia-page-active .trivia-grid{grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:none!important;margin:0!important}
+#app#app[data-screen="trivia"] .trivia-page-active .trivia-main{width:100%!important;max-width:none!important;box-sizing:border-box!important}
+#app#app[data-screen="trivia"] .trivia-page-active .trivia-question{width:100%!important;max-width:none!important;box-sizing:border-box!important;padding:0!important;text-align:left!important}
+#app#app[data-screen="trivia"] .trivia-page-active .trivia-question h2{background:none!important;border:0!important;border-radius:0!important;padding:12px 0!important;text-wrap:pretty!important}
+#app#app[data-screen="trivia"] .trivia-page-active .trivia-clock{color:#ecc98f!important}
+#app#app[data-screen="trivia"] .trivia-page-active .trivia-type input{background:#172129!important;border:1px solid #8a7d69!important;border-radius:4px!important}
