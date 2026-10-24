@@ -3,7 +3,7 @@ import test from 'node:test';import assert from 'node:assert/strict';import vm f
 const app=readFileSync(new URL('../src/app.mjs',import.meta.url),'utf8');
 const functions=(a,b)=>app.slice(app.indexOf('function '+a+'('),app.indexOf('function '+b+'('));
 function triviaHarness(){
- const pending=[];const ctx={triviaEpoch:0,triviaMode:'daily',triviaRun:null,triviaBusy:false,triviaSubmitting:false,triviaRetryAt:0,screen:'trivia',utcDay:()=> '2026-10-19',render:()=>{},sound:()=>{},saveTriviaReward:()=>{},loadTriviaBoards:()=>{},focusTriviaQuestion:()=>{},triviaRequest:()=>new Promise((resolve,reject)=>pending.push({resolve,reject}))};
+ const pending=[];const ctx={checkDailyRollover:()=>false,triviaEpoch:0,triviaMode:'daily',triviaRun:null,triviaBusy:false,triviaSubmitting:false,triviaRetryAt:0,screen:'trivia',utcDay:()=> '2026-10-19',render:()=>{},sound:()=>{},saveTriviaReward:()=>{},loadTriviaBoards:()=>{},focusTriviaQuestion:()=>{},triviaRequest:()=>new Promise((resolve,reject)=>pending.push({resolve,reject}))};
  vm.createContext(ctx);vm.runInContext(functions('resetTriviaView','focusTriviaQuestion'),ctx);return {ctx,pending,run:code=>vm.runInContext(code,ctx)};
 }
 test('stale Daily response cannot overwrite Practice or unlock its pending controls',async()=>{

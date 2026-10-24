@@ -85,8 +85,8 @@ const COLORS={classic:'#f17b72',pixel:'#5ad7f1',quote:'#ffca75',ability:'#ba9eff
 const ICONS={classic:'❔',pixel:'▦',quote:'❞',ability:'⌁',emoji:'✧'};
 const TAGLINES={classic:'Deduce the target with every signal.',pixel:'Reveal the legend, not the background.',quote:'Who wrote this intercepted line?',ability:'Identify the passive ability icon.',emoji:'Five symbols. One legend.'};
 const params=new URLSearchParams(location.search);
-const paramDay=params.get('day');
-let sharedDay=(paramDay&&/^\d{4}-\d{2}-\d{2}$/.test(paramDay)&&!Number.isNaN(Date.parse(paramDay+'T00:00:00Z')))?paramDay:null;
+let sharedDay=null;
+if(params.has('day')){const url=new URL(location.href);url.searchParams.delete('day');history.replaceState(null,'',url);}
 const today=()=>sharedDay||utcDay();
 const answers=()=>puzzleAnswers(today(),legends);
 
@@ -774,8 +774,9 @@ function trivia(){
   </div></main>`;
 }
 async function loadTriviaBoards(){if(!leaderboardConfigured())return;
+ const requestedDay=utcDay();
  triviaBoardBusy=true;triviaBoardError='';if(screen==='trivia'||screen==='leaderboard')render({scroll:false});
- try{triviaBoard=await getTriviaBoards(today());try{localStorage.setItem('tac:trivia-boards:v265',JSON.stringify({day:today(),boards:triviaBoard}));}catch{}}catch(e){triviaBoardError=e?.message||'Could not load Trivia rankings';}
+ try{const fresh=await getTriviaBoards(requestedDay);if(requestedDay!==utcDay())return;triviaBoard=fresh;try{localStorage.setItem('tac:trivia-boards:v265',JSON.stringify({day:requestedDay,boards:triviaBoard}));}catch{}}catch(e){if(requestedDay===utcDay())triviaBoardError=e?.message||'Could not load Trivia rankings';}
  finally{triviaBoardBusy=false;if(screen==='trivia'||screen==='leaderboard')render({scroll:false});}
 }
 function resetTriviaView(){
@@ -784,13 +785,14 @@ function resetTriviaView(){
 function triviaContext(){return {epoch:triviaEpoch,mode:triviaMode,day:triviaRun?.day||utcDay(),runId:triviaRun?.runId};}
 function currentTriviaContext(context){return context.epoch===triviaEpoch&&context.mode===triviaMode&&(context.mode!=='daily'||context.day===utcDay());}
 async function triviaAction(action,payload={},timedOut=false){
+ if(triviaMode==='daily'&&checkDailyRollover())return;
  if(triviaBusy)return;
  const context=triviaContext();triviaBusy=true;triviaMessage='';if(action==='answer')triviaSubmitting=true;
  if(action==='start'||action==='next')render({scroll:false});
  try{
   let response=await triviaRequest({action,...payload});
   response={...response,day:response.day||context.day};saveTriviaReward(response);
-  if(!currentTriviaContext(context))return;
+  if(!currentTriviaContext(context)||response.mode!==context.mode||(context.mode==='daily'&&response.day!==utcDay()))return;
   if(timedOut&&response.feedback)response={...response,feedback:{...response.feedback,timedOut:true}};
   triviaRun=response;triviaAnswerText='';triviaMessage='';triviaRetryAt=0;
   if(action==='answer')sound(response.feedback?.correct?'correct':'wrong');
@@ -888,6 +890,7 @@ async function refreshBoards(){
  finally{boardLoading=false;if(screen==='leaderboard')render({scroll:false});}
 }
 async function submitScores(){
+ if(checkDailyRollover())return;
  if(scoreSubmitting)return;
  if(!leaderboardConfigured()){showToast('Database not configured yet');return;}
  const summary=dailySummary(store.days,today());
@@ -901,10 +904,12 @@ async function submitScores(){
  const feedback=document.getElementById('board-submit-feedback');
  if(feedback){feedback.textContent='Checking your Daily run…';feedback.dataset.status='pending';}
  scoreSubmitting=true;
+ const submittedDay=today();
  if(button){button.disabled=true;button.textContent='SUBMITTING…';}
  try{
-  const receipt=await submitDaily(buildSubmission(store.days,today(),nickname));
-  store.submittedDays={...(store.submittedDays||{}),[today()]:{...receipt,nickname,submittedAt:Date.now()}};sync();
+  const receipt=await submitDaily(buildSubmission(store.days,submittedDay,nickname));
+  store.submittedDays={...(store.submittedDays||{}),[submittedDay]:{...receipt,nickname,submittedAt:Date.now()}};sync();
+  if(submittedDay!==utcDay()){checkDailyRollover();return;}
   await refreshBoards();if(screen==='debrief')render({scroll:false});const message=`SCORE SUBMITTED · ${receipt.totalScore} PTS · STREAK ${receipt.streak}`;showToast(message);const status=document.getElementById('board-submit-feedback');if(status){status.textContent=message;status.dataset.status='success';}
  }catch(error){const message=error.message||'Submission failed';showToast(message);const currentFeedback=document.getElementById('board-submit-feedback');if(currentFeedback){currentFeedback.textContent=message;currentFeedback.dataset.status='error';}}finally{scoreSubmitting=false;const currentButton=document.querySelector('#board-submit-form button[type=submit]');if(currentButton&&!store.submittedDays?.[today()]){currentButton.disabled=false;currentButton.textContent='SUBMIT DAILY SCORE ↗';}}
 }
@@ -1068,6 +1073,7 @@ function openMode(mode,playSession=session){
   active=mode;session=playSession;store.settings.session=session;sync();screen='game';pickerOpen=false;quickSearch='';ensureRound();render();sound('nav');
 }
 function submitGuess(name){
+  if(session==='daily'&&checkDailyRollover())return;
   const round=getRound();if(!round){if(session==='daily'){ensureRound();render({scroll:false});}return;}if(round.finished)return;
   const next=tryGuess(round,name,legends);
   if(next===round)return;
@@ -1186,6 +1192,7 @@ app.addEventListener('pointerover',event=>{
   else if(mode==='trivia'||card.classList.contains('gtp222-card-trivia'))sound('hover-trivia');
 });
 app.addEventListener('click',event=>{
+  if(checkDailyRollover())return;
   const button=event.target.closest('[data-action]');if(!button||button.disabled)return;
   const action=button.dataset.action;
   if(action==='intel-open'){
@@ -1337,18 +1344,24 @@ document.addEventListener('keydown',event=>{
 });
 let lastSpotlightUTC=utcDay();
 function checkDailyRollover(){
- const currentUTC=utcDay();if(currentUTC===lastSpotlightUTC)return;
+ const currentUTC=utcDay();if(currentUTC===lastSpotlightUTC)return false;
  lastSpotlightUTC=currentUTC;
+ store=loadStore();
+ if(boardData)boardData={...boardData,daily:[]};
+ boardCacheDay=currentUTC;
+ pickerOpen=false;quickSearch='';if(intelModalOpen)closeIntelDialog();intelFirstRevealPending=false;
+ if(wheelOpen)closeWheel();
  if(triviaMode==='daily')resetTriviaView();
  if(triviaBoard)triviaBoard={...triviaBoard,daily:[]};
- if(sharedDay)return;
- if(screen==='game'&&session==='daily'){beginDaily();showToast('A new UTC day has started. Choose your Daily difficulty.');return;}
+ useCurrentDay();
+ if(screen==='game'&&session==='daily'){beginDaily();showToast('A new UTC day has started. Choose your Daily difficulty.');return true;}
  if(screen==='daily-choice'||screen==='debrief'){screen='home';}
  if(['home','records','leaderboard','trivia'].includes(screen)&&!wheelOpen){
   render({scroll:false});
   if(screen==='trivia'&&triviaMode==='daily')showToast('New Daily Trivia is ready. Yesterday’s result stays in your history.');
   if(screen==='leaderboard'){void refreshBoards();void loadTriviaBoards();}
  }
+ return true;
 }
 window.addEventListener('focus',checkDailyRollover);
 window.addEventListener('pageshow',checkDailyRollover);
@@ -1366,4 +1379,4 @@ render();
 
 
 // Keep open tabs synchronized without overwriting server-backed leaderboards.
-window.addEventListener('storage',event=>{if(event.key==='guess-the-predator-2:daybreak-v1'){const fresh=loadStore();if(fresh?.days){store=fresh;render({scroll:false});}}});
+window.addEventListener('storage',event=>{if(event.key==='guess-the-predator-2:daybreak-v1'){if(checkDailyRollover())return;const fresh=loadStore();if(fresh?.days){store=fresh;render({scroll:false});}}});

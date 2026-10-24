@@ -16,7 +16,7 @@ test('Written question instructions match number and ability questions',()=>{
 });
 function rolloverContext(overrides={}){
  const calls=[];const c={utcDay:()=> '2026-10-21',lastSpotlightUTC:'2026-10-20',triviaMode:'daily',triviaBoard:{daily:[1],overall:[2]},sharedDay:null,screen:'trivia',session:'daily',wheelOpen:false,
- resetTriviaView:()=>calls.push('resetTrivia'),beginDaily:()=>calls.push('beginDaily'),showToast:()=>{},render:()=>calls.push('render'),refreshBoards:()=>{},loadTriviaBoards:()=>{},...overrides};
+ loadStore:()=>({days:{}}),boardData:{daily:[1],overall:[2]},useCurrentDay:()=>{},intelModalOpen:false,resetTriviaView:()=>calls.push('resetTrivia'),beginDaily:()=>calls.push('beginDaily'),showToast:()=>{},render:()=>calls.push('render'),refreshBoards:()=>{},loadTriviaBoards:()=>{},...overrides};
  vm.createContext(c);vm.runInContext(app.slice(app.indexOf('function checkDailyRollover(){'),app.indexOf("window.addEventListener('focus',checkDailyRollover)")),c);c.calls=calls;return c;
 }
 test('UTC rollover clears a completed or active Daily Trivia view once and preserves overall scores',()=>{
